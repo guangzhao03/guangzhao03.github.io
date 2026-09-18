@@ -337,7 +337,7 @@
         
         
         
-          127 分钟
+          126 分钟
         
       </span>
     
@@ -381,11 +381,7 @@
             
               <div class="markdown-body">
                 
-                <blockquote>
-<p>核对日期：2026-09-17。代码根目录：<code>E:\MoreProject\learn_foresign_engine</code>。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。</p>
-<p>所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件。</p>
-</blockquote>
-<h2 id="1-先把三个容易讲错的概念纠正"><a href="#1-先把三个容易讲错的概念纠正" class="headerlink" title="1. 先把三个容易讲错的概念纠正"></a>1. 先把三个容易讲错的概念纠正</h2><h3 id="1-1-executionLocation-不是一个万能调度开关"><a href="#1-1-executionLocation-不是一个万能调度开关" class="headerlink" title="1.1 executionLocation 不是一个万能调度开关"></a>1.1 executionLocation 不是一个万能调度开关</h3><p>原来的概括是“节点标 local，云端自动下发到 IDE”。当前源码更具体：</p>
+                <h2 id="1-先把三个容易讲错的概念纠正"><a href="#1-先把三个容易讲错的概念纠正" class="headerlink" title="1. 先把三个容易讲错的概念纠正"></a>1. 先把三个容易讲错的概念纠正</h2><h3 id="1-1-executionLocation-不是一个万能调度开关"><a href="#1-1-executionLocation-不是一个万能调度开关" class="headerlink" title="1.1 executionLocation 不是一个万能调度开关"></a>1.1 executionLocation 不是一个万能调度开关</h3><p>原来的概括是“节点标 local，云端自动下发到 IDE”。当前源码更具体：</p>
 <ul>
 <li>引擎创建 <code>human_first</code> 节点执行时，可先停在 waiting_human_input，不立即启动 Agent。</li>
 <li>初始 NodeExecution 的 executionLocation 可仍为 cloud。</li>
