@@ -1063,15 +1063,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#总评" class="toc-link tocbot-link">总评</a></li><li class="toc-list-item"><a href="#错误清单（复盘专用）" class="toc-link tocbot-link">错误清单（复盘专用）</a></li><li class="toc-list-item"><a href="#逐题实录" class="toc-link tocbot-link">逐题实录</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Q1-介绍实习期间负责的项目" class="toc-link tocbot-link">Q1 介绍实习期间负责的项目</a></li><li class="toc-list-item"><a href="#Q2-项目-2-是自学完成的吗（跳过）" class="toc-link tocbot-link">Q2 项目 2 是自学完成的吗（跳过）</a></li><li class="toc-list-item"><a href="#Q3-Plan-Agent-和-Execute-Agent-分别如何处理任务" class="toc-link tocbot-link">Q3 Plan Agent 和 Execute Agent 分别如何处理任务</a></li><li class="toc-list-item"><a href="#Q4-任务处理中的步骤是如何生成的-⚠️（循环回答）" class="toc-link tocbot-link">Q4 任务处理中的步骤是如何生成的 ⚠️（循环回答）</a></li><li class="toc-list-item"><a href="#Q5-无论什么任务都先经过-Plan-Execute-吗" class="toc-link tocbot-link">Q5 无论什么任务都先经过 Plan-Execute 吗</a></li><li class="toc-list-item"><a href="#Q6-简单任务直接-ReAct-是否更高效（并入-Q5）" class="toc-link tocbot-link">Q6 简单任务直接 ReAct 是否更高效（并入 Q5）</a></li><li class="toc-list-item"><a href="#Q7-两个-Agent-是串行执行的吗" class="toc-link tocbot-link">Q7 两个 Agent 是串行执行的吗</a></li><li class="toc-list-item"><a href="#Q8-MCP-主要解决什么问题" class="toc-link tocbot-link">Q8 MCP 主要解决什么问题</a></li><li class="toc-list-item"><a href="#Q9-MCP-的核心优点有哪些" class="toc-link tocbot-link">Q9 MCP 的核心优点有哪些</a></li><li class="toc-list-item"><a href="#Q10-模型被提示词诱导查敏感信息，系统如何处理" class="toc-link tocbot-link">Q10 模型被提示词诱导查敏感信息，系统如何处理</a></li><li class="toc-list-item"><a href="#Q11-所以系统是有鉴权机制的吗（并入-Q10）" class="toc-link tocbot-link">Q11 所以系统是有鉴权机制的吗（并入 Q10）</a></li><li class="toc-list-item"><a href="#Q12-特别敏感信息是否需要人工确认（并入-Q10）" class="toc-link tocbot-link">Q12 特别敏感信息是否需要人工确认（并入 Q10）</a></li><li class="toc-list-item"><a href="#Q13-知识召回准确率-85-是如何得到的-⚠️（口径错配）" class="toc-link tocbot-link">Q13 知识召回准确率 85% 是如何得到的 ⚠️（口径错配）</a></li><li class="toc-list-item"><a href="#Q14-文档检索分数是如何计算的-⚠️（循环回答，未答出）" class="toc-link tocbot-link">Q14 文档检索分数是如何计算的 ⚠️（循环回答，未答出）</a></li><li class="toc-list-item"><a href="#Q15-检索分数是向量和关键词的加权结果吗（复测）" class="toc-link tocbot-link">Q15 检索分数是向量和关键词的加权结果吗（复测）</a></li><li class="toc-list-item"><a href="#Q16-项目-3-三层知识架构分别存什么（跳过）" class="toc-link tocbot-link">Q16 项目 3 三层知识架构分别存什么（跳过）</a></li><li class="toc-list-item"><a href="#Q17-为什么要把知识库分成三层-⚠️（不会，已教框架）" class="toc-link tocbot-link">Q17 为什么要把知识库分成三层 ⚠️（不会，已教框架）</a></li><li class="toc-list-item"><a href="#Q18-是否依赖大模型把口语化表达重写成规范术语" class="toc-link tocbot-link">Q18 是否依赖大模型把口语化表达重写成规范术语</a></li><li class="toc-list-item"><a href="#Q19-Query-重写过程中会不会出现错误" class="toc-link tocbot-link">Q19 Query 重写过程中会不会出现错误</a></li><li class="toc-list-item"><a href="#Q20-用较大的模型还是较小的模型" class="toc-link tocbot-link">Q20 用较大的模型还是较小的模型</a></li><li class="toc-list-item"><a href="#Q21-统计过这类问题消耗多少-Token-吗-⚠️（孤数）" class="toc-link tocbot-link">Q21 统计过这类问题消耗多少 Token 吗 ⚠️（孤数）</a></li><li class="toc-list-item"><a href="#Q22-项目-3-是否主要一个模型结合领域知识完成翻译-⚠️（答”忘记了”）" class="toc-link tocbot-link">Q22 项目 3 是否主要一个模型结合领域知识完成翻译 ⚠️（答”忘记了”）</a></li><li class="toc-list-item"><a href="#项目段小结" class="toc-link tocbot-link">项目段小结</a></li><li class="toc-list-item"><a href="#Q23-Java-中-HashMap-的底层原理-⚠️" class="toc-link tocbot-link">Q23 Java 中 HashMap 的底层原理 ⚠️</a></li><li class="toc-list-item"><a href="#Q24-HashMap-的扩容流程-⚠️" class="toc-link tocbot-link">Q24 HashMap 的扩容流程 ⚠️</a></li><li class="toc-list-item"><a href="#Q25-扩容为两倍后旧元素的新位置如何确定-⚠️（机制刚教，表述散架）" class="toc-link tocbot-link">Q25 扩容为两倍后旧元素的新位置如何确定 ⚠️（机制刚教，表述散架）</a></li><li class="toc-list-item"><a href="#Q26-HashMap-存在哪些问题-⚠️（不会，已教三类）" class="toc-link tocbot-link">Q26 HashMap 存在哪些问题 ⚠️（不会，已教三类）</a></li><li class="toc-list-item"><a href="#Q27-ConcurrentHashMap-如何保证线程安全-⚠️" class="toc-link tocbot-link">Q27 ConcurrentHashMap 如何保证线程安全 ⚠️</a></li><li class="toc-list-item"><a href="#Q28-之前使用过-Java-线程池吗-✅" class="toc-link tocbot-link">Q28 之前使用过 Java 线程池吗 ✅</a></li><li class="toc-list-item"><a href="#Q29-ThreadPoolExecutor-的核心参数-⚠️" class="toc-link tocbot-link">Q29 ThreadPoolExecutor 的核心参数 ⚠️</a></li><li class="toc-list-item"><a href="#Q30-线程池的拒绝策略-⚠️（只记得两个）" class="toc-link tocbot-link">Q30 线程池的拒绝策略 ⚠️（只记得两个）</a></li><li class="toc-list-item"><a href="#Q31-什么情况下会发生-OOM-⚠️（泛指答分类题）" class="toc-link tocbot-link">Q31 什么情况下会发生 OOM ⚠️（泛指答分类题）</a></li><li class="toc-list-item"><a href="#Q32-线程池如何避免-OOM（并入-Q31）" class="toc-link tocbot-link">Q32 线程池如何避免 OOM（并入 Q31）</a></li><li class="toc-list-item"><a href="#Q33-了解-ThreadLocal-吗-⚠️⚠️（概念完全反向，本轮最严重）" class="toc-link tocbot-link">Q33 了解 ThreadLocal 吗 ⚠️⚠️（概念完全反向，本轮最严重）</a></li><li class="toc-list-item"><a href="#Q34-ThreadLocalMap-的-key-是弱引用还是强引用-⚠️（四种引用概念缺失，已补）" class="toc-link tocbot-link">Q34 ThreadLocalMap 的 key 是弱引用还是强引用 ⚠️（四种引用概念缺失，已补）</a></li><li class="toc-list-item"><a href="#Q35-为什么要使用弱引用-⚠️（推理对了第一步）" class="toc-link tocbot-link">Q35 为什么要使用弱引用 ⚠️（推理对了第一步）</a></li><li class="toc-list-item"><a href="#Java-段小结" class="toc-link tocbot-link">Java 段小结</a></li></ol></li><li class="toc-list-item"><a href="#待续（下轮从这里开始）" class="toc-link tocbot-link">待续（下轮从这里开始）</a></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -1199,110 +1211,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

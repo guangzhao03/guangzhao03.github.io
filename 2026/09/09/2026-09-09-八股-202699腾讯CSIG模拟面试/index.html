@@ -859,15 +859,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#总评" class="toc-link tocbot-link">总评</a></li><li class="toc-list-item"><a href="#错误清单（复盘专用）" class="toc-link tocbot-link">错误清单（复盘专用）</a></li><li class="toc-list-item"><a href="#逐题实录" class="toc-link tocbot-link">逐题实录</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Q1-自我介绍" class="toc-link tocbot-link">Q1 自我介绍</a></li><li class="toc-list-item"><a href="#Q2-上下文压缩算法实现" class="toc-link tocbot-link">Q2 上下文压缩算法实现</a></li><li class="toc-list-item"><a href="#Q3-System-prompt-参与压缩吗" class="toc-link tocbot-link">Q3 System prompt 参与压缩吗</a></li><li class="toc-list-item"><a href="#Q4-Skill-和-MCP-的区别" class="toc-link tocbot-link">Q4 Skill 和 MCP 的区别</a></li><li class="toc-list-item"><a href="#Q5-MCP-适合-不适合的场景" class="toc-link tocbot-link">Q5 MCP 适合&amp;#x2F;不适合的场景</a></li><li class="toc-list-item"><a href="#Q6-MCP-工作原理" class="toc-link tocbot-link">Q6 MCP 工作原理</a></li><li class="toc-list-item"><a href="#Q7-SSE-传输的完整数据流" class="toc-link tocbot-link">Q7 SSE 传输的完整数据流</a></li><li class="toc-list-item"><a href="#Q8-用-MCP-实现渐进式加载" class="toc-link tocbot-link">Q8 用 MCP 实现渐进式加载</a></li><li class="toc-list-item"><a href="#Q9-Skill-底层存储-天气查询完整流程" class="toc-link tocbot-link">Q9 Skill 底层存储 + 天气查询完整流程</a></li><li class="toc-list-item"><a href="#Q10-PDF-表格解析效果与原因" class="toc-link tocbot-link">Q10 PDF 表格解析效果与原因</a></li><li class="toc-list-item"><a href="#Q11-RAG-评测体系-自动生成问题注意事项" class="toc-link tocbot-link">Q11 RAG 评测体系 + 自动生成问题注意事项</a></li><li class="toc-list-item"><a href="#Q12-多跳问题" class="toc-link tocbot-link">Q12 多跳问题</a></li><li class="toc-list-item"><a href="#Q13-大表格-多表格查询如何提高准确率（未考，补课）" class="toc-link tocbot-link">Q13 大表格&amp;#x2F;多表格查询如何提高准确率（未考，补课）</a></li><li class="toc-list-item"><a href="#Q14-BM25-底层实现" class="toc-link tocbot-link">Q14 BM25 底层实现</a></li><li class="toc-list-item"><a href="#Q15-BM25-vs-TF-IDF（过关题）" class="toc-link tocbot-link">Q15 BM25 vs TF-IDF（过关题）</a></li><li class="toc-list-item"><a href="#Q16-Agent-运行慢如何提效" class="toc-link tocbot-link">Q16 Agent 运行慢如何提效</a></li><li class="toc-list-item"><a href="#Q17-模型推理加速（合并收尾）" class="toc-link tocbot-link">Q17 模型推理加速（合并收尾）</a></li><li class="toc-list-item"><a href="#Q18-Prompt-cache-原理" class="toc-link tocbot-link">Q18 Prompt cache 原理</a></li><li class="toc-list-item"><a href="#Q19-SFT-RLHF-PPO-DPO" class="toc-link tocbot-link">Q19 SFT &amp;#x2F; RLHF &amp;#x2F; PPO &amp;#x2F; DPO</a></li><li class="toc-list-item"><a href="#Q20-RL-训练震荡不达标怎么解决" class="toc-link tocbot-link">Q20 RL 训练震荡不达标怎么解决</a></li><li class="toc-list-item"><a href="#Q21-多个字符串的最大公共子串（未完成，待补）" class="toc-link tocbot-link">Q21 多个字符串的最大公共子串（未完成，待补）</a></li></ol></li><li class="toc-list-item"><a href="#下次复测清单" class="toc-link tocbot-link">下次复测清单</a></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -995,110 +1007,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

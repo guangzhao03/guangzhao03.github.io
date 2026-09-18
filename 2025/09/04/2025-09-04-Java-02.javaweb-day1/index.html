@@ -852,15 +852,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#前端知识基础" class="toc-link tocbot-link">前端知识基础</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Web标准" class="toc-link tocbot-link">Web标准</a></li><li class="toc-list-item"><a href="#HTML" class="toc-link tocbot-link">HTML</a></li><li class="toc-list-item"><a href="#CSS" class="toc-link tocbot-link">CSS</a></li></ol></li><li class="toc-list-item"><a href="#HTML快速入门" class="toc-link tocbot-link">HTML快速入门</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#标签特点" class="toc-link tocbot-link">标签特点</a></li></ol></li><li class="toc-list-item"><a href="#HTML常见样式和CSS标签" class="toc-link tocbot-link">HTML常见样式和CSS标签</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#颜色描述" class="toc-link tocbot-link">颜色描述</a></li><li class="toc-list-item"><a href="#CSS选择器" class="toc-link tocbot-link">CSS选择器</a></li></ol></li></ol></li><li class="toc-list-item"><a href="#" class="toc-link tocbot-link">属性选择器 元素名称[属性]{}元素名称[属性名&amp;#x3D;”值”]{} inpute[type]input[type&amp;#x3D;”text”] 选择页面上有type属性的标签选择页面上type属性为text的标签 后代选择器 元素1 元素2{} form input{..} 选择form标签内所有的input标签 如果三个选择器都存在，优先级为：id&amp;gt;类&amp;gt;元素选择器 去除超链接的下划线 style里面针对a设置text-decoration: none; 正文排版建议视频宽度和高度设置一个即可，另一个会等比例缩放 加粗显示 strong也可以 首行缩进：实体空格 &amp;amp;nbsp 标签 作用 属性&amp;#x2F;说明 &amp;#x2F; 加粗 strong具有强调语义 &amp;#x2F; 下划线 ins具有强调语义 &amp;#x2F; 倾斜 em具有强调语义 &amp;#x2F; 删除线 del具有强调语义 字符实体 属性&amp;#x2F;说明 &amp;amp;nbsp 空格 &amp;amp;lt &amp;lt; &amp;amp;gt &amp;gt; CSS:属性 line-height:行高 text-indent：首行缩进 正文布局整个网页居中显示 定义div标签包裹网页内容 定义width和magin-left&amp;#x2F;right 注意原来内容的比例，如果设置有则为父标签为基准 盒子模型</a></li><li class="toc-list-item"><a href="#Tlias智能学习辅助系统页面" class="toc-link tocbot-link">Tlias智能学习辅助系统页面</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#flex布局" class="toc-link tocbot-link">flex布局</a></li><li class="toc-list-item"><a href="#表单" class="toc-link tocbot-link">表单</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#label标签" class="toc-link tocbot-link">label标签</a></li></ol></li><li class="toc-list-item"><a href="#搜索表单区域" class="toc-link tocbot-link">搜索表单区域</a></li><li class="toc-list-item"><a href="#数据展示区域" class="toc-link tocbot-link">数据展示区域</a></li><li class="toc-list-item"><a href="#版权展示区域" class="toc-link tocbot-link">版权展示区域</a></li></ol></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -988,110 +1000,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

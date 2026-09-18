@@ -675,15 +675,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#Set集合" class="toc-link tocbot-link">Set集合</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#HashSet底层原理" class="toc-link tocbot-link">HashSet底层原理</a></li><li class="toc-list-item"><a href="#HashSet集合元素的去重操作" class="toc-link tocbot-link">HashSet集合元素的去重操作</a></li><li class="toc-list-item"><a href="#LinkedHashSet" class="toc-link tocbot-link">LinkedHashSet</a></li><li class="toc-list-item"><a href="#TreeSet" class="toc-link tocbot-link">TreeSet</a></li></ol></li><li class="toc-list-item"><a href="#Map集合" class="toc-link tocbot-link">Map集合</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Map集合特点" class="toc-link tocbot-link">Map集合特点</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Map集合的常用方法" class="toc-link tocbot-link">Map集合的常用方法</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Map集合的遍历方式" class="toc-link tocbot-link">Map集合的遍历方式</a></li></ol></li><li class="toc-list-item"><a href="#HashMap集合的底层原理" class="toc-link tocbot-link">HashMap集合的底层原理</a></li><li class="toc-list-item"><a href="#LinkedHashMap底层原理" class="toc-link tocbot-link">LinkedHashMap底层原理</a></li></ol></li></ol></li><li class="toc-list-item"><a href="#Stream流" class="toc-link tocbot-link">Stream流</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Stream流获取方法" class="toc-link tocbot-link">Stream流获取方法</a></li><li class="toc-list-item"><a href="#Stream流中间方法" class="toc-link tocbot-link">Stream流中间方法</a></li><li class="toc-list-item"><a href="#Stream流终结方法" class="toc-link tocbot-link">Stream流终结方法</a></li><li class="toc-list-item"><a href="#收集Stream流" class="toc-link tocbot-link">收集Stream流</a></li></ol></li><li class="toc-list-item"><a href="#可变参数" class="toc-link tocbot-link">可变参数</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#可变参数的特点和好处" class="toc-link tocbot-link">可变参数的特点和好处</a></li></ol></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -811,110 +823,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

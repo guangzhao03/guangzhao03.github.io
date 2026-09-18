@@ -856,15 +856,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#1-先纠正原来的概括" class="toc-link tocbot-link">1. 先纠正原来的概括</a></li><li class="toc-list-item"><a href="#2-用一个任务串起来" class="toc-link tocbot-link">2. 用一个任务串起来</a></li><li class="toc-list-item"><a href="#3-建议打开这些源码" class="toc-link tocbot-link">3. 建议打开这些源码</a></li><li class="toc-list-item"><a href="#4-Gateway：认证不等于授权" class="toc-link tocbot-link">4. Gateway：认证不等于授权</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#4-1-源码逐行注释：拒绝客户端伪造内部上下文" class="toc-link tocbot-link">4.1 源码逐行注释：拒绝客户端伪造内部上下文</a></li></ol></li><li class="toc-list-item"><a href="#5-SessionRunService：一轮聊天其实是状态机" class="toc-link tocbot-link">5. SessionRunService：一轮聊天其实是状态机</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#5-1-关键顺序" class="toc-link tocbot-link">5.1 关键顺序</a></li><li class="toc-list-item"><a href="#5-2-这几个状态不能混为一谈" class="toc-link tocbot-link">5.2 这几个状态不能混为一谈</a></li><li class="toc-list-item"><a href="#5-3-必须记住的-ID" class="toc-link tocbot-link">5.3 必须记住的 ID</a></li></ol></li><li class="toc-list-item"><a href="#6-找到正确沙箱，再建立-HTTP-SSE" class="toc-link tocbot-link">6. 找到正确沙箱，再建立 HTTP&amp;#x2F;SSE</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#6-1-源码逐行注释：endpoint-解析" class="toc-link tocbot-link">6.1 源码逐行注释：endpoint 解析</a></li><li class="toc-list-item"><a href="#6-2-创建与执行时序" class="toc-link tocbot-link">6.2 创建与执行时序</a></li></ol></li><li class="toc-list-item"><a href="#7-LLM-Proxy：真实-Key-代持，而非“没有凭证”" class="toc-link tocbot-link">7. LLM Proxy：真实 Key 代持，而非“没有凭证”</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#7-1-源码逐行注释：签发-opaque-token" class="toc-link tocbot-link">7.1 源码逐行注释：签发 opaque token</a></li><li class="toc-list-item"><a href="#7-2-源码逐行注释：避免吊销后被续期复活" class="toc-link tocbot-link">7.2 源码逐行注释：避免吊销后被续期复活</a></li></ol></li><li class="toc-list-item"><a href="#8-两层事件恢复，解决两类断线" class="toc-link tocbot-link">8. 两层事件恢复，解决两类断线</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#8-1-第一层：沙箱到-Backend" class="toc-link tocbot-link">8.1 第一层：沙箱到 Backend</a></li><li class="toc-list-item"><a href="#8-2-第二层：Backend-到浏览器" class="toc-link tocbot-link">8.2 第二层：Backend 到浏览器</a></li><li class="toc-list-item"><a href="#8-3-源码逐行注释：Redis-追加前的-owner-与重复检查" class="toc-link tocbot-link">8.3 源码逐行注释：Redis 追加前的 owner 与重复检查</a></li></ol></li><li class="toc-list-item"><a href="#9-Redis-有三个职责，不要只说“用了-Redis”" class="toc-link tocbot-link">9. Redis 有三个职责，不要只说“用了 Redis”</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#9-1-源码逐行注释：跨实例适配器" class="toc-link tocbot-link">9.1 源码逐行注释：跨实例适配器</a></li></ol></li><li class="toc-list-item"><a href="#10-失败场景怎么解释" class="toc-link tocbot-link">10. 失败场景怎么解释</a></li><li class="toc-list-item"><a href="#11-面试表达模板" class="toc-link tocbot-link">11. 面试表达模板</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#一分钟版" class="toc-link tocbot-link">一分钟版</a></li><li class="toc-list-item"><a href="#追问：你的核心工程难点是什么？" class="toc-link tocbot-link">追问：你的核心工程难点是什么？</a></li><li class="toc-list-item"><a href="#追问：是不是-exactly-once？" class="toc-link tocbot-link">追问：是不是 exactly-once？</a></li><li class="toc-list-item"><a href="#追问：有哪些指标能证明效果？" class="toc-link tocbot-link">追问：有哪些指标能证明效果？</a></li></ol></li><li class="toc-list-item"><a href="#12-复习验收" class="toc-link tocbot-link">12. 复习验收</a></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -992,110 +1004,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

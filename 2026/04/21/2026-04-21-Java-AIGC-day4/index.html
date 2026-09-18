@@ -797,15 +797,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#SpringAI入门" class="toc-link tocbot-link">SpringAI入门</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#ChatClient" class="toc-link tocbot-link">ChatClient</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#同步调用" class="toc-link tocbot-link">同步调用</a></li><li class="toc-list-item"><a href="#流式调用" class="toc-link tocbot-link">流式调用</a></li></ol></li><li class="toc-list-item"><a href="#System设定" class="toc-link tocbot-link">System设定</a></li><li class="toc-list-item"><a href="#日志功能" class="toc-link tocbot-link">日志功能</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Advisor" class="toc-link tocbot-link">Advisor</a></li></ol></li><li class="toc-list-item"><a href="#对接前端" class="toc-link tocbot-link">对接前端</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#解决CORS问题" class="toc-link tocbot-link">解决CORS问题</a></li></ol></li><li class="toc-list-item"><a href="#回话记忆功能" class="toc-link tocbot-link">回话记忆功能</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#ChatMemory" class="toc-link tocbot-link">ChatMemory</a></li><li class="toc-list-item"><a href="#添加会话记忆Advisor" class="toc-link tocbot-link">添加会话记忆Advisor</a></li></ol></li><li class="toc-list-item"><a href="#会话历史" class="toc-link tocbot-link">会话历史</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#管理会话id" class="toc-link tocbot-link">管理会话id</a></li><li class="toc-list-item"><a href="#保存会话ID" class="toc-link tocbot-link">保存会话ID</a></li><li class="toc-list-item"><a href="#查询会话历史" class="toc-link tocbot-link">查询会话历史</a></li></ol></li><li class="toc-list-item"><a href="#持久化记忆" class="toc-link tocbot-link">持久化记忆</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#mysql持久化" class="toc-link tocbot-link">mysql持久化</a></li></ol></li><li class="toc-list-item"><a href="#持久化对话历史" class="toc-link tocbot-link">持久化对话历史</a></li></ol></li><li class="toc-list-item"><a href="#Function-Calling（智能客服）" class="toc-link tocbot-link">Function Calling（智能客服）</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#定义Function" class="toc-link tocbot-link">定义Function</a></li><li class="toc-list-item"><a href="#实现定义Function" class="toc-link tocbot-link">实现定义Function</a></li></ol></li></ol></li><li class="toc-list-item"><a href="#Rag" class="toc-link tocbot-link">Rag</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#向量数据库" class="toc-link tocbot-link">向量数据库</a></li><li class="toc-list-item"><a href="#文件读取和转换" class="toc-link tocbot-link">文件读取和转换</a></li><li class="toc-list-item"><a href="#总结" class="toc-link tocbot-link">总结</a></li></ol></li><li class="toc-list-item"><a href="#目标" class="toc-link tocbot-link">目标</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#PDF上传下载、向量化" class="toc-link tocbot-link">PDF上传下载、向量化</a></li><li class="toc-list-item"><a href="#PDF文件管理" class="toc-link tocbot-link">PDF文件管理</a></li><li class="toc-list-item"><a href="#配置ChatClient" class="toc-link tocbot-link">配置ChatClient</a></li></ol></li><li class="toc-list-item"><a href="#多模态" class="toc-link tocbot-link">多模态</a></li><li class="toc-list-item"><a href="#Spring-AI-MCP" class="toc-link tocbot-link">Spring AI MCP</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#MCP-Server" class="toc-link tocbot-link">MCP Server</a></li><li class="toc-list-item"><a href="#MCP-Client实战" class="toc-link tocbot-link">MCP Client实战</a></li><li class="toc-list-item"><a href="#MCP-Server实战" class="toc-link tocbot-link">MCP Server实战</a></li></ol></li><li class="toc-list-item"><a href="#拓展" class="toc-link tocbot-link">拓展</a></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -933,110 +945,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

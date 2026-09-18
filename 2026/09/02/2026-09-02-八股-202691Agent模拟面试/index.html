@@ -714,15 +714,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#一、Agent-基础" class="toc-link tocbot-link">一、Agent 基础</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Q1-什么是-Agent-与普通-LLM-调用的区别" class="toc-link tocbot-link">Q1 什么是 Agent?与普通 LLM 调用的区别</a></li><li class="toc-list-item"><a href="#Q1-2-什么情况下不用-Agent-用-workflow" class="toc-link tocbot-link">Q1.2 什么情况下不用 Agent,用 workflow</a></li><li class="toc-list-item"><a href="#Q2-Agent-Loop-基本流程" class="toc-link tocbot-link">Q2 Agent Loop 基本流程</a></li><li class="toc-list-item"><a href="#Q2-2-max-steps-用尽还没完成-怎么兜底-⭐-答得好-记这个思路" class="toc-link tocbot-link">Q2.2 max_steps 用尽还没完成,怎么兜底 ⭐(答得好,记这个思路)</a></li><li class="toc-list-item"><a href="#Q3-ReAct-vs-CoT" class="toc-link tocbot-link">Q3 ReAct vs CoT</a></li><li class="toc-list-item"><a href="#Q4-Plan-and-Execute-vs-ReAct" class="toc-link tocbot-link">Q4 Plan-and-Execute vs ReAct</a></li></ol></li><li class="toc-list-item"><a href="#二、Tool-Use-Function-Calling" class="toc-link tocbot-link">二、Tool Use &amp;#x2F; Function Calling</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Q5-Function-Calling-底层原理-⭐-答得好" class="toc-link tocbot-link">Q5 Function Calling 底层原理 ⭐(答得好)</a></li><li class="toc-list-item"><a href="#Q5-2-工具太多-上百个-怎么办" class="toc-link tocbot-link">Q5.2 工具太多(上百个)怎么办</a></li><li class="toc-list-item"><a href="#Q7-工具调用失败怎么处理" class="toc-link tocbot-link">Q7 工具调用失败怎么处理</a></li><li class="toc-list-item"><a href="#Q8-工具-description-设计" class="toc-link tocbot-link">Q8 工具 description 设计</a></li></ol></li><li class="toc-list-item"><a href="#三、Memory-与上下文" class="toc-link tocbot-link">三、Memory 与上下文</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Q9-短期记忆-vs-长期记忆" class="toc-link tocbot-link">Q9 短期记忆 vs 长期记忆</a></li><li class="toc-list-item"><a href="#Q10-上下文压缩策略-⭐-答得好-逐级降级" class="toc-link tocbot-link">Q10 上下文压缩策略 ⭐(答得好,逐级降级)</a></li><li class="toc-list-item"><a href="#Q11-多轮长任务遗忘关键信息-根上解决" class="toc-link tocbot-link">Q11 多轮长任务遗忘关键信息,根上解决</a></li></ol></li><li class="toc-list-item"><a href="#四、Multi-Agent-短板-重点补" class="toc-link tocbot-link">四、Multi-Agent(短板,重点补)</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Q12-什么时候用多-Agent" class="toc-link tocbot-link">Q12 什么时候用多 Agent</a></li><li class="toc-list-item"><a href="#Q13-多-Agent-通信与协调-没答上-背下来" class="toc-link tocbot-link">Q13 多 Agent 通信与协调(没答上,背下来)</a></li></ol></li><li class="toc-list-item"><a href="#五、工程与评估-短板-重点补" class="toc-link tocbot-link">五、工程与评估(短板,重点补)</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Q14-Agent-死循环-跑偏-不稳定-怎么调试" class="toc-link tocbot-link">Q14 Agent 死循环&amp;#x2F;跑偏&amp;#x2F;不稳定,怎么调试</a></li><li class="toc-list-item"><a href="#Q15-怎么评估-Agent-⚠️-必考-优先背" class="toc-link tocbot-link">Q15 怎么评估 Agent ⚠️ 必考,优先背</a></li><li class="toc-list-item"><a href="#Q16-延迟和成本优化" class="toc-link tocbot-link">Q16 延迟和成本优化</a></li></ol></li><li class="toc-list-item"><a href="#六、开放设计题" class="toc-link tocbot-link">六、开放设计题</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Q17-订机票-酒店-Agent-⭐-答得好" class="toc-link tocbot-link">Q17 订机票+酒店 Agent ⭐(答得好)</a></li><li class="toc-list-item"><a href="#Q18-从零搭-Coding-Agent" class="toc-link tocbot-link">Q18 从零搭 Coding Agent</a></li></ol></li><li class="toc-list-item"><a href="#📌-优先补的三件事" class="toc-link tocbot-link">📌 优先补的三件事</a></li><li class="toc-list-item"><a href="#📌-高频一句话弹药" class="toc-link tocbot-link">📌 高频一句话弹药</a></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -850,110 +862,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

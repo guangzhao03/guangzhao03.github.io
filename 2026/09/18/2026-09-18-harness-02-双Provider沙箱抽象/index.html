@@ -793,15 +793,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#1-面试前先修正三个事实" class="toc-link tocbot-link">1. 面试前先修正三个事实</a></li><li class="toc-list-item"><a href="#2-核心抽象不是两个-SDK，而是三种身份" class="toc-link tocbot-link">2. 核心抽象不是两个 SDK，而是三种身份</a></li><li class="toc-list-item"><a href="#3-阅读地图" class="toc-link tocbot-link">3. 阅读地图</a></li><li class="toc-list-item"><a href="#4-Registry、Strategy、Adapter-分别解决什么" class="toc-link tocbot-link">4. Registry、Strategy、Adapter 分别解决什么</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#4-1-源码逐行注释：注册表查询" class="toc-link tocbot-link">4.1 源码逐行注释：注册表查询</a></li><li class="toc-list-item"><a href="#4-2-源码逐行注释：装配决定了“当前用什么存储”" class="toc-link tocbot-link">4.2 源码逐行注释：装配决定了“当前用什么存储”</a></li></ol></li><li class="toc-list-item"><a href="#5-为什么叫“窄接口”" class="toc-link tocbot-link">5. 为什么叫“窄接口”</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#5-1-源码逐行注释：文件接口" class="toc-link tocbot-link">5.1 源码逐行注释：文件接口</a></li><li class="toc-list-item"><a href="#5-2-源码逐行注释：命令接口" class="toc-link tocbot-link">5.2 源码逐行注释：命令接口</a></li><li class="toc-list-item"><a href="#5-3-Adapter-的工程含量在语义，而不是改名" class="toc-link tocbot-link">5.3 Adapter 的工程含量在语义，而不是改名</a></li></ol></li><li class="toc-list-item"><a href="#6-Desktop-如何决定-provider" class="toc-link tocbot-link">6. Desktop 如何决定 provider</a></li><li class="toc-list-item"><a href="#7-存储：hostPath-与-CFS-真正区别在哪" class="toc-link tocbot-link">7. 存储：hostPath 与 CFS 真正区别在哪</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#7-1-源码逐行注释：OpenSandbox-工作区挂载" class="toc-link tocbot-link">7.1 源码逐行注释：OpenSandbox 工作区挂载</a></li><li class="toc-list-item"><a href="#7-2-腾讯-CFS-的子路径隔离" class="toc-link tocbot-link">7.2 腾讯 CFS 的子路径隔离</a></li></ol></li><li class="toc-list-item"><a href="#8-pause-resume：先原地恢复，再考虑重建" class="toc-link tocbot-link">8. pause&amp;#x2F;resume：先原地恢复，再考虑重建</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#8-1-源码逐行注释：腾讯-pause-的能力分支" class="toc-link tocbot-link">8.1 源码逐行注释：腾讯 pause 的能力分支</a></li><li class="toc-list-item"><a href="#8-2-业务状态与云状态" class="toc-link tocbot-link">8.2 业务状态与云状态</a></li></ol></li><li class="toc-list-item"><a href="#9-Cold-Resume-完整拆解" class="toc-link tocbot-link">9. Cold Resume 完整拆解</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#9-1-先尝试领取重建权" class="toc-link tocbot-link">9.1 先尝试领取重建权</a></li><li class="toc-list-item"><a href="#9-2-复用工作区、更换计算实例" class="toc-link tocbot-link">9.2 复用工作区、更换计算实例</a></li><li class="toc-list-item"><a href="#9-3-能保留什么" class="toc-link tocbot-link">9.3 能保留什么</a></li></ol></li><li class="toc-list-item"><a href="#10-创建失败补偿与恢复失败补偿不能盲目复用" class="toc-link tocbot-link">10. 创建失败补偿与恢复失败补偿不能盲目复用</a></li><li class="toc-list-item"><a href="#11-抽象的裂缝，要坦诚而不是回避" class="toc-link tocbot-link">11. 抽象的裂缝，要坦诚而不是回避</a></li><li class="toc-list-item"><a href="#12-面试表达与追问" class="toc-link tocbot-link">12. 面试表达与追问</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#一分钟版" class="toc-link tocbot-link">一分钟版</a></li><li class="toc-list-item"><a href="#问：为什么不写两个独立业务服务？" class="toc-link tocbot-link">问：为什么不写两个独立业务服务？</a></li><li class="toc-list-item"><a href="#问：为什么不自动从腾讯切到-OpenSandbox？" class="toc-link tocbot-link">问：为什么不自动从腾讯切到 OpenSandbox？</a></li><li class="toc-list-item"><a href="#问：资源规格为什么映射模板？" class="toc-link tocbot-link">问：资源规格为什么映射模板？</a></li><li class="toc-list-item"><a href="#问：抽象有没有过度设计？" class="toc-link tocbot-link">问：抽象有没有过度设计？</a></li></ol></li><li class="toc-list-item"><a href="#13-自测与继续阅读" class="toc-link tocbot-link">13. 自测与继续阅读</a></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -929,110 +941,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

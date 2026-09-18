@@ -719,15 +719,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#代码块" class="toc-link tocbot-link">代码块</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#静态代码块" class="toc-link tocbot-link">静态代码块</a></li><li class="toc-list-item"><a href="#实例代码块" class="toc-link tocbot-link">实例代码块</a></li></ol></li><li class="toc-list-item"><a href="#内部类" class="toc-link tocbot-link">内部类</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#成员内部类" class="toc-link tocbot-link">成员内部类</a></li><li class="toc-list-item"><a href="#静态内部类" class="toc-link tocbot-link">静态内部类</a></li><li class="toc-list-item"><a href="#局部内部类" class="toc-link tocbot-link">局部内部类</a></li><li class="toc-list-item"><a href="#匿名内部类" class="toc-link tocbot-link">匿名内部类</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#常见使用场景" class="toc-link tocbot-link">常见使用场景</a></li><li class="toc-list-item"><a href="#应用场景" class="toc-link tocbot-link">应用场景</a></li></ol></li><li class="toc-list-item"><a href="#函数式编程" class="toc-link tocbot-link">函数式编程</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Lambda表达式" class="toc-link tocbot-link">Lambda表达式</a></li><li class="toc-list-item"><a href="#Lambda表达式的省略规则" class="toc-link tocbot-link">Lambda表达式的省略规则</a></li><li class="toc-list-item"><a href="#方法引用" class="toc-link tocbot-link">方法引用</a></li><li class="toc-list-item"><a href="#静态方法引用" class="toc-link tocbot-link">静态方法引用</a></li><li class="toc-list-item"><a href="#实例方法引用" class="toc-link tocbot-link">实例方法引用</a></li><li class="toc-list-item"><a href="#特定类型方法引用" class="toc-link tocbot-link">特定类型方法引用</a></li><li class="toc-list-item"><a href="#构造器方法引用" class="toc-link tocbot-link">构造器方法引用</a></li></ol></li><li class="toc-list-item"><a href="#常用API" class="toc-link tocbot-link">常用API</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#String" class="toc-link tocbot-link">String</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#String创建字符串对象的方式" class="toc-link tocbot-link">String创建字符串对象的方式</a></li></ol></li></ol></li><li class="toc-list-item"><a href="#ArrayList" class="toc-link tocbot-link">ArrayList</a></li><li class="toc-list-item"><a href="#GUI编程" class="toc-link tocbot-link">GUI编程</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#Java的GUI编程包" class="toc-link tocbot-link">Java的GUI编程包</a></li><li class="toc-list-item"><a href="#常见的布局管理器" class="toc-link tocbot-link">常见的布局管理器</a></li><li class="toc-list-item"><a href="#事件处理" class="toc-link tocbot-link">事件处理</a></li><li class="toc-list-item"><a href="#事件的三种写法" class="toc-link tocbot-link">事件的三种写法</a></li></ol></li></ol></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -855,110 +867,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

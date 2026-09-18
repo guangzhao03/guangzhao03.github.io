@@ -399,7 +399,7 @@
 <p>npm Node Package Manager</p>
 <p>npm install xxx   </p>
 <p>类似于maven的功能</p>
-<p>npm create <a href="mailto:&#118;&#x75;&#x65;&#64;&#x33;&#46;&#x33;&#46;&#x34;">&#118;&#x75;&#x65;&#64;&#x33;&#46;&#x33;&#46;&#x34;</a>    创建项目工程</p>
+<p>npm create <a href="mailto:&#x76;&#117;&#x65;&#64;&#x33;&#46;&#51;&#46;&#52;">&#x76;&#117;&#x65;&#64;&#x33;&#46;&#51;&#46;&#52;</a>    创建项目工程</p>
 <p>cd    进入到工程目录</p>
 <p>npm install  安装依赖</p>
 <p>npm run dev 启动Vue项目  或者vscode找到npm脚本dev vite启动即可</p>
@@ -422,7 +422,7 @@
 <li>组件：组成网页的部件，如超链接、按钮、图片、表格、表单、分页条等等</li>
 <li>官网：<a target="_blank" rel="noopener" href="https://element-plus.org/zh-CN/#/zh-CN">https://element-plus.org/zh-CN/#/zh-CN</a></li>
 </ul>
-<p>npm install <a href="mailto:&#101;&#108;&#101;&#109;&#x65;&#x6e;&#x74;&#x2d;&#112;&#108;&#117;&#115;&#x40;&#x33;&#x2e;&#x34;&#46;&#52;">&#101;&#108;&#101;&#109;&#x65;&#x6e;&#x74;&#x2d;&#112;&#108;&#117;&#115;&#x40;&#x33;&#x2e;&#x34;&#46;&#52;</a> –sava</p>
+<p>npm install <a href="mailto:&#x65;&#108;&#x65;&#109;&#101;&#x6e;&#x74;&#45;&#x70;&#108;&#x75;&#115;&#64;&#x33;&#x2e;&#52;&#x2e;&#x34;">&#x65;&#108;&#x65;&#109;&#101;&#x6e;&#x74;&#45;&#x70;&#108;&#x75;&#115;&#64;&#x33;&#x2e;&#52;&#x2e;&#x34;</a> –sava</p>
 <p>–save会保存在package.json里面  如果移植的时候npm install 会自动下载这个包，如果没有–save 那么只在node_modules里面 不会npm install 自动下载包</p>
 
                 
@@ -553,15 +553,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#Vue工程化" class="toc-link tocbot-link">Vue工程化</a></li><li class="toc-list-item"><a href="#ElementPlus" class="toc-link tocbot-link">ElementPlus</a></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -689,110 +701,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

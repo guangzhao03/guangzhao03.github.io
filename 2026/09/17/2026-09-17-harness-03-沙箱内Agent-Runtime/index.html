@@ -735,15 +735,27 @@
     <div class="side-col d-none d-lg-block col-lg-2">
       
   <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
+    
+
+<div id="toc" style="visibility: visible">
   <p class="toc-header">
     <i class="iconfont icon-list"></i>
     <span>目录</span>
   </p>
-  <div class="toc-body" id="toc-body"></div>
+  <div class="toc-body" id="toc-body">
+    <ol class="tocbot-list toc-static-list"><li class="toc-list-item"><a href="#1-先理解：到底是谁在做什么" class="toc-link tocbot-link">1. 先理解：到底是谁在做什么</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#1-1-三种-Session，绝对不能混用" class="toc-link tocbot-link">1.1 三种 Session，绝对不能混用</a></li></ol></li><li class="toc-list-item"><a href="#2-代码导航与推荐阅读顺序" class="toc-link tocbot-link">2. 代码导航与推荐阅读顺序</a></li><li class="toc-list-item"><a href="#3-为什么先创建会话，再订阅，最后才执行" class="toc-link tocbot-link">3. 为什么先创建会话，再订阅，最后才执行</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#3-1-源码逐行注释：绑定订阅者" class="toc-link tocbot-link">3.1 源码逐行注释：绑定订阅者</a></li></ol></li><li class="toc-list-item"><a href="#4-query-并不是一次普通聊天-API" class="toc-link tocbot-link">4. query 并不是一次普通聊天 API</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#4-1-源码逐行注释：复用-SDK-历史" class="toc-link tocbot-link">4.1 源码逐行注释：复用 SDK 历史</a></li><li class="toc-list-item"><a href="#4-2-SDK-消息如何变为平台事件" class="toc-link tocbot-link">4.2 SDK 消息如何变为平台事件</a></li></ol></li><li class="toc-list-item"><a href="#5-SSE-ACK：可靠到哪一层" class="toc-link tocbot-link">5. SSE + ACK：可靠到哪一层</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#5-1-先记住这个例子" class="toc-link tocbot-link">5.1 先记住这个例子</a></li><li class="toc-list-item"><a href="#5-2-源码逐行注释：缓存与追加" class="toc-link tocbot-link">5.2 源码逐行注释：缓存与追加</a></li><li class="toc-list-item"><a href="#5-3-源码逐行注释：累计-ACK-和内存压缩" class="toc-link tocbot-link">5.3 源码逐行注释：累计 ACK 和内存压缩</a></li><li class="toc-list-item"><a href="#5-4-不能承诺-exactly-once" class="toc-link tocbot-link">5.4 不能承诺 exactly-once</a></li></ol></li><li class="toc-list-item"><a href="#6-人工回答怎样恢复-SDK" class="toc-link tocbot-link">6. 人工回答怎样恢复 SDK</a></li><li class="toc-list-item"><a href="#7-Write-Policy：不要把提示词当权限系统" class="toc-link tocbot-link">7. Write Policy：不要把提示词当权限系统</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#7-1-三层职责" class="toc-link tocbot-link">7.1 三层职责</a></li><li class="toc-list-item"><a href="#7-2-源码逐行注释：SDK-沙箱配置的真实语义" class="toc-link tocbot-link">7.2 源码逐行注释：SDK 沙箱配置的真实语义</a></li><li class="toc-list-item"><a href="#7-3-面试必须区分“设计意图”和“当前保障”" class="toc-link tocbot-link">7.3 面试必须区分“设计意图”和“当前保障”</a></li></ol></li><li class="toc-list-item"><a href="#8-热更新：更准确地叫“运行服务文件更新-受控重启”" class="toc-link tocbot-link">8. 热更新：更准确地叫“运行服务文件更新 + 受控重启”</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#8-1-源码逐行注释：wrapper-如何识别重启" class="toc-link tocbot-link">8.1 源码逐行注释：wrapper 如何识别重启</a></li></ol></li><li class="toc-list-item"><a href="#9-面试讲法：从-60-秒到深挖" class="toc-link tocbot-link">9. 面试讲法：从 60 秒到深挖</a><ol class="tocbot-list"><li class="toc-list-item"><a href="#60-秒版" class="toc-link tocbot-link">60 秒版</a></li><li class="toc-list-item"><a href="#追问-1：为什么不用-Backend-直接执行-SDK？" class="toc-link tocbot-link">追问 1：为什么不用 Backend 直接执行 SDK？</a></li><li class="toc-list-item"><a href="#追问-2：为什么既有容器，又有写策略？" class="toc-link tocbot-link">追问 2：为什么既有容器，又有写策略？</a></li><li class="toc-list-item"><a href="#追问-3：SSE-断线后如何避免重复执行？" class="toc-link tocbot-link">追问 3：SSE 断线后如何避免重复执行？</a></li><li class="toc-list-item"><a href="#追问-4：ACK-后进程崩溃是否会丢事件？" class="toc-link tocbot-link">追问 4：ACK 后进程崩溃是否会丢事件？</a></li><li class="toc-list-item"><a href="#追问-5：你的改进优先级是什么？" class="toc-link tocbot-link">追问 5：你的改进优先级是什么？</a></li></ol></li><li class="toc-list-item"><a href="#10-自测：不看答案讲出来" class="toc-link tocbot-link">10. 自测：不看答案讲出来</a></li></ol>
+  </div>
 </div>
 
-
+<script>
+  (function() {
+    var toc = document.getElementById('toc');
+    if (!toc) return;
+    if (document.querySelectorAll('#toc-body .toc-list-item').length > 0) {
+      toc.style.visibility = 'visible';
+    }
+  })();
+</script>
 
   </aside>
 
@@ -871,110 +883,6 @@
   
 
 
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    function isExpandAllEnabled() {
-      return CONFIG.toc && CONFIG.toc.expand_all === true;
-    }
-    function expandAllToc() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
-    }
-    function updateTocToggle($li, $childList) {
-      var $toggle = $li.children('.toc-toggle');
-      if ($toggle.length === 0) { return; }
-      var collapsed = $childList.hasClass('tocbot-is-collapsed');
-      $toggle
-        .toggleClass('toc-toggle-collapsed', collapsed)
-        .toggleClass('toc-toggle-expanded', !collapsed);
-    }
-    function bindTocToggle() {
-      if (!isExpandAllEnabled()) { return; }
-      jQuery('#toc-body .toc-list-item').each(function() {
-        var $li = jQuery(this);
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) {
-          if ($li.children('.toc-toggle').length === 0) {
-            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
-          }
-          return;
-        }
-
-        if ($li.children('.toc-toggle').length === 0) {
-          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
-        }
-        updateTocToggle($li, $childList);
-      });
-      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $li = jQuery(this).parent('.toc-list-item');
-        var $childList = $li.children('ol');
-        if ($childList.length === 0) { return; }
-        $childList.toggleClass('tocbot-is-collapsed');
-        updateTocToggle($li, $childList);
-      });
-      if (!window.__tocToggleObserver) {
-        window.__tocToggleObserver = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
-            var $list = jQuery(mutation.target);
-            var $li = $list.parent('.toc-list-item');
-            if ($li.length === 0) { return; }
-            updateTocToggle($li, $list);
-          });
-        });
-        jQuery('#toc-body ol').each(function() {
-          window.__tocToggleObserver.observe(this, { attributes: true });
-        });
-      }
-    }
-    var tocConfig = Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc);
-    if (isExpandAllEnabled()) {
-      tocConfig.collapseDepth = 6;
-    }
-    window.tocbot.init(tocConfig);
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-    expandAllToc();
-    bindTocToggle();
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-        expandAllToc();
-        bindTocToggle();
-      }
-    });
-  });
-</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
