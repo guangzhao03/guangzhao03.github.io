@@ -331,451 +331,1142 @@
 <h1 style="display: none">coolcys</h1>
 
 
-  <a class="home-lead" href="/2026/09/18/2026-09-18-harness-02-%E5%8F%8CProvider%E6%B2%99%E7%AE%B1%E6%8A%BD%E8%B1%A1/" style="--accent: #2f9fd0">
-    <div class="home-lead-top">
-      <span class="home-kicker">最新笔记</span>
-      <span class="home-chip">Agent Harness</span>
-      <time datetime="2026-09-18">2026.09.18</time>
-    </div>
-    <h2>02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境</h2>
-    
-    <p>为什么要强调？ 面试官问“Pod 调到另一个节点文件还在吗”，hostPath 和网络文件系统的答案完全不同。把它们统称为“持久卷”而不说明存储语义，会掩盖真正的设计约束。</p>
-    <span class="home-go">阅读全文</span>
-  </a>
-
-
-<nav class="home-rail" aria-label="分类">
+  <p class="h4">
+    <a href="/categories/Agent-Harness/">Agent Harness</a>
+  </p>
+  <hr>
   
-    <a class="home-pill" href="#cat-cmu6ya5yu00d3u4wibv3o33a9" style="--accent: #2f9fd0">
-      <i></i>
-      <span>Agent Harness</span>
-      <em>4</em>
-    </a>
-  
-    <a class="home-pill" href="#cat-cmu6ya5yf009tu4wibzl23y4d" style="--accent: #d9783a">
-      <i></i>
-      <span>八股</span>
-      <em>10</em>
-    </a>
-  
-    <a class="home-pill" href="#cat-cmu6ya5yq00c8u4wi5d8d0v3c" style="--accent: #6b7c93">
-      <i></i>
-      <span>杂记</span>
-      <em>1</em>
-    </a>
-  
-    <a class="home-pill" href="#cat-cmu6ya5v40004u4wi0vj6b8k2" style="--accent: #c4523a">
-      <i></i>
-      <span>Java</span>
-      <em>73</em>
-    </a>
-  
-    <a class="home-pill" href="#cat-cmu6ya5yq00ceu4wi33km6h1y" style="--accent: #1f9d8a">
-      <i></i>
-      <span>Python</span>
-      <em>1</em>
-    </a>
-  
-    <a class="home-pill" href="#cat-cmu6ya5x10056u4wicddu2h1t" style="--accent: #6c5ce7">
-      <i></i>
-      <span>算法</span>
-      <em>1</em>
-    </a>
-  
-</nav>
-
-
-  
-  
-  <section class="home-cat" id="cat-cmu6ya5yu00d3u4wibv3o33a9" style="--accent: #2f9fd0">
-    <div class="home-cat-head">
-      <div>
-        <h2>Agent Harness</h2>
-        <p>平台、沙箱与端云协同</p>
-      </div>
-      <a class="home-more" href="/categories/Agent-Harness/">全部 4 篇</a>
-    </div>
-    <div class="home-grid">
+    <div class="row mx-auto index-card">
       
-        
-        <a class="home-card" href="/2026/09/18/2026-09-18-harness-01-Agent%E5%B9%B3%E5%8F%B0%E4%B8%BB%E9%93%BE%E8%B7%AF/">
-          <time datetime="2026-09-18">2026.09.18</time>
-          <h3>01｜Agent 平台主链路：用户一句话如何变成沙箱行动</h3>
-          <p>控制面管理“谁能做什么、在哪做、如何记账和收口”；执行面真正运行 SDK 与工具。两者之间不是单次 RPC 返回一个字符串，而是</p>
-          <span class="home-go">阅读</span>
-        </a>
       
-        
-        <a class="home-card" href="/2026/09/17/2026-09-17-harness-04-%E7%AB%AF%E4%BA%91%E5%8D%8F%E5%90%8CWorkflow/">
-          <time datetime="2026-09-17">2026.09.17</time>
-          <h3>04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行</h3>
-          <p>原来的概括是“节点标 local，云端自动下发到 IDE”。当前源码更具体：</p>
-          <span class="home-go">阅读</span>
-        </a>
-      
-        
-        <a class="home-card" href="/2026/09/17/2026-09-17-harness-03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime/">
-          <time datetime="2026-09-17">2026.09.17</time>
-          <h3>03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级</h3>
-          <p>你可以用“请修改工作区里的一个函数并运行测试”贯穿理解：</p>
-          <span class="home-go">阅读</span>
-        </a>
-      
-    </div>
-  </section>
-
-  
-  
-  <section class="home-cat" id="cat-cmu6ya5yf009tu4wibzl23y4d" style="--accent: #d9783a">
-    <div class="home-cat-head">
-      <div>
-        <h2>八股</h2>
-        <p>面试复盘与知识点</p>
-      </div>
-      <a class="home-more" href="/categories/%E5%85%AB%E8%82%A1/">全部 10 篇</a>
-    </div>
-    <div class="home-grid">
-      
-        
-        <a class="home-card" href="/2026/09/10/2026-09-10-%E5%85%AB%E8%82%A1-2026910%E8%85%BE%E8%AE%AFAI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/">
-          <time datetime="2026-09-10">2026.09.10</time>
-          <h3>腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）</h3>
-          <p>我的回答：业务背景是招投标专员需要快速编写招投标项目；负责招标书信息抽取和投标书测评。抽取用三路并行 agent（base in</p>
-          <span class="home-go">阅读</span>
-        </a>
-      
-        
-        <a class="home-card" href="/2026/09/09/2026-09-09-%E5%85%AB%E8%82%A1-202699%E8%85%BE%E8%AE%AFCSIG%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/">
-          <time datetime="2026-09-09">2026.09.09</time>
-          <h3>腾讯 CSIG 一面模拟（Agent 平台 / RAG 方向）</h3>
-          <p>我的回答：主要在 RAG 项目，参与招投标书生成：解析招标书的主体信息/资质要求/投标书格式/评分要求，按格式生成章节，RAG </p>
-          <span class="home-go">阅读</span>
-        </a>
-      
-        
-        <a class="home-card" href="/2026/09/07/2026-09-07-%E5%85%AB%E8%82%A1-202697%E5%AD%97%E8%8A%82%E7%9C%9F%E5%AE%9E%E9%9D%A2%E7%BB%8F%E6%A8%A1%E6%8B%9F/">
-          <time datetime="2026-09-07">2026.09.07</time>
-          <h3>字节一面真实面经复刻 · 复盘（2026-09-07）</h3>
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
           
-          <span class="home-go">阅读</span>
-        </a>
-      
+          <a href="/2026/09/18/2026-09-18-harness-02-%E5%8F%8CProvider%E6%B2%99%E7%AE%B1%E6%8A%BD%E8%B1%A1/" target="_self">
+            02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境
+          </a>
+        </h2>
+
         
-        <a class="home-card" href="/2026/09/04/2026-09-04-%E5%85%AB%E8%82%A1-202694%E5%AD%97%E8%8A%82Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/">
-          <time datetime="2026-09-04">2026.09.04</time>
-          <h3>2026-09-04 字节跳动 Agent/AI 应用 日常实习 模拟面试复盘</h3>
-          <p>我的答案:用户消息带 function 说明(name/description/input/output)→ 模型判断调什么工具</p>
-          <span class="home-go">阅读</span>
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/18/2026-09-18-harness-02-%E5%8F%8CProvider%E6%B2%99%E7%AE%B1%E6%8A%BD%E8%B1%A1/" target="_self">
+          <div>
+            为什么要强调？ 面试官问“Pod 调到另一个节点文件还在吗”，hostPath 和网络文件系统的答案完全不同。把它们统称为“持久卷”而不说明存储语义，会掩盖真正的设计约束。
+          </div>
         </a>
-      
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-18 15:29" pubdate>
+                2026-09-18
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Agent-Harness/" class="category-chain-item">Agent Harness</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Agent-Harness/">#Agent Harness</a>
+              
+            </div>
+          
+        </div>
+      </article>
     </div>
-  </section>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/09/18/2026-09-18-harness-01-Agent%E5%B9%B3%E5%8F%B0%E4%B8%BB%E9%93%BE%E8%B7%AF/" target="_self">
+            01｜Agent 平台主链路：用户一句话如何变成沙箱行动
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/18/2026-09-18-harness-01-Agent%E5%B9%B3%E5%8F%B0%E4%B8%BB%E9%93%BE%E8%B7%AF/" target="_self">
+          <div>
+            控制面管理“谁能做什么、在哪做、如何记账和收口”；执行面真正运行 SDK 与工具。两者之间不是单次 RPC 返回一个字符串，而是有创建、订阅、交互、取消、确认等控制协议。
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-18 09:11" pubdate>
+                2026-09-18
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Agent-Harness/" class="category-chain-item">Agent Harness</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Agent-Harness/">#Agent Harness</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/09/17/2026-09-17-harness-04-%E7%AB%AF%E4%BA%91%E5%8D%8F%E5%90%8CWorkflow/" target="_self">
+            04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/17/2026-09-17-harness-04-%E7%AB%AF%E4%BA%91%E5%8D%8F%E5%90%8CWorkflow/" target="_self">
+          <div>
+            原来的概括是“节点标 local，云端自动下发到 IDE”。当前源码更具体：
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-17 10:14" pubdate>
+                2026-09-17
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Agent-Harness/" class="category-chain-item">Agent Harness</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Agent-Harness/">#Agent Harness</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/09/17/2026-09-17-harness-03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime/" target="_self">
+            03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/17/2026-09-17-harness-03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime/" target="_self">
+          <div>
+            你可以用“请修改工作区里的一个函数并运行测试”贯穿理解：
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-17 10:01" pubdate>
+                2026-09-17
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Agent-Harness/" class="category-chain-item">Agent Harness</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Agent-Harness/">#Agent Harness</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+
+  <p class="h4">
+    <a href="/categories/%E5%85%AB%E8%82%A1/">八股</a>
+  </p>
+  <hr>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/09/10/2026-09-10-%E5%85%AB%E8%82%A1-2026910%E8%85%BE%E8%AE%AFAI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
+            腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/10/2026-09-10-%E5%85%AB%E8%82%A1-2026910%E8%85%BE%E8%AE%AFAI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
+          <div>
+            我的回答：业务背景是招投标专员需要快速编写招投标项目；负责招标书信息抽取和投标书测评。抽取用三路并行 agent（base info / format info / good info），OCR 模型 + qwen-plus 做文本分析和图片表格转化，硬规则+模型判断。测评第一轮…
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-10 20:40" pubdate>
+                2026-09-10
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/09/09/2026-09-09-%E5%85%AB%E8%82%A1-202699%E8%85%BE%E8%AE%AFCSIG%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
+            腾讯 CSIG 一面模拟（Agent 平台 / RAG 方向）
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/09/2026-09-09-%E5%85%AB%E8%82%A1-202699%E8%85%BE%E8%AE%AFCSIG%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
+          <div>
+            我的回答：主要在 RAG 项目，参与招投标书生成：解析招标书的主体信息/资质要求/投标书格式/评分要求，按格式生成章节，RAG 检索历史标书召回图文，综合主体信息撰写章节。
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-09 21:33" pubdate>
+                2026-09-09
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/09/07/2026-09-07-%E5%85%AB%E8%82%A1-202697%E5%AD%97%E8%8A%82%E7%9C%9F%E5%AE%9E%E9%9D%A2%E7%BB%8F%E6%A8%A1%E6%8B%9F/" target="_self">
+            字节一面真实面经复刻 · 复盘（2026-09-07）
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/07/2026-09-07-%E5%85%AB%E8%82%A1-202697%E5%AD%97%E8%8A%82%E7%9C%9F%E5%AE%9E%E9%9D%A2%E7%BB%8F%E6%A8%A1%E6%8B%9F/" target="_self">
+          <div>
+            题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集，发现 XX bad case”   Q4 幻觉处理
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-07 10:40" pubdate>
+                2026-09-07
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/09/04/2026-09-04-%E5%85%AB%E8%82%A1-202694%E5%AD%97%E8%8A%82Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
+            2026-09-04 字节跳动 Agent/AI 应用 日常实习 模拟面试复盘
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/04/2026-09-04-%E5%85%AB%E8%82%A1-202694%E5%AD%97%E8%8A%82Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
+          <div>
+            我的答案:用户消息带 function 说明(name/description/input/output)→ 模型判断调什么工具什么参数,输出 JSON → 客户端解析执行 → 结果返回模型。
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-04 09:29" pubdate>
+                2026-09-04
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/09/02/2026-09-02-%E5%85%AB%E8%82%A1-202692%E7%99%BE%E5%BA%A6Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
+            2026-09-02 百度 Agent 日常实习 模拟面试复盘
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/09/02/2026-09-02-%E5%85%AB%E8%82%A1-202692%E7%99%BE%E5%BA%A6Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
+          <div>
+            题目:Agent 和 Workflow 的区别?判断标准?
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-09-02 11:01" pubdate>
+                2026-09-02
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/%E5%85%AB%E8%82%A1/">#八股</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+
+  <p class="h4">
+    <a href="/categories/%E6%9D%82%E8%AE%B0/">杂记</a>
+  </p>
+  <hr>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/07/09/2026-07-09-misc-%E6%8E%A2%E7%A7%98-Claude-Code%EF%BC%8C%E6%90%9E%E6%87%82-Agent-Harness%EF%BD%9C%E5%AF%B9%E8%B0%88%E6%9D%A5%E6%96%B0%E7%92%90%E3%80%90%E8%A7%86%E9%A2%91%E6%92%AD%E5%AE%A2%E3%80%91/" target="_self">
+            探秘 Claude Code，搞懂 Agent Harness｜对谈来新璐【视频播客】
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/07/09/2026-07-09-misc-%E6%8E%A2%E7%A7%98-Claude-Code%EF%BC%8C%E6%90%9E%E6%87%82-Agent-Harness%EF%BD%9C%E5%AF%B9%E8%B0%88%E6%9D%A5%E6%96%B0%E7%92%90%E3%80%90%E8%A7%86%E9%A2%91%E6%92%AD%E5%AE%A2%E3%80%91/" target="_self">
+          <div>
+            https://github.com/NevaMind-AI/memU memU
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-07-09 17:49" pubdate>
+                2026-07-09
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9D%82%E8%AE%B0/" class="category-chain-item">杂记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/%E6%9D%82%E8%AE%B0/">#杂记</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+
+  <p class="h4">
+    <a href="/categories/Java/">Java</a>
+  </p>
+  <hr>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/06/28/2026-06-28-Java-xiaolin-java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_self">
+            java基础面试题
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/06/28/2026-06-28-Java-xiaolin-java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_self">
+          <div>
+            面向对象六大准则：单一职责原则，开放封闭原则，里氏替换原则，接口隔离原则，依赖倒置原则，最少知识原则
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-06-28 18:50" pubdate>
+                2026-06-28
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Java-%E5%9F%BA%E7%A1%80/" class="category-chain-item">Java 基础</a>
+  
+  
 
   
+
+      </span>
+    
   
-  <section class="home-cat" id="cat-cmu6ya5yq00c8u4wi5d8d0v3c" style="--accent: #6b7c93">
-    <div class="home-cat-head">
-      <div>
-        <h2>杂记</h2>
-        <p>其他学习记录</p>
-      </div>
-      <a class="home-more" href="/categories/%E6%9D%82%E8%AE%B0/">全部 1 篇</a>
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Java/">#Java</a>
+              
+                <a href="/tags/Java-%E5%9F%BA%E7%A1%80/">#Java 基础</a>
+              
+            </div>
+          
+        </div>
+      </article>
     </div>
-    <div class="home-grid">
+  
+    <div class="row mx-auto index-card">
       
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/06/05/2026-06-05-Java-jvm-day01/" target="_self">
+            day01
+          </a>
+        </h2>
+
         
-        <a class="home-card" href="/2026/07/09/2026-07-09-misc-%E6%8E%A2%E7%A7%98-Claude-Code%EF%BC%8C%E6%90%9E%E6%87%82-Agent-Harness%EF%BD%9C%E5%AF%B9%E8%B0%88%E6%9D%A5%E6%96%B0%E7%92%90%E3%80%90%E8%A7%86%E9%A2%91%E6%92%AD%E5%AE%A2%E3%80%91/">
-          <time datetime="2026-07-09">2026.07.09</time>
-          <h3>探秘 Claude Code，搞懂 Agent Harness｜对谈来新璐【视频播客】</h3>
-          <p>https://github.com/NevaMind-AI/memU memU</p>
-          <span class="home-go">阅读</span>
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/06/05/2026-06-05-Java-jvm-day01/" target="_self">
+          <div>
+            jvm作用：加载并运行字节码文件(.class)，加载字节码文件、分配内存（运行时数据区）、运行程序
+          </div>
         </a>
-      
-    </div>
-  </section>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-06-05 20:55" pubdate>
+                2026-06-05
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/JVM/" class="category-chain-item">JVM</a>
+  
+  
 
   
+
+      </span>
+    
   
-  <section class="home-cat" id="cat-cmu6ya5v40004u4wi0vj6b8k2" style="--accent: #c4523a">
-    <div class="home-cat-head">
-      <div>
-        <h2>Java</h2>
-        <p>Java 学习与项目笔记</p>
-      </div>
-      <a class="home-more" href="/categories/Java/">全部 73 篇</a>
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Java/">#Java</a>
+              
+                <a href="/tags/JVM/">#JVM</a>
+              
+            </div>
+          
+        </div>
+      </article>
     </div>
-    <div class="home-grid">
+  
+    <div class="row mx-auto index-card">
       
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/05/13/2026-05-13-Java-%E5%A4%A9%E6%9C%BA%E5%AD%A6%E5%A0%82-day1/" target="_self">
+            day1
+          </a>
+        </h2>
+
         
-        <a class="home-card" href="/2026/06/28/2026-06-28-Java-xiaolin-java%E5%9F%BA%E7%A1%80%E9%9D%A2%E8%AF%95%E9%A2%98/">
-          <time datetime="2026-06-28">2026.06.28</time>
-          <h3>java基础面试题</h3>
-          <p>面向对象六大准则：单一职责原则，开放封闭原则，里氏替换原则，接口隔离原则，依赖倒置原则，最少知识原则</p>
-          <span class="home-go">阅读</span>
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/05/13/2026-05-13-Java-%E5%A4%A9%E6%9C%BA%E5%AD%A6%E5%A0%82-day1/" target="_self">
+          <div>
+            SSE发送的时候，要封装成json的格式，而不是用sse流
+          </div>
         </a>
-      
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-05-13 14:52" pubdate>
+                2026-05-13
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
         
-        <a class="home-card" href="/2026/06/05/2026-06-05-Java-jvm-day01/">
-          <time datetime="2026-06-05">2026.06.05</time>
-          <h3>day01</h3>
-          <p>jvm作用：加载并运行字节码文件(.class)，加载字节码文件、分配内存（运行时数据区）、运行程序</p>
-          <span class="home-go">阅读</span>
-        </a>
-      
-        
-        <a class="home-card" href="/2026/05/13/2026-05-13-Java-%E5%A4%A9%E6%9C%BA%E5%AD%A6%E5%A0%82-day1/">
-          <time datetime="2026-05-13">2026.05.13</time>
-          <h3>day1</h3>
-          <p>SSE发送的时候，要封装成json的格式，而不是用sse流</p>
-          <span class="home-go">阅读</span>
-        </a>
-      
-        
-        <a class="home-card" href="/2026/04/21/2026-04-21-Java-AIGC-day4/">
-          <time datetime="2026-04-21">2026.04.21</time>
-          <h3>day4</h3>
-          <p>大模型应用是基于大模型的推理、分析、生成能力，结合传统编程能力，开发出的各种应用。</p>
-          <span class="home-go">阅读</span>
-        </a>
-      
-    </div>
-  </section>
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%A4%A9%E6%9C%BA%E5%AD%A6%E5%A0%82/" class="category-chain-item">天机学堂</a>
+  
+  
 
   
+
+      </span>
+    
   
-  <section class="home-cat" id="cat-cmu6ya5yq00ceu4wi33km6h1y" style="--accent: #1f9d8a">
-    <div class="home-cat-head">
-      <div>
-        <h2>Python</h2>
-        <p>Python 与接口实践</p>
-      </div>
-      <a class="home-more" href="/categories/Python/">全部 1 篇</a>
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Java/">#Java</a>
+              
+                <a href="/tags/%E5%A4%A9%E6%9C%BA%E5%AD%A6%E5%A0%82/">#天机学堂</a>
+              
+            </div>
+          
+        </div>
+      </article>
     </div>
-    <div class="home-grid">
+  
+    <div class="row mx-auto index-card">
       
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/04/21/2026-04-21-Java-AIGC-day4/" target="_self">
+            day4
+          </a>
+        </h2>
+
         
-        <a class="home-card" href="/2026/05/21/2026-05-21-python-fastApi-day1/">
-          <time datetime="2026-05-21">2026.05.21</time>
-          <h3>day1</h3>
-          <p>response_model通过定义python Pydantic模型来约束API端口输出格式</p>
-          <span class="home-go">阅读</span>
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/04/21/2026-04-21-Java-AIGC-day4/" target="_self">
+          <div>
+            大模型应用是基于大模型的推理、分析、生成能力，结合传统编程能力，开发出的各种应用。
+          </div>
         </a>
-      
-    </div>
-  </section>
 
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-04-21 09:46" pubdate>
+                2026-04-21
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
   
   
-  <section class="home-cat" id="cat-cmu6ya5x10056u4wicddu2h1t" style="--accent: #6c5ce7">
-    <div class="home-cat-head">
-      <div>
-        <h2>算法</h2>
-        <p>题解与动态规划</p>
-      </div>
-      <a class="home-more" href="/categories/%E7%AE%97%E6%B3%95/">全部 1 篇</a>
-    </div>
-    <div class="home-grid">
-      
+    
+      <span class="category-chain">
         
-        <a class="home-card" href="/2025/12/16/2025-12-16-%E7%AE%97%E6%B3%95-acwing-DP-dynamic-program/">
-          <time datetime="2025-12-16">2025.12.16</time>
-          <h3>DP dynamic program</h3>
-          <p>1、常用模型：背包</p>
-          <span class="home-go">阅读</span>
-        </a>
-      
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/AIGC/" class="category-chain-item">AIGC</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Java/">#Java</a>
+              
+                <a href="/tags/AIGC/">#AIGC</a>
+              
+            </div>
+          
+        </div>
+      </article>
     </div>
-  </section>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/04/14/2026-04-14-Java-AIGC-day3/" target="_self">
+            day3
+          </a>
+        </h2>
 
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/04/14/2026-04-14-Java-AIGC-day3/" target="_self">
+          <div>
+            ComfyUi
+          </div>
+        </a>
 
-<style>
-  .home-lead,
-  .home-card,
-  .home-pill {
-    text-decoration: none;
-  }
-  .home-lead {
-    display: block;
-    position: relative;
-    margin: 0 0 1.35rem;
-    padding: 1.45rem 1.5rem 1.25rem;
-    border-radius: 1rem;
-    overflow: hidden;
-    color: var(--text-color);
-    background:
-      linear-gradient(135deg, color-mix(in srgb, var(--accent) 16%, var(--board-bg-color)), var(--board-bg-color) 58%);
-    border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line-color));
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .home-lead:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
-    color: var(--text-color);
-  }
-  .home-lead-top,
-  .home-card time {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    color: var(--sec-text-color);
-    font-size: 0.8rem;
-    letter-spacing: 0.04em;
-  }
-  .home-kicker,
-  .home-chip {
-    display: inline-flex;
-    align-items: center;
-    height: 1.45rem;
-    padding: 0 0.55rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-  }
-  .home-kicker {
-    color: #fff;
-    background: var(--accent);
-  }
-  .home-chip {
-    color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-  }
-  .home-lead h2 {
-    margin: 0.7rem 0 0.45rem;
-    font-size: 1.55rem;
-    line-height: 1.35;
-    font-weight: 650;
-    color: var(--post-heading-color);
-  }
-  .home-lead p,
-  .home-card p {
-    margin: 0;
-    color: var(--sec-text-color);
-    font-size: 0.92rem;
-    line-height: 1.6;
-  }
-  .home-go {
-    display: inline-flex;
-    margin-top: 0.85rem;
-    color: var(--accent, var(--link-hover-color));
-    font-size: 0.86rem;
-    font-weight: 600;
-  }
-  .home-go::after {
-    content: " →";
-  }
-  .home-rail {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0 0 2rem;
-  }
-  .home-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.38rem 0.7rem 0.38rem 0.55rem;
-    border-radius: 999px;
-    border: 1px solid var(--line-color);
-    background: var(--highlight-bg-color);
-    color: var(--text-color);
-    font-size: 0.88rem;
-    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
-  }
-  .home-pill i {
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--accent);
-  }
-  .home-pill em {
-    font-style: normal;
-    color: var(--sec-text-color);
-    font-size: 0.78rem;
-  }
-  .home-pill:hover {
-    color: var(--accent);
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--line-color));
-    background: color-mix(in srgb, var(--accent) 10%, var(--board-bg-color));
-  }
-  .home-cat { margin-bottom: 2.6rem; }
-  .home-cat-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    margin: 0 0 0.9rem;
-  }
-  .home-cat-head h2 {
-    margin: 0;
-    font-size: 1.28rem;
-    font-weight: 650;
-    color: var(--post-heading-color);
-  }
-  .home-cat-head h2::before {
-    content: "";
-    display: inline-block;
-    width: 0.55rem;
-    height: 0.55rem;
-    margin-right: 0.45rem;
-    border-radius: 0.15rem;
-    background: var(--accent);
-    transform: translateY(-0.08rem);
-  }
-  .home-cat-head p {
-    margin: 0.2rem 0 0 1rem;
-    color: var(--sec-text-color);
-    font-size: 0.84rem;
-  }
-  .home-more {
-    white-space: nowrap;
-    font-size: 0.88rem;
-    color: var(--sec-text-color);
-  }
-  .home-more:hover { color: var(--accent); }
-  .home-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-  }
-  .home-card {
-    display: flex;
-    flex-direction: column;
-    min-height: 9.2rem;
-    padding: 1rem 1.05rem 0.9rem;
-    border-radius: 0.9rem;
-    background: var(--highlight-bg-color);
-    border: 1px solid transparent;
-    box-shadow: inset 0 2px 0 var(--accent);
-    color: inherit;
-    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-  }
-  .home-card:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in srgb, var(--accent) 40%, var(--line-color));
-    background: color-mix(in srgb, var(--accent) 7%, var(--highlight-bg-color));
-    color: inherit;
-  }
-  .home-card h3 {
-    margin: 0.45rem 0 0.35rem;
-    font-size: 1.02rem;
-    line-height: 1.45;
-    font-weight: 640;
-    color: var(--post-heading-color);
-  }
-  .home-card p {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .home-card .home-go { margin-top: auto; padding-top: 0.7rem; }
-  @media (max-width: 767px) {
-    .home-grid { grid-template-columns: 1fr; }
-    .home-lead h2 { font-size: 1.28rem; }
-    .home-cat-head { align-items: flex-start; }
-  }
-</style>
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-04-14 18:53" pubdate>
+                2026-04-14
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/AIGC/" class="category-chain-item">AIGC</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Java/">#Java</a>
+              
+                <a href="/tags/AIGC/">#AIGC</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+
+  <p class="h4">
+    <a href="/categories/Python/">Python</a>
+  </p>
+  <hr>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2026/05/21/2026-05-21-python-fastApi-day1/" target="_self">
+            day1
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2026/05/21/2026-05-21-python-fastApi-day1/" target="_self">
+          <div>
+            response_model通过定义python Pydantic模型来约束API端口输出格式
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2026-05-21 12:05" pubdate>
+                2026-05-21
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Python/" class="category-chain-item">Python</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Python/FastAPI/" class="category-chain-item">FastAPI</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/Python/">#Python</a>
+              
+                <a href="/tags/FastAPI/">#FastAPI</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+
+  <p class="h4">
+    <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+  </p>
+  <hr>
+  
+    <div class="row mx-auto index-card">
+      
+      
+      <article class="col-12 col-md-12 mx-auto index-info">
+        <h2 class="index-header">
+          
+          <a href="/2025/12/16/2025-12-16-%E7%AE%97%E6%B3%95-acwing-DP-dynamic-program/" target="_self">
+            DP dynamic program
+          </a>
+        </h2>
+
+        
+        <a class="index-excerpt index-excerpt__noimg" href="/2025/12/16/2025-12-16-%E7%AE%97%E6%B3%95-acwing-DP-dynamic-program/" target="_self">
+          <div>
+            1、常用模型：背包
+          </div>
+        </a>
+
+        <div class="index-btm post-metas">
+          
+            <div class="post-meta mr-3">
+              <i class="iconfont icon-date"></i>
+              <time datetime="2025-12-16 20:33" pubdate>
+                2025-12-16
+              </time>
+            </div>
+          
+          
+            <div class="post-meta mr-3 d-flex align-items-center">
+              <i class="iconfont icon-category"></i>
+              
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95/AcWing/" class="category-chain-item">AcWing</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+            </div>
+          
+          
+            <div class="post-meta">
+              <i class="iconfont icon-tags"></i>
+              
+                <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+              
+                <a href="/tags/AcWing/">#AcWing</a>
+              
+            </div>
+          
+        </div>
+      </article>
+    </div>
+  
+
 
               </div>
             </div>
