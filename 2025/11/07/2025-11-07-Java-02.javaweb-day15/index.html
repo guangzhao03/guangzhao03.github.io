@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day15  ## Vue工程化  模块化、组件化、规范化、自动化  在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化  - 介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。 - create-vue提供了如下功能：   - 统一的目录结构   - 本地调试   - 热部署   - 单元测试   - 集成">
+    <meta name="description" content="day15Vue工程化模块化、组件化、规范化、自动化 在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化  介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。 create-vue提供了如下功能： 统一的目录结构 本地调试 热部署 单元测试 集成上线打包   依赖环境NodeJS  npm Node Package">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day15">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/11/07/2025-11-07-Java-02.javaweb-day15/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day15  ## Vue工程化  模块化、组件化、规范化、自动化  在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化  - 介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。 - create-vue提供了如下功能：   - 统一的目录结构   - 本地调试   - 热部署   - 单元测试   - 集成">
+<meta property="og:description" content="day15Vue工程化模块化、组件化、规范化、自动化 在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化  介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。 create-vue提供了如下功能： 统一的目录结构 本地调试 热部署 单元测试 集成上线打包   依赖环境NodeJS  npm Node Package">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-07T02:11:08.000Z">
 <meta property="article:modified_time" content="2025-11-07T02:11:08.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          960 字
+          1.1k 字
         
       </span>
     
@@ -382,68 +382,48 @@
             
               <div class="markdown-body">
                 
-                
-# day15
-
-## Vue工程化
-
-模块化、组件化、规范化、自动化
-
-在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化
-
-- 介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。
-- create-vue提供了如下功能：
-  - 统一的目录结构
-  - 本地调试
-  - 热部署
-  - 单元测试
-  - 集成上线打包
-- 依赖环境NodeJS
-
-npm Node Package Manager
-
-npm install xxx   
-
-类似于maven的功能
-
-
-
-npm create vue@3.3.4    创建项目工程
-
-cd    进入到工程目录
-
-npm install  安装依赖
-
-npm run dev 启动Vue项目  或者vscode找到npm脚本dev vite启动即可
-
-访问地址：http://localhost:5173 
-
-vite：底层构建工具
-
-.vue是Vue项目中的组件文件，在Vue项目中也称为单文件组件（SFC,Single-File Components）Vue的单文件组件会将一个组建的逻辑（JS）模板（HTML）和样式（CSS）封装在同一个文件*.vue
-
-API风格
-
-- Vue的组件有两种不同的风格：选项式API和组合式API
-
-之前的是选项式的API风格，Vue3支持组合式API
-
-- script加setup 告诉Vue需要进行一些处理，让我们可以更简洁的使用组合式API。
-- ref（）：接收一个内部值，返回一个响应式ref对象，此对象只有一个指向内部值的属性value
-- onMounted（）：组合式API中的钩子方法，注册一个回调函数，在组件挂载完成后执行。
-
-项目中如果用到axios，就需要安装axios的依赖， npm install axios
-
-## ElementPlus
-
-- element：是饿了么团队研发的，基于Vue3，面向设计师和开发者的组件库
-- 组件：组成网页的部件，如超链接、按钮、图片、表格、表单、分页条等等
-- 官网：https://element-plus.org/zh-CN/#/zh-CN
-
-npm install element-plus@3.4.4 --sava
-
---save会保存在package.json里面  如果移植的时候npm install 会自动下载这个包，如果没有--save 那么只在node_modules里面 不会npm install 自动下载包 
-
+                <h1 id="day15"><a href="#day15" class="headerlink" title="day15"></a>day15</h1><h2 id="Vue工程化"><a href="#Vue工程化" class="headerlink" title="Vue工程化"></a>Vue工程化</h2><p>模块化、组件化、规范化、自动化</p>
+<p>在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化</p>
+<ul>
+<li>介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。</li>
+<li>create-vue提供了如下功能：<ul>
+<li>统一的目录结构</li>
+<li>本地调试</li>
+<li>热部署</li>
+<li>单元测试</li>
+<li>集成上线打包</li>
+</ul>
+</li>
+<li>依赖环境NodeJS</li>
+</ul>
+<p>npm Node Package Manager</p>
+<p>npm install xxx   </p>
+<p>类似于maven的功能</p>
+<p>npm create <a href="mailto:&#118;&#117;&#101;&#x40;&#x33;&#46;&#x33;&#x2e;&#x34;">&#118;&#117;&#101;&#x40;&#x33;&#46;&#x33;&#x2e;&#x34;</a>    创建项目工程</p>
+<p>cd    进入到工程目录</p>
+<p>npm install  安装依赖</p>
+<p>npm run dev 启动Vue项目  或者vscode找到npm脚本dev vite启动即可</p>
+<p>访问地址：<a target="_blank" rel="noopener" href="http://localhost:5173/">http://localhost:5173</a> </p>
+<p>vite：底层构建工具</p>
+<p>.vue是Vue项目中的组件文件，在Vue项目中也称为单文件组件（SFC,Single-File Components）Vue的单文件组件会将一个组建的逻辑（JS）模板（HTML）和样式（CSS）封装在同一个文件*.vue</p>
+<p>API风格</p>
+<ul>
+<li>Vue的组件有两种不同的风格：选项式API和组合式API</li>
+</ul>
+<p>之前的是选项式的API风格，Vue3支持组合式API</p>
+<ul>
+<li>script加setup 告诉Vue需要进行一些处理，让我们可以更简洁的使用组合式API。</li>
+<li>ref（）：接收一个内部值，返回一个响应式ref对象，此对象只有一个指向内部值的属性value</li>
+<li>onMounted（）：组合式API中的钩子方法，注册一个回调函数，在组件挂载完成后执行。</li>
+</ul>
+<p>项目中如果用到axios，就需要安装axios的依赖， npm install axios</p>
+<h2 id="ElementPlus"><a href="#ElementPlus" class="headerlink" title="ElementPlus"></a>ElementPlus</h2><ul>
+<li>element：是饿了么团队研发的，基于Vue3，面向设计师和开发者的组件库</li>
+<li>组件：组成网页的部件，如超链接、按钮、图片、表格、表单、分页条等等</li>
+<li>官网：<a target="_blank" rel="noopener" href="https://element-plus.org/zh-CN/#/zh-CN">https://element-plus.org/zh-CN/#/zh-CN</a></li>
+</ul>
+<p>npm install <a href="mailto:&#x65;&#108;&#x65;&#109;&#101;&#110;&#116;&#45;&#x70;&#108;&#x75;&#115;&#64;&#x33;&#46;&#x34;&#46;&#x34;">&#x65;&#108;&#x65;&#109;&#101;&#110;&#116;&#45;&#x70;&#108;&#x75;&#115;&#64;&#x33;&#46;&#x34;&#46;&#x34;</a> –sava</p>
+<p>–save会保存在package.json里面  如果移植的时候npm install 会自动下载这个包，如果没有–save 那么只在node_modules里面 不会npm install 自动下载包</p>
 
                 
               </div>

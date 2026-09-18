@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# 01｜Agent 平台主链路：用户一句话如何变成沙箱行动  &gt; 核对日期：2026-09-17；源码根目录：&#96;E:\MoreProject\learn_foresign_engine&#96;。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 &gt; &gt; 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业">
+    <meta name="description" content="01｜Agent 平台主链路：用户一句话如何变成沙箱行动 核对日期：2026-09-17；源码根目录：E:\MoreProject\learn_foresign_engine。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。  1. 先纠正">
 <meta property="og:type" content="article">
 <meta property="og:title" content="01｜Agent 平台主链路：用户一句话如何变成沙箱行动">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/18/2026-09-18-harness-01-Agent%E5%B9%B3%E5%8F%B0%E4%B8%BB%E9%93%BE%E8%B7%AF/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# 01｜Agent 平台主链路：用户一句话如何变成沙箱行动  &gt; 核对日期：2026-09-17；源码根目录：&#96;E:\MoreProject\learn_foresign_engine&#96;。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 &gt; &gt; 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业">
+<meta property="og:description" content="01｜Agent 平台主链路：用户一句话如何变成沙箱行动 核对日期：2026-09-17；源码根目录：E:\MoreProject\learn_foresign_engine。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。  1. 先纠正">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-18T01:11:14.000Z">
 <meta property="article:modified_time" content="2026-09-18T01:11:14.000Z">
@@ -337,7 +337,7 @@
         
         
         
-          119 分钟
+          115 分钟
         
       </span>
     
@@ -381,272 +381,361 @@
             
               <div class="markdown-body">
                 
-                
-# 01｜Agent 平台主链路：用户一句话如何变成沙箱行动
-
-> 核对日期：2026-09-17；源码根目录：`E:\MoreProject\learn_foresign_engine`。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。
->
-> 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。
-
-## 1. 先纠正原来的概括
-
-你原来理解的方向对，但面试必须说得更精确：
-
-1. 当前业务编排主入口是 **SessionRunService**，AgentService 是其中的执行适配层。
-2. 普通聊天主路径调用 **SandboxAgentSseService**，不是看见 bridge 文件名就认定经过 SandboxAgentBridgeService。
-3. `sandbox-command-stream.service.ts` 是 PTY 终端相关链路，不是本次 Agent SSE 的主通道。
-4. 正常配置下 SDK 在沙箱执行，但代码保留 Backend SDK fallback。
-5. 默认使用 sbx_ 代理凭证，但保留显式直传回滚开关，不能说“源码不存在真实 Key 下发路径”。
-6. Backend↔沙箱与 Backend↔浏览器有两套不同恢复序号。
-
-## 2. 用一个任务串起来
-
-用户输入：“修改工作区函数并运行测试。”
-
-| 阶段 | 谁负责 | 输入/产物 | 为什么需要这一层 |
-|---|---|---|---|
-| 发消息 | 浏览器 Socket.IO | send_message、sessionId、desktopId、content | 复用已认证长连接 |
-| 可信入口 | SessionGateway | socket 对应身份、经过约束的请求 | 不能相信客户端自报内部权限 |
-| 一轮执行编排 | SessionRunService | Run 身份、消息、锁、工作树、策略、上下文 | 一次聊天包含大量业务状态 |
-| 模型执行适配 | AgentService | 模型连接、Skills/SubAgents 等参数 | 对上层统一执行结果 |
-| 沙箱桥接 | SandboxAgentSseService | endpoint、代理 token、HTTP session | 处理跨进程执行与流恢复 |
-| 执行 | agent-service + SDK | 真实文件/命令操作和执行事件 | 工具靠近工作区，隔离用户执行 |
-| 事件消费 | Backend writer/finalizer | Redis 事件流、最终 assistant 消息 | 分开处理实时恢复与长期历史 |
-| 展示 | 前端 store | 按 Run 与 seq 应用增量 | 避免重复、串轮次、漏尾部 |
-
-**控制面**管理“谁能做什么、在哪做、如何记账和收口”；**执行面**真正运行 SDK 与工具。两者之间不是单次 RPC 返回一个字符串，而是有创建、订阅、交互、取消、确认等控制协议。
-
-## 3. 建议打开这些源码
-
-路径相对于仓库根目录。
-
-| 入口 | 作用 |
-|---|---|
-| `packages/frontend/src/lib/socket.ts:248` | 连接 `/session` namespace |
-| `packages/frontend/src/lib/socket.ts:578` | 发 send_message |
-| `packages/backend/src/session/session.gateway.ts:432` | 握手认证 |
-| `packages/backend/src/session/session.gateway.ts:921` | 消息入口 |
-| `packages/backend/src/session/session-run.service.ts:917` | 一轮执行编排 |
-| `packages/backend/src/agent/agent.service.ts:284` | SDK 适配入口 |
-| `packages/backend/src/sandbox/application/sandbox-agent-sse.service.ts:1440` | 沙箱执行生命周期 |
-| `packages/backend/src/llm-proxy/llm-proxy-token.service.ts:44` | 代理 token 签发 |
-| `packages/backend/src/llm-proxy/llm-proxy.controller.ts:143` | 代理请求验证、转发 |
-| `packages/backend/src/session/stream/session-stream.store.ts:18` | Redis Lua 原子追加 |
-| `packages/backend/src/common/redis-io.adapter.ts:22` | 多 worker 广播 |
-
-## 4. Gateway：认证不等于授权
-
-浏览器连接 `/session` 时带 token。Gateway 校验 JWT，将身份关联到当前 socket；后续业务必须用这个可信身份，而不是请求体里的 userId。
-
-握手认证只回答“你是谁”，还要校验“你是否能访问此 Desktop/Session”。join_session、join_desktop、resume_desktop_runs、stop_agent 等入口分别有资源权限检查。不要把一次握手认证说成对全部资源授权。
-
-### 4.1 源码逐行注释：拒绝客户端伪造内部上下文
-
-来源：`packages/backend/src/session/session.gateway.ts:921-933`，函数后续省略。
-
+                <h1 id="01｜Agent-平台主链路：用户一句话如何变成沙箱行动"><a href="#01｜Agent-平台主链路：用户一句话如何变成沙箱行动" class="headerlink" title="01｜Agent 平台主链路：用户一句话如何变成沙箱行动"></a>01｜Agent 平台主链路：用户一句话如何变成沙箱行动</h1><blockquote>
+<p>核对日期：2026-09-17；源码根目录：<code>E:\MoreProject\learn_foresign_engine</code>。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。</p>
+<p>源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。</p>
+</blockquote>
+<h2 id="1-先纠正原来的概括"><a href="#1-先纠正原来的概括" class="headerlink" title="1. 先纠正原来的概括"></a>1. 先纠正原来的概括</h2><p>你原来理解的方向对，但面试必须说得更精确：</p>
+<ol>
+<li>当前业务编排主入口是 <strong>SessionRunService</strong>，AgentService 是其中的执行适配层。</li>
+<li>普通聊天主路径调用 <strong>SandboxAgentSseService</strong>，不是看见 bridge 文件名就认定经过 SandboxAgentBridgeService。</li>
+<li><code>sandbox-command-stream.service.ts</code> 是 PTY 终端相关链路，不是本次 Agent SSE 的主通道。</li>
+<li>正常配置下 SDK 在沙箱执行，但代码保留 Backend SDK fallback。</li>
+<li>默认使用 sbx_ 代理凭证，但保留显式直传回滚开关，不能说“源码不存在真实 Key 下发路径”。</li>
+<li>Backend↔沙箱与 Backend↔浏览器有两套不同恢复序号。</li>
+</ol>
+<h2 id="2-用一个任务串起来"><a href="#2-用一个任务串起来" class="headerlink" title="2. 用一个任务串起来"></a>2. 用一个任务串起来</h2><p>用户输入：“修改工作区函数并运行测试。”</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>谁负责</th>
+<th>输入&#x2F;产物</th>
+<th>为什么需要这一层</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>发消息</td>
+<td>浏览器 Socket.IO</td>
+<td>send_message、sessionId、desktopId、content</td>
+<td>复用已认证长连接</td>
+</tr>
+<tr>
+<td>可信入口</td>
+<td>SessionGateway</td>
+<td>socket 对应身份、经过约束的请求</td>
+<td>不能相信客户端自报内部权限</td>
+</tr>
+<tr>
+<td>一轮执行编排</td>
+<td>SessionRunService</td>
+<td>Run 身份、消息、锁、工作树、策略、上下文</td>
+<td>一次聊天包含大量业务状态</td>
+</tr>
+<tr>
+<td>模型执行适配</td>
+<td>AgentService</td>
+<td>模型连接、Skills&#x2F;SubAgents 等参数</td>
+<td>对上层统一执行结果</td>
+</tr>
+<tr>
+<td>沙箱桥接</td>
+<td>SandboxAgentSseService</td>
+<td>endpoint、代理 token、HTTP session</td>
+<td>处理跨进程执行与流恢复</td>
+</tr>
+<tr>
+<td>执行</td>
+<td>agent-service + SDK</td>
+<td>真实文件&#x2F;命令操作和执行事件</td>
+<td>工具靠近工作区，隔离用户执行</td>
+</tr>
+<tr>
+<td>事件消费</td>
+<td>Backend writer&#x2F;finalizer</td>
+<td>Redis 事件流、最终 assistant 消息</td>
+<td>分开处理实时恢复与长期历史</td>
+</tr>
+<tr>
+<td>展示</td>
+<td>前端 store</td>
+<td>按 Run 与 seq 应用增量</td>
+<td>避免重复、串轮次、漏尾部</td>
+</tr>
+</tbody></table>
+<p><strong>控制面</strong>管理“谁能做什么、在哪做、如何记账和收口”；<strong>执行面</strong>真正运行 SDK 与工具。两者之间不是单次 RPC 返回一个字符串，而是有创建、订阅、交互、取消、确认等控制协议。</p>
+<h2 id="3-建议打开这些源码"><a href="#3-建议打开这些源码" class="headerlink" title="3. 建议打开这些源码"></a>3. 建议打开这些源码</h2><p>路径相对于仓库根目录。</p>
+<table>
+<thead>
+<tr>
+<th>入口</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>packages/frontend/src/lib/socket.ts:248</code></td>
+<td>连接 <code>/session</code> namespace</td>
+</tr>
+<tr>
+<td><code>packages/frontend/src/lib/socket.ts:578</code></td>
+<td>发 send_message</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/session/session.gateway.ts:432</code></td>
+<td>握手认证</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/session/session.gateway.ts:921</code></td>
+<td>消息入口</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/session/session-run.service.ts:917</code></td>
+<td>一轮执行编排</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/agent/agent.service.ts:284</code></td>
+<td>SDK 适配入口</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/application/sandbox-agent-sse.service.ts:1440</code></td>
+<td>沙箱执行生命周期</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/llm-proxy/llm-proxy-token.service.ts:44</code></td>
+<td>代理 token 签发</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/llm-proxy/llm-proxy.controller.ts:143</code></td>
+<td>代理请求验证、转发</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/session/stream/session-stream.store.ts:18</code></td>
+<td>Redis Lua 原子追加</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/common/redis-io.adapter.ts:22</code></td>
+<td>多 worker 广播</td>
+</tr>
+</tbody></table>
+<h2 id="4-Gateway：认证不等于授权"><a href="#4-Gateway：认证不等于授权" class="headerlink" title="4. Gateway：认证不等于授权"></a>4. Gateway：认证不等于授权</h2><p>浏览器连接 <code>/session</code> 时带 token。Gateway 校验 JWT，将身份关联到当前 socket；后续业务必须用这个可信身份，而不是请求体里的 userId。</p>
+<p>握手认证只回答“你是谁”，还要校验“你是否能访问此 Desktop&#x2F;Session”。join_session、join_desktop、resume_desktop_runs、stop_agent 等入口分别有资源权限检查。不要把一次握手认证说成对全部资源授权。</p>
+<h3 id="4-1-源码逐行注释：拒绝客户端伪造内部上下文"><a href="#4-1-源码逐行注释：拒绝客户端伪造内部上下文" class="headerlink" title="4.1 源码逐行注释：拒绝客户端伪造内部上下文"></a>4.1 源码逐行注释：拒绝客户端伪造内部上下文</h3><p>来源：<code>packages/backend/src/session/session.gateway.ts:921-933</code>，函数后续省略。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-meta">@SubscribeMessage</span>(<span class="hljs-string">&#x27;send_message&#x27;</span>) <span class="hljs-comment">// L921：将此方法注册为 Socket.IO 的消息事件处理器。</span><br><span class="hljs-keyword">async</span> <span class="hljs-title function_">handleSendMessage</span>(<span class="hljs-params"> <span class="hljs-comment">// L922：异步处理一条用户消息，不在此直接调用模型 HTTP API。</span></span><br><span class="hljs-params">  <span class="hljs-meta">@ConnectedSocket</span>() <span class="hljs-attr">client</span>: <span class="hljs-title class_">Socket</span>, <span class="hljs-comment">// L923：拿到真实连接对象，用它寻找已认证身份。</span></span><br><span class="hljs-params">  <span class="hljs-meta">@MessageBody</span>() <span class="hljs-attr">data</span>: <span class="hljs-title class_">SessionSendMessageData</span>, <span class="hljs-comment">// L924：请求体来自客户端，类型声明本身不是信任证明。</span></span><br><span class="hljs-params"></span>) &#123; <span class="hljs-comment">// L925：进入消息入口。</span><br>  <span class="hljs-keyword">const</span> user = <span class="hljs-variable language_">this</span>.<span class="hljs-property">connectedUsers</span>.<span class="hljs-title function_">get</span>(client.<span class="hljs-property">id</span>); <span class="hljs-comment">// L926：只从握手认证建立的映射取身份。</span><br>  <span class="hljs-keyword">if</span> (!user) <span class="hljs-keyword">return</span>; <span class="hljs-comment">// L927：没有可信身份则不继续执行。</span><br>  data.<span class="hljs-property">workflowReference</span> = <span class="hljs-literal">undefined</span>; <span class="hljs-comment">// L930：清除客户端自行构造的内部 Workflow 引用。</span><br>  data.<span class="hljs-property">systemContext</span> = <span class="hljs-literal">undefined</span>; <span class="hljs-comment">// L931：系统级上下文必须由服务端重新组织。</span><br>  data.<span class="hljs-property">workflowExecutionPolicy</span> = <span class="hljs-literal">undefined</span>; <span class="hljs-comment">// L932：不能由客户端自称已具备 Workflow 执行权限。</span><br>  data.<span class="hljs-property">messageMetadata</span> = <span class="hljs-literal">undefined</span>; <span class="hljs-comment">// L933：内部消息元信息也不接受客户端伪造值。</span><br></code></pre></td></tr></table></figure>
 
-这里示范的是**信任边界清理**，不是“检查四个字段就完成所有鉴权”。后续还会查询业务资源、解析执行上下文和权限。
-
-## 5. SessionRunService：一轮聊天其实是状态机
-
-主实现：`session-run.service.ts:928` 起。
-
-### 5.1 关键顺序
-
-1. 校验请求上下文，并检查是否与会话 compaction 冲突。
-2. 领取 Session 执行锁；忙则返回 SESSION_BUSY。
-3. **拿到执行锁后才保存用户消息**，避免失败的竞争请求落下一条永远不执行的消息。
-4. 注册 AbortController、执行身份和跨实例 owner lease。
-5. 准备 worktree；此阶段也能被 Stop 中断。
-6. 预分配 assistantMessageId，解析可信写策略。
-7. 建立 Run Stream Writer，通知执行已建立。
-8. 解析积分、模型、Agent/Team、SDK resume、记忆、MCP 等配置。
-9. 调 AgentService 并消费执行事件。
-10. 终态保存 assistant、释放锁，再通知前端 finalized/idle。
-
-对应位置：锁 `:1066`；用户消息 `:1160`；控制与 lease `:1246`；工作树 `:1391`；写策略 `:1492`；writer `:1620`；参数 `:3376`；执行调用 `:3454`。
-
-### 5.2 这几个状态不能混为一谈
-
-- 消息已保存：数据库有用户输入。
-- 执行已建立：平台已为这轮任务创建控制和事件身份。
-- SDK 已启动：执行面开始处理。
-- SDK FINAL：执行层已经结束。
-- assistant 已持久化且锁已释放：平台已完成收口，可以安全接下一问。
-
-如果先发 idle，再释放数据库锁，用户立即输入下一问可能得到 SESSION_BUSY。这属于跨层终态顺序问题，不是模型推理问题。
-
-### 5.3 必须记住的 ID
-
-| ID | 用途 | 不能替代什么 |
-|---|---|---|
-| desktopId | 稳定工作区业务身份 | 不是云实例 ID |
-| backend sessionId | 长期聊天容器 | 不是一次执行身份 |
-| userMessageId | 这一轮 Run 的业务锚点 | 不是 SDK messageId |
-| assistantMessageId | 预分配并最终持久化的回答身份 | 不能终态又创建另一条回答 |
-| executionLockToken | 区分当前执行 owner 与陈旧执行 | 不是模型 API token |
-| sandbox sessionId | 沙箱内一次执行与 SSE 通道 | 不是 SDK resume 身份 |
-| sdkSessionId | SDK 历史续接 | 不是 SSE 游标 |
-| sandboxEventId | 沙箱到 Backend 私有流序号 | 不是浏览器应用序号 |
-| seq | 平台 Run 增量协议序号 | 不是全系统全局消息顺序 |
-
-## 6. 找到正确沙箱，再建立 HTTP/SSE
-
-AgentService 默认进入 SandboxAgentSseService，后者从 Desktop 映射得到 provider 与 sandboxId，再解析 7777 服务端点。它不是把 SSE 搬到 SDK 命令通道中传输。
-
-### 6.1 源码逐行注释：endpoint 解析
-
-来源：`packages/backend/src/sandbox/application/sandbox-agent-sse.service.ts:1059-1063`。
-
+<p>这里示范的是<strong>信任边界清理</strong>，不是“检查四个字段就完成所有鉴权”。后续还会查询业务资源、解析执行上下文和权限。</p>
+<h2 id="5-SessionRunService：一轮聊天其实是状态机"><a href="#5-SessionRunService：一轮聊天其实是状态机" class="headerlink" title="5. SessionRunService：一轮聊天其实是状态机"></a>5. SessionRunService：一轮聊天其实是状态机</h2><p>主实现：<code>session-run.service.ts:928</code> 起。</p>
+<h3 id="5-1-关键顺序"><a href="#5-1-关键顺序" class="headerlink" title="5.1 关键顺序"></a>5.1 关键顺序</h3><ol>
+<li>校验请求上下文，并检查是否与会话 compaction 冲突。</li>
+<li>领取 Session 执行锁；忙则返回 SESSION_BUSY。</li>
+<li><strong>拿到执行锁后才保存用户消息</strong>，避免失败的竞争请求落下一条永远不执行的消息。</li>
+<li>注册 AbortController、执行身份和跨实例 owner lease。</li>
+<li>准备 worktree；此阶段也能被 Stop 中断。</li>
+<li>预分配 assistantMessageId，解析可信写策略。</li>
+<li>建立 Run Stream Writer，通知执行已建立。</li>
+<li>解析积分、模型、Agent&#x2F;Team、SDK resume、记忆、MCP 等配置。</li>
+<li>调 AgentService 并消费执行事件。</li>
+<li>终态保存 assistant、释放锁，再通知前端 finalized&#x2F;idle。</li>
+</ol>
+<p>对应位置：锁 <code>:1066</code>；用户消息 <code>:1160</code>；控制与 lease <code>:1246</code>；工作树 <code>:1391</code>；写策略 <code>:1492</code>；writer <code>:1620</code>；参数 <code>:3376</code>；执行调用 <code>:3454</code>。</p>
+<h3 id="5-2-这几个状态不能混为一谈"><a href="#5-2-这几个状态不能混为一谈" class="headerlink" title="5.2 这几个状态不能混为一谈"></a>5.2 这几个状态不能混为一谈</h3><ul>
+<li>消息已保存：数据库有用户输入。</li>
+<li>执行已建立：平台已为这轮任务创建控制和事件身份。</li>
+<li>SDK 已启动：执行面开始处理。</li>
+<li>SDK FINAL：执行层已经结束。</li>
+<li>assistant 已持久化且锁已释放：平台已完成收口，可以安全接下一问。</li>
+</ul>
+<p>如果先发 idle，再释放数据库锁，用户立即输入下一问可能得到 SESSION_BUSY。这属于跨层终态顺序问题，不是模型推理问题。</p>
+<h3 id="5-3-必须记住的-ID"><a href="#5-3-必须记住的-ID" class="headerlink" title="5.3 必须记住的 ID"></a>5.3 必须记住的 ID</h3><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>用途</th>
+<th>不能替代什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>desktopId</td>
+<td>稳定工作区业务身份</td>
+<td>不是云实例 ID</td>
+</tr>
+<tr>
+<td>backend sessionId</td>
+<td>长期聊天容器</td>
+<td>不是一次执行身份</td>
+</tr>
+<tr>
+<td>userMessageId</td>
+<td>这一轮 Run 的业务锚点</td>
+<td>不是 SDK messageId</td>
+</tr>
+<tr>
+<td>assistantMessageId</td>
+<td>预分配并最终持久化的回答身份</td>
+<td>不能终态又创建另一条回答</td>
+</tr>
+<tr>
+<td>executionLockToken</td>
+<td>区分当前执行 owner 与陈旧执行</td>
+<td>不是模型 API token</td>
+</tr>
+<tr>
+<td>sandbox sessionId</td>
+<td>沙箱内一次执行与 SSE 通道</td>
+<td>不是 SDK resume 身份</td>
+</tr>
+<tr>
+<td>sdkSessionId</td>
+<td>SDK 历史续接</td>
+<td>不是 SSE 游标</td>
+</tr>
+<tr>
+<td>sandboxEventId</td>
+<td>沙箱到 Backend 私有流序号</td>
+<td>不是浏览器应用序号</td>
+</tr>
+<tr>
+<td>seq</td>
+<td>平台 Run 增量协议序号</td>
+<td>不是全系统全局消息顺序</td>
+</tr>
+</tbody></table>
+<h2 id="6-找到正确沙箱，再建立-HTTP-SSE"><a href="#6-找到正确沙箱，再建立-HTTP-SSE" class="headerlink" title="6. 找到正确沙箱，再建立 HTTP&#x2F;SSE"></a>6. 找到正确沙箱，再建立 HTTP&#x2F;SSE</h2><p>AgentService 默认进入 SandboxAgentSseService，后者从 Desktop 映射得到 provider 与 sandboxId，再解析 7777 服务端点。它不是把 SSE 搬到 SDK 命令通道中传输。</p>
+<h3 id="6-1-源码逐行注释：endpoint-解析"><a href="#6-1-源码逐行注释：endpoint-解析" class="headerlink" title="6.1 源码逐行注释：endpoint 解析"></a>6.1 源码逐行注释：endpoint 解析</h3><p>来源：<code>packages/backend/src/sandbox/application/sandbox-agent-sse.service.ts:1059-1063</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">private</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">resolveEndpoint</span>(<span class="hljs-attr">desktopId</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;&#123; <span class="hljs-attr">baseUrl</span>: <span class="hljs-built_in">string</span>; <span class="hljs-attr">headers</span>: <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>&gt; &#125;&gt; &#123; <span class="hljs-comment">// L1059：输入业务身份，返回 HTTP 地址和访问网关所需头。</span><br>  <span class="hljs-keyword">const</span> &#123; sandboxId, provider &#125; = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">connectionPool</span>.<span class="hljs-title function_">resolveWithProvider</span>(desktopId); <span class="hljs-comment">// L1060：同一次解析取得实例 ID 与渠道，避免把它们拆成不一致的状态。</span><br>  <span class="hljs-keyword">const</span> &#123; url, headers &#125; = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">providerRegistry</span>.<span class="hljs-title function_">getRuntime</span>(provider).<span class="hljs-title function_">getEndpointUrl</span>(sandboxId, <span class="hljs-variable constant_">AGENT_PORT</span>); <span class="hljs-comment">// L1061：渠道适配器负责端点规则，上层不拼接厂商 URL。</span><br>  <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">baseUrl</span>: url, <span class="hljs-attr">headers</span>: headers ?? &#123;&#125; &#125;; <span class="hljs-comment">// L1062：将结果统一成内部 HTTP 客户端能直接使用的形状。</span><br>&#125; <span class="hljs-comment">// L1063：结束端点解析。</span><br></code></pre></td></tr></table></figure>
 
-来源：同文件 `:1065-1076`。
-
+<p>来源：同文件 <code>:1065-1076</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">private</span> <span class="hljs-title function_">sessionEndpointKey</span>(<span class="hljs-attr">desktopId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">sessionId</span>: <span class="hljs-built_in">string</span>): <span class="hljs-built_in">string</span> &#123; <span class="hljs-comment">// L1065：端点缓存必须区分 Desktop 内不同执行。</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;desktopId&#125;</span>\u0000<span class="hljs-subst">$&#123;sessionId&#125;</span>`</span>; <span class="hljs-comment">// L1066：用分隔符组合二元键，避免简单字符串拼接冲突。</span><br>&#125; <span class="hljs-comment">// L1067：结束键构造。</span><br><span class="hljs-keyword">private</span> <span class="hljs-title function_">rememberSessionEndpoint</span>(<span class="hljs-attr">desktopId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">sessionId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">endpoint</span>: <span class="hljs-title class_">AgentSessionEndpoint</span>): <span class="hljs-built_in">void</span> &#123; <span class="hljs-comment">// L1069：记录创建此沙箱会话时所用的具体端点。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">sessionEndpoints</span>.<span class="hljs-title function_">set</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">sessionEndpointKey</span>(desktopId, sessionId), endpoint); <span class="hljs-comment">// L1070：后续 respond/abort/reconnect 尽量回到原服务。</span><br>&#125; <span class="hljs-comment">// L1071：结束端点记忆。</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">async</span> <span class="hljs-title function_">getSessionEndpoint</span>(<span class="hljs-attr">desktopId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">sessionId</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">AgentSessionEndpoint</span>&gt; &#123; <span class="hljs-comment">// L1073：为一个既有执行取得端点。</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">sessionEndpoints</span>.<span class="hljs-title function_">get</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">sessionEndpointKey</span>(desktopId, sessionId)) <span class="hljs-comment">// L1074：优先复用原端点，因为内存 Session 只存在于原 Runtime。</span><br>    ?? <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">resolveEndpoint</span>(desktopId); <span class="hljs-comment">// L1075：缓存缺失才按当前 Desktop 解析。</span><br>&#125; <span class="hljs-comment">// L1076：结束既有执行端点查询。</span><br></code></pre></td></tr></table></figure>
 
-**为什么值得讲？** 冷重建会改变 sandboxId，但正在运行的内存 session 不会自动搬到新容器；不能每次请求都无脑按 Desktop 最新映射路由。
-
-### 6.2 创建与执行时序
-
-POST /sessions 只返回 created；GET events 成功绑定后，沙箱才 start/query。详细源码见 [第三份 Runtime 文档](03-沙箱内Agent-Runtime.md)。用户问答使用 respond；取消使用 abort；ACK 另走确认接口。
-
-## 7. LLM Proxy：真实 Key 代持，而非“没有凭证”
-
-模型调用是另一条子链路：
-
-沙箱 SDK → Backend LLM Proxy → SmartAPI/上游模型 → 流式响应。
-
-沙箱配置的 ANTHROPIC_API_KEY 默认是 sbx_ token；ANTHROPIC_BASE_URL 指向 Backend Proxy。沙箱 7777 网关访问 headers 与 sbx_ 是**两种不同凭证**：前者访问 Runtime，后者访问模型代理。
-
-### 7.1 源码逐行注释：签发 opaque token
-
-来源：`packages/backend/src/llm-proxy/llm-proxy-token.service.ts:52-63`。所属 create 方法的参数为 desktopId、employeeId、tenantId 及可选连接信息。
-
+<p><strong>为什么值得讲？</strong> 冷重建会改变 sandboxId，但正在运行的内存 session 不会自动搬到新容器；不能每次请求都无脑按 Desktop 最新映射路由。</p>
+<h3 id="6-2-创建与执行时序"><a href="#6-2-创建与执行时序" class="headerlink" title="6.2 创建与执行时序"></a>6.2 创建与执行时序</h3><p>POST &#x2F;sessions 只返回 created；GET events 成功绑定后，沙箱才 start&#x2F;query。详细源码见 <a href="03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime.md">第三份 Runtime 文档</a>。用户问答使用 respond；取消使用 abort；ACK 另走确认接口。</p>
+<h2 id="7-LLM-Proxy：真实-Key-代持，而非“没有凭证”"><a href="#7-LLM-Proxy：真实-Key-代持，而非“没有凭证”" class="headerlink" title="7. LLM Proxy：真实 Key 代持，而非“没有凭证”"></a>7. LLM Proxy：真实 Key 代持，而非“没有凭证”</h2><p>模型调用是另一条子链路：</p>
+<p>沙箱 SDK → Backend LLM Proxy → SmartAPI&#x2F;上游模型 → 流式响应。</p>
+<p>沙箱配置的 ANTHROPIC_API_KEY 默认是 sbx_ token；ANTHROPIC_BASE_URL 指向 Backend Proxy。沙箱 7777 网关访问 headers 与 sbx_ 是<strong>两种不同凭证</strong>：前者访问 Runtime，后者访问模型代理。</p>
+<h3 id="7-1-源码逐行注释：签发-opaque-token"><a href="#7-1-源码逐行注释：签发-opaque-token" class="headerlink" title="7.1 源码逐行注释：签发 opaque token"></a>7.1 源码逐行注释：签发 opaque token</h3><p>来源：<code>packages/backend/src/llm-proxy/llm-proxy-token.service.ts:52-63</code>。所属 create 方法的参数为 desktopId、employeeId、tenantId 及可选连接信息。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> token = <span class="hljs-string">`sbx_<span class="hljs-subst">$&#123;randomBytes(<span class="hljs-number">32</span>).toString(<span class="hljs-string">&#x27;hex&#x27;</span>)&#125;</span>`</span>; <span class="hljs-comment">// L52：生成 32 字节随机值并加类型前缀；这是随机查表凭证，不是 JWT。</span><br><span class="hljs-keyword">const</span> <span class="hljs-attr">payload</span>: <span class="hljs-title class_">SandboxTokenPayload</span> = &#123; <span class="hljs-comment">// L53：服务端保存的授权和路由上下文，不会把这些字段编码进 token。</span><br>  desktopId, <span class="hljs-comment">// L54：记录此次调用关联的工作区。</span><br>  employeeId, <span class="hljs-comment">// L55：记录调用用户身份，供权限与审计使用。</span><br>  tenantId, <span class="hljs-comment">// L56：记录租户范围。</span><br>  <span class="hljs-attr">expiresAt</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() + <span class="hljs-variable language_">this</span>.<span class="hljs-property">TTL_MS</span>, <span class="hljs-comment">// L57：显式过期时间；TTL_MS 在 L33 为 3 小时。</span><br>  ...(modelApiKey ? &#123; modelApiKey &#125; : &#123;&#125;), <span class="hljs-comment">// L58：可选模型连接凭证保留在 Backend Redis payload，不直接作为下发 token 文本。</span><br>  ...(modelBaseUrl ? &#123; modelBaseUrl &#125; : &#123;&#125;), <span class="hljs-comment">// L59：可选地址同样在服务端保存；是否使用要看实际代理转发代码。</span><br>  ...(actAsUsername ? &#123; actAsUsername &#125; : &#123;&#125;), <span class="hljs-comment">// L60：保存 Backend 选定的可信 acting user，而非沙箱自行声明的身份。</span><br>&#125;; <span class="hljs-comment">// L61：结束 token 关联数据。</span><br><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">redis</span>.<span class="hljs-title function_">set</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">key</span>(token), <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(payload), <span class="hljs-string">&#x27;PX&#x27;</span>, <span class="hljs-variable language_">this</span>.<span class="hljs-property">TTL_MS</span>); <span class="hljs-comment">// L63：以毫秒 TTL 存 Redis，签发后才能验证和吊销。</span><br></code></pre></td></tr></table></figure>
 
-当前 Proxy controller 实际转发使用 `smartApiAccessService.baseUrl/serviceKey`，不能因为 token payload 保留 modelApiKey 字段，就说必然优先使用它。引用：`llm-proxy.controller.ts:210`、`:234`。
-
-### 7.2 源码逐行注释：避免吊销后被续期复活
-
-来源：`llm-proxy-token.service.ts:101-112`，已省略之前读取 token 和过期检查。
-
+<p>当前 Proxy controller 实际转发使用 <code>smartApiAccessService.baseUrl/serviceKey</code>，不能因为 token payload 保留 modelApiKey 字段，就说必然优先使用它。引用：<code>llm-proxy.controller.ts:210</code>、<code>:234</code>。</p>
+<h3 id="7-2-源码逐行注释：避免吊销后被续期复活"><a href="#7-2-源码逐行注释：避免吊销后被续期复活" class="headerlink" title="7.2 源码逐行注释：避免吊销后被续期复活"></a>7.2 源码逐行注释：避免吊销后被续期复活</h3><p>来源：<code>llm-proxy-token.service.ts:101-112</code>，已省略之前读取 token 和过期检查。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> <span class="hljs-attr">renewedPayload</span>: <span class="hljs-title class_">SandboxTokenPayload</span> = &#123; <span class="hljs-comment">// L101：创建续期后的数据对象。</span><br>  ...payload, <span class="hljs-comment">// L102：保留原绑定用户、租户和连接信息。</span><br>  <span class="hljs-attr">expiresAt</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() + <span class="hljs-variable language_">this</span>.<span class="hljs-property">TTL_MS</span>, <span class="hljs-comment">// L103：将有效期向后延长一个完整 TTL。</span><br>&#125;; <span class="hljs-comment">// L104：结束续期 payload。</span><br><span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">redis</span>.<span class="hljs-title function_">set</span>( <span class="hljs-comment">// L105：以条件写回处理读取与写回之间可能发生的吊销。</span><br>  key, <span class="hljs-comment">// L106：续期的是原 token key，不重新签发另一个凭证。</span><br>  <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(renewedPayload), <span class="hljs-comment">// L107：写入新的显式到期时间。</span><br>  <span class="hljs-string">&#x27;PX&#x27;</span>, <span class="hljs-comment">// L108：Redis 过期时间单位为毫秒。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">TTL_MS</span>, <span class="hljs-comment">// L109：设置新的 Redis TTL，与 payload 到期时间相配合。</span><br>  <span class="hljs-string">&#x27;XX&#x27;</span>, <span class="hljs-comment">// L110：只有 key 仍存在才写；revoke 已删除时不会重新创建。</span><br>); <span class="hljs-comment">// L111：等待 Redis 返回条件写入结果。</span><br><span class="hljs-keyword">return</span> result === <span class="hljs-string">&#x27;OK&#x27;</span>; <span class="hljs-comment">// L112：告诉执行生命周期管理器续期是否真正成功。</span><br></code></pre></td></tr></table></figure>
 
-默认执行中每小时尝试续期，失败后较短间隔再尝试；执行完成或启动失败会主动 revoke。3 小时相对长期服务 Key 属于短效，不要讲成“每几分钟换一次”。
-
-**边界：**临时 token 仍然是能力凭证，不能泄露；撤销只影响后续授权，不撤销已完成工具副作用。默认 Key 隔离也不等于沙箱没有 Git、MCP 等其他凭证。
-
-## 8. 两层事件恢复，解决两类断线
-
-### 8.1 第一层：沙箱到 Backend
-
-作用：Backend HTTP 连接短时中断，重连同一 Runtime 执行。
-
-- 沙箱 eventSequence 编号。
-- Backend 维护最高连续接收 ID。
-- Last-Event-ID 回放，POST ACK 清理内存缓冲。
-- 终态有限保留，Runtime 重启后不保证恢复。
-
-来源：`sandbox-agent-sse.service.ts:628-640`。
-
+<p>默认执行中每小时尝试续期，失败后较短间隔再尝试；执行完成或启动失败会主动 revoke。3 小时相对长期服务 Key 属于短效，不要讲成“每几分钟换一次”。</p>
+<p><strong>边界：</strong>临时 token 仍然是能力凭证，不能泄露；撤销只影响后续授权，不撤销已完成工具副作用。默认 Key 隔离也不等于沙箱没有 Git、MCP 等其他凭证。</p>
+<h2 id="8-两层事件恢复，解决两类断线"><a href="#8-两层事件恢复，解决两类断线" class="headerlink" title="8. 两层事件恢复，解决两类断线"></a>8. 两层事件恢复，解决两类断线</h2><h3 id="8-1-第一层：沙箱到-Backend"><a href="#8-1-第一层：沙箱到-Backend" class="headerlink" title="8.1 第一层：沙箱到 Backend"></a>8.1 第一层：沙箱到 Backend</h3><p>作用：Backend HTTP 连接短时中断，重连同一 Runtime 执行。</p>
+<ul>
+<li>沙箱 eventSequence 编号。</li>
+<li>Backend 维护最高连续接收 ID。</li>
+<li>Last-Event-ID 回放，POST ACK 清理内存缓冲。</li>
+<li>终态有限保留，Runtime 重启后不保证恢复。</li>
+</ul>
+<p>来源：<code>sandbox-agent-sse.service.ts:628-640</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">if</span> (eventId &lt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">highestContiguousReceivedId</span>) &#123; <span class="hljs-comment">// L628：已经交接过的序号属于重复事件，不再次消费。</span><br>  currentEventType = <span class="hljs-string">&#x27;agent_event&#x27;</span>; <span class="hljs-comment">// L629：复位当前帧解析状态。</span><br>  currentData = <span class="hljs-string">&#x27;&#x27;</span>; <span class="hljs-comment">// L630：清空该帧数据，避免污染下一帧。</span><br>  currentId = <span class="hljs-string">&#x27;&#x27;</span>; <span class="hljs-comment">// L631：清空旧事件 ID。</span><br>  <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// L632：继续解析后面的帧。</span><br>&#125; <span class="hljs-comment">// L633：结束重复事件处理。</span><br><span class="hljs-keyword">if</span> (eventId !== <span class="hljs-variable language_">this</span>.<span class="hljs-property">highestContiguousReceivedId</span> + <span class="hljs-number">1</span>) &#123; <span class="hljs-comment">// L634：新事件必须严格连续，不能把缺失事件跨过去。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">logger</span>.<span class="hljs-title function_">warn</span>( <span class="hljs-comment">// L635：记录缺口诊断。</span><br>    <span class="hljs-string">`SSE event gap: expected=<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.highestContiguousReceivedId + <span class="hljs-number">1</span>&#125;</span>, received=<span class="hljs-subst">$&#123;eventId&#125;</span>`</span>, <span class="hljs-comment">// L636：输出期望与实收序号。</span><br>  ); <span class="hljs-comment">// L637：结束日志调用。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">recover</span>(generation, <span class="hljs-string">&#x27;event ID gap&#x27;</span>); <span class="hljs-comment">// L638：恢复当前连接代次的事件流，而非重发任务。</span><br>  <span class="hljs-keyword">return</span>; <span class="hljs-comment">// L639：停止使用存在缺口的连接继续推进游标。</span><br>&#125; <span class="hljs-comment">// L640：结束连续性检查。</span><br></code></pre></td></tr></table></figure>
 
-来源：同文件 `:649-657`。
-
+<p>来源：同文件 <code>:649-657</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">try</span> &#123; <span class="hljs-comment">// L649：保护向上层同步交接事件的动作。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">emit</span>(<span class="hljs-string">&#x27;event&#x27;</span>, &#123; ...parsed, <span class="hljs-attr">sandboxEventId</span>: <span class="hljs-title class_">String</span>(eventId) &#125;); <span class="hljs-comment">// L650：附原始沙箱事件号，上层可进一步去重和持久化。</span><br>&#125; <span class="hljs-keyword">catch</span> (error) &#123; <span class="hljs-comment">// L651：同步 listener 抛错意味着交接未成功。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">reportError</span>(error <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Error</span> ? error : <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-title class_">String</span>(error))); <span class="hljs-comment">// L652：归一错误并报告。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">recover</span>(generation, <span class="hljs-string">&#x27;event handoff failed&#x27;</span>); <span class="hljs-comment">// L653：恢复连接以重新交接，而不是确认失败事件。</span><br>  <span class="hljs-keyword">return</span>; <span class="hljs-comment">// L654：不推进确认游标。</span><br>&#125; <span class="hljs-comment">// L655：结束同步交接保护。</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">highestContiguousReceivedId</span> = eventId; <span class="hljs-comment">// L656：只表示接收层交接成功，不等待上层所有异步持久化完成。</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">reconnectAttempt</span> = <span class="hljs-number">0</span>; <span class="hljs-comment">// L657：有效连续事件到达后重置恢复尝试计数。</span><br></code></pre></td></tr></table></figure>
 
-### 8.2 第二层：Backend 到浏览器
-
-作用：浏览器刷新、跨 worker 重连或发现展示事件缺口。
-
-Backend 为 Run 维护单调 seq，Redis Stream 保存有界增量，snapshot 保存可恢复状态。浏览器按 userMessageId + assistantMessageId + seq 应用事件。
-
-写入 Redis 和 seq 分配通过 Lua 在 Redis 内原子执行。这能避免旧 owner 污染新执行，也避免多个命令之间出现“序号更新了但事件还没追加”的可见窗口。**原子性仅限此脚本，不包含外部数据库和工具操作。**
-
-### 8.3 源码逐行注释：Redis 追加前的 owner 与重复检查
-
-来源：`packages/backend/src/session/stream/session-stream.store.ts:19-31`。下方展示模板字符串内的原 Lua 语句。
-
+<h3 id="8-2-第二层：Backend-到浏览器"><a href="#8-2-第二层：Backend-到浏览器" class="headerlink" title="8.2 第二层：Backend 到浏览器"></a>8.2 第二层：Backend 到浏览器</h3><p>作用：浏览器刷新、跨 worker 重连或发现展示事件缺口。</p>
+<p>Backend 为 Run 维护单调 seq，Redis Stream 保存有界增量，snapshot 保存可恢复状态。浏览器按 userMessageId + assistantMessageId + seq 应用事件。</p>
+<p>写入 Redis 和 seq 分配通过 Lua 在 Redis 内原子执行。这能避免旧 owner 污染新执行，也避免多个命令之间出现“序号更新了但事件还没追加”的可见窗口。<strong>原子性仅限此脚本，不包含外部数据库和工具操作。</strong></p>
+<h3 id="8-3-源码逐行注释：Redis-追加前的-owner-与重复检查"><a href="#8-3-源码逐行注释：Redis-追加前的-owner-与重复检查" class="headerlink" title="8.3 源码逐行注释：Redis 追加前的 owner 与重复检查"></a>8.3 源码逐行注释：Redis 追加前的 owner 与重复检查</h3><p>来源：<code>packages/backend/src/session/stream/session-stream.store.ts:19-31</code>。下方展示模板字符串内的原 Lua 语句。</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> raw = redis.call(<span class="hljs-string">&#x27;GET&#x27;</span>, KEYS[<span class="hljs-number">1</span>]) <span class="hljs-comment">-- L19：读取 Run 元数据，包含 owner、状态、seq 等。</span><br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> raw <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> &#123;<span class="hljs-string">&#x27;NOT_FOUND&#x27;</span>&#125; <span class="hljs-keyword">end</span> <span class="hljs-comment">-- L20：Run 不存在时拒绝追加，不能凭一条迟到事件重建身份。</span><br><span class="hljs-keyword">local</span> meta = cjson.decode(raw) <span class="hljs-comment">-- L21：将 JSON 元数据解析成 Lua table。</span><br><span class="hljs-keyword">if</span> meta.executionWorkerId ~= ARGV[<span class="hljs-number">1</span>] <span class="hljs-keyword">or</span> meta.executionLockToken ~= ARGV[<span class="hljs-number">2</span>] <span class="hljs-keyword">then</span> <span class="hljs-comment">-- L22：同时检查 worker 与本轮执行 token。</span><br>  <span class="hljs-keyword">return</span> &#123;<span class="hljs-string">&#x27;STALE_EXECUTION&#x27;</span>&#125; <span class="hljs-comment">-- L23：旧 owner 或旧轮次事件不允许写入当前流。</span><br><span class="hljs-keyword">end</span> <span class="hljs-comment">-- L24：结束 owner fence 检查。</span><br><span class="hljs-keyword">if</span> meta.<span class="hljs-built_in">status</span> ~= <span class="hljs-string">&#x27;starting&#x27;</span> <span class="hljs-keyword">and</span> meta.<span class="hljs-built_in">status</span> ~= <span class="hljs-string">&#x27;running&#x27;</span> <span class="hljs-keyword">and</span> meta.<span class="hljs-built_in">status</span> ~= <span class="hljs-string">&#x27;stopping&#x27;</span> <span class="hljs-keyword">then</span> <span class="hljs-comment">-- L25：仅活跃执行状态可追加业务事件。</span><br>  <span class="hljs-keyword">return</span> &#123;<span class="hljs-string">&#x27;NOT_ACTIVE&#x27;</span>&#125; <span class="hljs-comment">-- L26：终态不应被迟到事件继续修改。</span><br><span class="hljs-keyword">end</span> <span class="hljs-comment">-- L27：结束状态检查。</span><br><span class="hljs-keyword">if</span> ARGV[<span class="hljs-number">4</span>] ~= <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">then</span> <span class="hljs-comment">-- L28：有原始去重键时才进行来源事件去重。</span><br>  <span class="hljs-keyword">local</span> duplicate = redis.call(<span class="hljs-string">&#x27;HGET&#x27;</span>, KEYS[<span class="hljs-number">3</span>], ARGV[<span class="hljs-number">4</span>]) <span class="hljs-comment">-- L29：查来源事件是否已经分配过平台 seq。</span><br>  <span class="hljs-keyword">if</span> duplicate <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> &#123;<span class="hljs-string">&#x27;DUPLICATE&#x27;</span>, duplicate&#125; <span class="hljs-keyword">end</span> <span class="hljs-comment">-- L30：重复事件返回既有结果，不再追加。</span><br><span class="hljs-keyword">end</span> <span class="hljs-comment">-- L31：结束重复检查。</span><br></code></pre></td></tr></table></figure>
 
-来源：同文件 `:38-49`；之前还校验协议版本和 Run 身份。
-
+<p>来源：同文件 <code>:38-49</code>；之前还校验协议版本和 Run 身份。</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> seq = <span class="hljs-built_in">tonumber</span>(meta.currentSeq) + <span class="hljs-number">1</span> <span class="hljs-comment">-- L38：为当前 Run 生成下一个序号，不是跨系统全局序号。</span><br>event.seq = seq <span class="hljs-comment">-- L39：序号写进事件，前端依靠它有序应用。</span><br>meta.currentSeq = seq <span class="hljs-comment">-- L40：同步更新 Run 高水位。</span><br>meta.updatedAt = event.occurredAt <span class="hljs-comment">-- L41：保存最近事件时间。</span><br><span class="hljs-keyword">local</span> encodedEvent = cjson.encode(event) <span class="hljs-comment">-- L42：序列化最终带 seq 的事件。</span><br>redis.call(<span class="hljs-string">&#x27;XADD&#x27;</span>, KEYS[<span class="hljs-number">2</span>], <span class="hljs-string">&#x27;MAXLEN&#x27;</span>, <span class="hljs-string">&#x27;~&#x27;</span>, ARGV[<span class="hljs-number">6</span>], <span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-string">&#x27;seq&#x27;</span>, <span class="hljs-built_in">tostring</span>(seq), <span class="hljs-string">&#x27;event&#x27;</span>, encodedEvent) <span class="hljs-comment">-- L43：追加有界 Redis Stream，近似裁剪长度；Redis 内部 ID 与平台 seq 是不同字段。</span><br><span class="hljs-keyword">if</span> ARGV[<span class="hljs-number">4</span>] ~= <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">then</span> redis.call(<span class="hljs-string">&#x27;HSET&#x27;</span>, KEYS[<span class="hljs-number">3</span>], ARGV[<span class="hljs-number">4</span>], <span class="hljs-built_in">tostring</span>(seq)) <span class="hljs-keyword">end</span> <span class="hljs-comment">-- L44：记录来源事件到 seq 的映射，支持后续去重。</span><br>redis.call(<span class="hljs-string">&#x27;SET&#x27;</span>, KEYS[<span class="hljs-number">1</span>], cjson.encode(meta), <span class="hljs-string">&#x27;EX&#x27;</span>, ARGV[<span class="hljs-number">5</span>]) <span class="hljs-comment">-- L45：写回元数据并刷新 TTL。</span><br>redis.call(<span class="hljs-string">&#x27;EXPIRE&#x27;</span>, KEYS[<span class="hljs-number">2</span>], ARGV[<span class="hljs-number">5</span>]) <span class="hljs-comment">-- L46：刷新事件流保留期。</span><br>redis.call(<span class="hljs-string">&#x27;EXPIRE&#x27;</span>, KEYS[<span class="hljs-number">3</span>], ARGV[<span class="hljs-number">5</span>]) <span class="hljs-comment">-- L47：刷新去重索引保留期。</span><br>redis.call(<span class="hljs-string">&#x27;EXPIRE&#x27;</span>, KEYS[<span class="hljs-number">4</span>], ARGV[<span class="hljs-number">5</span>]) <span class="hljs-comment">-- L48：刷新此 Run 关联恢复数据键的保留期。</span><br>redis.call(<span class="hljs-string">&#x27;EXPIRE&#x27;</span>, KEYS[<span class="hljs-number">5</span>], ARGV[<span class="hljs-number">5</span>]) <span class="hljs-comment">-- L49：刷新另一关联恢复键保留期，具体键由脚本调用方传入。</span><br></code></pre></td></tr></table></figure>
 
-默认 running TTL 1 小时，终态通常 30 分钟，特殊收口失败保留更久；Stream 近似保留 10000 条。它是恢复日志，不是永久聊天历史。
-
-## 9. Redis 有三个职责，不要只说“用了 Redis”
-
-| 机制 | 问题 | 是否保存历史 |
-|---|---|---|
-| Socket.IO Redis Adapter | 执行在 A，但浏览器连 B，如何广播 | Pub/Sub 不为离线客户端保存历史 |
-| Run Redis Stream + snapshot | 浏览器漏事件、刷新，如何补状态 | 有界、带 TTL |
-| execution owner lease + 控制通知 | Stop/人工回答应该送给哪个 worker | 保存控制状态，非聊天历史 |
-
-### 9.1 源码逐行注释：跨实例适配器
-
-来源：`packages/backend/src/common/redis-io.adapter.ts:23-25`，就绪等待部分省略。
-
+<p>默认 running TTL 1 小时，终态通常 30 分钟，特殊收口失败保留更久；Stream 近似保留 10000 条。它是恢复日志，不是永久聊天历史。</p>
+<h2 id="9-Redis-有三个职责，不要只说“用了-Redis”"><a href="#9-Redis-有三个职责，不要只说“用了-Redis”" class="headerlink" title="9. Redis 有三个职责，不要只说“用了 Redis”"></a>9. Redis 有三个职责，不要只说“用了 Redis”</h2><table>
+<thead>
+<tr>
+<th>机制</th>
+<th>问题</th>
+<th>是否保存历史</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Socket.IO Redis Adapter</td>
+<td>执行在 A，但浏览器连 B，如何广播</td>
+<td>Pub&#x2F;Sub 不为离线客户端保存历史</td>
+</tr>
+<tr>
+<td>Run Redis Stream + snapshot</td>
+<td>浏览器漏事件、刷新，如何补状态</td>
+<td>有界、带 TTL</td>
+</tr>
+<tr>
+<td>execution owner lease + 控制通知</td>
+<td>Stop&#x2F;人工回答应该送给哪个 worker</td>
+<td>保存控制状态，非聊天历史</td>
+</tr>
+</tbody></table>
+<h3 id="9-1-源码逐行注释：跨实例适配器"><a href="#9-1-源码逐行注释：跨实例适配器" class="headerlink" title="9.1 源码逐行注释：跨实例适配器"></a>9.1 源码逐行注释：跨实例适配器</h3><p>来源：<code>packages/backend/src/common/redis-io.adapter.ts:23-25</code>，就绪等待部分省略。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> redisUrl = process.<span class="hljs-property">env</span>.<span class="hljs-property">REDIS_URL</span> || <span class="hljs-string">&#x27;redis://127.0.0.1:6379&#x27;</span>; <span class="hljs-comment">// L23：从运行环境读取 Redis 地址，默认指向本机开发实例。</span><br><span class="hljs-keyword">const</span> pubClient = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Redis</span>(redisUrl); <span class="hljs-comment">// L24：创建发布连接，用于广播消息。</span><br><span class="hljs-keyword">const</span> subClient = pubClient.<span class="hljs-title function_">duplicate</span>(); <span class="hljs-comment">// L25：复制出独立订阅连接，避免混用订阅模式连接。</span><br></code></pre></td></tr></table></figure>
 
-来源：同文件 `:39` 与 `:43-47`，为两个独立片段。
-
+<p>来源：同文件 <code>:39</code> 与 <code>:43-47</code>，为两个独立片段。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-variable language_">this</span>.<span class="hljs-property">adapterConstructor</span> = <span class="hljs-title function_">createAdapter</span>(pubClient, subClient); <span class="hljs-comment">// L39：使用成对发布/订阅连接构造跨实例 Socket.IO adapter。</span><br></code></pre></td></tr></table></figure>
 
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-title function_">createIOServer</span>(<span class="hljs-params"><span class="hljs-attr">port</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">options</span>?: <span class="hljs-title class_">ServerOptions</span></span>) &#123; <span class="hljs-comment">// L43：覆盖 Nest 创建 Socket.IO server 的钩子。</span><br>  <span class="hljs-keyword">const</span> server = <span class="hljs-variable language_">super</span>.<span class="hljs-title function_">createIOServer</span>(port, options); <span class="hljs-comment">// L44：先创建标准 server，保留框架基础行为。</span><br>  server.<span class="hljs-title function_">adapter</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">adapterConstructor</span>); <span class="hljs-comment">// L45：让 room 广播可以跨 worker 分发。</span><br>  <span class="hljs-keyword">return</span> server; <span class="hljs-comment">// L46：返回安装好 adapter 的 server。</span><br>&#125; <span class="hljs-comment">// L47：结束 server 构造钩子。</span><br></code></pre></td></tr></table></figure>
 
-浏览器恢复时先 join room，再读恢复水位，允许实时和回放重复，由 seq 去重，避免两个阶段之间形成漏事件空窗。
-
-## 10. 失败场景怎么解释
-
-| 场景 | 当前处理 | 不应夸大的点 |
-|---|---|---|
-| 同 Session 并发发送 | 执行锁拒绝第二个请求 | 不是给每条用户消息自动排队 |
-| 浏览器断线 | 不直接取消 SDK，可后台继续 | 依赖保留窗口恢复，不是永久重放 |
-| 私有 SSE 断线 | 重接原执行并回放 | 不等于重跑 prompt |
-| 恢复窗口耗尽 | 无 FINAL 则显式失败，尝试 abort | socket close 不等于成功 |
-| 用户 Stop | owner 定位、AbortController、远端 abort | 取消后保留短窗口收 usage/FINAL |
-| Redis 写流失败 | writer 可 degraded，继续本机广播 | 跨实例恢复保证会下降 |
-| Backend owner 改变 | execution token 限制旧执行收口/写流 | DB、Redis、外部 API 不在一个事务里 |
-| 终态 assistant 保存失败 | 走失败收口与恢复路径 | 模型结束不代表平台持久化成功 |
-
-平台超时见 `packages/backend/src/session/session-execution.constants.ts:6`：首事件 3 分钟、不活跃 30 分钟、最大 10 小时。首事件不是严格首 token 指标，heartbeat 也不能无限掩盖启动卡住。
-
-## 11. 面试表达模板
-
-### 一分钟版
-
-> 一次聊天在我们平台中是一条跨进程流水线。前端通过 Socket.IO 到 Gateway，服务端把连接身份转成可信执行上下文；SessionRunService 负责锁、消息、工作树、写策略和 Run 身份，AgentService 统一模型执行参数，SandboxAgentSseService 将任务交给沙箱内 SDK。工具在沙箱就地执行，事件先经私有 SSE 回 Backend，再经 Redis Run Stream 和 Socket.IO 回浏览器。我们把两层断线恢复分开，并用执行 token 防止旧 owner 污染当前轮次；模型凭证默认由 Backend 代持，只下发可续期、可吊销的临时代理 token。
-
-### 追问：你的核心工程难点是什么？
-
-选择讲三个，而不是罗列十几个类：
-
-1. **执行身份和状态收口**：并发发送、Stop、人工回答不能串到另一轮。
-2. **两层可靠交付**：私有 SSE 回放与浏览器 Stream/snapshot 分开，明确 ACK 的保障边界。
-3. **凭证治理**：真实 Key 代持、用户权限透传、token 续期与结束吊销。
-
-### 追问：是不是 exactly-once？
-
-不是。源码包含事件去重、连续序号、owner fencing、幂等收口等局部保证，但私有 ACK 并非数据库提交确认，工具副作用也不在 Redis 事务里。准确目标是有限窗口下恢复、有序应用和防止陈旧执行污染。
-
-### 追问：有哪些指标能证明效果？
-
-应真实采集：执行建立耗时、首业务事件耗时、SSE 恢复成功率、浏览器补流次数、终态落库延迟、锁冲突率、代理鉴权失败率。源码不能推导出生产百分比；简历里没有实测就不要写“零丢失”“性能提升 80%”。
-
-## 12. 复习验收
-
-- 不看文件能画出四个进程/系统之间的调用方向吗？
-- 能解释 AgentService 和 SessionRunService 的区别吗？
-- 能说清“为什么 ACK 后仍不保证数据库落盘”吗？
-- 能区分 Redis Adapter、Stream、execution lease 吗？
-- 能解释先释放锁再发 idle 的用户体验含义吗？
-- 能把模型请求路径与 Agent 事件路径分别画出来吗？
-
-继续读 [02｜双 Provider](02-双Provider沙箱抽象.md) 与 [03｜Runtime](03-沙箱内Agent-Runtime.md)，分别理解“执行环境怎么选”和“环境内如何真正执行”。
-
-
+<p>浏览器恢复时先 join room，再读恢复水位，允许实时和回放重复，由 seq 去重，避免两个阶段之间形成漏事件空窗。</p>
+<h2 id="10-失败场景怎么解释"><a href="#10-失败场景怎么解释" class="headerlink" title="10. 失败场景怎么解释"></a>10. 失败场景怎么解释</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>当前处理</th>
+<th>不应夸大的点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>同 Session 并发发送</td>
+<td>执行锁拒绝第二个请求</td>
+<td>不是给每条用户消息自动排队</td>
+</tr>
+<tr>
+<td>浏览器断线</td>
+<td>不直接取消 SDK，可后台继续</td>
+<td>依赖保留窗口恢复，不是永久重放</td>
+</tr>
+<tr>
+<td>私有 SSE 断线</td>
+<td>重接原执行并回放</td>
+<td>不等于重跑 prompt</td>
+</tr>
+<tr>
+<td>恢复窗口耗尽</td>
+<td>无 FINAL 则显式失败，尝试 abort</td>
+<td>socket close 不等于成功</td>
+</tr>
+<tr>
+<td>用户 Stop</td>
+<td>owner 定位、AbortController、远端 abort</td>
+<td>取消后保留短窗口收 usage&#x2F;FINAL</td>
+</tr>
+<tr>
+<td>Redis 写流失败</td>
+<td>writer 可 degraded，继续本机广播</td>
+<td>跨实例恢复保证会下降</td>
+</tr>
+<tr>
+<td>Backend owner 改变</td>
+<td>execution token 限制旧执行收口&#x2F;写流</td>
+<td>DB、Redis、外部 API 不在一个事务里</td>
+</tr>
+<tr>
+<td>终态 assistant 保存失败</td>
+<td>走失败收口与恢复路径</td>
+<td>模型结束不代表平台持久化成功</td>
+</tr>
+</tbody></table>
+<p>平台超时见 <code>packages/backend/src/session/session-execution.constants.ts:6</code>：首事件 3 分钟、不活跃 30 分钟、最大 10 小时。首事件不是严格首 token 指标，heartbeat 也不能无限掩盖启动卡住。</p>
+<h2 id="11-面试表达模板"><a href="#11-面试表达模板" class="headerlink" title="11. 面试表达模板"></a>11. 面试表达模板</h2><h3 id="一分钟版"><a href="#一分钟版" class="headerlink" title="一分钟版"></a>一分钟版</h3><blockquote>
+<p>一次聊天在我们平台中是一条跨进程流水线。前端通过 Socket.IO 到 Gateway，服务端把连接身份转成可信执行上下文；SessionRunService 负责锁、消息、工作树、写策略和 Run 身份，AgentService 统一模型执行参数，SandboxAgentSseService 将任务交给沙箱内 SDK。工具在沙箱就地执行，事件先经私有 SSE 回 Backend，再经 Redis Run Stream 和 Socket.IO 回浏览器。我们把两层断线恢复分开，并用执行 token 防止旧 owner 污染当前轮次；模型凭证默认由 Backend 代持，只下发可续期、可吊销的临时代理 token。</p>
+</blockquote>
+<h3 id="追问：你的核心工程难点是什么？"><a href="#追问：你的核心工程难点是什么？" class="headerlink" title="追问：你的核心工程难点是什么？"></a>追问：你的核心工程难点是什么？</h3><p>选择讲三个，而不是罗列十几个类：</p>
+<ol>
+<li><strong>执行身份和状态收口</strong>：并发发送、Stop、人工回答不能串到另一轮。</li>
+<li><strong>两层可靠交付</strong>：私有 SSE 回放与浏览器 Stream&#x2F;snapshot 分开，明确 ACK 的保障边界。</li>
+<li><strong>凭证治理</strong>：真实 Key 代持、用户权限透传、token 续期与结束吊销。</li>
+</ol>
+<h3 id="追问：是不是-exactly-once？"><a href="#追问：是不是-exactly-once？" class="headerlink" title="追问：是不是 exactly-once？"></a>追问：是不是 exactly-once？</h3><p>不是。源码包含事件去重、连续序号、owner fencing、幂等收口等局部保证，但私有 ACK 并非数据库提交确认，工具副作用也不在 Redis 事务里。准确目标是有限窗口下恢复、有序应用和防止陈旧执行污染。</p>
+<h3 id="追问：有哪些指标能证明效果？"><a href="#追问：有哪些指标能证明效果？" class="headerlink" title="追问：有哪些指标能证明效果？"></a>追问：有哪些指标能证明效果？</h3><p>应真实采集：执行建立耗时、首业务事件耗时、SSE 恢复成功率、浏览器补流次数、终态落库延迟、锁冲突率、代理鉴权失败率。源码不能推导出生产百分比；简历里没有实测就不要写“零丢失”“性能提升 80%”。</p>
+<h2 id="12-复习验收"><a href="#12-复习验收" class="headerlink" title="12. 复习验收"></a>12. 复习验收</h2><ul>
+<li>不看文件能画出四个进程&#x2F;系统之间的调用方向吗？</li>
+<li>能解释 AgentService 和 SessionRunService 的区别吗？</li>
+<li>能说清“为什么 ACK 后仍不保证数据库落盘”吗？</li>
+<li>能区分 Redis Adapter、Stream、execution lease 吗？</li>
+<li>能解释先释放锁再发 idle 的用户体验含义吗？</li>
+<li>能把模型请求路径与 Agent 事件路径分别画出来吗？</li>
+</ul>
+<p>继续读 <a href="02-%E5%8F%8CProvider%E6%B2%99%E7%AE%B1%E6%8A%BD%E8%B1%A1.md">02｜双 Provider</a> 与 <a href="03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime.md">03｜Runtime</a>，分别理解“执行环境怎么选”和“环境内如何真正执行”。</p>
 
                 
               </div>

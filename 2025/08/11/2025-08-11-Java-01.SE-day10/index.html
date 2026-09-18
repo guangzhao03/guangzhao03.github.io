@@ -19,19 +19,21 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day10  ## Set集合  - 无序，不重复，无索引； - HashSet：无序，不重复，无索引 - LinkedHashSet：有序，不重复，无索引 - TreeSet：排序，不重复，无索引  ### HashSet底层原理  哈希值：  - int类型的随机值，Java中每个对象都有一个哈希值  - Java中所有对象，都可以调用Object类提供的&#96;hashcode()&#96;方法，返">
+    <meta name="description" content="day10Set集合 无序，不重复，无索引； HashSet：无序，不重复，无索引 LinkedHashSet：有序，不重复，无索引 TreeSet：排序，不重复，无索引  HashSet底层原理哈希值：  int类型的随机值，Java中每个对象都有一个哈希值  Java中所有对象，都可以调用Object类提供的hashcode()方法，返回对象自己的哈希值   对象哈希值的特点：  同一个对象多">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day10">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/08/11/2025-08-11-Java-01.SE-day10/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day10  ## Set集合  - 无序，不重复，无索引； - HashSet：无序，不重复，无索引 - LinkedHashSet：有序，不重复，无索引 - TreeSet：排序，不重复，无索引  ### HashSet底层原理  哈希值：  - int类型的随机值，Java中每个对象都有一个哈希值  - Java中所有对象，都可以调用Object类提供的&#96;hashcode()&#96;方法，返">
+<meta property="og:description" content="day10Set集合 无序，不重复，无索引； HashSet：无序，不重复，无索引 LinkedHashSet：有序，不重复，无索引 TreeSet：排序，不重复，无索引  HashSet底层原理哈希值：  int类型的随机值，Java中每个对象都有一个哈希值  Java中所有对象，都可以调用Object类提供的hashcode()方法，返回对象自己的哈希值   对象哈希值的特点：  同一个对象多">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-08-11-Java-01.SE-day10-image-20250709175715751.png">
 <meta property="article:published_time" content="2025-08-11T10:41:33.000Z">
 <meta property="article:modified_time" content="2025-08-11T10:41:33.000Z">
 <meta property="article:author" content="coolcys">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Java SE">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://guangzhao03.github.io/img/posts/2025-08-11-Java-01.SE-day10-image-20250709175715751.png">
   
   
   
@@ -327,7 +329,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.4k 字
+          3.2k 字
         
       </span>
     
@@ -338,7 +340,7 @@
         
         
         
-          29 分钟
+          27 分钟
         
       </span>
     
@@ -382,239 +384,168 @@
             
               <div class="markdown-body">
                 
-                
-# day10
-
-## Set集合
-
-- 无序，不重复，无索引；
-- HashSet：无序，不重复，无索引
-- LinkedHashSet：有序，不重复，无索引
-- TreeSet：排序，不重复，无索引
-
-### HashSet底层原理
-
-哈希值：
-
-- int类型的随机值，Java中每个对象都有一个哈希值
-
-- Java中所有对象，都可以调用Object类提供的`hashcode()`方法，返回对象自己的哈希值
-
-对象哈希值的特点：
-
-- 同一个对象多次调用hashcode()方法返回的哈希值是相同的
-
-- 不同的对象，他们的哈希值大概率不相等，但也可能相等（哈希碰撞）
-
-底层原理
-
-- 基于哈希表存储数据的。
-
-哈希表：
-
-- JDK8之前，哈希表=数组+链表
-- JDK8开始，哈希表=数组+链表+红黑树
-- 哈希表是一种增删改查数据，性能都比较好的数据结构 
-
-
-
-- JDK8之前，新元素存入数组，占老元素位置，老元素挂下面
-- JDK8之后，新元素直接挂老元素下面
-
-> 拉链法
-
-- JDK8之后，当链表长度超过8，数组长度>=64时，自动将链表转化为红黑树
-
-### HashSet集合元素的去重操作
-
-需求：
-
-创建一个存储学生对象的集合，存储多个学生对象，要求：多个学生对象的成员变量值相同时，我们就认为是同一个对象，要求只保留一个
-
-分析：
-
-1. 定义学生类，创建HashSet集合对象，创建学生对象
-2. 把学生加入集合
-
-结论：如果希望Set集合认为2个内容一样得对象是重复的，必须重写对象得hashcode()方法和equals()方法
-
-> 有些对象hashcode一样但是内容不一样，哈希冲突，所以需要二维判断equals()方法
-
-
-
-### LinkedHashSet
-
-- 依然基于哈希表（数组、链表、红黑树）实现的
-- 但是，它的每个元素都额外多了一个双链表的机制记录他前后元素的位置
-
-基于LinkedHashMap实现
-
-### TreeSet
-
-- 特点：无重复、无索引、可排序(默认升序)
-- 底层基于红黑树实现 
-
-注意：
-
-- 对于数值类型：Integer、Double，默认按照数值本身的大小进行升序排序
-- 对于字符串类型：默认按照首字母的编号升序排列
-- 对于自定义类型Student对象，TreeSet默认无法直接排序
-
-> TreeSet默认不能给自定义对象排序，不知道排序规则
->
-> 1、对象类实现Comparable比较接口，重写compareTo方法，制定比较规则
->
-> t2.compareTo(t1);
->
-> t2=this,t1=o;  
->
-> 规定：如果你认为左边大于右边则返回正的 
-
-> 2、TreeSet集合自带比较器Comparator对象，指定比较规则
-
-
-
-## Map集合
-
-- 双列集合
-
-Map集合也被叫做“键对值集合”，Map的键不允许重复，但值可以重复。
-
-### Map集合特点
-
-注意：Map系列集合的特点都是由键决定的，值只是一个附属品，值不做要求的。
-
-- HashMap：无序、不重复、无索引
-- LinkedHashMap：有序、不重复、无索引
-- TreeMap：按照大小默认升序排序、无重复、无索引
-
-#### Map集合的常用方法
-
-##### Map集合的遍历方式
-
-一、键找值
-
-通过 .keySet()方法返回键的Set集合，再通过遍历Set集合调用Map的get()方法找到值。
-
-二、键值对
-
-把“键值对”看成一个整体进行遍历
-
-把键值封装成entry对象存放在Set集合中
-
+                <h1 id="day10"><a href="#day10" class="headerlink" title="day10"></a>day10</h1><h2 id="Set集合"><a href="#Set集合" class="headerlink" title="Set集合"></a>Set集合</h2><ul>
+<li>无序，不重复，无索引；</li>
+<li>HashSet：无序，不重复，无索引</li>
+<li>LinkedHashSet：有序，不重复，无索引</li>
+<li>TreeSet：排序，不重复，无索引</li>
+</ul>
+<h3 id="HashSet底层原理"><a href="#HashSet底层原理" class="headerlink" title="HashSet底层原理"></a>HashSet底层原理</h3><p>哈希值：</p>
+<ul>
+<li><p>int类型的随机值，Java中每个对象都有一个哈希值</p>
+</li>
+<li><p>Java中所有对象，都可以调用Object类提供的<code>hashcode()</code>方法，返回对象自己的哈希值</p>
+</li>
+</ul>
+<p>对象哈希值的特点：</p>
+<ul>
+<li><p>同一个对象多次调用hashcode()方法返回的哈希值是相同的</p>
+</li>
+<li><p>不同的对象，他们的哈希值大概率不相等，但也可能相等（哈希碰撞）</p>
+</li>
+</ul>
+<p>底层原理</p>
+<ul>
+<li>基于哈希表存储数据的。</li>
+</ul>
+<p>哈希表：</p>
+<ul>
+<li><p>JDK8之前，哈希表&#x3D;数组+链表</p>
+</li>
+<li><p>JDK8开始，哈希表&#x3D;数组+链表+红黑树</p>
+</li>
+<li><p>哈希表是一种增删改查数据，性能都比较好的数据结构 </p>
+</li>
+<li><p>JDK8之前，新元素存入数组，占老元素位置，老元素挂下面</p>
+</li>
+<li><p>JDK8之后，新元素直接挂老元素下面</p>
+</li>
+</ul>
+<blockquote>
+<p>拉链法</p>
+</blockquote>
+<ul>
+<li>JDK8之后，当链表长度超过8，数组长度&gt;&#x3D;64时，自动将链表转化为红黑树</li>
+</ul>
+<h3 id="HashSet集合元素的去重操作"><a href="#HashSet集合元素的去重操作" class="headerlink" title="HashSet集合元素的去重操作"></a>HashSet集合元素的去重操作</h3><p>需求：</p>
+<p>创建一个存储学生对象的集合，存储多个学生对象，要求：多个学生对象的成员变量值相同时，我们就认为是同一个对象，要求只保留一个</p>
+<p>分析：</p>
+<ol>
+<li>定义学生类，创建HashSet集合对象，创建学生对象</li>
+<li>把学生加入集合</li>
+</ol>
+<p>结论：如果希望Set集合认为2个内容一样得对象是重复的，必须重写对象得hashcode()方法和equals()方法</p>
+<blockquote>
+<p>有些对象hashcode一样但是内容不一样，哈希冲突，所以需要二维判断equals()方法</p>
+</blockquote>
+<h3 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h3><ul>
+<li>依然基于哈希表（数组、链表、红黑树）实现的</li>
+<li>但是，它的每个元素都额外多了一个双链表的机制记录他前后元素的位置</li>
+</ul>
+<p>基于LinkedHashMap实现</p>
+<h3 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h3><ul>
+<li>特点：无重复、无索引、可排序(默认升序)</li>
+<li>底层基于红黑树实现</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>对于数值类型：Integer、Double，默认按照数值本身的大小进行升序排序</li>
+<li>对于字符串类型：默认按照首字母的编号升序排列</li>
+<li>对于自定义类型Student对象，TreeSet默认无法直接排序</li>
+</ul>
+<blockquote>
+<p>TreeSet默认不能给自定义对象排序，不知道排序规则</p>
+<p>1、对象类实现Comparable比较接口，重写compareTo方法，制定比较规则</p>
+<p>t2.compareTo(t1);</p>
+<p>t2&#x3D;this,t1&#x3D;o;  </p>
+<p>规定：如果你认为左边大于右边则返回正的 </p>
+</blockquote>
+<blockquote>
+<p>2、TreeSet集合自带比较器Comparator对象，指定比较规则</p>
+</blockquote>
+<h2 id="Map集合"><a href="#Map集合" class="headerlink" title="Map集合"></a>Map集合</h2><ul>
+<li>双列集合</li>
+</ul>
+<p>Map集合也被叫做“键对值集合”，Map的键不允许重复，但值可以重复。</p>
+<h3 id="Map集合特点"><a href="#Map集合特点" class="headerlink" title="Map集合特点"></a>Map集合特点</h3><p>注意：Map系列集合的特点都是由键决定的，值只是一个附属品，值不做要求的。</p>
+<ul>
+<li>HashMap：无序、不重复、无索引</li>
+<li>LinkedHashMap：有序、不重复、无索引</li>
+<li>TreeMap：按照大小默认升序排序、无重复、无索引</li>
+</ul>
+<h4 id="Map集合的常用方法"><a href="#Map集合的常用方法" class="headerlink" title="Map集合的常用方法"></a>Map集合的常用方法</h4><h5 id="Map集合的遍历方式"><a href="#Map集合的遍历方式" class="headerlink" title="Map集合的遍历方式"></a>Map集合的遍历方式</h5><p>一、键找值</p>
+<p>通过 .keySet()方法返回键的Set集合，再通过遍历Set集合调用Map的get()方法找到值。</p>
+<p>二、键值对</p>
+<p>把“键值对”看成一个整体进行遍历</p>
+<p>把键值封装成entry对象存放在Set集合中</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">Set&lt;Map.Entry&lt;String,Double&gt;&gt;entries=map.entrySet();<br><span class="hljs-keyword">for</span>(Map.Entry&lt;string,Double&gt;entry:entries)&#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">key</span><span class="hljs-operator">=</span>entry.getKey();<br>    <span class="hljs-type">double</span> <span class="hljs-variable">value</span><span class="hljs-operator">=</span>entry.getValue();<br>    System.out.println(key+<span class="hljs-string">&quot;===&gt;&quot;</span>+value);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-通过Entry对象修改可以直接修改Map的键值对
-
-三、Lambda（JDK8开始）
-
-Map的forEach
-
+<p>通过Entry对象修改可以直接修改Map的键值对</p>
+<p>三、Lambda（JDK8开始）</p>
+<p>Map的forEach</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java">map.forEach(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BiConsumer</span>&lt;String,Integer&gt;())&#123;<br>    <span class="hljs-meta">@overrider</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">accept</span><span class="hljs-params">(String key,Integer value)</span>&#123;<br>        System.out.println(key+<span class="hljs-string">&quot;=&quot;</span>value);<br>    &#125;<br>&#125;);<br><span class="hljs-comment">//Lambda</span><br>map.forEach((String key,Integer value)-&gt;&#123;<br>        System.out.println(key+<span class="hljs-string">&quot;=&quot;</span>value);<br>    &#125;<br>&#125;);<br><span class="hljs-comment">//Lambda简化</span><br>map.forEach((k,v)-&gt;System.out.println(k+<span class="hljs-string">&quot;=&quot;</span>+v));            <br><br><br></code></pre></td></tr></table></figure>
 
-#### HashMap集合的底层原理
-
-实际上：原来学的Set系列集合的底层就是基于Map实现的，只是Set集合中的元素只要键数据，不要值数据。
-
-哈希表：
-
-- JDK8之前，哈希表=数组+链表
-- JDK8开始，哈希表=数组+链表+红黑树
-- 哈希表是一种增删改查数据，性能都比较好的数据结构 
-
-#### LinkedHashMap底层原理
-
-实际上：原来学习的LinkedHashSet集合的底层原理就是LinkedHashMap
-
-## Stream流
-
-- 是JDK8开始新增的一套API(Java.util.stream.*)，可以用于操作集合或者数组的数据。
-- 优势：Stream流大量的结合了Lambda的语法风格来编程，功能强大，性能高效，代码简洁，可读性好。
-
-**流只能收集一次**
-
-![image-20250709175715751](/img/posts/2025-08-11-Java-01.SE-day10-image-20250709175715751.png)
-
-### Stream流获取方法
-
-集合：
-
-default Stream<E> stream()方法 
-
-数组：Arrays提供
-
-public static <T> Stream<T> stream (T[] array)
-
-or
-
-Stream类提供：public static <T> Stream<T> of(T.... values)
-
-可变参数
-
-### Stream流中间方法
-
-- 中间方法指的是调用完成后会返回新的Stream流，可以继续使用（支持链式编程）
-
-自定义数据类型想要distinct()去重复，必须重写hashCode()和equals方法
-
-filter、sorted、limit、skip、distinct、map、concat
-
-映射/加工方法 map()
-
-<R> Stream<R> map(Function<? super T, ? extends R> mapper)
-
-- T输入流的原始元素类型
-- R输出流的目标元素类型
-- mapper 接受T类型参数并返回R类型的函数式接口（常用Lambda表达式）
-
-scores.stream().map(s->"加十分后"+(s+10)).forEach(System.out::println);
-
-合并流: concat() 
-
-### Stream流终结方法
-
-- 终结方法指的是调用完成后，不会返回新Stream了。
-
-forEach,count,max,min;
-
-其中max,min返回的是optional<T>  防止null空指针
-
-### 收集Stream流
-
-- 就是把Stream流操作后的结果转回到集合或者数组中去返回
-
-- Stream流：方便操作集合/数组的手段：集合/数组：才是开发的目的
-
-Stream提供的：collect、toArray
-
-Collectors提供的：toList、toSet、toMap
-
-**流只能收集一次**
-
-## 可变参数
-
-- 就是一种特殊形参、定义在方法、构造器的形参列表中，格式是：数据类型...参数名称;
-
-### 可变参数的特点和好处
-
-- 特点：可以不传数据给它，可以传一个或者同时传多个数据给它，也可以传一个数组给它。
-- 好处：常常用来灵活的接收数据
-
-可变数组对内就是数组形式
-
-注意事项：可变参数在列表形参中只能有一个
-
-Collections工具类
-
-提供静态方法：addAll、shuffle、sort
-
-
-
-
-
-**注意** 如果用stream流则会需要收集Stream流，而用collections自带的方法则可以直接更改集合
-
-
+<h4 id="HashMap集合的底层原理"><a href="#HashMap集合的底层原理" class="headerlink" title="HashMap集合的底层原理"></a>HashMap集合的底层原理</h4><p>实际上：原来学的Set系列集合的底层就是基于Map实现的，只是Set集合中的元素只要键数据，不要值数据。</p>
+<p>哈希表：</p>
+<ul>
+<li>JDK8之前，哈希表&#x3D;数组+链表</li>
+<li>JDK8开始，哈希表&#x3D;数组+链表+红黑树</li>
+<li>哈希表是一种增删改查数据，性能都比较好的数据结构</li>
+</ul>
+<h4 id="LinkedHashMap底层原理"><a href="#LinkedHashMap底层原理" class="headerlink" title="LinkedHashMap底层原理"></a>LinkedHashMap底层原理</h4><p>实际上：原来学习的LinkedHashSet集合的底层原理就是LinkedHashMap</p>
+<h2 id="Stream流"><a href="#Stream流" class="headerlink" title="Stream流"></a>Stream流</h2><ul>
+<li>是JDK8开始新增的一套API(Java.util.stream.*)，可以用于操作集合或者数组的数据。</li>
+<li>优势：Stream流大量的结合了Lambda的语法风格来编程，功能强大，性能高效，代码简洁，可读性好。</li>
+</ul>
+<p><strong>流只能收集一次</strong></p>
+<p><img src="/img/posts/2025-08-11-Java-01.SE-day10-image-20250709175715751.png" srcset="/img/loading.gif" lazyload alt="image-20250709175715751"></p>
+<h3 id="Stream流获取方法"><a href="#Stream流获取方法" class="headerlink" title="Stream流获取方法"></a>Stream流获取方法</h3><p>集合：</p>
+<p>default Stream<E> stream()方法 </p>
+<p>数组：Arrays提供</p>
+<p>public static <T> Stream<T> stream (T[] array)</p>
+<p>or</p>
+<p>Stream类提供：public static <T> Stream<T> of(T…. values)</p>
+<p>可变参数</p>
+<h3 id="Stream流中间方法"><a href="#Stream流中间方法" class="headerlink" title="Stream流中间方法"></a>Stream流中间方法</h3><ul>
+<li>中间方法指的是调用完成后会返回新的Stream流，可以继续使用（支持链式编程）</li>
+</ul>
+<p>自定义数据类型想要distinct()去重复，必须重写hashCode()和equals方法</p>
+<p>filter、sorted、limit、skip、distinct、map、concat</p>
+<p>映射&#x2F;加工方法 map()</p>
+<p><R> Stream<R> map(Function&lt;? super T, ? extends R&gt; mapper)</p>
+<ul>
+<li>T输入流的原始元素类型</li>
+<li>R输出流的目标元素类型</li>
+<li>mapper 接受T类型参数并返回R类型的函数式接口（常用Lambda表达式）</li>
+</ul>
+<p>scores.stream().map(s-&gt;”加十分后”+(s+10)).forEach(System.out::println);</p>
+<p>合并流: concat() </p>
+<h3 id="Stream流终结方法"><a href="#Stream流终结方法" class="headerlink" title="Stream流终结方法"></a>Stream流终结方法</h3><ul>
+<li>终结方法指的是调用完成后，不会返回新Stream了。</li>
+</ul>
+<p>forEach,count,max,min;</p>
+<p>其中max,min返回的是optional<T>  防止null空指针</p>
+<h3 id="收集Stream流"><a href="#收集Stream流" class="headerlink" title="收集Stream流"></a>收集Stream流</h3><ul>
+<li><p>就是把Stream流操作后的结果转回到集合或者数组中去返回</p>
+</li>
+<li><p>Stream流：方便操作集合&#x2F;数组的手段：集合&#x2F;数组：才是开发的目的</p>
+</li>
+</ul>
+<p>Stream提供的：collect、toArray</p>
+<p>Collectors提供的：toList、toSet、toMap</p>
+<p><strong>流只能收集一次</strong></p>
+<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><ul>
+<li>就是一种特殊形参、定义在方法、构造器的形参列表中，格式是：数据类型…参数名称;</li>
+</ul>
+<h3 id="可变参数的特点和好处"><a href="#可变参数的特点和好处" class="headerlink" title="可变参数的特点和好处"></a>可变参数的特点和好处</h3><ul>
+<li>特点：可以不传数据给它，可以传一个或者同时传多个数据给它，也可以传一个数组给它。</li>
+<li>好处：常常用来灵活的接收数据</li>
+</ul>
+<p>可变数组对内就是数组形式</p>
+<p>注意事项：可变参数在列表形参中只能有一个</p>
+<p>Collections工具类</p>
+<p>提供静态方法：addAll、shuffle、sort</p>
+<p><strong>注意</strong> 如果用stream流则会需要收集Stream流，而用collections自带的方法则可以直接更改集合</p>
 
                 
               </div>

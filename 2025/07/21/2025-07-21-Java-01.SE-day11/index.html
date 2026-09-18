@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day11  - 存储&amp;独写数据的方案  File、IO流  File：  - File是java.io.包下的类，File类的对象，用于代表当前操作系统的文件（文件或文件夹）。  注意：File类只能对文件本身进行操作，不能读写文件里面存储的数据。  IO流：  - 用于读写数据的（可以读写文件、或网络中的数据...)  ## File  - File类的对象可以代表文件&#x2F;文件夹，并可以调">
+    <meta name="description" content="day11 存储&amp;独写数据的方案  File、IO流 File：  File是java.io.包下的类，File类的对象，用于代表当前操作系统的文件（文件或文件夹）。  注意：File类只能对文件本身进行操作，不能读写文件里面存储的数据。 IO流：  用于读写数据的（可以读写文件、或网络中的数据…)  File File类的对象可以代表文件&#x2F;文件夹，并可以调用其提供的方法对象文件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day11">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/07/21/2025-07-21-Java-01.SE-day11/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day11  - 存储&amp;独写数据的方案  File、IO流  File：  - File是java.io.包下的类，File类的对象，用于代表当前操作系统的文件（文件或文件夹）。  注意：File类只能对文件本身进行操作，不能读写文件里面存储的数据。  IO流：  - 用于读写数据的（可以读写文件、或网络中的数据...)  ## File  - File类的对象可以代表文件&#x2F;文件夹，并可以调">
+<meta property="og:description" content="day11 存储&amp;独写数据的方案  File、IO流 File：  File是java.io.包下的类，File类的对象，用于代表当前操作系统的文件（文件或文件夹）。  注意：File类只能对文件本身进行操作，不能读写文件里面存储的数据。 IO流：  用于读写数据的（可以读写文件、或网络中的数据…)  File File类的对象可以代表文件&#x2F;文件夹，并可以调用其提供的方法对象文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-07-21T04:17:31.000Z">
 <meta property="article:modified_time" content="2025-07-21T04:17:31.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          2.3k 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          21 分钟
+          20 分钟
         
       </span>
     
@@ -382,206 +382,147 @@
             
               <div class="markdown-body">
                 
-                
-# day11
-
-- 存储&独写数据的方案
-
-File、IO流
-
-File：
-
-- File是java.io.包下的类，File类的对象，用于代表当前操作系统的文件（文件或文件夹）。
-
-注意：File类只能对文件本身进行操作，不能读写文件里面存储的数据。
-
-IO流：
-
-- 用于读写数据的（可以读写文件、或网络中的数据...)
-
-## File
-
-- File类的对象可以代表文件/文件夹，并可以调用其提供的方法对象文件进行操作。
-
-创建File类的对象
-
-| 构造器                                    | 说明                                             |
-| ----------------------------------------- | ------------------------------------------------ |
-| public File(String pathname)              | 根据文件路径创建文件对象                         |
-| public  File(String parent, String child) | 根据父路径和子路径创建文件对象                   |
-| public File(File parent, String child)    | 根据父路径对应的文件对象和子路径名字创建文件对象 |
-
-注意：1.File对象既可以代表文件、也可以代表文件夹
-
-​	   2.File封装的对象仅仅是一个路径名，这个路径可以存在，也允许是不存在的。
-
-- delete只能删除空文件夹和文件，删除后的文件不会进入文件夹
-- mkdir、mkdirs创建文件夹、createNewFile创建文件
-- list获取一级文件名称到一个字符串数组中返回
-- listFile获取当前目录下所有的“一级文件对象”到一个文件对象数组中返回
-
-使用listFile方法时的注意事项：
-
-- 当主调是个文件，或者路径不存在时，返回null
-- 当主调是空文件夹时，返回一个数组长度为0的数组
-- 当主调是一个有内容的文件夹时，将里面所有的一级文件和文件夹的路径放在File数组中返回。
-- 当主调是一个文件夹时，且里面有隐藏文件，将里面所有文件和文件夹的路径放在File数组中，包括隐藏文件
-- 当主调是一个文件夹，但是没有权限访问该文件夹时，返回null
-
-
-
-## 常见字符集
-
-ASCII： 一个字节存储，第一位都是0 有效数位7位 表示128个字符
-
-GBK: 两个字节存储，包含2万多个汉字等字符，兼容ASCII：汉字的第一个字节的第一位必须是1
-
-Unicode： UTF-32 4个字节一个字符。 **UTF-8**（常用）
-
-UTF-8：
-
-- 是Unicode字符集的一种编码方案，采取可变长编码方案，共分为四个长度区：1个字节、2个字节、3个字节、4个字节
-- 英文字符、数字等只占用1个字节（兼容标准ASCII），汉字字符占用三个字节
-
-### 使用程序对字符进行编码和解码操作
-
-本质：字节数组转换字符串
-
-编码：getBytes
-
-解码：String
-
-
-
-## IO流
-
-I指Input，称为输入流：负责把数据读到内存中去
-
-O指Output，称为输出流，负责写数据出去
-
-流的方向分为：输入流、输出流
-
-流的内容：字节流、字符流
-
-- 字节流：适合操作所有类型的文件
-- 字符流：只适合操作纯文本文件
-
-IO：字节输入流、字节输出流、字符输入流、字符输出流
-
-抽象类InputStream、OutputStream、Reader、Writer
-
-实现类：FileInputStream、FileOutputStream、FileReader、FileWriter
-
-字符流：16字符2字节为单位独写数据。
-
-字节流：8位1字节位单位独写数据。
-
-1、使用字节流读取中文，如何保证输出不乱码，怎么解决？
-
-- 定义一个与文件一样大的字节数组，一次性读完文件的全部字节
-
-
-
-byte [] bytes=is.readAllBytes();
-
-### 资源释放
-
-IO中途可能会出现异常情况，导致IO流关闭异常，因此需要主动资源释放
-
-- try-catch-finally
-- JDK7开始 try-with-resource 
-
-try(定义资源1、定义资源2...){}
-
-catch(异常类名 变量名){}
-
-资源使用完毕会自动调用close方法。
-
-try（）里面只放资源
-
-资源一般指的是最终实现AutoCloseable接口
-
-## 字符流
-
-文件字符输入流：Reader、FileReader  
-
-文件字符输出流：Writer：FileWriter
-
-- 文件字符输入流每次读取多个字符，性能较好，而且读取中文。 按照字符读取
-
-> Java中char使用UTF-16编码 不管文件是如何编码，
-
-
-
-字符输出流写出数据后，必须刷新流，或者关闭流，写出去的数据才能有效
-
-> 内存缓冲区机制
-
-
-
-## 缓冲流
-
-BufferedInputStream、BufferedOutputStream、BufferedReader、BufferedWrite
-
-把低级的输入输出流包装成高级的 输入输出都是8KB缓冲
-
-字符输入流可以按行读
-
-字符输出流 newLine方法
-
-
-
-## 性能分析 
-
-测试用例：
-
-- 使用原始字节流，以及字节缓冲流复制一个很大的视频
-
-总结：缓冲字节数组的方式进行读取
-
-## 其他流
-
-### 字符输入流
-
-字符输入转化流：InputStreamReader  属于字符输入流 Reader
-
-不同编码读取乱码问题
-
-当你的代码是UTF-8 读取的文件是GBK 解决这个乱码问题
-
-- 解决思路:先获取文件的原始字节流，再将其按照真实的字符集编码转成字符输入流，这样字符输入流中的字符就不乱码了
-
-### 打印流
-
-PrintStream 字节输出流
-
-PrintWriter 字符输出流
-
-- 作用：打印流可以实现更方便，更高效的打印数据出去，能实现打印啥出去就是啥
-
-97->97  而不是a  
-
-println方法输出
-
-### 特殊数据流
-
-DataInputStream、DataOutputStream
-
-- 允许把数据和其类型一并写出去
-
-## Commons-io框架
-
-- 框架（Framework）是一个预先写好的代码库或一组工具，旨在简化和加速开发过程
-- 框架的形式：一般把类、接口等编译成class形式，再压缩成一个.jar结尾的文件发行出去
-
-导入commons-io框架到项目中：
-
-1. 在项目中创建一个文件夹lib
-2. 将commons-io-2.11.jar文件复制到lib文件夹中
-3. 在jar文件上右击，选择add as library ->点击ok
-4. 在类中导包
-
-
+                <h1 id="day11"><a href="#day11" class="headerlink" title="day11"></a>day11</h1><ul>
+<li>存储&amp;独写数据的方案</li>
+</ul>
+<p>File、IO流</p>
+<p>File：</p>
+<ul>
+<li>File是java.io.包下的类，File类的对象，用于代表当前操作系统的文件（文件或文件夹）。</li>
+</ul>
+<p>注意：File类只能对文件本身进行操作，不能读写文件里面存储的数据。</p>
+<p>IO流：</p>
+<ul>
+<li>用于读写数据的（可以读写文件、或网络中的数据…)</li>
+</ul>
+<h2 id="File"><a href="#File" class="headerlink" title="File"></a>File</h2><ul>
+<li>File类的对象可以代表文件&#x2F;文件夹，并可以调用其提供的方法对象文件进行操作。</li>
+</ul>
+<p>创建File类的对象</p>
+<table>
+<thead>
+<tr>
+<th>构造器</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public File(String pathname)</td>
+<td>根据文件路径创建文件对象</td>
+</tr>
+<tr>
+<td>public  File(String parent, String child)</td>
+<td>根据父路径和子路径创建文件对象</td>
+</tr>
+<tr>
+<td>public File(File parent, String child)</td>
+<td>根据父路径对应的文件对象和子路径名字创建文件对象</td>
+</tr>
+</tbody></table>
+<p>注意：1.File对象既可以代表文件、也可以代表文件夹</p>
+<p>​	   2.File封装的对象仅仅是一个路径名，这个路径可以存在，也允许是不存在的。</p>
+<ul>
+<li>delete只能删除空文件夹和文件，删除后的文件不会进入文件夹</li>
+<li>mkdir、mkdirs创建文件夹、createNewFile创建文件</li>
+<li>list获取一级文件名称到一个字符串数组中返回</li>
+<li>listFile获取当前目录下所有的“一级文件对象”到一个文件对象数组中返回</li>
+</ul>
+<p>使用listFile方法时的注意事项：</p>
+<ul>
+<li>当主调是个文件，或者路径不存在时，返回null</li>
+<li>当主调是空文件夹时，返回一个数组长度为0的数组</li>
+<li>当主调是一个有内容的文件夹时，将里面所有的一级文件和文件夹的路径放在File数组中返回。</li>
+<li>当主调是一个文件夹时，且里面有隐藏文件，将里面所有文件和文件夹的路径放在File数组中，包括隐藏文件</li>
+<li>当主调是一个文件夹，但是没有权限访问该文件夹时，返回null</li>
+</ul>
+<h2 id="常见字符集"><a href="#常见字符集" class="headerlink" title="常见字符集"></a>常见字符集</h2><p>ASCII： 一个字节存储，第一位都是0 有效数位7位 表示128个字符</p>
+<p>GBK: 两个字节存储，包含2万多个汉字等字符，兼容ASCII：汉字的第一个字节的第一位必须是1</p>
+<p>Unicode： UTF-32 4个字节一个字符。 <strong>UTF-8</strong>（常用）</p>
+<p>UTF-8：</p>
+<ul>
+<li>是Unicode字符集的一种编码方案，采取可变长编码方案，共分为四个长度区：1个字节、2个字节、3个字节、4个字节</li>
+<li>英文字符、数字等只占用1个字节（兼容标准ASCII），汉字字符占用三个字节</li>
+</ul>
+<h3 id="使用程序对字符进行编码和解码操作"><a href="#使用程序对字符进行编码和解码操作" class="headerlink" title="使用程序对字符进行编码和解码操作"></a>使用程序对字符进行编码和解码操作</h3><p>本质：字节数组转换字符串</p>
+<p>编码：getBytes</p>
+<p>解码：String</p>
+<h2 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h2><p>I指Input，称为输入流：负责把数据读到内存中去</p>
+<p>O指Output，称为输出流，负责写数据出去</p>
+<p>流的方向分为：输入流、输出流</p>
+<p>流的内容：字节流、字符流</p>
+<ul>
+<li>字节流：适合操作所有类型的文件</li>
+<li>字符流：只适合操作纯文本文件</li>
+</ul>
+<p>IO：字节输入流、字节输出流、字符输入流、字符输出流</p>
+<p>抽象类InputStream、OutputStream、Reader、Writer</p>
+<p>实现类：FileInputStream、FileOutputStream、FileReader、FileWriter</p>
+<p>字符流：16字符2字节为单位独写数据。</p>
+<p>字节流：8位1字节位单位独写数据。</p>
+<p>1、使用字节流读取中文，如何保证输出不乱码，怎么解决？</p>
+<ul>
+<li>定义一个与文件一样大的字节数组，一次性读完文件的全部字节</li>
+</ul>
+<p>byte [] bytes&#x3D;is.readAllBytes();</p>
+<h3 id="资源释放"><a href="#资源释放" class="headerlink" title="资源释放"></a>资源释放</h3><p>IO中途可能会出现异常情况，导致IO流关闭异常，因此需要主动资源释放</p>
+<ul>
+<li>try-catch-finally</li>
+<li>JDK7开始 try-with-resource</li>
+</ul>
+<p>try(定义资源1、定义资源2…){}</p>
+<p>catch(异常类名 变量名){}</p>
+<p>资源使用完毕会自动调用close方法。</p>
+<p>try（）里面只放资源</p>
+<p>资源一般指的是最终实现AutoCloseable接口</p>
+<h2 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h2><p>文件字符输入流：Reader、FileReader  </p>
+<p>文件字符输出流：Writer：FileWriter</p>
+<ul>
+<li>文件字符输入流每次读取多个字符，性能较好，而且读取中文。 按照字符读取</li>
+</ul>
+<blockquote>
+<p>Java中char使用UTF-16编码 不管文件是如何编码，</p>
+</blockquote>
+<p>字符输出流写出数据后，必须刷新流，或者关闭流，写出去的数据才能有效</p>
+<blockquote>
+<p>内存缓冲区机制</p>
+</blockquote>
+<h2 id="缓冲流"><a href="#缓冲流" class="headerlink" title="缓冲流"></a>缓冲流</h2><p>BufferedInputStream、BufferedOutputStream、BufferedReader、BufferedWrite</p>
+<p>把低级的输入输出流包装成高级的 输入输出都是8KB缓冲</p>
+<p>字符输入流可以按行读</p>
+<p>字符输出流 newLine方法</p>
+<h2 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h2><p>测试用例：</p>
+<ul>
+<li>使用原始字节流，以及字节缓冲流复制一个很大的视频</li>
+</ul>
+<p>总结：缓冲字节数组的方式进行读取</p>
+<h2 id="其他流"><a href="#其他流" class="headerlink" title="其他流"></a>其他流</h2><h3 id="字符输入流"><a href="#字符输入流" class="headerlink" title="字符输入流"></a>字符输入流</h3><p>字符输入转化流：InputStreamReader  属于字符输入流 Reader</p>
+<p>不同编码读取乱码问题</p>
+<p>当你的代码是UTF-8 读取的文件是GBK 解决这个乱码问题</p>
+<ul>
+<li>解决思路:先获取文件的原始字节流，再将其按照真实的字符集编码转成字符输入流，这样字符输入流中的字符就不乱码了</li>
+</ul>
+<h3 id="打印流"><a href="#打印流" class="headerlink" title="打印流"></a>打印流</h3><p>PrintStream 字节输出流</p>
+<p>PrintWriter 字符输出流</p>
+<ul>
+<li>作用：打印流可以实现更方便，更高效的打印数据出去，能实现打印啥出去就是啥</li>
+</ul>
+<p>97-&gt;97  而不是a  </p>
+<p>println方法输出</p>
+<h3 id="特殊数据流"><a href="#特殊数据流" class="headerlink" title="特殊数据流"></a>特殊数据流</h3><p>DataInputStream、DataOutputStream</p>
+<ul>
+<li>允许把数据和其类型一并写出去</li>
+</ul>
+<h2 id="Commons-io框架"><a href="#Commons-io框架" class="headerlink" title="Commons-io框架"></a>Commons-io框架</h2><ul>
+<li>框架（Framework）是一个预先写好的代码库或一组工具，旨在简化和加速开发过程</li>
+<li>框架的形式：一般把类、接口等编译成class形式，再压缩成一个.jar结尾的文件发行出去</li>
+</ul>
+<p>导入commons-io框架到项目中：</p>
+<ol>
+<li>在项目中创建一个文件夹lib</li>
+<li>将commons-io-2.11.jar文件复制到lib文件夹中</li>
+<li>在jar文件上右击，选择add as library -&gt;点击ok</li>
+<li>在类中导包</li>
+</ol>
 
                 
               </div>

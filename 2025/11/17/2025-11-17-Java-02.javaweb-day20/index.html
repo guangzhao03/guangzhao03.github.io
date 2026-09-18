@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day20  基于docker容器化部署  - Docker就是一款快速构建、运行、管理应用的工具  **镜像。**镜像中不仅包含了MySQL本身，还包含了其运行所需要的环境、配置、系统级函数库。因此它在运行时就有自己独立的环境，就可以跨系统运行，也不需要手动再次配置环境了。这套独立运行的隔离环境我们称为**容器**。  docker run：创建并运行一个容器，-d是让容器在后台运行  端">
+    <meta name="description" content="day20基于docker容器化部署  Docker就是一款快速构建、运行、管理应用的工具  镜像。镜像中不仅包含了MySQL本身，还包含了其运行所需要的环境、配置、系统级函数库。因此它在运行时就有自己独立的环境，就可以跨系统运行，也不需要手动再次配置环境了。这套独立运行的隔离环境我们称为容器。 docker run：创建并运行一个容器，-d是让容器在后台运行 端口映射宿主主机映射容器内端口 Do">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day20">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/11/17/2025-11-17-Java-02.javaweb-day20/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day20  基于docker容器化部署  - Docker就是一款快速构建、运行、管理应用的工具  **镜像。**镜像中不仅包含了MySQL本身，还包含了其运行所需要的环境、配置、系统级函数库。因此它在运行时就有自己独立的环境，就可以跨系统运行，也不需要手动再次配置环境了。这套独立运行的隔离环境我们称为**容器**。  docker run：创建并运行一个容器，-d是让容器在后台运行  端">
+<meta property="og:description" content="day20基于docker容器化部署  Docker就是一款快速构建、运行、管理应用的工具  镜像。镜像中不仅包含了MySQL本身，还包含了其运行所需要的环境、配置、系统级函数库。因此它在运行时就有自己独立的环境，就可以跨系统运行，也不需要手动再次配置环境了。这套独立运行的隔离环境我们称为容器。 docker run：创建并运行一个容器，-d是让容器在后台运行 端口映射宿主主机映射容器内端口 Do">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-17T09:10:49.000Z">
 <meta property="article:modified_time" content="2025-11-17T09:10:49.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          1.1k 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          11 分钟
+          10 分钟
         
       </span>
     
@@ -382,94 +382,117 @@
             
               <div class="markdown-body">
                 
-                
-# day20
-
-基于docker容器化部署
-
-- Docker就是一款快速构建、运行、管理应用的工具
-
-**镜像。**镜像中不仅包含了MySQL本身，还包含了其运行所需要的环境、配置、系统级函数库。因此它在运行时就有自己独立的环境，就可以跨系统运行，也不需要手动再次配置环境了。这套独立运行的隔离环境我们称为**容器**。
-
-docker run：创建并运行一个容器，-d是让容器在后台运行
-
-端口映射宿主主机映射容器内端口
-
-Docker核心
-
-- 常见命令
-
-| docker pull    | 拉取镜像                       |
-| -------------- | ------------------------------ |
-| docker push    | 推送镜像到DockerRegistry       |
-| docker images  | 查看本地镜像                   |
-| docker rmi     | 删除本地镜像                   |
-| docker run     | 创建并运行容器（不能重复创建） |
-| docker stop    | 停止指定容器                   |
-| docker start   | 启动指定容器                   |
-| docker restart | 重新启动容器                   |
-| docker rm      | 删除指定容器                   |
-| docker ps      | 查看容器                       |
-| docker logs    | 查看容器运行日志               |
-| docker exec    | 进入容器                       |
-| docker save    | 保存镜像到本地压缩文件         |
-| docker load    | 加载本地压缩文件到镜像         |
-| docker inspect | 查看容器详细信息               |
-
-- 数据卷
-
-数据卷是一个虚拟目录，是容器内目录和宿主机目录之间映射的桥梁
-
-volume
-
-操作数据卷指令
-
-匿名数据卷：创建容器的时候自动创建并且已经映射
-
-创建mysql容器会自动有一个匿名数据卷，匿名数据卷存放的是mysql的数据，如果容器删除，数据不会删除，如果要恢复则重新挂载即可
-
-- 本地目录挂载
-
-和数据卷挂载不一样 本地目录必须以/或者./开头，如果以名称则会识别成数据卷
-
-- 自定义镜像
-
-自己制作docker镜像，镜像就是包含了应用程序、程序运行的系统函数库、运行配置等文件的文件包。构建镜像的过程其实就是把上述文件打包的过程。
-
-1、准备一个linux运行环境2、安装jdk并配置环境变量 3、拷贝jar包 4、编写运行脚本，运行jar包
-
-- Dockerfile
-
-就是一个文本文件，其中包含一个个的指令，用指令来说明要执行什么操作来构建镜像。将来Docker可以根据Dockerfile帮助我们构建镜像
-
-- 网络
-
-所有的容器都连接在Docker的一个虚拟网桥上
-
-加入自定义网络的容器才可以通过容器名相互访问
-
-- docker部署项目
-
-1、服务器端部署
-
-2、前端部署
-
-3、DockerCompose
-
-docker需要按照顺序进行启动
-
-docker compose通过一个单独的docker-compose.yml文件来定义一组相关联的应用容器，帮助我们实现多个相互关联的Docker容器的快速部署
-
-
-
-
-
-后续：单体架构AI+若依、苍穹外卖 微服务：SpringCloud、学成在线
-
-Mysql、Redis、JVM、java八股
-
-
-
+                <h1 id="day20"><a href="#day20" class="headerlink" title="day20"></a>day20</h1><p>基于docker容器化部署</p>
+<ul>
+<li>Docker就是一款快速构建、运行、管理应用的工具</li>
+</ul>
+<p><strong>镜像。</strong>镜像中不仅包含了MySQL本身，还包含了其运行所需要的环境、配置、系统级函数库。因此它在运行时就有自己独立的环境，就可以跨系统运行，也不需要手动再次配置环境了。这套独立运行的隔离环境我们称为<strong>容器</strong>。</p>
+<p>docker run：创建并运行一个容器，-d是让容器在后台运行</p>
+<p>端口映射宿主主机映射容器内端口</p>
+<p>Docker核心</p>
+<ul>
+<li>常见命令</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>docker pull</th>
+<th>拉取镜像</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker push</td>
+<td>推送镜像到DockerRegistry</td>
+</tr>
+<tr>
+<td>docker images</td>
+<td>查看本地镜像</td>
+</tr>
+<tr>
+<td>docker rmi</td>
+<td>删除本地镜像</td>
+</tr>
+<tr>
+<td>docker run</td>
+<td>创建并运行容器（不能重复创建）</td>
+</tr>
+<tr>
+<td>docker stop</td>
+<td>停止指定容器</td>
+</tr>
+<tr>
+<td>docker start</td>
+<td>启动指定容器</td>
+</tr>
+<tr>
+<td>docker restart</td>
+<td>重新启动容器</td>
+</tr>
+<tr>
+<td>docker rm</td>
+<td>删除指定容器</td>
+</tr>
+<tr>
+<td>docker ps</td>
+<td>查看容器</td>
+</tr>
+<tr>
+<td>docker logs</td>
+<td>查看容器运行日志</td>
+</tr>
+<tr>
+<td>docker exec</td>
+<td>进入容器</td>
+</tr>
+<tr>
+<td>docker save</td>
+<td>保存镜像到本地压缩文件</td>
+</tr>
+<tr>
+<td>docker load</td>
+<td>加载本地压缩文件到镜像</td>
+</tr>
+<tr>
+<td>docker inspect</td>
+<td>查看容器详细信息</td>
+</tr>
+</tbody></table>
+<ul>
+<li>数据卷</li>
+</ul>
+<p>数据卷是一个虚拟目录，是容器内目录和宿主机目录之间映射的桥梁</p>
+<p>volume</p>
+<p>操作数据卷指令</p>
+<p>匿名数据卷：创建容器的时候自动创建并且已经映射</p>
+<p>创建mysql容器会自动有一个匿名数据卷，匿名数据卷存放的是mysql的数据，如果容器删除，数据不会删除，如果要恢复则重新挂载即可</p>
+<ul>
+<li>本地目录挂载</li>
+</ul>
+<p>和数据卷挂载不一样 本地目录必须以&#x2F;或者.&#x2F;开头，如果以名称则会识别成数据卷</p>
+<ul>
+<li>自定义镜像</li>
+</ul>
+<p>自己制作docker镜像，镜像就是包含了应用程序、程序运行的系统函数库、运行配置等文件的文件包。构建镜像的过程其实就是把上述文件打包的过程。</p>
+<p>1、准备一个linux运行环境2、安装jdk并配置环境变量 3、拷贝jar包 4、编写运行脚本，运行jar包</p>
+<ul>
+<li>Dockerfile</li>
+</ul>
+<p>就是一个文本文件，其中包含一个个的指令，用指令来说明要执行什么操作来构建镜像。将来Docker可以根据Dockerfile帮助我们构建镜像</p>
+<ul>
+<li>网络</li>
+</ul>
+<p>所有的容器都连接在Docker的一个虚拟网桥上</p>
+<p>加入自定义网络的容器才可以通过容器名相互访问</p>
+<ul>
+<li>docker部署项目</li>
+</ul>
+<p>1、服务器端部署</p>
+<p>2、前端部署</p>
+<p>3、DockerCompose</p>
+<p>docker需要按照顺序进行启动</p>
+<p>docker compose通过一个单独的docker-compose.yml文件来定义一组相关联的应用容器，帮助我们实现多个相互关联的Docker容器的快速部署</p>
+<p>后续：单体架构AI+若依、苍穹外卖 微服务：SpringCloud、学成在线</p>
+<p>Mysql、Redis、JVM、java八股</p>
 
                 
               </div>

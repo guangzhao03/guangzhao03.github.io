@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="来新璐：河南工业大学 github:  https:&#x2F;&#x2F;github.com&#x2F;NevaMind-AI&#x2F;memU   memU  https:&#x2F;&#x2F;github.com&#x2F;shareAI-lab&#x2F;learn-claude-code      记忆提到了，半规则化和完全规则化、完全模式驱动式记忆。  规则（具体的数据结构然后检索）  核心架构 底层：Unix 文件系统：利用操作系统成熟的文件管理能力作为">
+    <meta name="description" content="来新璐：河南工业大学github: https:&#x2F;&#x2F;github.com&#x2F;NevaMind-AI&#x2F;memU   memU https:&#x2F;&#x2F;github.com&#x2F;shareAI-lab&#x2F;learn-claude-code   记忆提到了，半规则化和完全规则化、完全模式驱动式记忆。  规则（具体的数据结构然后检索） 核心架构底层：Unix 文件系统：利用操作系统成熟的文件管理能力作为记忆的物理存储存储">
 <meta property="og:type" content="article">
 <meta property="og:title" content="探秘 Claude Code，搞懂 Agent Harness｜对谈来新璐【视频播客】">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/07/09/2026-07-09-misc-%E6%8E%A2%E7%A7%98-Claude-Code%EF%BC%8C%E6%90%9E%E6%87%82-Agent-Harness%EF%BD%9C%E5%AF%B9%E8%B0%88%E6%9D%A5%E6%96%B0%E7%92%90%E3%80%90%E8%A7%86%E9%A2%91%E6%92%AD%E5%AE%A2%E3%80%91/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="来新璐：河南工业大学 github:  https:&#x2F;&#x2F;github.com&#x2F;NevaMind-AI&#x2F;memU   memU  https:&#x2F;&#x2F;github.com&#x2F;shareAI-lab&#x2F;learn-claude-code      记忆提到了，半规则化和完全规则化、完全模式驱动式记忆。  规则（具体的数据结构然后检索）  核心架构 底层：Unix 文件系统：利用操作系统成熟的文件管理能力作为">
+<meta property="og:description" content="来新璐：河南工业大学github: https:&#x2F;&#x2F;github.com&#x2F;NevaMind-AI&#x2F;memU   memU https:&#x2F;&#x2F;github.com&#x2F;shareAI-lab&#x2F;learn-claude-code   记忆提到了，半规则化和完全规则化、完全模式驱动式记忆。  规则（具体的数据结构然后检索） 核心架构底层：Unix 文件系统：利用操作系统成熟的文件管理能力作为记忆的物理存储存储">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-09T09:49:39.000Z">
 <meta property="article:modified_time" content="2026-07-09T09:49:39.000Z">
@@ -326,7 +326,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          1.6k 字
         
       </span>
     
@@ -337,7 +337,7 @@
         
         
         
-          16 分钟
+          14 分钟
         
       </span>
     
@@ -381,88 +381,64 @@
             
               <div class="markdown-body">
                 
-                
-来新璐：河南工业大学
-github:
-
-https://github.com/NevaMind-AI/memU   memU
-
-https://github.com/shareAI-lab/learn-claude-code  
-
-
-
-记忆提到了，半规则化和完全规则化、完全模式驱动式记忆。  规则（具体的数据结构然后检索）
-
-核心架构
-底层：Unix 文件系统：利用操作系统成熟的文件管理能力作为记忆的物理存储
-存储格式：纯文本 Markdown 文件：所有记忆都以人类可读、模型易理解的 Markdown 格式保存
-更新机制：AI 自动 + 人类手动：既可以由 Agent 自主更新记忆，也支持人类直接编辑 Markdown 文件进行干预
-
-
-
-完全模式驱动式记忆；
-
-特点
-
-- 所有记忆都完全内化在模型的参数中，不需要任何外部存储结构
-- 模型通过持续学习自动更新记忆，不需要显式的存储和检索过程
-
-
-
-manus 云端沙箱E2B
-
-claude两个记忆机制
-
-**(1) 轮次结束钩子（Turn Stop Hook）**
-
-- 每次与用户的交互结束后，系统会自动 fork 一个独立的后台 Agent
-- 这个 Agent 会复用当前会话的 KV Cache，完整回顾整个交互过程
-- 自动判断哪些信息值得保存，并更新到对应的 Markdown 文件中
-- 所有记忆文件都有结构化的描述，不会一开始就加载全文，节省上下文 token
-
-**(2) Auto-dream（"做梦" 机制）**
-
-- 大约每隔一天，如果该项目的会话数量超过 5 个，系统会自动启动一个更深层的记忆整理进程
-- 这个后台 Agent 会重放最近所有的会话记录，进行 "信息榨干"
-- 具体工作包括：纠正错误的记忆、合并重复的信息、提炼核心要点、将零散的笔记整理成结构化的文档
-- 这个过程非常像人类睡觉时的做梦机制，通过重放经历来巩固记忆、整合知识
-
-
-
-harness 开发工具链、agent组网 tailscale  、Thinking Machine Lab）（PEFT训练每个人个性化的ai）
-
-- ## Anthropic 谱系（按演化逻辑排列）
-
-  - **Building effective agents** *(2024-12)*
-  - **Effective context engineering for AI agents** *(2025-09)*
-  - **Effective harnesses for long-running agents** *(2025-11)*
-  - **Demystifying evals for AI agents** *(2026-01)*
-  - **Designing AI-resistant technical evaluations** *(2026-01)*
-  - **Building a C compiler with a team of parallel Claudes** *(2026-02)*
-  - **Harness design for long-running application development** *(2026-03)*
-  - **Quantifying infrastructure noise in agentic coding evals** *(2026-02)*
-
-  ## OpenAI 实践
-
-  - **Harness engineering: leveraging Codex in an agent-first world** *(2026-02)*
-  - **Unrolling the Codex agent loop** *(2026-01)*
-
-  ## Cursor 实践
-
-  - **Scaling long-running autonomous coding** *(2026-01-14)*
-  - **Building a better Bugbot** *(2026-01-15)*
-
-  ## LangChain 实践
-
-  - **LangChain, \*Improving Deep Agents with harness engineering\*** *(2026-02)*
-  - **LangChain, \*The Anatomy of an Agent Harness\*** *(2026-03)*
-
-  ## 行业观察与实证
-
-  - **Lance Martin, \*Learning the Bitter Lesson\*** *(2025-07)*
-  - **Mitchell Hashimoto, \*Engineer the Harness\*** *(2026-02)*
-  - **Martin Fowler, \*Exploring Gen AI - Harness Engineering\*** *(2026-02)*
-
+                <p>来新璐：河南工业大学<br>github:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/NevaMind-AI/memU">https://github.com/NevaMind-AI/memU</a>   memU</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/shareAI-lab/learn-claude-code">https://github.com/shareAI-lab/learn-claude-code</a>  </p>
+<p>记忆提到了，半规则化和完全规则化、完全模式驱动式记忆。  规则（具体的数据结构然后检索）</p>
+<p>核心架构<br>底层：Unix 文件系统：利用操作系统成熟的文件管理能力作为记忆的物理存储<br>存储格式：纯文本 Markdown 文件：所有记忆都以人类可读、模型易理解的 Markdown 格式保存<br>更新机制：AI 自动 + 人类手动：既可以由 Agent 自主更新记忆，也支持人类直接编辑 Markdown 文件进行干预</p>
+<p>完全模式驱动式记忆；</p>
+<p>特点</p>
+<ul>
+<li>所有记忆都完全内化在模型的参数中，不需要任何外部存储结构</li>
+<li>模型通过持续学习自动更新记忆，不需要显式的存储和检索过程</li>
+</ul>
+<p>manus 云端沙箱E2B</p>
+<p>claude两个记忆机制</p>
+<p><strong>(1) 轮次结束钩子（Turn Stop Hook）</strong></p>
+<ul>
+<li>每次与用户的交互结束后，系统会自动 fork 一个独立的后台 Agent</li>
+<li>这个 Agent 会复用当前会话的 KV Cache，完整回顾整个交互过程</li>
+<li>自动判断哪些信息值得保存，并更新到对应的 Markdown 文件中</li>
+<li>所有记忆文件都有结构化的描述，不会一开始就加载全文，节省上下文 token</li>
+</ul>
+<p><strong>(2) Auto-dream（”做梦” 机制）</strong></p>
+<ul>
+<li>大约每隔一天，如果该项目的会话数量超过 5 个，系统会自动启动一个更深层的记忆整理进程</li>
+<li>这个后台 Agent 会重放最近所有的会话记录，进行 “信息榨干”</li>
+<li>具体工作包括：纠正错误的记忆、合并重复的信息、提炼核心要点、将零散的笔记整理成结构化的文档</li>
+<li>这个过程非常像人类睡觉时的做梦机制，通过重放经历来巩固记忆、整合知识</li>
+</ul>
+<p>harness 开发工具链、agent组网 tailscale  、Thinking Machine Lab）（PEFT训练每个人个性化的ai）</p>
+<ul>
+<li><h2 id="Anthropic-谱系（按演化逻辑排列）"><a href="#Anthropic-谱系（按演化逻辑排列）" class="headerlink" title="Anthropic 谱系（按演化逻辑排列）"></a>Anthropic 谱系（按演化逻辑排列）</h2><ul>
+<li><strong>Building effective agents</strong> <em>(2024-12)</em></li>
+<li><strong>Effective context engineering for AI agents</strong> <em>(2025-09)</em></li>
+<li><strong>Effective harnesses for long-running agents</strong> <em>(2025-11)</em></li>
+<li><strong>Demystifying evals for AI agents</strong> <em>(2026-01)</em></li>
+<li><strong>Designing AI-resistant technical evaluations</strong> <em>(2026-01)</em></li>
+<li><strong>Building a C compiler with a team of parallel Claudes</strong> <em>(2026-02)</em></li>
+<li><strong>Harness design for long-running application development</strong> <em>(2026-03)</em></li>
+<li><strong>Quantifying infrastructure noise in agentic coding evals</strong> <em>(2026-02)</em></li>
+</ul>
+<h2 id="OpenAI-实践"><a href="#OpenAI-实践" class="headerlink" title="OpenAI 实践"></a>OpenAI 实践</h2><ul>
+<li><strong>Harness engineering: leveraging Codex in an agent-first world</strong> <em>(2026-02)</em></li>
+<li><strong>Unrolling the Codex agent loop</strong> <em>(2026-01)</em></li>
+</ul>
+<h2 id="Cursor-实践"><a href="#Cursor-实践" class="headerlink" title="Cursor 实践"></a>Cursor 实践</h2><ul>
+<li><strong>Scaling long-running autonomous coding</strong> <em>(2026-01-14)</em></li>
+<li><strong>Building a better Bugbot</strong> <em>(2026-01-15)</em></li>
+</ul>
+<h2 id="LangChain-实践"><a href="#LangChain-实践" class="headerlink" title="LangChain 实践"></a>LangChain 实践</h2><ul>
+<li><strong>LangChain, *Improving Deep Agents with harness engineering*</strong> <em>(2026-02)</em></li>
+<li><strong>LangChain, *The Anatomy of an Agent Harness*</strong> <em>(2026-03)</em></li>
+</ul>
+<h2 id="行业观察与实证"><a href="#行业观察与实证" class="headerlink" title="行业观察与实证"></a>行业观察与实证</h2><ul>
+<li><strong>Lance Martin, *Learning the Bitter Lesson*</strong> <em>(2025-07)</em></li>
+<li><strong>Mitchell Hashimoto, *Engineer the Harness*</strong> <em>(2026-02)</em></li>
+<li><strong>Martin Fowler, *Exploring Gen AI - Harness Engineering*</strong> <em>(2026-02)</em></li>
+</ul>
+</li>
+</ul>
 
                 
               </div>

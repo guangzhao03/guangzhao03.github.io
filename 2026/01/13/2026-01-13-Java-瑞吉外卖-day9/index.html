@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day9  redis是一个基于内存的key-value结构数据库。  - 基于内存存储，读写性能高 - 适合存储热点数据（热点商品、咨询、新闻） - 企业应用广泛    Redis入门  数据类型  常用命令  在Java中操作Redis  - 缓存 - 任务队列 - 消息队列 - 分布式锁  config文件可以更改 port、password、bind（能被谁连接）  想连接远程 用p">
+    <meta name="description" content="day9redis是一个基于内存的key-value结构数据库。  基于内存存储，读写性能高 适合存储热点数据（热点商品、咨询、新闻） 企业应用广泛  Redis入门 数据类型 常用命令 在Java中操作Redis  缓存 任务队列 消息队列 分布式锁  config文件可以更改 port、password、bind（能被谁连接） 想连接远程 用powershell 执行.&#x2F;   -h">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day9">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/01/13/2026-01-13-Java-%E7%91%9E%E5%90%89%E5%A4%96%E5%8D%96-day9/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day9  redis是一个基于内存的key-value结构数据库。  - 基于内存存储，读写性能高 - 适合存储热点数据（热点商品、咨询、新闻） - 企业应用广泛    Redis入门  数据类型  常用命令  在Java中操作Redis  - 缓存 - 任务队列 - 消息队列 - 分布式锁  config文件可以更改 port、password、bind（能被谁连接）  想连接远程 用p">
+<meta property="og:description" content="day9redis是一个基于内存的key-value结构数据库。  基于内存存储，读写性能高 适合存储热点数据（热点商品、咨询、新闻） 企业应用广泛  Redis入门 数据类型 常用命令 在Java中操作Redis  缓存 任务队列 消息队列 分布式锁  config文件可以更改 port、password、bind（能被谁连接） 想连接远程 用powershell 执行.&#x2F;   -h">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-01-13T03:52:23.000Z">
 <meta property="article:modified_time" content="2026-01-13T03:52:23.000Z">
@@ -338,7 +338,7 @@
         
         
         
-          20 分钟
+          19 分钟
         
       </span>
     
@@ -382,165 +382,113 @@
             
               <div class="markdown-body">
                 
-                
-# day9
-
-redis是一个基于内存的key-value结构数据库。
-
-- 基于内存存储，读写性能高
-- 适合存储热点数据（热点商品、咨询、新闻）
-- 企业应用广泛
-
-
-
-Redis入门
-
-数据类型
-
-常用命令
-
-在Java中操作Redis
-
-- 缓存
-- 任务队列
-- 消息队列
-- 分布式锁
-
-config文件可以更改 port、password、bind（能被谁连接）
-
-想连接远程 用powershell 执行./   -h  hostlocal -p 6379 -a 123456
-
-auth 123456  输入密码验证登录
-
-## Redis数据类型
-
-Redis存储的是key-value结构的数据，其中key是字符串类型，value有5种常用的数据类型
-
-- 字符串 string
-- 哈希 hash
-- 列表 list
-- 集合 set
-- 有序集合 sorted set
-
-## Redis常用命令
-
-- 字符串string操作命令
-
-SET key value 设置指定key的值
-
-GET key 获取指定key的值
-
-SETEX key seconds value 设置指定key的值，并将key的过期时间设置为seconds秒    set expire
-
-SETNX key value 只有在key不存在时设置key的值    set if not exist
-
-用到的指令的value都会自动转化为字符串。
-
-- 哈希hash操作命令
-
-HSET key field value 将哈希表key中的字段field的值设置为value
-
-HGET key field 获取存储在哈希表种指定字段的值
-
-HDEL key field 删除存储在哈希表中的指定字段
-
-HKEYS key 获取哈希表中所有字段
-
-HVALS key 获取哈希表中所有值
-
-HGETALL key 获取在哈希表中指定key的所有字段和值
-
-- 列表list操作命令（双向链表
-
-LPUSH key value1 [value2] 将一个或者多个值插入到列表头部
-
-LRANGE key start stop 获取列表指定范围的元素
-
-RPOP key 移除并获取列表最后一个元素  right pop
-
-LLEN key 获取列表长度
-
-BRPOP key1 [key2] timeout  移除并获取列表的最后一个元素，如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止  Block right pop
-
-- 集合set操作命令
-
-SADD key member1 [member2]  向集合添加元素
-
-SMEMBERS key  返回集合中的所有成员
-
-SCARD key   返回集合的成员数    set cardinality  基数
-
-SINTER key1 [key2] 返回给定集合的交集  Set intersection
-
-SUNION key1 [key2] 返回给定集合的并集
-
-SDIFF key1 [key2]  返回给定集合的差集
-
-SREM key member1 [member2] 移除集合中一个或多个成员
-
-- 有序集合 sorted set操作命令
-
-ZADD  key score1 member1 [score2 member2]  向有序集合添加一个或多个成员，或者更新已存在成员分数
-
-ZRANGE key start stop [WITHSCORES]  通过索引区间返回有序集合中指定区间的成员
-
-ZINCRBY key increment member 有序集合中对指定成员的分数加上增量increment   z increment by
-
-ZREM key member [member...] 移除有序集合中的一个或多个成员
-
-根据分值score排
-
-- 通用命令
-
-KEYS pattern 查询所有符合给定模式的key
-
-EXISTS key 检查给定key是否存在
-
-TYPE key 返回key所存储的值的类型
-
-TTL key 返回给定key的剩余生存时间（TTL，time to live），以秒为单位
-
-DEL key 该命令用于在key存在时删除key
-
-## java中操作redis
-
-- 介绍
-- jedis
-- Spring Data Redis
-
-官方推荐三种redis的java客户端
-
-- jedis
-- lettuce
-- redission
-
-Spring 对Redis客户端进行了整合，提供了Spring Data Redis，在Spring Boot项目中还提供了对应的Starter，即spring-boot-starter-data-redis
-
-jedis的maven坐标
-
+                <h1 id="day9"><a href="#day9" class="headerlink" title="day9"></a>day9</h1><p>redis是一个基于内存的key-value结构数据库。</p>
+<ul>
+<li>基于内存存储，读写性能高</li>
+<li>适合存储热点数据（热点商品、咨询、新闻）</li>
+<li>企业应用广泛</li>
+</ul>
+<p>Redis入门</p>
+<p>数据类型</p>
+<p>常用命令</p>
+<p>在Java中操作Redis</p>
+<ul>
+<li>缓存</li>
+<li>任务队列</li>
+<li>消息队列</li>
+<li>分布式锁</li>
+</ul>
+<p>config文件可以更改 port、password、bind（能被谁连接）</p>
+<p>想连接远程 用powershell 执行.&#x2F;   -h  hostlocal -p 6379 -a 123456</p>
+<p>auth 123456  输入密码验证登录</p>
+<h2 id="Redis数据类型"><a href="#Redis数据类型" class="headerlink" title="Redis数据类型"></a>Redis数据类型</h2><p>Redis存储的是key-value结构的数据，其中key是字符串类型，value有5种常用的数据类型</p>
+<ul>
+<li>字符串 string</li>
+<li>哈希 hash</li>
+<li>列表 list</li>
+<li>集合 set</li>
+<li>有序集合 sorted set</li>
+</ul>
+<h2 id="Redis常用命令"><a href="#Redis常用命令" class="headerlink" title="Redis常用命令"></a>Redis常用命令</h2><ul>
+<li>字符串string操作命令</li>
+</ul>
+<p>SET key value 设置指定key的值</p>
+<p>GET key 获取指定key的值</p>
+<p>SETEX key seconds value 设置指定key的值，并将key的过期时间设置为seconds秒    set expire</p>
+<p>SETNX key value 只有在key不存在时设置key的值    set if not exist</p>
+<p>用到的指令的value都会自动转化为字符串。</p>
+<ul>
+<li>哈希hash操作命令</li>
+</ul>
+<p>HSET key field value 将哈希表key中的字段field的值设置为value</p>
+<p>HGET key field 获取存储在哈希表种指定字段的值</p>
+<p>HDEL key field 删除存储在哈希表中的指定字段</p>
+<p>HKEYS key 获取哈希表中所有字段</p>
+<p>HVALS key 获取哈希表中所有值</p>
+<p>HGETALL key 获取在哈希表中指定key的所有字段和值</p>
+<ul>
+<li>列表list操作命令（双向链表</li>
+</ul>
+<p>LPUSH key value1 [value2] 将一个或者多个值插入到列表头部</p>
+<p>LRANGE key start stop 获取列表指定范围的元素</p>
+<p>RPOP key 移除并获取列表最后一个元素  right pop</p>
+<p>LLEN key 获取列表长度</p>
+<p>BRPOP key1 [key2] timeout  移除并获取列表的最后一个元素，如果列表没有元素会阻塞列表直到等待超时或发现可弹出元素为止  Block right pop</p>
+<ul>
+<li>集合set操作命令</li>
+</ul>
+<p>SADD key member1 [member2]  向集合添加元素</p>
+<p>SMEMBERS key  返回集合中的所有成员</p>
+<p>SCARD key   返回集合的成员数    set cardinality  基数</p>
+<p>SINTER key1 [key2] 返回给定集合的交集  Set intersection</p>
+<p>SUNION key1 [key2] 返回给定集合的并集</p>
+<p>SDIFF key1 [key2]  返回给定集合的差集</p>
+<p>SREM key member1 [member2] 移除集合中一个或多个成员</p>
+<ul>
+<li>有序集合 sorted set操作命令</li>
+</ul>
+<p>ZADD  key score1 member1 [score2 member2]  向有序集合添加一个或多个成员，或者更新已存在成员分数</p>
+<p>ZRANGE key start stop [WITHSCORES]  通过索引区间返回有序集合中指定区间的成员</p>
+<p>ZINCRBY key increment member 有序集合中对指定成员的分数加上增量increment   z increment by</p>
+<p>ZREM key member [member…] 移除有序集合中的一个或多个成员</p>
+<p>根据分值score排</p>
+<ul>
+<li>通用命令</li>
+</ul>
+<p>KEYS pattern 查询所有符合给定模式的key</p>
+<p>EXISTS key 检查给定key是否存在</p>
+<p>TYPE key 返回key所存储的值的类型</p>
+<p>TTL key 返回给定key的剩余生存时间（TTL，time to live），以秒为单位</p>
+<p>DEL key 该命令用于在key存在时删除key</p>
+<h2 id="java中操作redis"><a href="#java中操作redis" class="headerlink" title="java中操作redis"></a>java中操作redis</h2><ul>
+<li>介绍</li>
+<li>jedis</li>
+<li>Spring Data Redis</li>
+</ul>
+<p>官方推荐三种redis的java客户端</p>
+<ul>
+<li>jedis</li>
+<li>lettuce</li>
+<li>redission</li>
+</ul>
+<p>Spring 对Redis客户端进行了整合，提供了Spring Data Redis，在Spring Boot项目中还提供了对应的Starter，即spring-boot-starter-data-redis</p>
+<p>jedis的maven坐标</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>redis.clients<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jedis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.8.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-获取连接、执行操作、关闭连接
-
-
-
-Spring Data Redis
-
+<p>获取连接、执行操作、关闭连接</p>
+<p>Spring Data Redis</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.book<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-提供了一个高度封装的类，RedisTemplate，针对jedis客户端中大量api进行了归类封装，将同一类型操作封装为operation接口，具体分类如下：
-
-- ValueOperations：简单的k-v
-- SetOperations：set类型数据操作
-- ZsetOperations：zset类型数据操作
-- HashOperations：针对map类型的数据操作
-- ListOperations：针对list类型的数据操作
-
-redis有16个数据库
-
-需要配置类把RedisTemplate的序列方式改变一下，java存在redis的时候会序列化和反序列化
-
-
+<p>提供了一个高度封装的类，RedisTemplate，针对jedis客户端中大量api进行了归类封装，将同一类型操作封装为operation接口，具体分类如下：</p>
+<ul>
+<li>ValueOperations：简单的k-v</li>
+<li>SetOperations：set类型数据操作</li>
+<li>ZsetOperations：zset类型数据操作</li>
+<li>HashOperations：针对map类型的数据操作</li>
+<li>ListOperations：针对list类型的数据操作</li>
+</ul>
+<p>redis有16个数据库</p>
+<p>需要配置类把RedisTemplate的序列方式改变一下，java存在redis的时候会序列化和反序列化</p>
 
                 
               </div>

@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# 字节一面真实面经复刻 · 复盘（2026-09-07）  &gt; 题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  ## 逐题表现  | # | 题目 | 表现 | 要点 | |---|------|------|------| | Q3 | 项目最大挑战 | ⚠️ | 答了&quot;链路测评+code review&quot;但没">
+    <meta name="description" content="字节一面真实面经复刻 · 复盘（2026-09-07） 题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字节一面真实面经复刻 · 复盘（2026-09-07）">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/07/2026-09-07-%E5%85%AB%E8%82%A1-202697%E5%AD%97%E8%8A%82%E7%9C%9F%E5%AE%9E%E9%9D%A2%E7%BB%8F%E6%A8%A1%E6%8B%9F/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# 字节一面真实面经复刻 · 复盘（2026-09-07）  &gt; 题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  ## 逐题表现  | # | 题目 | 表现 | 要点 | |---|------|------|------| | Q3 | 项目最大挑战 | ⚠️ | 答了&quot;链路测评+code review&quot;但没">
+<meta property="og:description" content="字节一面真实面经复刻 · 复盘（2026-09-07） 题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-07T02:40:39.000Z">
 <meta property="article:modified_time" content="2026-09-07T02:40:39.000Z">
@@ -381,48 +381,128 @@
             
               <div class="markdown-body">
                 
-                
-# 字节一面真实面经复刻 · 复盘（2026-09-07）
-
-> 题源：小红书真实字节一面面经（22 题，Java 岗）。Q1/Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。
-
-## 逐题表现
-
-| # | 题目 | 表现 | 要点 |
-|---|------|------|------|
-| Q3 | 项目最大挑战 | ⚠️ | 答了"链路测评+code review"但没接具体交付物——正是原面经楼主"面试官没听懂产出"的坑。**下一句必须跟"我做了 XX 评估集，发现 XX bad case"** |
-| Q4 | 幻觉处理 | ❌ 半对 | RAG/提示词对；**self-consistency 当幻觉主力是概念错位**（治推理不稳，不治知识缺失，且 5 倍 token）；漏微调；"评估 agent"要说出术语 LLM-as-judge 且定位是**事后兜底** |
-| 追问a | 采样参数防幻觉 | ❌ 三连坑 | 又答评估 agent。正解：**温度调低/top_p 收窄是减少发散，不治本**；温度 0 会让模型自信地重复同一个错——这是 9/4 踩过的坑第三次出现 |
-| Q6/Q7 | 提示词具体手段 | ❌ | 只会"基于事实回答"。补齐：**划边界（只用资料）、要溯源（标出处）、few-shot 示范、先摆依据再作答、结构化输出+置信度兜底** |
-| Q8 | 短期/长期记忆 | ✅- | 短期好（会话+落盘+压缩）。长期：四类型是 **user/feedback/project/reference**（说成 inference）；补向量库方案（记忆即 RAG）+异步抽取更新 |
-| Q9 | 设计 Agent 模块 | ⚠️ | 内容够但一口气堆 15 个名词。**先分层：核心执行层（loop+终止条件）→上下文层→能力层→工程层**，弹药留到追问再打。防跑歪主力是终止条件+系统提示词，不是任务系统 |
-| Q10 | API 超时/报错 | ⚠️ | 概念混乱：程序自动重试 vs 把错误给模型是两层。**临时错误程序层重试+指数退避；需换策略的升级给模型**。别浪费模型调用 |
-| Q11 | 让 LLM 处理错误 | ⚠️ | "原封不动给"和"翻译成自然语言"矛盾。正解：**程序层做翻译（结构化+行动建议菜单），模型层做决策**；错误也走 tool result 回填；截断防 token 爆炸 |
-| Q12 | token 消耗排查 | ✅✅ | **本轮最佳**。trace 埋点、模型路由（小模型接简单任务）、思维链/SKILL 优化全中。补：上下文膨胀是第一嫌疑（工具结果每轮重发计费）→压缩+工具返回瘦身；prompt caching |
-| Q13 | Java 线程池 | ❌ | 顺序说反。背诵链：**核心线程→队列→最大线程→拒绝策略**（先入队再扩容是爱挖点）。四拒绝策略：Abort/CallerRuns/Discard/DiscardOldest |
-| Q14 | 重新设计线程池 | ✅ | **真亮点**：动态扩缩容+阈值提前扩容+按权重丢弃全是自己的观点。吸收：JDK 先入队后扩容的槽点、IO/CPU 分池、有界队列+可观测、优雅关闭 |
-| Q15 | 类加载 | 🔵 听讲 | 加载→验证→准备→解析→初始化；双亲委派防篡改+去重 |
-| Q16/17 | undo/redo/binlog、两阶段提交 | 🔵 听讲 | undo 管回滚+MVCC，redo 管崩溃恢复(WAL)，binlog 管复制+备份；两阶段提交=redo prepare→binlog→commit，崩溃时查 binlog 仲裁 |
-| Q18 | 手写死锁 | ❌ | 描述的结构不对（自检自解锁≠死锁）。套路：**两个锁+两线程加锁顺序相反**制造循环等待；避免：统一加锁顺序/tryLock 超时 |
-| Q19 | 单例 | ❌ | **饿汉/懒汉名字说错且概念说反**（饿汉=类加载即创建）。DCL 双检查锁是标配写法 |
-| Q20 | volatile | ⚠️ 半对 | 只答了可见性。DCL 里必须 volatile 的原因是**禁止指令重排**（new 三步 ①分配②初始化③指引用，②③重排→别的线程拿到半成品）。加分项：静态内部类写法 |
-
-## 结论
-
-- **Agent 部分能打**：Q8/Q12 稳，Q14 开放题有真观点。核心失分集中在**概念精确性**（老问题）——self-consistency、温度 0、程序层 vs 模型层错误处理。
-- **温度 0 幻觉坑第三次踩**：说明"背清单没过为什么"的老毛病还在。处理：真背手段链+每条一句话为什么。
-- **Java 零基础裸考符合预期**：当听题积累即可，Q13/Q18/Q19 背骨架（线程池四步链、双锁反向、DCL），其他听懂逻辑就行。
-- **手撕两题全跳**：连续第三轮未验证 C++ 手写能力，下次务必至少写一题。
-
-## 高优先背诵清单（下次面试前）
-
-1. 幻觉手段链：**提示词→工具→RAG→微调**（成本升序）+ 采样辅助 + LLM-as-judge 事后兜底
-2. 提示词防幻觉五招：划边界/要溯源/few-shot/先摆依据/结构化
-3. 长期记忆四类型：user/feedback/project/reference
-4. 错误处理两层论：程序层（重试+指数退避+降级）vs 模型层（错误翻译+行动建议+决策）
-5. Java 三件套骨架：线程池"核心→队列→最大→拒绝"；死锁"双锁反向+避免靠统一顺序"；DCL"两次判空+volatile 防重排"
-
-
+                <h1 id="字节一面真实面经复刻-·-复盘（2026-09-07）"><a href="#字节一面真实面经复刻-·-复盘（2026-09-07）" class="headerlink" title="字节一面真实面经复刻 · 复盘（2026-09-07）"></a>字节一面真实面经复刻 · 复盘（2026-09-07）</h1><blockquote>
+<p>题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。</p>
+</blockquote>
+<h2 id="逐题表现"><a href="#逐题表现" class="headerlink" title="逐题表现"></a>逐题表现</h2><table>
+<thead>
+<tr>
+<th>#</th>
+<th>题目</th>
+<th>表现</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q3</td>
+<td>项目最大挑战</td>
+<td>⚠️</td>
+<td>答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。<strong>下一句必须跟”我做了 XX 评估集，发现 XX bad case”</strong></td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>幻觉处理</td>
+<td>❌ 半对</td>
+<td>RAG&#x2F;提示词对；<strong>self-consistency 当幻觉主力是概念错位</strong>（治推理不稳，不治知识缺失，且 5 倍 token）；漏微调；”评估 agent”要说出术语 LLM-as-judge 且定位是<strong>事后兜底</strong></td>
+</tr>
+<tr>
+<td>追问a</td>
+<td>采样参数防幻觉</td>
+<td>❌ 三连坑</td>
+<td>又答评估 agent。正解：<strong>温度调低&#x2F;top_p 收窄是减少发散，不治本</strong>；温度 0 会让模型自信地重复同一个错——这是 9&#x2F;4 踩过的坑第三次出现</td>
+</tr>
+<tr>
+<td>Q6&#x2F;Q7</td>
+<td>提示词具体手段</td>
+<td>❌</td>
+<td>只会”基于事实回答”。补齐：<strong>划边界（只用资料）、要溯源（标出处）、few-shot 示范、先摆依据再作答、结构化输出+置信度兜底</strong></td>
+</tr>
+<tr>
+<td>Q8</td>
+<td>短期&#x2F;长期记忆</td>
+<td>✅-</td>
+<td>短期好（会话+落盘+压缩）。长期：四类型是 <strong>user&#x2F;feedback&#x2F;project&#x2F;reference</strong>（说成 inference）；补向量库方案（记忆即 RAG）+异步抽取更新</td>
+</tr>
+<tr>
+<td>Q9</td>
+<td>设计 Agent 模块</td>
+<td>⚠️</td>
+<td>内容够但一口气堆 15 个名词。<strong>先分层：核心执行层（loop+终止条件）→上下文层→能力层→工程层</strong>，弹药留到追问再打。防跑歪主力是终止条件+系统提示词，不是任务系统</td>
+</tr>
+<tr>
+<td>Q10</td>
+<td>API 超时&#x2F;报错</td>
+<td>⚠️</td>
+<td>概念混乱：程序自动重试 vs 把错误给模型是两层。<strong>临时错误程序层重试+指数退避；需换策略的升级给模型</strong>。别浪费模型调用</td>
+</tr>
+<tr>
+<td>Q11</td>
+<td>让 LLM 处理错误</td>
+<td>⚠️</td>
+<td>“原封不动给”和”翻译成自然语言”矛盾。正解：<strong>程序层做翻译（结构化+行动建议菜单），模型层做决策</strong>；错误也走 tool result 回填；截断防 token 爆炸</td>
+</tr>
+<tr>
+<td>Q12</td>
+<td>token 消耗排查</td>
+<td>✅✅</td>
+<td><strong>本轮最佳</strong>。trace 埋点、模型路由（小模型接简单任务）、思维链&#x2F;SKILL 优化全中。补：上下文膨胀是第一嫌疑（工具结果每轮重发计费）→压缩+工具返回瘦身；prompt caching</td>
+</tr>
+<tr>
+<td>Q13</td>
+<td>Java 线程池</td>
+<td>❌</td>
+<td>顺序说反。背诵链：<strong>核心线程→队列→最大线程→拒绝策略</strong>（先入队再扩容是爱挖点）。四拒绝策略：Abort&#x2F;CallerRuns&#x2F;Discard&#x2F;DiscardOldest</td>
+</tr>
+<tr>
+<td>Q14</td>
+<td>重新设计线程池</td>
+<td>✅</td>
+<td><strong>真亮点</strong>：动态扩缩容+阈值提前扩容+按权重丢弃全是自己的观点。吸收：JDK 先入队后扩容的槽点、IO&#x2F;CPU 分池、有界队列+可观测、优雅关闭</td>
+</tr>
+<tr>
+<td>Q15</td>
+<td>类加载</td>
+<td>🔵 听讲</td>
+<td>加载→验证→准备→解析→初始化；双亲委派防篡改+去重</td>
+</tr>
+<tr>
+<td>Q16&#x2F;17</td>
+<td>undo&#x2F;redo&#x2F;binlog、两阶段提交</td>
+<td>🔵 听讲</td>
+<td>undo 管回滚+MVCC，redo 管崩溃恢复(WAL)，binlog 管复制+备份；两阶段提交&#x3D;redo prepare→binlog→commit，崩溃时查 binlog 仲裁</td>
+</tr>
+<tr>
+<td>Q18</td>
+<td>手写死锁</td>
+<td>❌</td>
+<td>描述的结构不对（自检自解锁≠死锁）。套路：<strong>两个锁+两线程加锁顺序相反</strong>制造循环等待；避免：统一加锁顺序&#x2F;tryLock 超时</td>
+</tr>
+<tr>
+<td>Q19</td>
+<td>单例</td>
+<td>❌</td>
+<td><strong>饿汉&#x2F;懒汉名字说错且概念说反</strong>（饿汉&#x3D;类加载即创建）。DCL 双检查锁是标配写法</td>
+</tr>
+<tr>
+<td>Q20</td>
+<td>volatile</td>
+<td>⚠️ 半对</td>
+<td>只答了可见性。DCL 里必须 volatile 的原因是<strong>禁止指令重排</strong>（new 三步 ①分配②初始化③指引用，②③重排→别的线程拿到半成品）。加分项：静态内部类写法</td>
+</tr>
+</tbody></table>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><ul>
+<li><strong>Agent 部分能打</strong>：Q8&#x2F;Q12 稳，Q14 开放题有真观点。核心失分集中在<strong>概念精确性</strong>（老问题）——self-consistency、温度 0、程序层 vs 模型层错误处理。</li>
+<li><strong>温度 0 幻觉坑第三次踩</strong>：说明”背清单没过为什么”的老毛病还在。处理：真背手段链+每条一句话为什么。</li>
+<li><strong>Java 零基础裸考符合预期</strong>：当听题积累即可，Q13&#x2F;Q18&#x2F;Q19 背骨架（线程池四步链、双锁反向、DCL），其他听懂逻辑就行。</li>
+<li><strong>手撕两题全跳</strong>：连续第三轮未验证 C++ 手写能力，下次务必至少写一题。</li>
+</ul>
+<h2 id="高优先背诵清单（下次面试前）"><a href="#高优先背诵清单（下次面试前）" class="headerlink" title="高优先背诵清单（下次面试前）"></a>高优先背诵清单（下次面试前）</h2><ol>
+<li>幻觉手段链：<strong>提示词→工具→RAG→微调</strong>（成本升序）+ 采样辅助 + LLM-as-judge 事后兜底</li>
+<li>提示词防幻觉五招：划边界&#x2F;要溯源&#x2F;few-shot&#x2F;先摆依据&#x2F;结构化</li>
+<li>长期记忆四类型：user&#x2F;feedback&#x2F;project&#x2F;reference</li>
+<li>错误处理两层论：程序层（重试+指数退避+降级）vs 模型层（错误翻译+行动建议+决策）</li>
+<li>Java 三件套骨架：线程池”核心→队列→最大→拒绝”；死锁”双锁反向+避免靠统一顺序”；DCL”两次判空+volatile 防重排”</li>
+</ol>
 
                 
               </div>

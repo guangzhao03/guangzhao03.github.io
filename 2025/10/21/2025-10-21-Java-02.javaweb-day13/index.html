@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day13  AOP Aspect Oriented Programming（面向切面编程，面向方向编程）可以理解为面向特定方法编程  - 场景：案例中部分业务方法运行较慢，定位执行耗时较长的方法，此时需要统计每一个业务方法的执行耗时。  优势：  1、减少重复代码  2、代码无侵入  3、提高开发效率  4、维护方便  AOP是一种思想，而在Spring框架中，对这种思想进行实现，那我们要">
+    <meta name="description" content="day13AOP Aspect Oriented Programming（面向切面编程，面向方向编程）可以理解为面向特定方法编程  场景：案例中部分业务方法运行较慢，定位执行耗时较长的方法，此时需要统计每一个业务方法的执行耗时。  优势： 1、减少重复代码 2、代码无侵入 3、提高开发效率 4、维护方便 AOP是一种思想，而在Spring框架中，对这种思想进行实现，那我们要学习的就是Spring">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day13">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/10/21/2025-10-21-Java-02.javaweb-day13/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day13  AOP Aspect Oriented Programming（面向切面编程，面向方向编程）可以理解为面向特定方法编程  - 场景：案例中部分业务方法运行较慢，定位执行耗时较长的方法，此时需要统计每一个业务方法的执行耗时。  优势：  1、减少重复代码  2、代码无侵入  3、提高开发效率  4、维护方便  AOP是一种思想，而在Spring框架中，对这种思想进行实现，那我们要">
+<meta property="og:description" content="day13AOP Aspect Oriented Programming（面向切面编程，面向方向编程）可以理解为面向特定方法编程  场景：案例中部分业务方法运行较慢，定位执行耗时较长的方法，此时需要统计每一个业务方法的执行耗时。  优势： 1、减少重复代码 2、代码无侵入 3、提高开发效率 4、维护方便 AOP是一种思想，而在Spring框架中，对这种思想进行实现，那我们要学习的就是Spring">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-10-21T04:30:24.000Z">
 <meta property="article:modified_time" content="2025-10-21T04:30:24.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          1.6k 字
         
       </span>
     
@@ -382,132 +382,89 @@
             
               <div class="markdown-body">
                 
-                
-# day13
-
-AOP Aspect Oriented Programming（面向切面编程，面向方向编程）可以理解为面向特定方法编程
-
-- 场景：案例中部分业务方法运行较慢，定位执行耗时较长的方法，此时需要统计每一个业务方法的执行耗时。
-
-优势：
-
-1、减少重复代码
-
-2、代码无侵入
-
-3、提高开发效率
-
-4、维护方便
-
-AOP是一种思想，而在Spring框架中，对这种思想进行实现，那我们要学习的就是Spring AOP
-
-1、引入AOP的依赖
-
-2、编写AOP程序，针对特定的方法根据业务需要进行编程
-
-@Component
-
-@Aspect表明是个切面类
-
-
-
-@Around表示AOP程序是针对哪些方法生效的。
-
-- 连接点：JoinPoint，可以被AOP控制的方法（暗含方法执行时的相关信息）
-- 通知，Advice，指那些重复的逻辑，也就是共性功能（最后体现为一个方法）
-- 切入点：PointCut，匹配连接点的条件，通知仅会在切入点方法执行时被应用
-- 切面：Aspect，描述通知与切入点的对应关系
-- 目标对象：Target，通知应用的对象。
-
-## AOP进阶
-
-- 通知类型：
-
-1、@Around：环绕通知，此注解的通知方法在目标方法前、后都被执行
-
-2、@Before：前置通知，此注解的通知方法在目标方法前被执行。
-
-3、@After：后置通知，此注解的通知方法在目标方法后被执行，无论是否有异常都执行。
-
-4、@AfterReturning：返回后通知，此注解的通知方法在目标方法执行后被执行，有异常不会被执行。
-
-5、@AfterThrowing：异常后通知，此注解标注的通知方法发生异常后执行。
-
-@Around环绕通知需要自己调用ProceddingJoinPoint.proceed（）来让原始方法执行，其他则不用。
-
-@Around环绕通知方法的返回值必须设置为Object，来接收原始方法的返回值。
-
-- PointCut
-
-定义一个public void pt（）方法 加上@PointCut注解
-
-下面的通知表达式引用pt
-
-- 通知顺序
-
-- 当有多个切面的切入点都匹配到了目标方法，目标方法运行时，多个通知方法都会被执行。
-
-执行顺序：
-
-​	不同切面类中，默认按照切面类的类名字母排序：
-
-​	目标方法前的通知方法：字母排名靠前的先执行
-
-​	目标方法后的通知方法：字母排名靠前的后执行
-
-Spring提供@Order数字加在切面类上来控制顺序
-
-### 切入点表达式
-
-- 介绍：描述切入点方法的一种表达式
-- 作用：用来决定项目中的哪些方法需要加入通知
-- 常见形式
-
-1、execution（）：根据方法的签名来匹配
-
-2、@annotation（）：根据注解匹配
-
-
-
-- execution 主要根据方法的返回值、包名、类名、方法名、方法参数等信息来匹配，语法为：
-
-​	execution(访问修饰符？ 返回值 包名.类名.?方法名（方法参数）throws 异常)
-
-- 其中带？的表示可以省略的部分
-
-1、访问修饰符：可省略（比如：public、protected）
-
-2、包名.类名：可省略
-
-3、throws 异常：可省略（注意是方法上声明抛出的异常，不是实际跑出来的异常）
-
-可以使用通配符描述切入点
-
-1、*，单个独立的任意符号，可以通配任意返回值、包名、类名、方法名、任意类型的**一个**参数，也可以通配包、类、方法名的一部分
-
-2、..，多个连续的任意符号，可以通配任意层级的包，或任意类型、任意个数的参数。
-
-
-
-@annotation(com.itheima.anno.LogOperation)
-
-### 连接点
-
-- 在Spring中用JoinPoint抽象了连接点，用它可以获得方法执行时的相关信息，如目标类名、方法名、方法参数等。
-
-  - 对于@Around通知，获取连接点信息只能用ProcedingJoinPoint
-  - 对于其他四种通知，获取连接点信息只能使用JoinPoint，他是ProcedingJoinPoint的父类型
-
-  
-
-## AOP案例
-
-- 日志信息包含：操作人、操作时间、执行方法的全类名、执行方法吗、方法运行时参数、返回值、方法执行时长
-
-- ThreadLocal并不是一个Thread而是Thread的局部变量
-
-
-
+                <h1 id="day13"><a href="#day13" class="headerlink" title="day13"></a>day13</h1><p>AOP Aspect Oriented Programming（面向切面编程，面向方向编程）可以理解为面向特定方法编程</p>
+<ul>
+<li>场景：案例中部分业务方法运行较慢，定位执行耗时较长的方法，此时需要统计每一个业务方法的执行耗时。</li>
+</ul>
+<p>优势：</p>
+<p>1、减少重复代码</p>
+<p>2、代码无侵入</p>
+<p>3、提高开发效率</p>
+<p>4、维护方便</p>
+<p>AOP是一种思想，而在Spring框架中，对这种思想进行实现，那我们要学习的就是Spring AOP</p>
+<p>1、引入AOP的依赖</p>
+<p>2、编写AOP程序，针对特定的方法根据业务需要进行编程</p>
+<p>@Component</p>
+<p>@Aspect表明是个切面类</p>
+<p>@Around表示AOP程序是针对哪些方法生效的。</p>
+<ul>
+<li>连接点：JoinPoint，可以被AOP控制的方法（暗含方法执行时的相关信息）</li>
+<li>通知，Advice，指那些重复的逻辑，也就是共性功能（最后体现为一个方法）</li>
+<li>切入点：PointCut，匹配连接点的条件，通知仅会在切入点方法执行时被应用</li>
+<li>切面：Aspect，描述通知与切入点的对应关系</li>
+<li>目标对象：Target，通知应用的对象。</li>
+</ul>
+<h2 id="AOP进阶"><a href="#AOP进阶" class="headerlink" title="AOP进阶"></a>AOP进阶</h2><ul>
+<li>通知类型：</li>
+</ul>
+<p>1、@Around：环绕通知，此注解的通知方法在目标方法前、后都被执行</p>
+<p>2、@Before：前置通知，此注解的通知方法在目标方法前被执行。</p>
+<p>3、@After：后置通知，此注解的通知方法在目标方法后被执行，无论是否有异常都执行。</p>
+<p>4、@AfterReturning：返回后通知，此注解的通知方法在目标方法执行后被执行，有异常不会被执行。</p>
+<p>5、@AfterThrowing：异常后通知，此注解标注的通知方法发生异常后执行。</p>
+<p>@Around环绕通知需要自己调用ProceddingJoinPoint.proceed（）来让原始方法执行，其他则不用。</p>
+<p>@Around环绕通知方法的返回值必须设置为Object，来接收原始方法的返回值。</p>
+<ul>
+<li>PointCut</li>
+</ul>
+<p>定义一个public void pt（）方法 加上@PointCut注解</p>
+<p>下面的通知表达式引用pt</p>
+<ul>
+<li><p>通知顺序</p>
+</li>
+<li><p>当有多个切面的切入点都匹配到了目标方法，目标方法运行时，多个通知方法都会被执行。</p>
+</li>
+</ul>
+<p>执行顺序：</p>
+<p>​	不同切面类中，默认按照切面类的类名字母排序：</p>
+<p>​	目标方法前的通知方法：字母排名靠前的先执行</p>
+<p>​	目标方法后的通知方法：字母排名靠前的后执行</p>
+<p>Spring提供@Order数字加在切面类上来控制顺序</p>
+<h3 id="切入点表达式"><a href="#切入点表达式" class="headerlink" title="切入点表达式"></a>切入点表达式</h3><ul>
+<li>介绍：描述切入点方法的一种表达式</li>
+<li>作用：用来决定项目中的哪些方法需要加入通知</li>
+<li>常见形式</li>
+</ul>
+<p>1、execution（）：根据方法的签名来匹配</p>
+<p>2、@annotation（）：根据注解匹配</p>
+<ul>
+<li>execution 主要根据方法的返回值、包名、类名、方法名、方法参数等信息来匹配，语法为：</li>
+</ul>
+<p>​	execution(访问修饰符？ 返回值 包名.类名.?方法名（方法参数）throws 异常)</p>
+<ul>
+<li>其中带？的表示可以省略的部分</li>
+</ul>
+<p>1、访问修饰符：可省略（比如：public、protected）</p>
+<p>2、包名.类名：可省略</p>
+<p>3、throws 异常：可省略（注意是方法上声明抛出的异常，不是实际跑出来的异常）</p>
+<p>可以使用通配符描述切入点</p>
+<p>1、*，单个独立的任意符号，可以通配任意返回值、包名、类名、方法名、任意类型的<strong>一个</strong>参数，也可以通配包、类、方法名的一部分</p>
+<p>2、..，多个连续的任意符号，可以通配任意层级的包，或任意类型、任意个数的参数。</p>
+<p>@annotation(com.itheima.anno.LogOperation)</p>
+<h3 id="连接点"><a href="#连接点" class="headerlink" title="连接点"></a>连接点</h3><ul>
+<li><p>在Spring中用JoinPoint抽象了连接点，用它可以获得方法执行时的相关信息，如目标类名、方法名、方法参数等。</p>
+<ul>
+<li>对于@Around通知，获取连接点信息只能用ProcedingJoinPoint</li>
+<li>对于其他四种通知，获取连接点信息只能使用JoinPoint，他是ProcedingJoinPoint的父类型</li>
+</ul>
+</li>
+</ul>
+<h2 id="AOP案例"><a href="#AOP案例" class="headerlink" title="AOP案例"></a>AOP案例</h2><ul>
+<li><p>日志信息包含：操作人、操作时间、执行方法的全类名、执行方法吗、方法运行时参数、返回值、方法执行时长</p>
+</li>
+<li><p>ThreadLocal并不是一个Thread而是Thread的局部变量</p>
+</li>
+</ul>
 
                 
               </div>

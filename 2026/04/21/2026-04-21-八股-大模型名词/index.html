@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# 大模型名词  **MTEB（Massive Text Embedding Benchmark）** 是评测文本嵌入（Embedding）模型性能的权威榜单  **MRR（Mean Reciprocal Rank，平均倒数排名）** 则是衡量检索系统效果的核心指标  **SFT** 是 **Supervised Fine-Tuning** 的缩写，中文叫**监督微调**。它是让一个通用的大模型">
+    <meta name="description" content="大模型名词MTEB（Massive Text Embedding Benchmark） 是评测文本嵌入（Embedding）模型性能的权威榜单 MRR（Mean Reciprocal Rank，平均倒数排名） 则是衡量检索系统效果的核心指标 SFT 是 Supervised Fine-Tuning 的缩写，中文叫监督微调。它是让一个通用的大模型学会“按照人的指令说话办事”的核心训练步骤。 Embe">
 <meta property="og:type" content="article">
 <meta property="og:title" content="大模型名词">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/04/21/2026-04-21-%E5%85%AB%E8%82%A1-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%90%8D%E8%AF%8D/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# 大模型名词  **MTEB（Massive Text Embedding Benchmark）** 是评测文本嵌入（Embedding）模型性能的权威榜单  **MRR（Mean Reciprocal Rank，平均倒数排名）** 则是衡量检索系统效果的核心指标  **SFT** 是 **Supervised Fine-Tuning** 的缩写，中文叫**监督微调**。它是让一个通用的大模型">
+<meta property="og:description" content="大模型名词MTEB（Massive Text Embedding Benchmark） 是评测文本嵌入（Embedding）模型性能的权威榜单 MRR（Mean Reciprocal Rank，平均倒数排名） 则是衡量检索系统效果的核心指标 SFT 是 Supervised Fine-Tuning 的缩写，中文叫监督微调。它是让一个通用的大模型学会“按照人的指令说话办事”的核心训练步骤。 Embe">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-04-21T08:57:07.000Z">
 <meta property="article:modified_time" content="2026-04-21T08:57:07.000Z">
@@ -326,7 +326,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          453 字
+          433 字
         
       </span>
     
@@ -381,21 +381,12 @@
             
               <div class="markdown-body">
                 
-                
-# 大模型名词
-
-**MTEB（Massive Text Embedding Benchmark）** 是评测文本嵌入（Embedding）模型性能的权威榜单
-
-**MRR（Mean Reciprocal Rank，平均倒数排名）** 则是衡量检索系统效果的核心指标
-
-**SFT** 是 **Supervised Fine-Tuning** 的缩写，中文叫**监督微调**。它是让一个通用的大模型学会“按照人的指令说话办事”的核心训练步骤。
-
-Embedding 微调最主流的方式是对比学习，
-
-损失函数MultipleNegativesRankingLoss，它的巧妙之处在于**不需要你手动构造负例**。假设 batch 里有 16 条样本，每条样本有一个 query 和一个正确 doc。对于第 1 条样本来说，它的 query 对应第 1 个 doc 是正例，而其余 15 个 doc 自动成为负例。这样一个 batch 就能产生 16 × 15 = 240 对负例训练信号，效率非常高。
-
-Embedding 模型（Bi-Encoder）做粗召回，Rerank 模型（Cross-Encoder）做精排
-
+                <h1 id="大模型名词"><a href="#大模型名词" class="headerlink" title="大模型名词"></a>大模型名词</h1><p><strong>MTEB（Massive Text Embedding Benchmark）</strong> 是评测文本嵌入（Embedding）模型性能的权威榜单</p>
+<p><strong>MRR（Mean Reciprocal Rank，平均倒数排名）</strong> 则是衡量检索系统效果的核心指标</p>
+<p><strong>SFT</strong> 是 <strong>Supervised Fine-Tuning</strong> 的缩写，中文叫<strong>监督微调</strong>。它是让一个通用的大模型学会“按照人的指令说话办事”的核心训练步骤。</p>
+<p>Embedding 微调最主流的方式是对比学习，</p>
+<p>损失函数MultipleNegativesRankingLoss，它的巧妙之处在于<strong>不需要你手动构造负例</strong>。假设 batch 里有 16 条样本，每条样本有一个 query 和一个正确 doc。对于第 1 条样本来说，它的 query 对应第 1 个 doc 是正例，而其余 15 个 doc 自动成为负例。这样一个 batch 就能产生 16 × 15 &#x3D; 240 对负例训练信号，效率非常高。</p>
+<p>Embedding 模型（Bi-Encoder）做粗召回，Rerank 模型（Cross-Encoder）做精排</p>
 
                 
               </div>

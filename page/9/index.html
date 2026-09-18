@@ -344,7 +344,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/07/21/2025-07-21-Java-01.SE-day11/" target="_self">
         <div>
-          # day11  - 存储&独写数据的方案  File、IO流  File：  - File是java.io.包下的类，File类的对象，用于代表当前操作系统的文件（文件或文件夹）。  注意：File类只能对文件本身进行操作，不能读写文件里面存储的数据。  IO流：  - 用于读写数据的（可以读写文件、或网络中的数据...)  ## File  - File类的对象可以代表文件/文件夹，并可以调
+          day11 存储&amp;独写数据的方案  File、IO流 File：  File是java.io.包下的类，File类的对象，用于代表当前操作系统的文件（文件或文件夹）。  注意：File类只能对文件本身进行操作，不能读写文件里面存储的数据。 IO流：  用于读写数据的（可以读写文件、或网络中的数据…)  File File类的对象可以代表文件&#x2F;文件夹，并可以调用其提供的方法对象文件
         </div>
       </a>
 
@@ -414,7 +414,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/07/20/2025-07-20-Java-01.SE-day12/" target="_self">
         <div>
-          #  day12  - 线程是一个程序内部的一条执行流程  - 多线程是指从软硬件上实现的多条执行流程的技术    ## 创建线程  多线程的创建方式一：继承Thread类 二：实现Runnable接口 三：实现Callable接口  ### 继承Thread类  优点：编码简单  缺点：线程类已经继承Thread类，无法继承其他类，不利于功能的扩展  注意事项：  启动线程必须调用start方
+          day12 线程是一个程序内部的一条执行流程  多线程是指从软硬件上实现的多条执行流程的技术   创建线程多线程的创建方式一：继承Thread类 二：实现Runnable接口 三：实现Callable接口 继承Thread类优点：编码简单 缺点：线程类已经继承Thread类，无法继承其他类，不利于功能的扩展 注意事项： 启动线程必须调用start方法，而不是run方法。 实现Runnable接口实
         </div>
       </a>
 
@@ -484,7 +484,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/21/2025-06-21-Java-01.SE-day8/" target="_self">
         <div>
-          # day8  ## 代码块  - 代码块是类的五大成分之一（成员变量、构造器、方法、代码块、内部类）  代码块主要分为：静态代码块和实例代码块  ### 静态代码块  格式：static{}  特点：**类加载**时自动执行，由于类只会加载一次，所以静态代码块也只会执行一次。  作用：完成类的初始化，例如：对静态变量的初始化赋值。  Arrays.toString()  打印数组的内容  ##
+          day8代码块 代码块是类的五大成分之一（成员变量、构造器、方法、代码块、内部类）  代码块主要分为：静态代码块和实例代码块 静态代码块格式：static{} 特点：类加载时自动执行，由于类只会加载一次，所以静态代码块也只会执行一次。 作用：完成类的初始化，例如：对静态变量的初始化赋值。 Arrays.toString() 打印数组的内容 实例代码块格式：{} 特点：每次创建对象时候，执行实例代码
         </div>
       </a>
 
@@ -554,7 +554,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/19/2025-06-19-Java-01.SE-Realtemp1/" target="_self">
         <div>
-          # 结合AI使用GUI编程实现一个黑马人事管理系统  第一步：创建一个模块  第二步：分析项目的业务需求  - 提供一个登录和注册用户的界面。 - 提供一个人事信息的管理界面：展示全部员工信息，提供一个根据名称查询员工信息展示、添加员工信息，修改信息  第三步：分析项目的角色  --登录用户：登录名称，密码，角色类型。  --员工信息：ID,姓名，性别，年龄，电话，职位，入职时间，薪水，部门信息
+          结合AI使用GUI编程实现一个黑马人事管理系统第一步：创建一个模块 第二步：分析项目的业务需求  提供一个登录和注册用户的界面。 提供一个人事信息的管理界面：展示全部员工信息，提供一个根据名称查询员工信息展示、添加员工信息，修改信息  第三步：分析项目的角色 –登录用户：登录名称，密码，角色类型。 –员工信息：ID,姓名，性别，年龄，电话，职位，入职时间，薪水，部门信息。 第四步：分析系统的界面
         </div>
       </a>
 
@@ -624,7 +624,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/05/16/2025-05-16-Java-01.SE-day7/" target="_self">
         <div>
-          # day7  - final - 单例类 - 枚举类 - 抽象类 - 接口  ## final  final关键字是最终的意思，可以修饰类、方法、变量  - 修饰类：该类被称为最终类，特点是不能被继承了 - 修饰方法：该方法被称为最终方法，特点是不能被重写 - 修饰变量：该变量有且仅能被赋值一次  public final class A{}  什么时候用？一般不用，工具类不能被继承  pub
+          day7 final 单例类 枚举类 抽象类 接口  finalfinal关键字是最终的意思，可以修饰类、方法、变量  修饰类：该类被称为最终类，特点是不能被继承了 修饰方法：该方法被称为最终方法，特点是不能被重写 修饰变量：该变量有且仅能被赋值一次  public final class A{} 什么时候用？一般不用，工具类不能被继承 public final void show(){} 抽象类
         </div>
       </a>
 
@@ -694,7 +694,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/05/13/2025-05-13-Java-01.SE-day6/" target="_self">
         <div>
-          # day6  继承和多态  ## 继承和多态  继承非私有的方法和成员变量  public class a extends b{  }  ## 权限修饰符  ![image-20250512181705771](/img/posts/2025-05-13-Java-01.SE-day6-image-20250512181705771.png)    ## java继承特性  java只能单继承
+          day6继承和多态 继承和多态继承非私有的方法和成员变量 public class a extends b{ } 权限修饰符 java继承特性java只能单继承和多重继承 所有java类默认继承object类 方法重写声明不变，重新实现。 @override &#x2F;&#x2F;方法重写的标志注解 要求方法名称和形参列表必须与被重写方法一致，否则报错   安全可读性好  子类重写父类方法时，访
         </div>
       </a>
 
@@ -764,7 +764,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/05/11/2025-05-11-Java-01.SE-day5/" target="_self">
         <div>
-          # day5  ## 面向对象  面向对象是一种编程范式，它将现实世界中的事物抽象为对象，对象具有属性（称为字段或属性）和行为（称为方法）。面向对象编程的设计思想是以对象为中心，通过对象之间的交互来完成程序的功能，具有灵活性和可扩展性，通过封装和继承可以更好地应对需求变化。  ## 构造器   1234567public class Student&#123;    	/**构造器 */
+          day5面向对象面向对象是一种编程范式，它将现实世界中的事物抽象为对象，对象具有属性（称为字段或属性）和行为（称为方法）。面向对象编程的设计思想是以对象为中心，通过对象之间的交互来完成程序的功能，具有灵活性和可扩展性，通过封装和继承可以更好地应对需求变化。 构造器1234567public class Student&#123;    	/**构造器 */    	public Student()
         </div>
       </a>
 
@@ -834,7 +834,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/05/08/2025-05-08-Java-01.SE-day4/" target="_self">
         <div>
-          # day4  ## 数组  数组完整格式  int[] arr=new int[]{12,14,36};  ## 动态化数组  double[] scores=new double[8];  //静态化初始化数组。  ## 遍历
+          day4数组数组完整格式 int[] arr&#x3D;new int[]{12,14,36}; 动态化数组double[] scores&#x3D;new double[8]; &#x2F;&#x2F;静态化初始化数组。 遍历
         </div>
       </a>
 
@@ -904,7 +904,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/05/01/2025-05-01-Java-01.SE-day2/" target="_self">
         <div>
-          # day2  ## 方法   学会定义满足需求的方法格式，学会调用方法    修饰符 返回值类型 方法名（形参）{  ​	return 返回值;  }  **修饰符 面向对象时候再考虑**  ## 方法的重载  方法名称相同  根据形参个数和类型不同重载函数  ## 表达式  表达式中byte char short都是当作int类型进行计算  默认数字都是 int 小数都是double   表
+          day2方法学会定义满足需求的方法格式，学会调用方法 修饰符 返回值类型 方法名（形参）{ ​	return 返回值; } 修饰符 面向对象时候再考虑 方法的重载方法名称相同 根据形参个数和类型不同重载函数 表达式表达式中byte char short都是当作int类型进行计算 默认数字都是 int 小数都是double  表达式中的数据类型由最高的数据类型决定 扩展赋值运算符+&#x3D;
         </div>
       </a>
 
@@ -974,7 +974,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/04/29/2025-04-29-Java-01.SE-day1_2/" target="_self">
         <div>
-          # Java基本语法  ## 功能的最小单元  方法去实现功能  12345public static void printHelloWorld()&#123;        System.out.println(&quot;Helloworld!&quot;);        System.out.println(&quot;Helloworld!&quot;);        System.
+          Java基本语法功能的最小单元方法去实现功能 12345public static void printHelloWorld()&#123;        System.out.println(&quot;Helloworld!&quot;);        System.out.println(&quot;Helloworld!&quot;);        System.out.println
         </div>
       </a>
 

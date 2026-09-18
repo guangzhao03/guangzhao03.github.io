@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# 2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘  &gt; 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜底)+ A&#x2F;B 测试。 &gt; 结构:Agent 基础与情景">
+    <meta name="description" content="2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/04/2026-09-04-%E5%85%AB%E8%82%A1-202694%E5%AD%97%E8%8A%82Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# 2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘  &gt; 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜底)+ A&#x2F;B 测试。 &gt; 结构:Agent 基础与情景">
+<meta property="og:description" content="2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-04T01:29:14.000Z">
 <meta property="article:modified_time" content="2026-09-04T01:29:14.000Z">
@@ -326,7 +326,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.4k 字
+          4.7k 字
         
       </span>
     
@@ -337,7 +337,7 @@
         
         
         
-          20 分钟
+          40 分钟
         
       </span>
     
@@ -381,152 +381,157 @@
             
               <div class="markdown-body">
                 
-                
-# 2026-09-04 字节跳动 Agent/AI 应用 日常实习 模拟面试复盘
-
-> 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG/Embedding/召回评估)+ 八股(Transformer/LoRA/交叉熵)+ 手撕(LRU/MHA)+ 情景题(幻觉/工具失败兜底)+ A/B 测试。
-> 结构:Agent 基础与情景 → RAG → 大模型基础 → 评估与 A/B → 手撕(降难度版)→ 开放设计。项目深挖跳过(简历未完成)。
-
----
-
-## Q1 Function Calling 全流程 ✅
-
-**我的答案**:用户消息带 function 说明(name/description/input/output)→ 模型判断调什么工具什么参数,输出 JSON → 客户端解析执行 → 结果返回模型。
-
-**点评**:核心机制(模型不执行,客户端执行)✅。追问"结果回传后呢"答对:模型判断还需不需要继续调工具,不需要就总结回答。
-**修正**:"关键机制是 ReAct" ❌——ReAct 是提示词范式(Thought→Action→Observation 文本),Function Calling 是 API 原生工具调用。loop 靠 `stop_reason == "tool_use"` 判断继续/退出。
-
-**Q1-追问:工具执行失败怎么兜底(字节二面原题)** ✅
-我的三条:①参数问题→错误结果+提醒回传模型 ②调用混乱→每个 function 写清边界 ③执行不停→设超时。
-点评:三条都在点上。补:错误信息要**可操作**("missing required field `city`" 而非堆栈);设**重试上限**(同工具连败 3 次终止/降级)——与轮次上限/重复检测同属三道防线。
-
----
-
-## Q2 幻觉 ⚠️(温度 0 二连坑,必背)
-
-**我的答案**:概率模型只说概率大的答案;手段:提示词约束/并行多跑几轮/RAG/温度 0。
-
-**点评**:
-- 原因只答出 1/3。标准三条:①概率模型目标是"像"不是"真" ②没有"我不知道"机制,SFT 教出有问必答 ③训练数据过时/噪声/长尾不足
-- 温度 0 ❌——**9/2 踩过又踩**。温度 0 只消随机性,贪心解码照样编,幻觉根源是"没有事实依据"不是"随机性"
-- 并行多跑 ⚠️ 学名 self-consistency,提高一致性≠提高事实性
-- 自检技巧:温度 0 和并行采样互相矛盾,一起端出来会被打
-
-**必背四条手段**:①RAG ②Prompt 三件套(允许说不知道/仅据给定资料/引用来源)③事后校验(另一模型做 faithfulness 检查)④对齐(RLHF 校准拒答)。
-套路:**原因"机制+训练+知识边界",手段"RAG/prompt/校验/对齐"**。
-
----
-
-## Q3 RAG 召不回排查 ✅✅(高光)
-
-**我的答案**:query 和 answer 不匹配要增强 query;排查看 chunk 内容、拿什么当 query、是排序低还是压根不在 top-k 里;加 BM25 路互补。
-
-**点评**:**"区分不在 top-k vs 排序低"是生产级排查思维(召回问题 vs 排序问题,修法完全不同)——三场以来最好的工程直觉**。BM25 互补(语义 vs 关键词/专有名词)✅。
-
-**HyDE 第三次掰正**(先弄懂再答的暂停讲解):
-- Query 改写 = 把**问题**说得更清楚(同义词/口语转书面),改完还是问句
-- HyDE = 让 LLM **编一段假设性答案文档**拿去检索——假答案的词汇句式和真文档同类,embedding 落在"文档区",离真 chunk 近;数字编错没关系
-- 记忆锚点:**改写 = 把问题说清楚;HyDE = 把答案编出来拿去搜**
-- 失败模式:改写改完还不匹配;HyDE 冷门问题编跑题带偏检索
-- 实战:多路召回里原始 query/改写/HyDE 各一路,RRF 合并;话术"先分析 badcase 判断失败类型,改写解决不了再上 HyDE"
-
-**Q3-追问:Embedding 模型选型** ⚠️
-✅ 语言支持(纯中文/英文/双语)。❌ "bge 会生成稀疏向量"不精确——是 **BGE-M3 单型号**支持稠密+稀疏+多向量三种表示,bge-large 等纯稠密。面试精确到型号。
-补全因素:语言/维度与成本权衡/C-MTEB 榜单参考/长文本 max tokens/query-document 不对称处理/部署方式。
-**验证方法(现学)**:"榜单初筛(C-MTEB),自建评测集终筛(人工标注 query→正确文档,算 Recall@k/MRR),最后端到端验证"——豆包面经原题就是"召回率如何评估"。
-
----
-
-## Q4 大模型基础 ⚠️
-
-**Q4-1 交叉熵 vs MSE**:只答"分类用 CE 回归用 MSE"。深度版:LLM 输出词表上的概率分布,本质是超大分类→CE;MSE 配 softmax 梯度消失,且 token 间无数值距离(错"狗"和错"飞机"一样错)。
-**一句话版**:"LLM 是词表上的超大分类,CE 直接匹配概率分布;MSE 给连续值回归设计,配 softmax 梯度会消失。"
-
-**Q4-2 LoRA**:低秩✅,但"只调整部分小窗口"❌(窗口是 Flash Attention 概念,串了)。
-**正确版**:"冻结原权重 W,旁路加两个小矩阵 A(d×r)、B(r×d),前向 = W·x + B·A·x;可训练参数从 d×d 降到 2×d×r;推理时 B·A 可合并回 W 零延迟;多任务换 LoRA 权重底座共享。"
-记忆锚点:**LoRA = 冻结原文,旁边开小抄**。
-
----
-
-## Q5 评估与 A/B ⚠️(字节灵魂题,题眼没答出)
-
-**我的答案**:新旧 prompt 跑同任务对比,看端到端/过程/成本延迟;上线后看用户反馈,离线有偏差。
-
-**点评**:离线评测部分✅(标准说法:同一评测集新旧各跑)。但**在线 A/B 完全没提——这是题眼**:
-- 随机分流(两组用户无系统差异)→ 跑 1-2 周比业务指标(任务完成率/点赞点踩/留存/人工转接率)→ **显著性检验(p<0.05)** 字节必追
-- 话术:"离线回归当门禁 → 线上 A/B 小流量放量 → 显著才全量"
-
-**离线好≠在线好(三条)**:①分布 gap(评测集人工挑的,长尾覆盖不到)②指标≠体验(延迟/语气/格式在线才感知)③用户是活的(上线后行为会变)。
-在线要做的:A/B + 反馈埋点 + 成功率监控 + **badcase 回流评测集**(持续迭代)。
-
----
-
-## Q6 手撕 ✅✅(超预期)
-
-**Q6a LRU Cache**:用户力扣真实现通过。数据结构:哈希表(O(1) 找到)+ 双向链表(O(1) 排队,头最新尾最旧);必追点:为什么双向——摘中间节点要 O(1) 必须知道前驱。记忆锚点:**哈希表管"找到",双向链表管"排队"**。
-**结论:用户自我评估"只懂思路不能写码"偏低,缺的是练不是能力。**
-
-**Q6b Agent loop 白板(降难度版)**:
-- 退出条件✅(判断 stop_reason,精确版 `stop_reason != "tool_use"` 退出)
-- 回传+为什么再调✅(append 到 messages;补充:工具结果只是历史里一条消息,模型不会自动响应,**必须再发 API 请求才继续生成**——loop 的本质是每次模型发言都是一次新 API 调用)
-- 防死循环 ⚠️ "两个标记位"含糊→标准:轮次上限(max_turns=25)+ 重复检测(同工具同参连续 3 次)
-- 白板参考答案已存档于复盘(伪代码 15 行:for max_turns → create → stop_reason 判断 → 客户端执行 → assistant block + tool_result 回传 → 超限降级)
-
----
-
-## Q7 开放设计:AI 简历优化助手 ⚠️
-
-**我的答案**:word/pdf 解析成 markdown(OCR 版面分析+AI 转化更好);按 JD 优化输出建议;评估=另建一个 AI 拿 jd+简历来评。
-
-**点评**:OCR/版面分析✅ 真实痛点,亮点。LLM-as-a-judge✅ 但评估只答 1/4。
-**架构补全**:解析层→**分析层(简历×JD 对齐:技能匹配/关键词缺口——用户跳过了这步)**→生成层(逐段改写+引用原文防编造)→工程项(PII 脱敏,主动提加分)。
-**评估补全**:规则指标(JD 关键词覆盖率前后对比)/judge(带 rubric:相关性/具体性/**真实性——不能编造经历**)/人工金标/**采纳率闭环(建议被接受比例,北极星)**。
-**价值**:9/2 的"评什么/怎么评/何时评"框架成功迁移到新场景——这正是面试官考的框架迁移能力。
-
----
-
-# 总体战报
-
-| 题 | 考点 | 表现 | 备注 |
-|---|---|---|---|
-| Q1 Function Calling | Agent 基础 | ✅ | 核心扎实;ReAct≠FC 待修 |
-| Q1-追 工具失败兜底 | 情景 | ✅ | 三条全对+重试上限 |
-| Q2 幻觉 | 大模型 | ⚠️ | **温度 0 二连坑**;手段四条没背熟 |
-| Q3 召回排查 | RAG | ✅✅ | 高光:top-k vs 排序区分 |
-| Q3-追 HyDE | RAG | ❌→✅ | 第三次掰正 |
-| Q3-追2 Embedding 选型 | RAG | ⚠️ | BGE-M3 精确到型号;验证方法现学 |
-| Q4 交叉熵/LoRA | 大模型 | ⚠️ | 都差一层深度,一句话版已给 |
-| Q5 A/B 测试 | 评估 | ⚠️ | **题眼在线 A/B 没答出** |
-| Q6a LRU | 手撕 | ✅✅ | 力扣真跑通,超自我评估 |
-| Q6b Agent loop | 手撕 | ✅ | 思路全对,术语要准 |
-| Q7 开放设计 | 设计 | ⚠️ | OCR 亮点;跳步+评估不全 |
-
-## 三场规律
-
-1. **最大短板:术语精确性**——模式更具体了:**不是不知道,是版本不精确**(ReAct≈FC、bge≈BGE-M3、LoRA"小窗口")。这种错比空白危险,面试官会以为你真懂错的东西
-2. **排查/工程直觉真强**:top-k vs 排序、工具失败三条、LRU 真跑通——动手过的扎实(三场一致)
-3. **温度 0 二连坑的教训**:9/2 待办只背了清单没过"为什么"——温度 0 消随机性,幻觉根源是没事实依据,消随机性治不了
-
-## 待办(9/4 更新,合并旧)
-
-- [ ] **幻觉四条手段真背下来**(温度 0 已二连坑):RAG / prompt 三件套 / 事后校验 faithfulness / 对齐拒答
-- [ ] **A/B 完整链路**:随机分流→业务指标→显著性;离线≠在线三条(分布 gap/指标≠体验/用户是活的)
-- [ ] HyDE vs 改写锚点(第三次,应最后一次):改写=把问题说清楚;HyDE=把答案编出来搜
-- [ ] ReAct vs FC:提示词范式 vs API 原生;loop 靠 stop_reason=="tool_use"
-- [ ] 交叉熵一句话版;LoRA 一句话版(冻结+低秩旁路+可合并)
-- [ ] BGE-M3=稠密+稀疏+多向量(精确到型号)
-- [ ] Embedding 选型话术:榜单初筛/自建评测集 Recall@k 终筛/端到端验证
-- [ ] 开放设计模板:不跳步(解析→**分析**→生成);评估=规则+judge+人工+采纳率闭环
-- [ ] **简历(最高优先级)**——真实面试项目深挖 30 分钟起
-- [ ] (延续)Anthropic《Building effective agents》《How we built our multi-agent research system》;Q14 归因表
-
-## 值得肯定的
-
-- LRU 力扣真跑通——缺的是练不是能力
-- top-k vs 排序排查区分 = 三场最佳工程直觉
-- 工具失败三条 / A/B 反馈意识 / OCR 版面分析 / 评估框架成功迁移——工程感稳定输出
-
-
+                <h1 id="2026-09-04-字节跳动-Agent-AI-应用-日常实习-模拟面试复盘"><a href="#2026-09-04-字节跳动-Agent-AI-应用-日常实习-模拟面试复盘" class="headerlink" title="2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘"></a>2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘</h1><blockquote>
+<p>模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜底)+ A&#x2F;B 测试。<br>结构:Agent 基础与情景 → RAG → 大模型基础 → 评估与 A&#x2F;B → 手撕(降难度版)→ 开放设计。项目深挖跳过(简历未完成)。</p>
+</blockquote>
+<hr>
+<h2 id="Q1-Function-Calling-全流程-✅"><a href="#Q1-Function-Calling-全流程-✅" class="headerlink" title="Q1 Function Calling 全流程 ✅"></a>Q1 Function Calling 全流程 ✅</h2><p><strong>我的答案</strong>:用户消息带 function 说明(name&#x2F;description&#x2F;input&#x2F;output)→ 模型判断调什么工具什么参数,输出 JSON → 客户端解析执行 → 结果返回模型。</p>
+<p><strong>点评</strong>:核心机制(模型不执行,客户端执行)✅。追问”结果回传后呢”答对:模型判断还需不需要继续调工具,不需要就总结回答。<br><strong>修正</strong>:”关键机制是 ReAct” ❌——ReAct 是提示词范式(Thought→Action→Observation 文本),Function Calling 是 API 原生工具调用。loop 靠 <code>stop_reason == &quot;tool_use&quot;</code> 判断继续&#x2F;退出。</p>
+<p><strong>Q1-追问:工具执行失败怎么兜底(字节二面原题)</strong> ✅<br>我的三条:①参数问题→错误结果+提醒回传模型 ②调用混乱→每个 function 写清边界 ③执行不停→设超时。<br>点评:三条都在点上。补:错误信息要<strong>可操作</strong>(“missing required field <code>city</code>“ 而非堆栈);设<strong>重试上限</strong>(同工具连败 3 次终止&#x2F;降级)——与轮次上限&#x2F;重复检测同属三道防线。</p>
+<hr>
+<h2 id="Q2-幻觉-⚠️-温度-0-二连坑-必背"><a href="#Q2-幻觉-⚠️-温度-0-二连坑-必背" class="headerlink" title="Q2 幻觉 ⚠️(温度 0 二连坑,必背)"></a>Q2 幻觉 ⚠️(温度 0 二连坑,必背)</h2><p><strong>我的答案</strong>:概率模型只说概率大的答案;手段:提示词约束&#x2F;并行多跑几轮&#x2F;RAG&#x2F;温度 0。</p>
+<p><strong>点评</strong>:</p>
+<ul>
+<li>原因只答出 1&#x2F;3。标准三条:①概率模型目标是”像”不是”真” ②没有”我不知道”机制,SFT 教出有问必答 ③训练数据过时&#x2F;噪声&#x2F;长尾不足</li>
+<li>温度 0 ❌——<strong>9&#x2F;2 踩过又踩</strong>。温度 0 只消随机性,贪心解码照样编,幻觉根源是”没有事实依据”不是”随机性”</li>
+<li>并行多跑 ⚠️ 学名 self-consistency,提高一致性≠提高事实性</li>
+<li>自检技巧:温度 0 和并行采样互相矛盾,一起端出来会被打</li>
+</ul>
+<p><strong>必背四条手段</strong>:①RAG ②Prompt 三件套(允许说不知道&#x2F;仅据给定资料&#x2F;引用来源)③事后校验(另一模型做 faithfulness 检查)④对齐(RLHF 校准拒答)。<br>套路:**原因”机制+训练+知识边界”,手段”RAG&#x2F;prompt&#x2F;校验&#x2F;对齐”**。</p>
+<hr>
+<h2 id="Q3-RAG-召不回排查-✅✅-高光"><a href="#Q3-RAG-召不回排查-✅✅-高光" class="headerlink" title="Q3 RAG 召不回排查 ✅✅(高光)"></a>Q3 RAG 召不回排查 ✅✅(高光)</h2><p><strong>我的答案</strong>:query 和 answer 不匹配要增强 query;排查看 chunk 内容、拿什么当 query、是排序低还是压根不在 top-k 里;加 BM25 路互补。</p>
+<p><strong>点评</strong>:<strong>“区分不在 top-k vs 排序低”是生产级排查思维(召回问题 vs 排序问题,修法完全不同)——三场以来最好的工程直觉</strong>。BM25 互补(语义 vs 关键词&#x2F;专有名词)✅。</p>
+<p><strong>HyDE 第三次掰正</strong>(先弄懂再答的暂停讲解):</p>
+<ul>
+<li>Query 改写 &#x3D; 把<strong>问题</strong>说得更清楚(同义词&#x2F;口语转书面),改完还是问句</li>
+<li>HyDE &#x3D; 让 LLM <strong>编一段假设性答案文档</strong>拿去检索——假答案的词汇句式和真文档同类,embedding 落在”文档区”,离真 chunk 近;数字编错没关系</li>
+<li>记忆锚点:<strong>改写 &#x3D; 把问题说清楚;HyDE &#x3D; 把答案编出来拿去搜</strong></li>
+<li>失败模式:改写改完还不匹配;HyDE 冷门问题编跑题带偏检索</li>
+<li>实战:多路召回里原始 query&#x2F;改写&#x2F;HyDE 各一路,RRF 合并;话术”先分析 badcase 判断失败类型,改写解决不了再上 HyDE”</li>
+</ul>
+<p><strong>Q3-追问:Embedding 模型选型</strong> ⚠️<br>✅ 语言支持(纯中文&#x2F;英文&#x2F;双语)。❌ “bge 会生成稀疏向量”不精确——是 <strong>BGE-M3 单型号</strong>支持稠密+稀疏+多向量三种表示,bge-large 等纯稠密。面试精确到型号。<br>补全因素:语言&#x2F;维度与成本权衡&#x2F;C-MTEB 榜单参考&#x2F;长文本 max tokens&#x2F;query-document 不对称处理&#x2F;部署方式。<br><strong>验证方法(现学)</strong>:”榜单初筛(C-MTEB),自建评测集终筛(人工标注 query→正确文档,算 Recall@k&#x2F;MRR),最后端到端验证”——豆包面经原题就是”召回率如何评估”。</p>
+<hr>
+<h2 id="Q4-大模型基础-⚠️"><a href="#Q4-大模型基础-⚠️" class="headerlink" title="Q4 大模型基础 ⚠️"></a>Q4 大模型基础 ⚠️</h2><p><strong>Q4-1 交叉熵 vs MSE</strong>:只答”分类用 CE 回归用 MSE”。深度版:LLM 输出词表上的概率分布,本质是超大分类→CE;MSE 配 softmax 梯度消失,且 token 间无数值距离(错”狗”和错”飞机”一样错)。<br><strong>一句话版</strong>:”LLM 是词表上的超大分类,CE 直接匹配概率分布;MSE 给连续值回归设计,配 softmax 梯度会消失。”</p>
+<p><strong>Q4-2 LoRA</strong>:低秩✅,但”只调整部分小窗口”❌(窗口是 Flash Attention 概念,串了)。<br><strong>正确版</strong>:”冻结原权重 W,旁路加两个小矩阵 A(d×r)、B(r×d),前向 &#x3D; W·x + B·A·x;可训练参数从 d×d 降到 2×d×r;推理时 B·A 可合并回 W 零延迟;多任务换 LoRA 权重底座共享。”<br>记忆锚点:<strong>LoRA &#x3D; 冻结原文,旁边开小抄</strong>。</p>
+<hr>
+<h2 id="Q5-评估与-A-B-⚠️-字节灵魂题-题眼没答出"><a href="#Q5-评估与-A-B-⚠️-字节灵魂题-题眼没答出" class="headerlink" title="Q5 评估与 A&#x2F;B ⚠️(字节灵魂题,题眼没答出)"></a>Q5 评估与 A&#x2F;B ⚠️(字节灵魂题,题眼没答出)</h2><p><strong>我的答案</strong>:新旧 prompt 跑同任务对比,看端到端&#x2F;过程&#x2F;成本延迟;上线后看用户反馈,离线有偏差。</p>
+<p><strong>点评</strong>:离线评测部分✅(标准说法:同一评测集新旧各跑)。但<strong>在线 A&#x2F;B 完全没提——这是题眼</strong>:</p>
+<ul>
+<li>随机分流(两组用户无系统差异)→ 跑 1-2 周比业务指标(任务完成率&#x2F;点赞点踩&#x2F;留存&#x2F;人工转接率)→ <strong>显著性检验(p&lt;0.05)</strong> 字节必追</li>
+<li>话术:”离线回归当门禁 → 线上 A&#x2F;B 小流量放量 → 显著才全量”</li>
+</ul>
+<p><strong>离线好≠在线好(三条)</strong>:①分布 gap(评测集人工挑的,长尾覆盖不到)②指标≠体验(延迟&#x2F;语气&#x2F;格式在线才感知)③用户是活的(上线后行为会变)。<br>在线要做的:A&#x2F;B + 反馈埋点 + 成功率监控 + <strong>badcase 回流评测集</strong>(持续迭代)。</p>
+<hr>
+<h2 id="Q6-手撕-✅✅-超预期"><a href="#Q6-手撕-✅✅-超预期" class="headerlink" title="Q6 手撕 ✅✅(超预期)"></a>Q6 手撕 ✅✅(超预期)</h2><p><strong>Q6a LRU Cache</strong>:用户力扣真实现通过。数据结构:哈希表(O(1) 找到)+ 双向链表(O(1) 排队,头最新尾最旧);必追点:为什么双向——摘中间节点要 O(1) 必须知道前驱。记忆锚点:**哈希表管”找到”,双向链表管”排队”**。<br><strong>结论:用户自我评估”只懂思路不能写码”偏低,缺的是练不是能力。</strong></p>
+<p><strong>Q6b Agent loop 白板(降难度版)</strong>:</p>
+<ul>
+<li>退出条件✅(判断 stop_reason,精确版 <code>stop_reason != &quot;tool_use&quot;</code> 退出)</li>
+<li>回传+为什么再调✅(append 到 messages;补充:工具结果只是历史里一条消息,模型不会自动响应,<strong>必须再发 API 请求才继续生成</strong>——loop 的本质是每次模型发言都是一次新 API 调用)</li>
+<li>防死循环 ⚠️ “两个标记位”含糊→标准:轮次上限(max_turns&#x3D;25)+ 重复检测(同工具同参连续 3 次)</li>
+<li>白板参考答案已存档于复盘(伪代码 15 行:for max_turns → create → stop_reason 判断 → 客户端执行 → assistant block + tool_result 回传 → 超限降级)</li>
+</ul>
+<hr>
+<h2 id="Q7-开放设计-AI-简历优化助手-⚠️"><a href="#Q7-开放设计-AI-简历优化助手-⚠️" class="headerlink" title="Q7 开放设计:AI 简历优化助手 ⚠️"></a>Q7 开放设计:AI 简历优化助手 ⚠️</h2><p><strong>我的答案</strong>:word&#x2F;pdf 解析成 markdown(OCR 版面分析+AI 转化更好);按 JD 优化输出建议;评估&#x3D;另建一个 AI 拿 jd+简历来评。</p>
+<p><strong>点评</strong>:OCR&#x2F;版面分析✅ 真实痛点,亮点。LLM-as-a-judge✅ 但评估只答 1&#x2F;4。<br><strong>架构补全</strong>:解析层→**分析层(简历×JD 对齐:技能匹配&#x2F;关键词缺口——用户跳过了这步)**→生成层(逐段改写+引用原文防编造)→工程项(PII 脱敏,主动提加分)。<br><strong>评估补全</strong>:规则指标(JD 关键词覆盖率前后对比)&#x2F;judge(带 rubric:相关性&#x2F;具体性&#x2F;<strong>真实性——不能编造经历</strong>)&#x2F;人工金标&#x2F;**采纳率闭环(建议被接受比例,北极星)**。<br><strong>价值</strong>:9&#x2F;2 的”评什么&#x2F;怎么评&#x2F;何时评”框架成功迁移到新场景——这正是面试官考的框架迁移能力。</p>
+<hr>
+<h1 id="总体战报"><a href="#总体战报" class="headerlink" title="总体战报"></a>总体战报</h1><table>
+<thead>
+<tr>
+<th>题</th>
+<th>考点</th>
+<th>表现</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q1 Function Calling</td>
+<td>Agent 基础</td>
+<td>✅</td>
+<td>核心扎实;ReAct≠FC 待修</td>
+</tr>
+<tr>
+<td>Q1-追 工具失败兜底</td>
+<td>情景</td>
+<td>✅</td>
+<td>三条全对+重试上限</td>
+</tr>
+<tr>
+<td>Q2 幻觉</td>
+<td>大模型</td>
+<td>⚠️</td>
+<td><strong>温度 0 二连坑</strong>;手段四条没背熟</td>
+</tr>
+<tr>
+<td>Q3 召回排查</td>
+<td>RAG</td>
+<td>✅✅</td>
+<td>高光:top-k vs 排序区分</td>
+</tr>
+<tr>
+<td>Q3-追 HyDE</td>
+<td>RAG</td>
+<td>❌→✅</td>
+<td>第三次掰正</td>
+</tr>
+<tr>
+<td>Q3-追2 Embedding 选型</td>
+<td>RAG</td>
+<td>⚠️</td>
+<td>BGE-M3 精确到型号;验证方法现学</td>
+</tr>
+<tr>
+<td>Q4 交叉熵&#x2F;LoRA</td>
+<td>大模型</td>
+<td>⚠️</td>
+<td>都差一层深度,一句话版已给</td>
+</tr>
+<tr>
+<td>Q5 A&#x2F;B 测试</td>
+<td>评估</td>
+<td>⚠️</td>
+<td><strong>题眼在线 A&#x2F;B 没答出</strong></td>
+</tr>
+<tr>
+<td>Q6a LRU</td>
+<td>手撕</td>
+<td>✅✅</td>
+<td>力扣真跑通,超自我评估</td>
+</tr>
+<tr>
+<td>Q6b Agent loop</td>
+<td>手撕</td>
+<td>✅</td>
+<td>思路全对,术语要准</td>
+</tr>
+<tr>
+<td>Q7 开放设计</td>
+<td>设计</td>
+<td>⚠️</td>
+<td>OCR 亮点;跳步+评估不全</td>
+</tr>
+</tbody></table>
+<h2 id="三场规律"><a href="#三场规律" class="headerlink" title="三场规律"></a>三场规律</h2><ol>
+<li><strong>最大短板:术语精确性</strong>——模式更具体了:<strong>不是不知道,是版本不精确</strong>(ReAct≈FC、bge≈BGE-M3、LoRA”小窗口”)。这种错比空白危险,面试官会以为你真懂错的东西</li>
+<li><strong>排查&#x2F;工程直觉真强</strong>:top-k vs 排序、工具失败三条、LRU 真跑通——动手过的扎实(三场一致)</li>
+<li><strong>温度 0 二连坑的教训</strong>:9&#x2F;2 待办只背了清单没过”为什么”——温度 0 消随机性,幻觉根源是没事实依据,消随机性治不了</li>
+</ol>
+<h2 id="待办-9-4-更新-合并旧"><a href="#待办-9-4-更新-合并旧" class="headerlink" title="待办(9&#x2F;4 更新,合并旧)"></a>待办(9&#x2F;4 更新,合并旧)</h2><ul>
+<li><input disabled="" type="checkbox"> <strong>幻觉四条手段真背下来</strong>(温度 0 已二连坑):RAG &#x2F; prompt 三件套 &#x2F; 事后校验 faithfulness &#x2F; 对齐拒答</li>
+<li><input disabled="" type="checkbox"> <strong>A&#x2F;B 完整链路</strong>:随机分流→业务指标→显著性;离线≠在线三条(分布 gap&#x2F;指标≠体验&#x2F;用户是活的)</li>
+<li><input disabled="" type="checkbox"> HyDE vs 改写锚点(第三次,应最后一次):改写&#x3D;把问题说清楚;HyDE&#x3D;把答案编出来搜</li>
+<li><input disabled="" type="checkbox"> ReAct vs FC:提示词范式 vs API 原生;loop 靠 stop_reason&#x3D;&#x3D;”tool_use”</li>
+<li><input disabled="" type="checkbox"> 交叉熵一句话版;LoRA 一句话版(冻结+低秩旁路+可合并)</li>
+<li><input disabled="" type="checkbox"> BGE-M3&#x3D;稠密+稀疏+多向量(精确到型号)</li>
+<li><input disabled="" type="checkbox"> Embedding 选型话术:榜单初筛&#x2F;自建评测集 Recall@k 终筛&#x2F;端到端验证</li>
+<li><input disabled="" type="checkbox"> 开放设计模板:不跳步(解析→<strong>分析</strong>→生成);评估&#x3D;规则+judge+人工+采纳率闭环</li>
+<li><input disabled="" type="checkbox"> **简历(最高优先级)**——真实面试项目深挖 30 分钟起</li>
+<li><input disabled="" type="checkbox"> (延续)Anthropic《Building effective agents》《How we built our multi-agent research system》;Q14 归因表</li>
+</ul>
+<h2 id="值得肯定的"><a href="#值得肯定的" class="headerlink" title="值得肯定的"></a>值得肯定的</h2><ul>
+<li>LRU 力扣真跑通——缺的是练不是能力</li>
+<li>top-k vs 排序排查区分 &#x3D; 三场最佳工程直觉</li>
+<li>工具失败三条 &#x2F; A&#x2F;B 反馈意识 &#x2F; OCR 版面分析 &#x2F; 评估框架成功迁移——工程感稳定输出</li>
+</ul>
 
                 
               </div>

@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day7  定时任务、父子组件通信、表单构建、禅道  电商发放优惠卷  银行催款  财务结算前一天数据  12306分批放票  如何实现定时任务：  - 多线程方式，结合sleep - JDK提供的API，例如Timer、ScheduledExecutor - 框架：例如Quartz、XXL-JOB（微服务）,DolphinScheduler（大数据） - Spring-Task  **cr">
+    <meta name="description" content="day7定时任务、父子组件通信、表单构建、禅道 电商发放优惠卷 银行催款 财务结算前一天数据 12306分批放票 如何实现定时任务：  多线程方式，结合sleep JDK提供的API，例如Timer、ScheduledExecutor 框架：例如Quartz、XXL-JOB（微服务）,DolphinScheduler（大数据） Spring-Task  cron表达式 若依的定时任务可以通过可视化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day7">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/03/24/2026-03-24-Java-%E4%B8%AD%E5%B7%9E%E5%85%BB%E8%80%81-day7/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day7  定时任务、父子组件通信、表单构建、禅道  电商发放优惠卷  银行催款  财务结算前一天数据  12306分批放票  如何实现定时任务：  - 多线程方式，结合sleep - JDK提供的API，例如Timer、ScheduledExecutor - 框架：例如Quartz、XXL-JOB（微服务）,DolphinScheduler（大数据） - Spring-Task  **cr">
+<meta property="og:description" content="day7定时任务、父子组件通信、表单构建、禅道 电商发放优惠卷 银行催款 财务结算前一天数据 12306分批放票 如何实现定时任务：  多线程方式，结合sleep JDK提供的API，例如Timer、ScheduledExecutor 框架：例如Quartz、XXL-JOB（微服务）,DolphinScheduler（大数据） Spring-Task  cron表达式 若依的定时任务可以通过可视化">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-03-24T11:25:30.000Z">
 <meta property="article:modified_time" content="2026-03-24T11:25:30.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          511 字
+          498 字
         
       </span>
     
@@ -382,50 +382,28 @@
             
               <div class="markdown-body">
                 
-                
-# day7
-
-定时任务、父子组件通信、表单构建、禅道
-
-电商发放优惠卷
-
-银行催款
-
-财务结算前一天数据
-
-12306分批放票
-
-如何实现定时任务：
-
-- 多线程方式，结合sleep
-- JDK提供的API，例如Timer、ScheduledExecutor
-- 框架：例如Quartz、XXL-JOB（微服务）,DolphinScheduler（大数据）
-- Spring-Task
-
-**cron表达式**
-
-若依的定时任务可以通过可视化界面进行定时任务，但是定时任务的类必须被容器管理，并且还得在定时任务的白名单中。
-
-一般来说定时任务类只调用接口，接口写在service和serviceimpl实现类中。
-
-## 父子组件通信
-
-信息先交给每个子组件，汇总之后给父组件
-
-父组件引用子组件  
-
-子组件传数据给父组件
-
-父组件给子组件通信通过props属性传递和（子向父）事件event实现的
-
-子组件通过定义钩子defineProps来声明期望接受的prop，并且模板使用这个prop
-
-子组件给父组件传递数据通过自定义事件 defineEmits
-
-## 项目管理工具 禅道
-
-项目管理是一个复杂而细致的过程，它涉及对软件项目进行全面规划、执行、监控和控制，以确保项目能够按照预定的时间、成本和质量标准顺利完成。
-
+                <h1 id="day7"><a href="#day7" class="headerlink" title="day7"></a>day7</h1><p>定时任务、父子组件通信、表单构建、禅道</p>
+<p>电商发放优惠卷</p>
+<p>银行催款</p>
+<p>财务结算前一天数据</p>
+<p>12306分批放票</p>
+<p>如何实现定时任务：</p>
+<ul>
+<li>多线程方式，结合sleep</li>
+<li>JDK提供的API，例如Timer、ScheduledExecutor</li>
+<li>框架：例如Quartz、XXL-JOB（微服务）,DolphinScheduler（大数据）</li>
+<li>Spring-Task</li>
+</ul>
+<p><strong>cron表达式</strong></p>
+<p>若依的定时任务可以通过可视化界面进行定时任务，但是定时任务的类必须被容器管理，并且还得在定时任务的白名单中。</p>
+<p>一般来说定时任务类只调用接口，接口写在service和serviceimpl实现类中。</p>
+<h2 id="父子组件通信"><a href="#父子组件通信" class="headerlink" title="父子组件通信"></a>父子组件通信</h2><p>信息先交给每个子组件，汇总之后给父组件</p>
+<p>父组件引用子组件  </p>
+<p>子组件传数据给父组件</p>
+<p>父组件给子组件通信通过props属性传递和（子向父）事件event实现的</p>
+<p>子组件通过定义钩子defineProps来声明期望接受的prop，并且模板使用这个prop</p>
+<p>子组件给父组件传递数据通过自定义事件 defineEmits</p>
+<h2 id="项目管理工具-禅道"><a href="#项目管理工具-禅道" class="headerlink" title="项目管理工具 禅道"></a>项目管理工具 禅道</h2><p>项目管理是一个复杂而细致的过程，它涉及对软件项目进行全面规划、执行、监控和控制，以确保项目能够按照预定的时间、成本和质量标准顺利完成。</p>
 
                 
               </div>

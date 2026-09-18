@@ -19,19 +19,22 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day9  - 异常、泛型、集合框架  - 集合框架、stream流 - File、字符集、IO流框架 - 多线程 - 网络编程、综合项目 - Java高级技术  ## 异常、泛型、集合框架  异常：程序可能出现的错误  RuntimeExcetion、其他异常（编译时异常）  - 运行时异常：数组索引越界访问、除数0、空指针异常 - 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件">
+    <meta name="description" content="day9 异常、泛型、集合框架  集合框架、stream流  File、字符集、IO流框架  多线程  网络编程、综合项目  Java高级技术   异常、泛型、集合框架异常：程序可能出现的错误 RuntimeExcetion、其他异常（编译时异常）  运行时异常：数组索引越界访问、除数0、空指针异常 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件找不到   编译时异常提醒程序员容易出错，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day9">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/11/20/2025-11-20-Java-01.SE-day9/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day9  - 异常、泛型、集合框架  - 集合框架、stream流 - File、字符集、IO流框架 - 多线程 - 网络编程、综合项目 - Java高级技术  ## 异常、泛型、集合框架  异常：程序可能出现的错误  RuntimeExcetion、其他异常（编译时异常）  - 运行时异常：数组索引越界访问、除数0、空指针异常 - 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件">
+<meta property="og:description" content="day9 异常、泛型、集合框架  集合框架、stream流  File、字符集、IO流框架  多线程  网络编程、综合项目  Java高级技术   异常、泛型、集合框架异常：程序可能出现的错误 RuntimeExcetion、其他异常（编译时异常）  运行时异常：数组索引越界访问、除数0、空指针异常 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件找不到   编译时异常提醒程序员容易出错，">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-11-20-Java-01.SE-day9-image-20250703105851776.png">
+<meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-11-20-Java-01.SE-day9-image-20250707103620331.png">
 <meta property="article:published_time" content="2025-11-20T14:03:44.000Z">
 <meta property="article:modified_time" content="2025-11-20T14:03:44.000Z">
 <meta property="article:author" content="coolcys">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Java SE">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://guangzhao03.github.io/img/posts/2025-11-20-Java-01.SE-day9-image-20250703105851776.png">
   
   
   
@@ -327,7 +330,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k 字
+          2k 字
         
       </span>
     
@@ -338,7 +341,7 @@
         
         
         
-          19 分钟
+          17 分钟
         
       </span>
     
@@ -382,199 +385,132 @@
             
               <div class="markdown-body">
                 
-                
-# day9
+                <h1 id="day9"><a href="#day9" class="headerlink" title="day9"></a>day9</h1><ul>
+<li><p>异常、泛型、集合框架</p>
+</li>
+<li><p>集合框架、stream流</p>
+</li>
+<li><p>File、字符集、IO流框架</p>
+</li>
+<li><p>多线程</p>
+</li>
+<li><p>网络编程、综合项目</p>
+</li>
+<li><p>Java高级技术</p>
+</li>
+</ul>
+<h2 id="异常、泛型、集合框架"><a href="#异常、泛型、集合框架" class="headerlink" title="异常、泛型、集合框架"></a>异常、泛型、集合框架</h2><p>异常：程序可能出现的错误</p>
+<p>RuntimeExcetion、其他异常（编译时异常）</p>
+<ul>
+<li>运行时异常：数组索引越界访问、除数0、空指针异常</li>
+<li>编译时异常：编译阶段报错，编译不通过。日期解析异常、文件找不到</li>
+</ul>
+<blockquote>
+<p>编译时异常提醒程序员容易出错，请注意</p>
+</blockquote>
+<ul>
+<li><p>抛出异常：方法上使用throws 关键字 抛给使用方法的人</p>
+</li>
+<li><p>捕获异常：try catch</p>
+</li>
+</ul>
+<p>异常栈信息  e.printStackTrace()</p>
+<h3 id="异常的作用？"><a href="#异常的作用？" class="headerlink" title="异常的作用？"></a>异常的作用？</h3><p>作用1：异常是定位程序bug的关键信息</p>
+<p>作用2：可以作为方法内部的一种特殊返回值以便通知上层调用者，方法的执行问题。</p>
+<blockquote>
+<p>throw new Exception(“”)</p>
+</blockquote>
+<h2 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h2><ul>
+<li>Java无法为这个世界上全部的问题都用异常类来代表，如果企业自己的某种问题，想通过异常来表示，以便用异常来管理该问题，那就需要自己来定义异常类了</li>
+</ul>
+<p>1、自定义运行时异常</p>
+<ul>
+<li>定义一个异常类继承RuntimeExcception</li>
+<li>重写构造器</li>
+<li>通过throw new 异常类（XX）来创建异常对象并抛出</li>
+</ul>
+<p>默认方法会自动抛出运行时异常</p>
+<p>2、自定义编译时异常</p>
+<ul>
+<li>定义一个异常类继承Exception</li>
+<li>重写构造器</li>
+<li>通过throw new 异常类（XX）来创建异常对象并抛出</li>
+</ul>
+<blockquote>
+<p>问题严重则编译时异常，不严重则运行时异常、默认运行时异常</p>
+</blockquote>
+<h2 id="异常的处理方案"><a href="#异常的处理方案" class="headerlink" title="异常的处理方案"></a>异常的处理方案</h2><p>方案1：底层异常层层向上抛出，最外层捕获异常，记录下异常信息，并响应合适信息给用户观看进行提示</p>
+<p>方案2： 最外层捕获异常后， 尝试重新修复</p>
+<h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><ul>
+<li>定义类、接口、方法时，同时声明了一个或多个类型变量（例如<E>)称为泛型类、泛型接口、泛型方法、他们统称为泛型</li>
+</ul>
+<p>作用：泛型提供了在编译阶段约束所能操作的数据类型，并自动进行检查的能力。这样可以避免强制类型转化，及可能出现的异常</p>
+<h3 id="泛型类"><a href="#泛型类" class="headerlink" title="泛型类"></a>泛型类</h3><p>类型变量有泛型就为泛型类</p>
+<ul>
+<li>类型变量建议使用大写的英文字母，常用的有：E、T、K、V</li>
+</ul>
+<p>JDK7开始支持 前面写后面new的&lt;&gt;可不写</p>
+<p> Shift+F6 批量更改变量名</p>
+<h3 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h3><h3 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Box</span>&lt;T&gt; &#123;&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Processor</span>&lt;T&gt; &#123;&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; <span class="hljs-type">void</span> <span class="hljs-title function_">printArray</span><span class="hljs-params">(T[] array)</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
 
-- 异常、泛型、集合框架
-
-- 集合框架、stream流
-- File、字符集、IO流框架
-- 多线程
-- 网络编程、综合项目
-- Java高级技术
-
-## 异常、泛型、集合框架
-
-异常：程序可能出现的错误
-
-RuntimeExcetion、其他异常（编译时异常）
-
-- 运行时异常：数组索引越界访问、除数0、空指针异常
-- 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件找不到
-
-> 编译时异常提醒程序员容易出错，请注意
-
-- 抛出异常：方法上使用throws 关键字 抛给使用方法的人
-
-- 捕获异常：try catch
-
-异常栈信息  e.printStackTrace()
-
-
-
-### 异常的作用？
-
-作用1：异常是定位程序bug的关键信息
-
-作用2：可以作为方法内部的一种特殊返回值以便通知上层调用者，方法的执行问题。
-
-> throw new Exception("")
-
-
-
-## 自定义异常
-
-- Java无法为这个世界上全部的问题都用异常类来代表，如果企业自己的某种问题，想通过异常来表示，以便用异常来管理该问题，那就需要自己来定义异常类了
-
-1、自定义运行时异常
-
-- 定义一个异常类继承RuntimeExcception
-- 重写构造器
-- 通过throw new 异常类（XX）来创建异常对象并抛出
-
-默认方法会自动抛出运行时异常
-
-2、自定义编译时异常
-
-- 定义一个异常类继承Exception
-- 重写构造器
-- 通过throw new 异常类（XX）来创建异常对象并抛出
-
-> 问题严重则编译时异常，不严重则运行时异常、默认运行时异常
-
-## 异常的处理方案
-
-方案1：底层异常层层向上抛出，最外层捕获异常，记录下异常信息，并响应合适信息给用户观看进行提示
-
-方案2： 最外层捕获异常后， 尝试重新修复
-
-## 泛型
-
-- 定义类、接口、方法时，同时声明了一个或多个类型变量（例如<E>)称为泛型类、泛型接口、泛型方法、他们统称为泛型
-
-作用：泛型提供了在编译阶段约束所能操作的数据类型，并自动进行检查的能力。这样可以避免强制类型转化，及可能出现的异常
-
-### 泛型类
-
-类型变量有泛型就为泛型类
-
-- 类型变量建议使用大写的英文字母，常用的有：E、T、K、V
-
-JDK7开始支持 前面写后面new的<>可不写
-
- Shift+F6 批量更改变量名
-
-### 泛型接口
-
-### 泛型方法
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Box</span>&lt;T&gt; &#123;&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Processor</span>&lt;T&gt; &#123;&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; <span class="hljs-type">void</span> <span class="hljs-title function_">printArray</span><span class="hljs-params">(T[] array)</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
-
-### 通配符和上下限
-
-- 就是“?”，可以在“使用泛型”的时候代表一切类型；E T K V 是在定义泛型的时候使用
-
-使用泛型即形参中存在泛型
-
-#### 上下限
-
-- 泛型上限 ：`？extends Car`：   ？能接受的必须是Car或者其子类
-- 泛型下下限：`？super Car`：   ？能接受的必须是Car或者其父类
-
-## 泛型支持的类型
-
-- 泛型不支持基本数据类型，只能支持对象类型（引用数据类型）
-
-为什么？
-
-泛型擦除:泛型工作在编译阶段,等翻译后泛型就没用了,所以泛型在编译后都会擦出,所有类型会恢复成object
-
-object类只能接对象 不能接基本数据类型 
-
-- 包装类就是把基本数据类型的数据包装成对象的类型
-
-Integer -128~127数据都存在 Integer.valueOf();
-
-自动装箱成对象:基本数据类型可以直接变成包装对象的数据
-
-自动拆箱:把包装类型的对象直接给基本数据类型
-
+<h3 id="通配符和上下限"><a href="#通配符和上下限" class="headerlink" title="通配符和上下限"></a>通配符和上下限</h3><ul>
+<li>就是“?”，可以在“使用泛型”的时候代表一切类型；E T K V 是在定义泛型的时候使用</li>
+</ul>
+<p>使用泛型即形参中存在泛型</p>
+<h4 id="上下限"><a href="#上下限" class="headerlink" title="上下限"></a>上下限</h4><ul>
+<li>泛型上限 ：<code>？extends Car</code>：   ？能接受的必须是Car或者其子类</li>
+<li>泛型下下限：<code>？super Car</code>：   ？能接受的必须是Car或者其父类</li>
+</ul>
+<h2 id="泛型支持的类型"><a href="#泛型支持的类型" class="headerlink" title="泛型支持的类型"></a>泛型支持的类型</h2><ul>
+<li>泛型不支持基本数据类型，只能支持对象类型（引用数据类型）</li>
+</ul>
+<p>为什么？</p>
+<p>泛型擦除:泛型工作在编译阶段,等翻译后泛型就没用了,所以泛型在编译后都会擦出,所有类型会恢复成object</p>
+<p>object类只能接对象 不能接基本数据类型 </p>
+<ul>
+<li>包装类就是把基本数据类型的数据包装成对象的类型</li>
+</ul>
+<p>Integer -128~127数据都存在 Integer.valueOf();</p>
+<p>自动装箱成对象:基本数据类型可以直接变成包装对象的数据</p>
+<p>自动拆箱:把包装类型的对象直接给基本数据类型</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Integer</span> <span class="hljs-variable">it11</span><span class="hljs-operator">=</span><span class="hljs-number">130</span>;<br><span class="hljs-type">Integer</span> <span class="hljs-variable">it22</span><span class="hljs-operator">=</span><span class="hljs-number">130</span>;<br><span class="hljs-comment">// it11！=it22</span><br><span class="hljs-type">int</span> <span class="hljs-variable">i</span><span class="hljs-operator">=</span>it11;<br><br></code></pre></td></tr></table></figure>
 
-#### 包装类新增功能 
-
-1、把基本数据类型转化为字符串
-
-2、把字符串类型的数据转化成数值本身对应的真实值
-
-## 集合框架
-
-- 集合是一种容器，用来装数据，类似于数组，但集合的大小可变，开发中也常用。
-
-Collection：单列集合 每个数据一个值
-
-Map：双列集合 每个数据两个值
-
-![image-20250703105851776](/img/posts/2025-11-20-Java-01.SE-day9-image-20250703105851776.png)
-
-- List：添加元素有序、可重复、有索引
-- Set：添加元素无序，不重复，无索引
-
-HashSet：无序、不重复、无索引
-
-LinkedHashSet：有许、不重复、无索引
-
-TreeSet：按照大小默认升序排序、不重复、无索引
-
-
-
-# Collection遍历方式
-
-### 迭代器迭代
-
-- 迭代器是用来遍历集合的专用方式，在Java中迭代器的代表是(i)Iterator
-
-### 增强for循环
-
-for each
-
-for(元素数据类型 变量名：数组或集合){}
-
-### Lambda表达式
-
-Collection的forEach方法
-
-### 三种遍历方式的区别
-
-- 遍历集合的同时又存在增删集合元素的行为时可能出现业务异常，这种现象被称之为并发修改异常。
-
-又要遍历又要删除使用迭代器迭代
-
-1、如果集合支持索引，可以使用for循环遍历，每删除数据后i--，或者倒着遍历
-
-2、可以使用迭代器遍历，并用迭代器提供的删除方法删除数据
-
-### List
-
-ArrayList和LinkedList 底层实现不同！适合场景不同
-
-
-
-## 电影信息管理模块
-
-- 操作类、电影类、集合类存放电影类
-
-@Data
-
-下载lombok
-
-开启注解
-
-![image-20250707103620331](/img/posts/2025-11-20-Java-01.SE-day9-image-20250707103620331.png)
-
-独立功能独立成方法
-
-
+<h4 id="包装类新增功能"><a href="#包装类新增功能" class="headerlink" title="包装类新增功能"></a>包装类新增功能</h4><p>1、把基本数据类型转化为字符串</p>
+<p>2、把字符串类型的数据转化成数值本身对应的真实值</p>
+<h2 id="集合框架"><a href="#集合框架" class="headerlink" title="集合框架"></a>集合框架</h2><ul>
+<li>集合是一种容器，用来装数据，类似于数组，但集合的大小可变，开发中也常用。</li>
+</ul>
+<p>Collection：单列集合 每个数据一个值</p>
+<p>Map：双列集合 每个数据两个值</p>
+<p><img src="/img/posts/2025-11-20-Java-01.SE-day9-image-20250703105851776.png" srcset="/img/loading.gif" lazyload alt="image-20250703105851776"></p>
+<ul>
+<li>List：添加元素有序、可重复、有索引</li>
+<li>Set：添加元素无序，不重复，无索引</li>
+</ul>
+<p>HashSet：无序、不重复、无索引</p>
+<p>LinkedHashSet：有许、不重复、无索引</p>
+<p>TreeSet：按照大小默认升序排序、不重复、无索引</p>
+<h1 id="Collection遍历方式"><a href="#Collection遍历方式" class="headerlink" title="Collection遍历方式"></a>Collection遍历方式</h1><h3 id="迭代器迭代"><a href="#迭代器迭代" class="headerlink" title="迭代器迭代"></a>迭代器迭代</h3><ul>
+<li>迭代器是用来遍历集合的专用方式，在Java中迭代器的代表是(i)Iterator</li>
+</ul>
+<h3 id="增强for循环"><a href="#增强for循环" class="headerlink" title="增强for循环"></a>增强for循环</h3><p>for each</p>
+<p>for(元素数据类型 变量名：数组或集合){}</p>
+<h3 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h3><p>Collection的forEach方法</p>
+<h3 id="三种遍历方式的区别"><a href="#三种遍历方式的区别" class="headerlink" title="三种遍历方式的区别"></a>三种遍历方式的区别</h3><ul>
+<li>遍历集合的同时又存在增删集合元素的行为时可能出现业务异常，这种现象被称之为并发修改异常。</li>
+</ul>
+<p>又要遍历又要删除使用迭代器迭代</p>
+<p>1、如果集合支持索引，可以使用for循环遍历，每删除数据后i–，或者倒着遍历</p>
+<p>2、可以使用迭代器遍历，并用迭代器提供的删除方法删除数据</p>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>ArrayList和LinkedList 底层实现不同！适合场景不同</p>
+<h2 id="电影信息管理模块"><a href="#电影信息管理模块" class="headerlink" title="电影信息管理模块"></a>电影信息管理模块</h2><ul>
+<li>操作类、电影类、集合类存放电影类</li>
+</ul>
+<p>@Data</p>
+<p>下载lombok</p>
+<p>开启注解</p>
+<p><img src="/img/posts/2025-11-20-Java-01.SE-day9-image-20250707103620331.png" srcset="/img/loading.gif" lazyload alt="image-20250707103620331"></p>
+<p>独立功能独立成方法</p>
 
                 
               </div>

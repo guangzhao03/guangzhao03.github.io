@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day11  RBAC权限模型  在企业系统中，通过配置用户的功能权限可以实现让不同的人分管不同业务的需求。RBAC（Role Based Access Control)模型，中文是基于角色的访问控制，主要是将一组功能组合成一个角色，再将角色分配给用户，也就是说**角色是功能的合集**。    在中州养老中，角色代表了各种各样的功能，人通过和角色的关联获得相应权限，人通过部门和角色的关联得到">
+    <meta name="description" content="day11RBAC权限模型 在企业系统中，通过配置用户的功能权限可以实现让不同的人分管不同业务的需求。RBAC（Role Based Access Control)模型，中文是基于角色的访问控制，主要是将一组功能组合成一个角色，再将角色分配给用户，也就是说角色是功能的合集。 在中州养老中，角色代表了各种各样的功能，人通过和角色的关联获得相应权限，人通过部门和角色的关联得到对应的数据权限 Sprin">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day11">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/03/30/2026-03-30-Java-%E4%B8%AD%E5%B7%9E%E5%85%BB%E8%80%81-day11/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day11  RBAC权限模型  在企业系统中，通过配置用户的功能权限可以实现让不同的人分管不同业务的需求。RBAC（Role Based Access Control)模型，中文是基于角色的访问控制，主要是将一组功能组合成一个角色，再将角色分配给用户，也就是说**角色是功能的合集**。    在中州养老中，角色代表了各种各样的功能，人通过和角色的关联获得相应权限，人通过部门和角色的关联得到">
+<meta property="og:description" content="day11RBAC权限模型 在企业系统中，通过配置用户的功能权限可以实现让不同的人分管不同业务的需求。RBAC（Role Based Access Control)模型，中文是基于角色的访问控制，主要是将一组功能组合成一个角色，再将角色分配给用户，也就是说角色是功能的合集。 在中州养老中，角色代表了各种各样的功能，人通过和角色的关联获得相应权限，人通过部门和角色的关联得到对应的数据权限 Sprin">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-03-30T11:07:34.000Z">
 <meta property="article:modified_time" content="2026-03-30T11:07:34.000Z">
@@ -382,82 +382,54 @@
             
               <div class="markdown-body">
                 
-                
-# day11
-
-RBAC权限模型
-
-在企业系统中，通过配置用户的功能权限可以实现让不同的人分管不同业务的需求。RBAC（Role Based Access Control)模型，中文是基于角色的访问控制，主要是将一组功能组合成一个角色，再将角色分配给用户，也就是说**角色是功能的合集**。
-
-
-
-在中州养老中，角色代表了各种各样的功能，人通过和角色的关联获得相应权限，人通过部门和角色的关联得到对应的数据权限
-
-## Spring Security
-
-Spring Security是一个基于Spring**框架**的**安全**解决方案，它为应用程序提供了完整的**安全管理**功能，包括认证、授权、攻击防范和会话管理等，官网地址：https://spring.io/projects/spring-security。在若依系统中，已经集成了Spring Security安全框架
-
-查询登录不是只需要验证数据库账号密码吗，为什么还要spring security？
-
-直接查数据库只是造了一个“锁芯”，而 Spring Security 给你提供了一整套“国家金库级别的安保系统”。
-
-使用 Spring Security 接管登录，主要是为了解决直接查数据库无法优雅处理的以下几个核心痛点：
-
-1、不仅仅是比对密码，还有极其繁琐的“前置/后置校验”
-
-如果你自己写代码查数据库，除了比对密码，你还得手动写一堆 `if-else` 来处理各种边缘情况：
-
-- 验证码算对了吗？
-- 这个账号是不是被管理员停用了（`status` 字段是否为正常）？
-- 这个账号是不是被锁定了？
-- 密码有没有过期？
-- 用户的 IP 是不是在黑名单里？
-
-在 Spring Security 中，它提供了一个标准的**认证管理器（Authentication Manager）** 。你只需要把这些规则配置好，它就会像流水线一样自动帮你做完这些校验 ，只要有一项不符合，直接抛出标准的异常（比如 `LockedException`, `DisabledException`），你的业务代码会非常干净。
-
-2. 专业的密码加密与安全防护
-
-现在的系统绝对不允许在数据库里明文存储密码（否则数据库一泄露，全员账号密码“裸奔”）。 中州养老系统使用了 Spring Security 提供的 `BCryptPasswordEncoder` 进行强散列哈希加密 。
-
-这种加密算法每次生成的密文都不一样（内部自带随机盐）。
-
-如果你自己写代码查数据库，你要手动把用户输入的明文，用极其复杂的算法加密后，再去和数据库的密文比对，容易写出安全漏洞。
-
-交给 Spring Security，你只需要告诉它密码，它自动在底层安全地完成比对。
-
-3. 一次登录，全局“认识”你（上下文管理）
-
-登录成功只是第一步。登录之后，用户再去访问“添加护理项目”接口时，系统得知道“刚才登录的那个人是谁”。
-
-4. 无缝对接“授权”功能（@PreAuthorize）
-
-这才是它最强大的地方！登录（认证）和权限控制（授权）是配套的 。 在若依系统的 Controller 中，每个接口上面都有类似 `@PreAuthorize("@ss.hasPermi('system:user:list')")` 的注解 。
-
-- 注解：
-
-SecurityConfig中@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-
-@PreAuthorize 、@PostAuthorize、@PreFilter、@PostFilter、@Secured（Spring）、@RolesAllowed（ Java EE 的标准注解）
-
-- SpEL  Spring Expression Language   
-
-@bean名称获取spring容器中的对象，调用普通对象的属性和方法、算术逻辑运算、操作数组和集合、正则表达式
-
-解释代码例子
-
+                <h1 id="day11"><a href="#day11" class="headerlink" title="day11"></a>day11</h1><p>RBAC权限模型</p>
+<p>在企业系统中，通过配置用户的功能权限可以实现让不同的人分管不同业务的需求。RBAC（Role Based Access Control)模型，中文是基于角色的访问控制，主要是将一组功能组合成一个角色，再将角色分配给用户，也就是说<strong>角色是功能的合集</strong>。</p>
+<p>在中州养老中，角色代表了各种各样的功能，人通过和角色的关联获得相应权限，人通过部门和角色的关联得到对应的数据权限</p>
+<h2 id="Spring-Security"><a href="#Spring-Security" class="headerlink" title="Spring Security"></a>Spring Security</h2><p>Spring Security是一个基于Spring<strong>框架</strong>的<strong>安全</strong>解决方案，它为应用程序提供了完整的<strong>安全管理</strong>功能，包括认证、授权、攻击防范和会话管理等，官网地址：<a target="_blank" rel="noopener" href="https://spring.io/projects/spring-security%E3%80%82%E5%9C%A8%E8%8B%A5%E4%BE%9D%E7%B3%BB%E7%BB%9F%E4%B8%AD%EF%BC%8C%E5%B7%B2%E7%BB%8F%E9%9B%86%E6%88%90%E4%BA%86Spring">https://spring.io/projects/spring-security。在若依系统中，已经集成了Spring</a> Security安全框架</p>
+<p>查询登录不是只需要验证数据库账号密码吗，为什么还要spring security？</p>
+<p>直接查数据库只是造了一个“锁芯”，而 Spring Security 给你提供了一整套“国家金库级别的安保系统”。</p>
+<p>使用 Spring Security 接管登录，主要是为了解决直接查数据库无法优雅处理的以下几个核心痛点：</p>
+<p>1、不仅仅是比对密码，还有极其繁琐的“前置&#x2F;后置校验”</p>
+<p>如果你自己写代码查数据库，除了比对密码，你还得手动写一堆 <code>if-else</code> 来处理各种边缘情况：</p>
+<ul>
+<li>验证码算对了吗？</li>
+<li>这个账号是不是被管理员停用了（<code>status</code> 字段是否为正常）？</li>
+<li>这个账号是不是被锁定了？</li>
+<li>密码有没有过期？</li>
+<li>用户的 IP 是不是在黑名单里？</li>
+</ul>
+<p>在 Spring Security 中，它提供了一个标准的<strong>认证管理器（Authentication Manager）</strong> 。你只需要把这些规则配置好，它就会像流水线一样自动帮你做完这些校验 ，只要有一项不符合，直接抛出标准的异常（比如 <code>LockedException</code>, <code>DisabledException</code>），你的业务代码会非常干净。</p>
+<ol start="2">
+<li>专业的密码加密与安全防护</li>
+</ol>
+<p>现在的系统绝对不允许在数据库里明文存储密码（否则数据库一泄露，全员账号密码“裸奔”）。 中州养老系统使用了 Spring Security 提供的 <code>BCryptPasswordEncoder</code> 进行强散列哈希加密 。</p>
+<p>这种加密算法每次生成的密文都不一样（内部自带随机盐）。</p>
+<p>如果你自己写代码查数据库，你要手动把用户输入的明文，用极其复杂的算法加密后，再去和数据库的密文比对，容易写出安全漏洞。</p>
+<p>交给 Spring Security，你只需要告诉它密码，它自动在底层安全地完成比对。</p>
+<ol start="3">
+<li>一次登录，全局“认识”你（上下文管理）</li>
+</ol>
+<p>登录成功只是第一步。登录之后，用户再去访问“添加护理项目”接口时，系统得知道“刚才登录的那个人是谁”。</p>
+<ol start="4">
+<li>无缝对接“授权”功能（@PreAuthorize）</li>
+</ol>
+<p>这才是它最强大的地方！登录（认证）和权限控制（授权）是配套的 。 在若依系统的 Controller 中，每个接口上面都有类似 <code>@PreAuthorize(&quot;@ss.hasPermi(&#39;system:user:list&#39;)&quot;)</code> 的注解 。</p>
+<ul>
+<li>注解：</li>
+</ul>
+<p>SecurityConfig中@EnableGlobalMethodSecurity(prePostEnabled &#x3D; true, securedEnabled &#x3D; true)</p>
+<p>@PreAuthorize 、@PostAuthorize、@PreFilter、@PostFilter、@Secured（Spring）、@RolesAllowed（ Java EE 的标准注解）</p>
+<ul>
+<li>SpEL  Spring Expression Language</li>
+</ul>
+<p>@bean名称获取spring容器中的对象，调用普通对象的属性和方法、算术逻辑运算、操作数组和集合、正则表达式</p>
+<p>解释代码例子</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PreAuthorize(&quot;@ss.hasPermi(&#x27;system:user:list&#x27;)&quot;)</span><br><span class="hljs-meta">@GetMapping(&quot;/list&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">TableDataInfo</span> <span class="hljs-title function_">list</span><span class="hljs-params">(SysUser user)</span> &#123;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
-PreAuthorize代表着运行方法前进行权限认证，里面有着SPEL表达式  调用spring的容器中的ss对象调用hasPermi方法查看是否有里面对应的权限没有，system:user:list为方法的参数
-
-小程序和web有着许多不同，小程序想要获取微信的东西必须通过微信后端服务器统一管理。
-
-
-
-构建者模式
-
-其实就是lombok的@builder注解
-
-
+<p>PreAuthorize代表着运行方法前进行权限认证，里面有着SPEL表达式  调用spring的容器中的ss对象调用hasPermi方法查看是否有里面对应的权限没有，system:user:list为方法的参数</p>
+<p>小程序和web有着许多不同，小程序想要获取微信的东西必须通过微信后端服务器统一管理。</p>
+<p>构建者模式</p>
+<p>其实就是lombok的@builder注解</p>
 
                 
               </div>

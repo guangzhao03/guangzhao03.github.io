@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day14  - 配置优先级 - bean管理 - SpringBoot原理  ## SpringBoot配置优先级  SpringBoot中支持三种格式的配置文件：  application.propertites  apllication.yml  apllication.yaml  propertites&gt;yml&gt;yaml  我们通常采用yml配置文件  - SpringBoot除了支">
+    <meta name="description" content="day14 配置优先级 bean管理 SpringBoot原理  SpringBoot配置优先级SpringBoot中支持三种格式的配置文件： application.propertites apllication.yml apllication.yaml propertites&gt;yml&gt;yaml 我们通常采用yml配置文件  SpringBoot除了支持配置文件属性配置，还支持Jav">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day14">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/10/27/2025-10-27-Java-02.javaweb-day14/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day14  - 配置优先级 - bean管理 - SpringBoot原理  ## SpringBoot配置优先级  SpringBoot中支持三种格式的配置文件：  application.propertites  apllication.yml  apllication.yaml  propertites&gt;yml&gt;yaml  我们通常采用yml配置文件  - SpringBoot除了支">
+<meta property="og:description" content="day14 配置优先级 bean管理 SpringBoot原理  SpringBoot配置优先级SpringBoot中支持三种格式的配置文件： application.propertites apllication.yml apllication.yaml propertites&gt;yml&gt;yaml 我们通常采用yml配置文件  SpringBoot除了支持配置文件属性配置，还支持Jav">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-10-27T11:07:18.000Z">
 <meta property="article:modified_time" content="2025-10-27T11:07:18.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.9k 字
+          2.8k 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          25 分钟
+          24 分钟
         
       </span>
     
@@ -382,213 +382,161 @@
             
               <div class="markdown-body">
                 
-                
-# day14
-
-- 配置优先级
-- bean管理
-- SpringBoot原理
-
-## SpringBoot配置优先级
-
-SpringBoot中支持三种格式的配置文件：
-
-application.propertites
-
-apllication.yml
-
-apllication.yaml
-
-propertites>yml>yaml
-
-我们通常采用yml配置文件
-
-- SpringBoot除了支持配置文件属性配置，还支持Java系统属性和命令行参数的方式进行属性配置
-
-java系统属性：  		命令行参数：
-
--Deserver.port=9000	--server.port=10010
-
-命令行参数>java系统属性>properties>yml>ymal
-
-SpringBoot项目打包时，需要引入插键spring-boot-maven-plugin  （基于官方骨架创建项目，会自动添加该插件）
-
-
-
-## Bean管理
-
-bean作用域：
-
-- Spring支持五种作用域，后三种在web环境才生效：
-
-| 作用域      | 说明                                   |
-| ----------- | -------------------------------------- |
-| singleton   | 容器内同名称的bean只有一个实例（默认） |
-| prototype   | 每次使用该bean时会创建新的实例（多例） |
-| request     | 每个请求范围都会创建新的实例           |
-| session     | 每个会话范围内会创建新的实例           |
-| application | 每个应用范围内会创建新的实例           |
-
-@Scope指定作用域
-
-默认在项目启动时创建bean对象
-
-@Lazy延迟初始化创建bean 延迟到第一次使用的时候
-
-无状态的bean使用单例，无状态：对象里面不保存数据
-
-- 第三方bean
-
-第三方jar包加入IOC容器管理，默认jar包里面代码只读，不能修改。
-
-- 如果要管理的bean对象来自于第三方，是无法用@Component及衍生注解声明bean的，就需要用到@Bean注解
-
+                <h1 id="day14"><a href="#day14" class="headerlink" title="day14"></a>day14</h1><ul>
+<li>配置优先级</li>
+<li>bean管理</li>
+<li>SpringBoot原理</li>
+</ul>
+<h2 id="SpringBoot配置优先级"><a href="#SpringBoot配置优先级" class="headerlink" title="SpringBoot配置优先级"></a>SpringBoot配置优先级</h2><p>SpringBoot中支持三种格式的配置文件：</p>
+<p>application.propertites</p>
+<p>apllication.yml</p>
+<p>apllication.yaml</p>
+<p>propertites&gt;yml&gt;yaml</p>
+<p>我们通常采用yml配置文件</p>
+<ul>
+<li>SpringBoot除了支持配置文件属性配置，还支持Java系统属性和命令行参数的方式进行属性配置</li>
+</ul>
+<p>java系统属性：  		命令行参数：</p>
+<p>-Deserver.port&#x3D;9000	–server.port&#x3D;10010</p>
+<p>命令行参数&gt;java系统属性&gt;properties&gt;yml&gt;ymal</p>
+<p>SpringBoot项目打包时，需要引入插键spring-boot-maven-plugin  （基于官方骨架创建项目，会自动添加该插件）</p>
+<h2 id="Bean管理"><a href="#Bean管理" class="headerlink" title="Bean管理"></a>Bean管理</h2><p>bean作用域：</p>
+<ul>
+<li>Spring支持五种作用域，后三种在web环境才生效：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>作用域</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>singleton</td>
+<td>容器内同名称的bean只有一个实例（默认）</td>
+</tr>
+<tr>
+<td>prototype</td>
+<td>每次使用该bean时会创建新的实例（多例）</td>
+</tr>
+<tr>
+<td>request</td>
+<td>每个请求范围都会创建新的实例</td>
+</tr>
+<tr>
+<td>session</td>
+<td>每个会话范围内会创建新的实例</td>
+</tr>
+<tr>
+<td>application</td>
+<td>每个应用范围内会创建新的实例</td>
+</tr>
+</tbody></table>
+<p>@Scope指定作用域</p>
+<p>默认在项目启动时创建bean对象</p>
+<p>@Lazy延迟初始化创建bean 延迟到第一次使用的时候</p>
+<p>无状态的bean使用单例，无状态：对象里面不保存数据</p>
+<ul>
+<li>第三方bean</li>
+</ul>
+<p>第三方jar包加入IOC容器管理，默认jar包里面代码只读，不能修改。</p>
+<ul>
+<li>如果要管理的bean对象来自于第三方，是无法用@Component及衍生注解声明bean的，就需要用到@Bean注解</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SpringbootWebConfigApplication</span>&#123;<br>    <span class="hljs-meta">@Bean</span><span class="hljs-comment">//将方法返回值交给IOC管理，成为IOC容器的bean对象</span><br>    <span class="hljs-type">public</span> <span class="hljs-title function_">AliyunOSSOpeator</span><span class="hljs-params">(AliyunOSSProperties ossProperties)</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AliyunOSSOperator</span>(ossProperties);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-通过@Bean注解的name或value属性可以声明bean的名称，如果不指定，默认bean的名称就是方法名。
-
-在启动类中定义，形参省略autowired
-
-- 若要管理的第三方bean对象，建议对这些bean进行集中分类配置，可以通过@Configuration注解声明一个配置类。
-
-## SpringBoot原理
-
-SpringBoot起步依赖、自动配置 相比于Spring框架更简单
-
-#### 起步依赖
-
-- 起步依赖：
-
-  maven的依赖传递
-
-  
-
-#### 自动配置
-
-- 自动配置
-- SpringBoot的自动配置就是当Spring项目启动后，一些配置类、bean对象就自动存入到IOC容器中，不需要我们手动去声明，从而简化了开发，省去了繁琐的配置操作。
-
-
-
-- 自动配置实现方案一
-
-@SpringBootApplication 注解具有组件扫描的功能 ComponentScan 扫描的是启动类所在包及其子包，第三方jar包可能在其他module所以组件自动扫描不成功，需要加入@ComponentScan（basepackages={''com.example","com.itheima"}）
-
-加入新的ComponentScan原来的组件扫描功能会失效，因此需要重新添加
-
-- 自动配置实现方案二：
-
-@Import导入，@Import导入的类会被Spring加载到IOC容器中，导入形式主要有以下几种：
-
-1、导入普通类
-
-2、导入配置类
-
-3、导入ImportSelector接口实现类
-
-4、@EnableXxxx注解，封装@Import注解
-
-
-
-配置类集中管理bean对象的类
-
-#### 自定义Starter
-
-- 场景：在实际开发中，经常会定义一些公共组件，提供给各个项目团队使用。而SpringBoot的项目中，一般会将这些公共组件封装为SpringBoot的starter（包含了起步依赖和自动配置的功能）
-
-需求：自定义aliyun-oss-spring-boot-starter，完成阿里云OSS操作工具类的自动配置
-
-目标：引入起步依赖以后，要想使用阿里云OSS，注入IOC即可
-
-1、创建aliyun-oss-spring-boot-starter模块
-
-2、创建aliyun-oss-spring-boot-autoconfigure模块，在starter中引入该模块
-
-3、在aliyun-oss-spring-boot-autoconfigure模块中定义自动配置功能，并定义自动配置文件，META-INF/spring/xxx.imports
-
-## Maven高级
-
-- 分模块设计与开发
-- 继承与聚合
-- 私服
-
-### 分模块设计
-
-- 为什么？将一个大项目拆分成若干个子模块，方便项目的管理维护、扩展、也方便模块间的相互引用，资源共享。
-
-策略：
-
-1、按照功能模块拆分，比如：公共组件，商品模块，搜索模块，购物车模块，订单模块
-
-2、按层拆分，公共组件、实体类、控制层、业务层、数据访问层。
-
-3、按功能+层拆分。
-
-### 继承
-
-- 概念：继承描述的是两个工程间的关系，与java中的继承相似，子工程可以继承父工程的配置信息，常见于依赖关系的继承。
-
-- 作用：简化依赖配置、统一管理依赖
-- 实现< parent> ......< /parent>
-
-不支持多继承，支持多重继承
-
-jar：普通模块打包
-
-war：普通web模块打包
-
-pom：父工程或聚合工程
-
-1、创建maven模块**tlias-parent**，该工程为父工程，设置打包方式**pom**(默认jar)。
-
-2、在子工程的pom.xml文件中，配置继承关系。
-
-3、在父工程中配置各个工程共有的依赖（子工程会继承父工程的依赖）
-
-版本锁定：
-
+<p>通过@Bean注解的name或value属性可以声明bean的名称，如果不指定，默认bean的名称就是方法名。</p>
+<p>在启动类中定义，形参省略autowired</p>
+<ul>
+<li>若要管理的第三方bean对象，建议对这些bean进行集中分类配置，可以通过@Configuration注解声明一个配置类。</li>
+</ul>
+<h2 id="SpringBoot原理"><a href="#SpringBoot原理" class="headerlink" title="SpringBoot原理"></a>SpringBoot原理</h2><p>SpringBoot起步依赖、自动配置 相比于Spring框架更简单</p>
+<h4 id="起步依赖"><a href="#起步依赖" class="headerlink" title="起步依赖"></a>起步依赖</h4><ul>
+<li><p>起步依赖：</p>
+<p>maven的依赖传递</p>
+</li>
+</ul>
+<h4 id="自动配置"><a href="#自动配置" class="headerlink" title="自动配置"></a>自动配置</h4><ul>
+<li><p>自动配置</p>
+</li>
+<li><p>SpringBoot的自动配置就是当Spring项目启动后，一些配置类、bean对象就自动存入到IOC容器中，不需要我们手动去声明，从而简化了开发，省去了繁琐的配置操作。</p>
+</li>
+<li><p>自动配置实现方案一</p>
+</li>
+</ul>
+<p>@SpringBootApplication 注解具有组件扫描的功能 ComponentScan 扫描的是启动类所在包及其子包，第三方jar包可能在其他module所以组件自动扫描不成功，需要加入@ComponentScan（basepackages&#x3D;{‘’com.example”,”com.itheima”}）</p>
+<p>加入新的ComponentScan原来的组件扫描功能会失效，因此需要重新添加</p>
+<ul>
+<li>自动配置实现方案二：</li>
+</ul>
+<p>@Import导入，@Import导入的类会被Spring加载到IOC容器中，导入形式主要有以下几种：</p>
+<p>1、导入普通类</p>
+<p>2、导入配置类</p>
+<p>3、导入ImportSelector接口实现类</p>
+<p>4、@EnableXxxx注解，封装@Import注解</p>
+<p>配置类集中管理bean对象的类</p>
+<h4 id="自定义Starter"><a href="#自定义Starter" class="headerlink" title="自定义Starter"></a>自定义Starter</h4><ul>
+<li>场景：在实际开发中，经常会定义一些公共组件，提供给各个项目团队使用。而SpringBoot的项目中，一般会将这些公共组件封装为SpringBoot的starter（包含了起步依赖和自动配置的功能）</li>
+</ul>
+<p>需求：自定义aliyun-oss-spring-boot-starter，完成阿里云OSS操作工具类的自动配置</p>
+<p>目标：引入起步依赖以后，要想使用阿里云OSS，注入IOC即可</p>
+<p>1、创建aliyun-oss-spring-boot-starter模块</p>
+<p>2、创建aliyun-oss-spring-boot-autoconfigure模块，在starter中引入该模块</p>
+<p>3、在aliyun-oss-spring-boot-autoconfigure模块中定义自动配置功能，并定义自动配置文件，META-INF&#x2F;spring&#x2F;xxx.imports</p>
+<h2 id="Maven高级"><a href="#Maven高级" class="headerlink" title="Maven高级"></a>Maven高级</h2><ul>
+<li>分模块设计与开发</li>
+<li>继承与聚合</li>
+<li>私服</li>
+</ul>
+<h3 id="分模块设计"><a href="#分模块设计" class="headerlink" title="分模块设计"></a>分模块设计</h3><ul>
+<li>为什么？将一个大项目拆分成若干个子模块，方便项目的管理维护、扩展、也方便模块间的相互引用，资源共享。</li>
+</ul>
+<p>策略：</p>
+<p>1、按照功能模块拆分，比如：公共组件，商品模块，搜索模块，购物车模块，订单模块</p>
+<p>2、按层拆分，公共组件、实体类、控制层、业务层、数据访问层。</p>
+<p>3、按功能+层拆分。</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><ul>
+<li><p>概念：继承描述的是两个工程间的关系，与java中的继承相似，子工程可以继承父工程的配置信息，常见于依赖关系的继承。</p>
+</li>
+<li><p>作用：简化依赖配置、统一管理依赖</p>
+</li>
+<li><p>实现&lt; parent&gt; ……&lt; &#x2F;parent&gt;</p>
+</li>
+</ul>
+<p>不支持多继承，支持多重继承</p>
+<p>jar：普通模块打包</p>
+<p>war：普通web模块打包</p>
+<p>pom：父工程或聚合工程</p>
+<p>1、创建maven模块<strong>tlias-parent</strong>，该工程为父工程，设置打包方式<strong>pom</strong>(默认jar)。</p>
+<p>2、在子工程的pom.xml文件中，配置继承关系。</p>
+<p>3、在父工程中配置各个工程共有的依赖（子工程会继承父工程的依赖）</p>
+<p>版本锁定：</p>
 <dependencyManagement>
 
-自定义属性/引用属性
-
-
-
-### 聚合
-
-将多个模块组织成一个整体，同时进行项目的构建。
-
-- 聚合工程
-
-一个不具有业务工程的“空工程”（有且仅有一个pom文件）
-
-父工程=聚合工程
-
-- 作用
-
-快速构建项目（无需根据依赖关系手动构建，直接在聚合工程上构建即可）
-
-- 实现
-
-maven中可以通过<modules> 设置当前聚合工程所包含的子模块名称
-
-### 私服
-
-- 私服是一种特殊的远程仓库，它是架设在局域网内的仓库服务，用来代理位于外部的中央仓库，用于解决团队内部的资源共享与资源同步问题。
-
-依赖查找顺序：
-
-本地仓库、私服、中央仓库
-
-私服在企业项目开发中，一个项目/公司，只需要一台即可（无需我们自己搭建，会使用即可）
-
-1、设置私服的访问用户名/密码（settings.xml中的servers中配置）
-
-2、IDEA的maven工程的pom文件中配置上传地址
-
-3、设置私服依赖下载的仓库组地址（settings.xml中的mirrors、profiles中配置）
-
-
-
+<p>自定义属性&#x2F;引用属性</p>
+<h3 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h3><p>将多个模块组织成一个整体，同时进行项目的构建。</p>
+<ul>
+<li>聚合工程</li>
+</ul>
+<p>一个不具有业务工程的“空工程”（有且仅有一个pom文件）</p>
+<p>父工程&#x3D;聚合工程</p>
+<ul>
+<li>作用</li>
+</ul>
+<p>快速构建项目（无需根据依赖关系手动构建，直接在聚合工程上构建即可）</p>
+<ul>
+<li>实现</li>
+</ul>
+<p>maven中可以通过<modules> 设置当前聚合工程所包含的子模块名称</p>
+<h3 id="私服"><a href="#私服" class="headerlink" title="私服"></a>私服</h3><ul>
+<li>私服是一种特殊的远程仓库，它是架设在局域网内的仓库服务，用来代理位于外部的中央仓库，用于解决团队内部的资源共享与资源同步问题。</li>
+</ul>
+<p>依赖查找顺序：</p>
+<p>本地仓库、私服、中央仓库</p>
+<p>私服在企业项目开发中，一个项目&#x2F;公司，只需要一台即可（无需我们自己搭建，会使用即可）</p>
+<p>1、设置私服的访问用户名&#x2F;密码（settings.xml中的servers中配置）</p>
+<p>2、IDEA的maven工程的pom文件中配置上传地址</p>
+<p>3、设置私服依赖下载的仓库组地址（settings.xml中的mirrors、profiles中配置）</p>
 
                 
               </div>

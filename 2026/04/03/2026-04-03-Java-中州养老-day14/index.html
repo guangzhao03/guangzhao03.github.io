@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day14    性能优化-MySQL索引  为什么要使用索引？  **存储引擎：InnoDB vs MyISAM**  现在几乎默认都是 **InnoDB**，它是 MySQL 5.5 之后的默认引擎。  - **InnoDB**：支持**事务**、支持**外键**、支持**行级锁**（并发性能更高）。它的索引和数据是存放在一起的（聚簇索引）。 - **MyISAM**：不支持事务、不支持">
+    <meta name="description" content="day14性能优化-MySQL索引 为什么要使用索引？ 存储引擎：InnoDB vs MyISAM 现在几乎默认都是 InnoDB，它是 MySQL 5.5 之后的默认引擎。  InnoDB：支持事务、支持外键、支持行级锁（并发性能更高）。它的索引和数据是存放在一起的（聚簇索引）。  MyISAM：不支持事务、不支持外键、仅支持表级锁。它的索引和数据是分开存放的。  聚簇索引（主键索引）：叶子节点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day14">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/04/03/2026-04-03-Java-%E4%B8%AD%E5%B7%9E%E5%85%BB%E8%80%81-day14/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day14    性能优化-MySQL索引  为什么要使用索引？  **存储引擎：InnoDB vs MyISAM**  现在几乎默认都是 **InnoDB**，它是 MySQL 5.5 之后的默认引擎。  - **InnoDB**：支持**事务**、支持**外键**、支持**行级锁**（并发性能更高）。它的索引和数据是存放在一起的（聚簇索引）。 - **MyISAM**：不支持事务、不支持">
+<meta property="og:description" content="day14性能优化-MySQL索引 为什么要使用索引？ 存储引擎：InnoDB vs MyISAM 现在几乎默认都是 InnoDB，它是 MySQL 5.5 之后的默认引擎。  InnoDB：支持事务、支持外键、支持行级锁（并发性能更高）。它的索引和数据是存放在一起的（聚簇索引）。  MyISAM：不支持事务、不支持外键、仅支持表级锁。它的索引和数据是分开存放的。  聚簇索引（主键索引）：叶子节点">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-04-03T08:50:56.000Z">
 <meta property="article:modified_time" content="2026-04-03T08:50:56.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          2k 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          21 分钟
+          17 分钟
         
       </span>
     
@@ -382,88 +382,143 @@
             
               <div class="markdown-body">
                 
-                
-# day14
+                <h1 id="day14"><a href="#day14" class="headerlink" title="day14"></a>day14</h1><p>性能优化-MySQL索引</p>
+<p>为什么要使用索引？</p>
+<p><strong>存储引擎：InnoDB vs MyISAM</strong></p>
+<p>现在几乎默认都是 <strong>InnoDB</strong>，它是 MySQL 5.5 之后的默认引擎。</p>
+<ul>
+<li><p><strong>InnoDB</strong>：支持<strong>事务</strong>、支持<strong>外键</strong>、支持<strong>行级锁</strong>（并发性能更高）。它的索引和数据是存放在一起的（聚簇索引）。</p>
+</li>
+<li><p><strong>MyISAM</strong>：不支持事务、不支持外键、仅支持<strong>表级锁</strong>。它的索引和数据是分开存放的。</p>
+</li>
+<li><p><strong>聚簇索引（主键索引）</strong>：叶子节点存的是<strong>完整的整行数据</strong>。</p>
+</li>
+<li><p><strong>二级索引（辅助索引）</strong>：叶子节点存的是<strong>主键的值</strong>。</p>
+</li>
+<li><p><strong>回表过程</strong>：如果你通过二级索引（比如 <code>name</code> 索引）查询，MySQL 先在 <code>name</code> 索引树里找到对应的主键 ID，然后再拿着这个 ID 去<strong>聚簇索引树</strong>里再查一遍，拿到完整的行数据。这个“查两棵树”的过程就叫<strong>回表</strong>。</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>加分项：</strong> 提到<strong>覆盖索引</strong>（Covering Index）。如果查询的字段已经包含在二级索引里了，就不需要回表。</p>
+</blockquote>
+<h2 id="mysql索引语法"><a href="#mysql索引语法" class="headerlink" title="mysql索引语法"></a>mysql索引语法</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 查看指定表中的所有索引信息</span><br><span class="hljs-comment">-- 可以看到索引名、字段名、是否唯一、序列值（Cardinality）等</span><br><span class="hljs-keyword">SHOW</span> INDEX <span class="hljs-keyword">FROM</span> 表名;<br><span class="hljs-keyword">show</span>  index  <span class="hljs-keyword">from</span>  表名;<br><br><span class="hljs-comment">-- 创建普通索引或唯一索引</span><br><span class="hljs-comment">-- [UNIQUE]：可选参数。加上后，该字段的值必须唯一（允许为 null）</span><br><span class="hljs-comment">-- 索引名：建议以 idx_ 开头，方便识别</span><br><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">UNIQUE</span>] INDEX 索引名 <span class="hljs-keyword">ON</span> 表名 (字段名, ...);<br><br><span class="hljs-comment">-- 【实战案例】：创建联合索引（Composite Index）</span><br><span class="hljs-comment">-- 作用：针对 iot_id 和 product_key 这两个字段建立一个组合索引</span><br><span class="hljs-comment">-- 核心逻辑：遵循“最左前缀法则”，即查询时如果带上 iot_id，索引效率最高</span><br><span class="hljs-keyword">CREATE</span> INDEX idx_iot_id_product_key <span class="hljs-keyword">ON</span> device_data (iot_id, product_key);<br><span class="hljs-keyword">create</span>  [ <span class="hljs-keyword">unique</span> ]  index 索引名 <span class="hljs-keyword">on</span>  表名 (字段名,... ) ;<br><span class="hljs-keyword">create</span> index idx_iot_id_product_key <span class="hljs-keyword">on</span> device_data (iot_id, product_key);<br><br><span class="hljs-comment">-- 删除指定表中的索引</span><br><span class="hljs-comment">-- 释放磁盘空间，并减轻数据库在增删改操作时的索引维护压力</span><br><span class="hljs-keyword">DROP</span> INDEX 索引名 <span class="hljs-keyword">ON</span> 表名;<br><br><span class="hljs-comment">-- 【实战案例】：删除刚才创建的联合索引</span><br><span class="hljs-keyword">DROP</span> INDEX idx_iot_id_product_key <span class="hljs-keyword">ON</span> device_data;<br><span class="hljs-keyword">drop</span>  index  索引名  <span class="hljs-keyword">on</span>  表名;<br><span class="hljs-keyword">drop</span> index idx_iot_id_product_key <span class="hljs-keyword">on</span> device_data ;<br></code></pre></td></tr></table></figure>
 
+<h3 id="mysql索引-分类"><a href="#mysql索引-分类" class="headerlink" title="mysql索引-分类"></a>mysql索引-分类</h3><table>
+<thead>
+<tr>
+<th>分类</th>
+<th>含义</th>
+<th>特点</th>
+<th>关键字</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主键索引</td>
+<td>针对于表中主键创建的索引</td>
+<td>默认自动创建, 只能有一个</td>
+<td>PRIMARY</td>
+</tr>
+<tr>
+<td>唯一索引</td>
+<td>避免同一个表中某数据列中的值重复</td>
+<td>可以有多个</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td>常规索引</td>
+<td>快速定位特定数据</td>
+<td>可以有多个</td>
+<td></td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>全文索引查找的是文本中的关键词，而不是比较索引中的值</td>
+<td>可以有多个</td>
+<td>FULLTEXT</td>
+</tr>
+</tbody></table>
+<p>而在在InnoDB存储引擎中，根据索引的存储形式，又可以分为以下两种：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>含义</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>聚集索引(Clustered Index)</td>
+<td>将数据存储与索引放到了一块，索引结构的叶子节点保存了行数据</td>
+<td>必须有,而且只有一个</td>
+</tr>
+<tr>
+<td>二级索引(Secondary Index)</td>
+<td>将数据与索引分开存储，索引结构的叶子节点关联的是对应的主键</td>
+<td>可以存在多个</td>
+</tr>
+</tbody></table>
+<p>聚集索引(聚簇索引)选取规则:</p>
+<ul>
+<li>如果存在<strong>主键</strong>，主键索引就是聚集索引。</li>
+<li>如果不存在主键，将使用第一个唯一（UNIQUE）索引作为聚集索引。</li>
+<li>如果表没有主键，或没有合适的唯一索引，则InnoDB会自动生成一个rowid作为隐藏的聚集索引。</li>
+</ul>
+<h2 id="索引失效检查"><a href="#索引失效检查" class="headerlink" title="索引失效检查"></a>索引失效检查</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">EXPLAIN   <span class="hljs-keyword">SELECT</span>   字段列表   <span class="hljs-keyword">FROM</span>   表名   <span class="hljs-keyword">WHERE</span>  条件 ;<br></code></pre></td></tr></table></figure>
 
-
-性能优化-MySQL索引
-
-为什么要使用索引？
-
-**存储引擎：InnoDB vs MyISAM**
-
-现在几乎默认都是 **InnoDB**，它是 MySQL 5.5 之后的默认引擎。
-
-- **InnoDB**：支持**事务**、支持**外键**、支持**行级锁**（并发性能更高）。它的索引和数据是存放在一起的（聚簇索引）。
-- **MyISAM**：不支持事务、不支持外键、仅支持**表级锁**。它的索引和数据是分开存放的。
-
-
-
-- **聚簇索引（主键索引）**：叶子节点存的是**完整的整行数据**。
-- **二级索引（辅助索引）**：叶子节点存的是**主键的值**。
-- **回表过程**：如果你通过二级索引（比如 `name` 索引）查询，MySQL 先在 `name` 索引树里找到对应的主键 ID，然后再拿着这个 ID 去**聚簇索引树**里再查一遍，拿到完整的行数据。这个“查两棵树”的过程就叫**回表**。
-
-> **加分项：** 提到**覆盖索引**（Covering Index）。如果查询的字段已经包含在二级索引里了，就不需要回表。
-
-## mysql索引语法
-
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 查看指定表中的所有索引信息</span><br><span class="hljs-comment">-- 可以看到索引名、字段名、是否唯一、序列值（Cardinality）等</span><br><span class="hljs-keyword">SHOW</span> INDEX <span class="hljs-keyword">FROM</span> 表名;<br><span class="hljs-keyword">show</span>  index  <span class="hljs-keyword">from</span>  表名;<br><br><span class="hljs-comment">-- 创建普通索引或唯一索引</span><br><span class="hljs-comment">-- [UNIQUE]：可选参数。加上后，该字段的值必须唯一（允许为 null）</span><br><span class="hljs-comment">-- 索引名：建议以 idx_ 开头，方便识别</span><br><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">UNIQUE</span>] INDEX 索引名 <span class="hljs-keyword">ON</span> 表名 (字段名, ...);<br><br><span class="hljs-comment">-- 【实战案例】：创建联合索引（Composite Index）</span><br><span class="hljs-comment">-- 作用：针对 iot_id 和 product_key 这两个字段建立一个组合索引</span><br><span class="hljs-comment">-- 核心逻辑：遵循“最左前缀法则”，即查询时如果带上 iot_id，索引效率最高</span><br><span class="hljs-keyword">CREATE</span> INDEX idx_iot_id_product_key <span class="hljs-keyword">ON</span> device_data (iot_id, product_key);<br><span class="hljs-keyword">create</span>  [ <span class="hljs-keyword">unique</span> ]  index 索引名 <span class="hljs-keyword">on</span>  表名 (字段名,... ) ;<br><span class="hljs-keyword">create</span> index idx_iot_id_product_key <span class="hljs-keyword">on</span> device_data (iot_id, product_key);<br><br><span class="hljs-comment">-- 删除指定表中的索引</span><br><span class="hljs-comment">-- 释放磁盘空间，并减轻数据库在增删改操作时的索引维护压力</span><br><span class="hljs-keyword">DROP</span> INDEX 索引名 <span class="hljs-keyword">ON</span> 表名;<br><br><span class="hljs-comment">-- 【实战案例】：删除刚才创建的联合索引</span><br><span class="hljs-keyword">DROP</span> INDEX idx_iot_id_product_key <span class="hljs-keyword">ON</span> device_data;<br><span class="hljs-keyword">drop</span>  index  索引名  <span class="hljs-keyword">on</span>  表名;<br><span class="hljs-keyword">drop</span> index idx_iot_id_product_key <span class="hljs-keyword">on</span> device_data ;<br></code></pre></td></tr></table></figure>
-
-### mysql索引-分类
-
-| 分类     | 含义                                                 | 特点                     | 关键字   |
-| -------- | ---------------------------------------------------- | ------------------------ | -------- |
-| 主键索引 | 针对于表中主键创建的索引                             | 默认自动创建, 只能有一个 | PRIMARY  |
-| 唯一索引 | 避免同一个表中某数据列中的值重复                     | 可以有多个               | UNIQUE   |
-| 常规索引 | 快速定位特定数据                                     | 可以有多个               |          |
-| 全文索引 | 全文索引查找的是文本中的关键词，而不是比较索引中的值 | 可以有多个               | FULLTEXT |
-
-而在在InnoDB存储引擎中，根据索引的存储形式，又可以分为以下两种：
-
-| 分类                      | 含义                                                       | 特点                |
-| ------------------------- | ---------------------------------------------------------- | ------------------- |
-| 聚集索引(Clustered Index) | 将数据存储与索引放到了一块，索引结构的叶子节点保存了行数据 | 必须有,而且只有一个 |
-| 二级索引(Secondary Index) | 将数据与索引分开存储，索引结构的叶子节点关联的是对应的主键 | 可以存在多个        |
-
-聚集索引(聚簇索引)选取规则:
-
-- 如果存在**主键**，主键索引就是聚集索引。
-- 如果不存在主键，将使用第一个唯一（UNIQUE）索引作为聚集索引。
-- 如果表没有主键，或没有合适的唯一索引，则InnoDB会自动生成一个rowid作为隐藏的聚集索引。
-
-## 索引失效检查
-
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">EXPLAIN   <span class="hljs-keyword">SELECT</span>   字段列表   <span class="hljs-keyword">FROM</span>   表名   <span class="hljs-keyword">WHERE</span>  条件 ;<br></code></pre></td></tr></table></figure>
-
-- possible_keys  当前sql可能会使用到的索引
-- key 当前sql实际命中的索引
-- key_len 索引占用的大小
-
-- Extra 额外的优化建议
-
-| Extra                    | 含义                                                         |
-| ------------------------ | ------------------------------------------------------------ |
-| Using index              | 查找使用了索引，需要的数据都在索引列中能找到，不需要回表查询数据 |
-| Using where              | 没有找到合适的索引                                           |
-| Using index condition    | 查找使用了部分索引，但是需要回表查询数据                     |
-| Using where; Using index | 查找使用了部分索引，需要的数据都在索引列中能找到，不需要回表查询数据 |
-
-- type 这条sql的连接的类型，性能由好到差为NULL、system、const、eq_ref、ref、range、 index、all
-  - system：查询最多只有一条记录的表，几乎不会出现
-  - const：根据主键查询
-  - eq_ref：主键索引查询或唯一索引查询
-  - ref：索引查询
-  - range：范围查询
-  - index：索引树扫描
-  - all：全盘扫描
-- 索引失效场景
-  - 不符合最左匹配法则
-  - 范围查询右边的列，不能使用索引
-  - 不要在索引列上进行运算操作， 索引将失效
-  - 字符串不加单引号，造成索引失效(类型转换)
-  - 以%开头的Like模糊查询，索引失效
-
+<ul>
+<li><p>possible_keys  当前sql可能会使用到的索引</p>
+</li>
+<li><p>key 当前sql实际命中的索引</p>
+</li>
+<li><p>key_len 索引占用的大小</p>
+</li>
+<li><p>Extra 额外的优化建议</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Extra</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Using index</td>
+<td>查找使用了索引，需要的数据都在索引列中能找到，不需要回表查询数据</td>
+</tr>
+<tr>
+<td>Using where</td>
+<td>没有找到合适的索引</td>
+</tr>
+<tr>
+<td>Using index condition</td>
+<td>查找使用了部分索引，但是需要回表查询数据</td>
+</tr>
+<tr>
+<td>Using where; Using index</td>
+<td>查找使用了部分索引，需要的数据都在索引列中能找到，不需要回表查询数据</td>
+</tr>
+</tbody></table>
+<ul>
+<li>type 这条sql的连接的类型，性能由好到差为NULL、system、const、eq_ref、ref、range、 index、all<ul>
+<li>system：查询最多只有一条记录的表，几乎不会出现</li>
+<li>const：根据主键查询</li>
+<li>eq_ref：主键索引查询或唯一索引查询</li>
+<li>ref：索引查询</li>
+<li>range：范围查询</li>
+<li>index：索引树扫描</li>
+<li>all：全盘扫描</li>
+</ul>
+</li>
+<li>索引失效场景<ul>
+<li>不符合最左匹配法则</li>
+<li>范围查询右边的列，不能使用索引</li>
+<li>不要在索引列上进行运算操作， 索引将失效</li>
+<li>字符串不加单引号，造成索引失效(类型转换)</li>
+<li>以%开头的Like模糊查询，索引失效</li>
+</ul>
+</li>
+</ul>
 
                 
               </div>

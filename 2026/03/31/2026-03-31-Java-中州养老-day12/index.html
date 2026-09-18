@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day12  华为云进行通信，产品设备和数据库挂钩。进行iot的设备管理  消息队列  消息队列都是以异步的方式进行请求的，  - broker：负责接收、存储和分发消息的中间件组件，实现了发送者和接收者之间的解耦和**异步**通信 - 生产者：负责将消息发送到消息队列中 - 消费者：负责从消息队列中获取消息并进行处理 - 队列：负责存储消息 - topic：消息的分类  什么是AMQP">
+    <meta name="description" content="day12华为云进行通信，产品设备和数据库挂钩。进行iot的设备管理 消息队列 消息队列都是以异步的方式进行请求的，  broker：负责接收、存储和分发消息的中间件组件，实现了发送者和接收者之间的解耦和异步通信 生产者：负责将消息发送到消息队列中 消费者：负责从消息队列中获取消息并进行处理 队列：负责存储消息 topic：消息的分类  什么是AMQP 咱们现在已经清楚了消息队列的基础概念，在IO">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day12">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/03/31/2026-03-31-Java-%E4%B8%AD%E5%B7%9E%E5%85%BB%E8%80%81-day12/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day12  华为云进行通信，产品设备和数据库挂钩。进行iot的设备管理  消息队列  消息队列都是以异步的方式进行请求的，  - broker：负责接收、存储和分发消息的中间件组件，实现了发送者和接收者之间的解耦和**异步**通信 - 生产者：负责将消息发送到消息队列中 - 消费者：负责从消息队列中获取消息并进行处理 - 队列：负责存储消息 - topic：消息的分类  什么是AMQP">
+<meta property="og:description" content="day12华为云进行通信，产品设备和数据库挂钩。进行iot的设备管理 消息队列 消息队列都是以异步的方式进行请求的，  broker：负责接收、存储和分发消息的中间件组件，实现了发送者和接收者之间的解耦和异步通信 生产者：负责将消息发送到消息队列中 消费者：负责从消息队列中获取消息并进行处理 队列：负责存储消息 topic：消息的分类  什么是AMQP 咱们现在已经清楚了消息队列的基础概念，在IO">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-03-31T12:00:04.000Z">
 <meta property="article:modified_time" content="2026-03-31T12:00:04.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          536 字
+          522 字
         
       </span>
     
@@ -382,32 +382,21 @@
             
               <div class="markdown-body">
                 
-                
-# day12
-
-华为云进行通信，产品设备和数据库挂钩。进行iot的设备管理
-
-消息队列
-
-消息队列都是以异步的方式进行请求的，
-
-- broker：负责接收、存储和分发消息的中间件组件，实现了发送者和接收者之间的解耦和**异步**通信
-- 生产者：负责将消息发送到消息队列中
-- 消费者：负责从消息队列中获取消息并进行处理
-- 队列：负责存储消息
-- topic：消息的分类
-
-什么是AMQP
-
-咱们现在已经清楚了消息队列的基础概念，在IOT中是用AMQP来接收和处理消息的。
-
-AMQP全称Advanced Message Queuing Protocol，是一种网络协议，用于在应用程序之间传递消息。它是一种开放标准的消息传递协议，可以在不同的系统之间实现可靠、安全、高效的消息传递。
-
-AMQP协议的实现包括多种消息队列软件，例如RabbitMQ、Apache ActiveMQ、**Apache Qpid**等。这些软件提供了可靠、高效的消息传递服务，广泛应用于分布式系统、云计算、物联网等领域。
-
-只要是交给 Spring 管理的对象（即标注了 @Component、@Service 等注解的 Bean），一旦实现了 ApplicationRunner 或 CommandLineRunner接口，都会在项目启动成功后自动执行其 run 方法 。
-
-
+                <h1 id="day12"><a href="#day12" class="headerlink" title="day12"></a>day12</h1><p>华为云进行通信，产品设备和数据库挂钩。进行iot的设备管理</p>
+<p>消息队列</p>
+<p>消息队列都是以异步的方式进行请求的，</p>
+<ul>
+<li>broker：负责接收、存储和分发消息的中间件组件，实现了发送者和接收者之间的解耦和<strong>异步</strong>通信</li>
+<li>生产者：负责将消息发送到消息队列中</li>
+<li>消费者：负责从消息队列中获取消息并进行处理</li>
+<li>队列：负责存储消息</li>
+<li>topic：消息的分类</li>
+</ul>
+<p>什么是AMQP</p>
+<p>咱们现在已经清楚了消息队列的基础概念，在IOT中是用AMQP来接收和处理消息的。</p>
+<p>AMQP全称Advanced Message Queuing Protocol，是一种网络协议，用于在应用程序之间传递消息。它是一种开放标准的消息传递协议，可以在不同的系统之间实现可靠、安全、高效的消息传递。</p>
+<p>AMQP协议的实现包括多种消息队列软件，例如RabbitMQ、Apache ActiveMQ、<strong>Apache Qpid</strong>等。这些软件提供了可靠、高效的消息传递服务，广泛应用于分布式系统、云计算、物联网等领域。</p>
+<p>只要是交给 Spring 管理的对象（即标注了 @Component、@Service 等注解的 Bean），一旦实现了 ApplicationRunner 或 CommandLineRunner接口，都会在项目启动成功后自动执行其 run 方法 。</p>
 
                 
               </div>

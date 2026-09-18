@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# 腾讯 CSIG 一面模拟（Agent 平台 &#x2F; RAG 方向）  - 日期：2026-09-09 - 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案） - 状态：Q1~Q20 已完成，Q21（手撕）未作答，待补  ## 总评  - 需要补的三块（按优先级）：   1. **概念精确性**：BM25&#x2F;TF-IDF 混淆、MCP 传输协议演进（SSE → Streamable">
+    <meta name="description" content="腾讯 CSIG 一面模拟（Agent 平台 &#x2F; RAG 方向） 日期：2026-09-09 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案） 状态：Q1~Q20 已完成，Q21（手撕）未作答，待补  总评 需要补的三块（按优先级）： 概念精确性：BM25&#x2F;TF-IDF 混淆、MCP 传输协议演进（SSE → Streamable HTTP）、RLHF&amp;#x2">
 <meta property="og:type" content="article">
 <meta property="og:title" content="腾讯 CSIG 一面模拟（Agent 平台 &#x2F; RAG 方向）">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/09/2026-09-09-%E5%85%AB%E8%82%A1-202699%E8%85%BE%E8%AE%AFCSIG%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# 腾讯 CSIG 一面模拟（Agent 平台 &#x2F; RAG 方向）  - 日期：2026-09-09 - 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案） - 状态：Q1~Q20 已完成，Q21（手撕）未作答，待补  ## 总评  - 需要补的三块（按优先级）：   1. **概念精确性**：BM25&#x2F;TF-IDF 混淆、MCP 传输协议演进（SSE → Streamable">
+<meta property="og:description" content="腾讯 CSIG 一面模拟（Agent 平台 &#x2F; RAG 方向） 日期：2026-09-09 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案） 状态：Q1~Q20 已完成，Q21（手撕）未作答，待补  总评 需要补的三块（按优先级）： 概念精确性：BM25&#x2F;TF-IDF 混淆、MCP 传输协议演进（SSE → Streamable HTTP）、RLHF&amp;#x2">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-09T13:33:20.000Z">
 <meta property="article:modified_time" content="2026-09-09T13:33:20.000Z">
@@ -337,7 +337,7 @@
         
         
         
-          124 分钟
+          125 分钟
         
       </span>
     
@@ -381,311 +381,364 @@
             
               <div class="markdown-body">
                 
-                
-# 腾讯 CSIG 一面模拟（Agent 平台 / RAG 方向）
-
-- 日期：2026-09-09
-- 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案）
-- 状态：Q1~Q20 已完成，Q21（手撕）未作答，待补
-
-## 总评
-
-- 需要补的三块（按优先级）：
-  1. **概念精确性**：BM25/TF-IDF 混淆、MCP 传输协议演进（SSE → Streamable HTTP）、RLHF/SFT/PPO/DPO 包含关系、prompt cache 属于服务端 KV cache（不是客户端）
-  2. **开放题先搭框架再填内容**：Q16（agent 提效）、Q20（训练震荡）都吃亏在上来就抛零散点子。套路：先定义问题 → 拆层分类 → 逐层给方案 → 一句话收尾
-  3. **所有项目描述带数字**：自我介绍、表格解析效果、压缩节省比例，没有数字的项目权重减半
-- 强项：Skill/MCP 有实操感知、"渐进式加载"方向感好、BM25 vs TF-IDF 二次内化后表述准确
-
-## 错误清单（复盘专用）
-
-| 题号 | 我的错误 | 正确认知 | 优先级 |
-|---|---|---|---|
-| Q1 | 只有项目流水账，无"我"、无数字、没提 Agent 平台 | 我是谁→做过什么(带数字)→和岗位匹配，每句埋追问钩子 | 高 |
-| Q2 | 说"丢弃"老信息；压缩产物说成"普通 message" | 老信息是**摘要压缩**不是丢弃；产物是结构化摘要块；工具结果是最大 token 源 | 高 |
-| Q3 | 只答"常驻防注意力溃散" | 漏了 prompt cache：system prompt 是 KV cache 前缀锚点，动了缓存全失效 | 高 |
-| Q4 | 说"MCP 从有状态变无状态" | 变的是传输层 SSE→Streamable HTTP，会话生命周期概念仍在 | 高 |
-| Q5 | 不适合场景基本没答，未提炼判断维度 | 适合=标准化+高复用+接生态；不适合=私有高频/性能热路径/快速演进 | 中 |
-| Q6 | 说"RPC"、说"SSE/TCP"；漏 initialize 握手；只知 tools | JSON-RPC 2.0 + stdio/HTTP 传输；initialize 能力协商是灵魂；三类原语 tools/resources/prompts | 高 |
-| Q7 | "长连接不能复用"——**结论反了** | SSE 是"POST 上行 + SSE 下行"双通道，下行长连接全程复用；上行每请求独立 POST | 高 |
-| Q8 | 只说"有张索引表" | 缺 meta-tool（search_tools）机制、索引常驻位置、缓存与淘汰 | 中 |
-| Q9 | 默认 Skill 有数据库/匹配器 | **Skill 就是文件系统目录**（SKILL.md + references/ + scripts/），模型自己读 system prompt 索引自主触发 | 高 |
-| Q10 | "效果还可以"无数字；归因"原生库有问题" | PDF 是绘图指令集没有表格逻辑结构，解析=结构重建；按难度分层选武器；markdown 不支持合并单元格 | 高 |
-| Q11 | 没答"自动生成问题的注意事项"（题眼） | 生成≠出题：答案可验证性、难度分层、防问法偏置、去重、污染隔离 | 中 |
-| Q12 | 定义成"查多库"，解法说"把表变大" | 多跳=检索词依赖前序结果；解法=迭代检索(IRCoT)/Agent 化(ReAct)/查询分解/GraphRAG | 高 |
-| Q14 | 把 BM25 答成 TF-IDF；"逆文档**概率**"术语错 | BM25 = TF-IDF + 词频饱和(k1) + 长度归一化(b) + 概率框架 IDF；底层=倒排索引+posting list | 高 |
-| Q16 | 问的是"慢"，答的全是"不准"（换模型/加skill） | 先 tracing 定位，再分三层：降延迟/减轮数/感知缓解 | 高 |
-| Q17 | 未单独作答（与 Q18 合并收尾） | prefill 算力瓶颈 vs decode 带宽瓶颈，两阶段优化手段分开 | 中 |
-| Q18 | "这是客户端做的"、"相同类似的就注入" | **服务端 KV cache**，逐字节前缀匹配，差一字全失效；有 TTL | 高 |
-| Q19 | "RLHF 包含 PPO/DPO/SFT"；DPO 前后自相矛盾 | SFT 是前置阶段不属 RLHF；PPO 需 RM+KL 惩罚四模型，DPO 不需 RM | 高 |
-| Q20 | 只答"更新的参数量比较小"（因果都不通） | 先拆 reward 曲线定层：hacking/震荡查LR方差KL/低位平上课程学习+冷启动 | 高 |
-| Q21 | 未作答 | 见文末参考实现，先刷 LC 718 → 1143 再做多串变体 | 高 |
-
----
-
-## 逐题实录
-
-### Q1 自我介绍
-
-**我的回答**：主要在 RAG 项目，参与招投标书生成：解析招标书的主体信息/资质要求/投标书格式/评分要求，按格式生成章节，RAG 检索历史标书召回图文，综合主体信息撰写章节。
-
-**点评/错误**：
-- 这不是自我介绍，是项目流程描述。框架应是：我是谁 → 做过什么（1~2 个项目各 3~4 句）→ 为什么匹配
-- 没有"我"：架构是谁设计的、模块谁写的没区分，"参与了"是最弱表述
-- 没有任何数字：语料规模、检索指标、耗时缩短、表格准确率
-- 完全没提 Agent 平台（后面全是它的题，自我介绍里应埋钩子）
-
-**参考答案**：
-> X 年 AI 应用开发经验，方向 Agent 平台 + RAG 工程化。第一块 Agent 基础平台：负责上下文管理模块，设计分层压缩方案（滑动窗口+摘要压缩+关键信息抽取），token 消耗降 X%，关键信息零丢失；Skill 体系和 MCP 接入是我主导的。第二块标书生成 RAG：端到端负责 RAG 链路，多模态解析表格/资质，多路召回+重排，基于评分要求做章节约束生成，编制时间从 X 天降到 X 小时。这两块正好匹配岗位。
-
-### Q2 上下文压缩算法实现
-
-**我的回答**：阈值触发；保最老+最近，中间可丢；压缩后结构和正常 message 一样。
-
-**点评/错误**：
-- "丢弃"是致命伤——正确表述是**摘要压缩**（有损但不消失），丢=截断，压缩=compaction，两个层次
-- "结构和 message 一样"=没答采分点：产物是**结构化摘要块**（目标/决策/关键实体/待办），作为 user message 注入
-- 漏了最大 token 源：**工具调用结果**——保留工具名+参数+结论，结果体截断/摘要
-- 漏了"什么必须留"的标准：用户目标、已确认决策、关键实体必留；探索过程、失败尝试、大段输出可压
-
-**参考答案**：
-> 触发：上下文到窗口 80% 主动触发 + 大工具结果返回前预防性压缩，单独 LLM 调用异步摘要。策略分层：system prompt 和定调消息原文保留；最近 N 轮原文保留；中段历史做摘要（目标/决策/实体/约束）；工具调用保留"什么工具+参数+结论"，结果体一句话或丢弃。产物：结构化摘要块（目标/决策/状态/待办四段式）作为 user message 放新上下文开头，接最近原生消息。兜底：不能丢的状态压缩前写穿到外部存储，上下文有损、外部无损。验证指标：任务完成率 + 关键信息召回，不只是省 token。
-
-### Q3 System prompt 参与压缩吗
-
-**我的回答**：不参与，需要常驻，否则模型混乱注意力溃散。
-
-**点评/错误**：
-- 结论对，但漏了**prompt cache** 这个工程动因（面试官真正想听的）
-- system prompt 在最前缀，是 KV Cache 命中的锚点，逐字节稳定才能命中缓存（TTFT+成本）
-- 加分项：稳定规则放 system prompt（跨会话不变），动态状态放摘要块——动态内容不进前缀，就不存在缓存失效
-
-**参考答案**：
-> 不参与。功能层面：system prompt 是任务指令/行为约束/工具规范，丢了行为退化，且本身不占多少 token。缓存层面：prefix prompt cache 从最前逐段匹配，system prompt 是锚点，动了整个缓存全失效。设计：压缩只动中段，两端不动（system prompt 绝对稳定 → 动态摘要块 → 最近 N 轮原生消息）。
-
-### Q4 Skill 和 MCP 的区别
-
-**我的回答**：Skill 类似 SOP 操作手册；MCP 是 function calling 的外部连接协议化复用；以前有状态最近变无状态。
-
-**点评/错误**：
-- 核心区别没点透：**Skill 是知识/流程（教模型怎么做），MCP 是工具/连接（让模型够得着）**，认知层 vs 执行层，互补不互斥
-- 漏加载机制差异：Skill 渐进式（平时只占一行 name+description），MCP 连接建立时全量注册工具定义占 token
-- **"有状态→无状态"说错**：变的是传输层 SSE（强制长连接）→ Streamable HTTP（不强制长连接，Mcp-Session-Id 维持会话，可选 stateless 模式）；会话生命周期概念一直在
-
-**参考答案**：
-> 一句话：Skill 解决"模型知道怎么做"，MCP 解决"模型能调到外部系统"。MCP：标准化协议，tools/resources/prompts 三类原语，解决 M×N 集成问题，传输从 stdio/SSE 演进到 Streamable HTTP。Skill：按需加载的知识包（SKILL.md+脚本），命中才全文加载。三个差异：①内容性质：能力 vs 知识；②加载方式：全量注册 vs 渐进式；③依赖：Skill 可编排 MCP 工具。例：周报生成用 MCP 接 GitHub/日历（能力），用 Skill 定结构和方法（知识）。
-
-### Q5 MCP 适合/不适合的场景
-
-**我的回答**：适合复用场景（地图/知识库/爬虫）；不适合不易复用的功能；具体没想到过。
-
-**点评/错误**：
-- 正例对但没归纳维度：**标准化、稳定、多方共用**
-- 不适合场景没答出来：①私有高频业务逻辑（抽协议过度设计）②性能敏感热路径（MCP 每调用过序列化+进程/网络边界，毫秒级）③快速演进的探索性功能
-- 漏了生态价值：接大平台官方 MCP Server（GitHub/Slack/Postgres），M+N 兑现价值的主场景
-
-**参考答案**：
-> 适合三维度：①标准化+高复用（地图/天气/知识库/爬虫）②接生态现成 Server ③工具边界清晰无状态调用。不适合：①私有高频业务逻辑（标书章节编排这种跟业务状态强耦合的）②性能敏感热路径（进程内细粒度操作）③还在快速演进的功能。总结：**稳定、通用、要复用的外部能力用 MCP；私有、多变、内部的不要为协议而协议。**
-
-### Q6 MCP 工作原理
-
-**我的回答**：RPC 远程调用，SSE/TCP 建连，获得标注来源的 function calling JSON 发给大模型，模型决定调用后 RPC 传给 MCP 服务器，结果再给模型。
-
-**点评/错误**：
-- "RPC"太泛 → **JSON-RPC 2.0**；传输层没有裸 TCP，是 stdio（本地子进程）或 HTTP 类
-- **漏 initialize 握手和能力协商**（MCP 的灵魂）：initialize（版本+capabilities）→ 响应声明能力 → notifications/initialized，会话才建立
-- 三类原语漏两类：tools（模型控制）/ resources（应用控制，类似 GET）/ prompts（用户控制，斜杠命令）——控制权归属是设计精髓
-- 消息流向：工具定义**合并进请求的 tools 数组**；结果作为 tool result 回填后**继续推理，可能循环多次**
-- 漏通知机制：tools/list_changed 动态刷新
-
-**参考答案**：
-> 本质：基于 JSON-RPC 2.0 的标准协议+可插拔传输（stdio/Streamable HTTP/SSE），Host/Client/Server 三方。握手：①传输层连上 ②Client 发 initialize（版本+capabilities）③Server 返回确认版本+声明能力 ④Client 发 initialized 通知。发现：tools/list 拿定义（name/description/inputSchema）合并进 LLM 请求。调用：LLM 输出 tool_use → tools/call（JSON-RPC request）→ Server 执行返回 result → tool result 回填对话继续推理，循环到最终回答。动态：notifications/tools/list_changed 刷新。工具带 server 前缀防命名冲突。
-
-**补充讲解（三类原语）**：
-- Tools = 模型控制（POST 类比）：LLM 自主决定调用，可有副作用
-- Resources = 应用控制（GET 类比）：服务端数据 URI 寻址、只读，宿主决定何时读（如 IDE 自动注入打开的文件），支持 subscribe；判断标准：背景上下文用 resource，主动搜索用 tool
-- Prompts = 用户控制：服务端预定义模板，用户显式选（斜杠命令），领域最佳实践固化在模板里
-- 进阶：客户端侧反向原语 sampling（服务端借客户端 LLM 补全）/ roots（文件系统边界）/ elicitation（向用户要输入）——MCP 是双向协议
-
-### Q7 SSE 传输的完整数据流
-
-**我的回答**：SSE 是 server send event 流式输出，和 websocket 不一样，长连接不能复用。
-
-**点评/错误**：
-- **结论反了**：SSE 长连接恰恰被全程复用——作为所有"服务端→客户端"消息的下行通道
-- "和 websocket 不一样"没讲机制：SSE 单向、跑在普通 HTTP（text/event-stream）、自带断线重连（Last-Event-ID）；WS 双向独立协议
-- 漏了初始化关键：SSE 连上后服务端**第一条事件是 endpoint 事件**，告知 POST 地址
-
-**参考答案**：
-> 旧版 SSE 传输（2024-11-05 协议）是双通道设计：
-> ①GET /sse 建 SSE 长连接（下行）→ 服务端推 endpoint 事件（/messages?sessionId=abc）
-> ②POST initialize 到该地址 → HTTP 层立刻回 202 Accepted（空 body）→ 真正结果从 SSE 流推回
-> ③POST notifications/initialized，会话建立
-> ④tools/call 同样：POST→202→结果从 SSE 推回
-> **复用分方向**：下行复用（整会话所有响应/通知/反向 sampling 都走这一条流，按 JSON-RPC id 多路分发）；上行不复用（每请求独立 POST）。
-> 设计原因：需要服务端主动推送（进度通知、sampling），纯 HTTP 请求-响应做不到。
-> 代价：长连接+会话状态、粘性路由、对网关不友好、不适配 serverless → 演进为 **Streamable HTTP**（单一 /mcp 端点，POST 响应按需选 JSON 或升级 SSE 流，Mcp-Session-Id 维持会话可重连，支持无状态模式）。
-> 记忆锚点：**POST 上行，SSE 下行；下行一条流全复用，上行每请求一 POST**。
-
-### Q8 用 MCP 实现渐进式加载
-
-**我的回答**：做索引表放 name/description/input output schema，渐进式加载。
-
-**点评/错误**：
-- 方向对（索引先行、按需展开）但只给了数据结构没给流程
-- 缺：索引放哪（常驻 system prompt）、**谁发起展开**（meta-tool，如 search_tools(query)，模型先搜、宿主把命中工具完整 schema 动态注入本轮 tools 数组）、生命周期（会话内缓存+LRU 淘汰）
-
-**参考答案**：
-> 本质：把"发现工具"和"调用工具"拆两阶段，schema 按需进上下文。三层漏斗：①轻量索引常驻 system prompt（每工具 name+一句话，20~30 token）②meta-tool 按需展开：模型调 search_tools("查天气")，宿主语义匹配，命中工具完整 inputSchema 动态注入本轮 tools，下一轮才能正式调用 ③会话内缓存已展开定义，主题切换按 LRU 淘汰，配合 tools/list_changed 刷新。补充：按域分组动态挂载 server；只读数据用 Resources 替代 Tools（省定义 token）；压缩描述文本。权衡：多一轮搜索延迟换 token，搜索质量是生命线，高频工具白名单直通。Anthropic 官方 Tool Search Tool 就是产品化实现（deferred 工具+tool_search_tool_regex）。哲学：**上下文里只放目录，不放全书**。
-
-### Q9 Skill 底层存储 + 天气查询完整流程
-
-**我的回答**：skill 有 name 和 description，加载时根据描述匹配，匹配成功读取内容，内容标注每步操作和调用工具。
-
-**点评/错误**：
-- **踩了陷阱**：问"底层数据库"，而 Skill **没有数据库**——就是文件系统目录，一个 Skill 一个文件夹。这本身是得分点：git 可版本管理、用户可直接编辑、离线可移植、天然适合渐进式读取
-- "根据描述匹配"没说清主体：不是检索器/向量库匹配，是**模型自己**看 system prompt 里的索引自主判断，**主动调文件读取工具打开 SKILL.md**——加载是模型行为不是系统路由（Skill 和传统插件路由的本质区别）
-- 漏三层渐进式：①frontmatter 元数据常驻 ②命中读正文 ③references/scripts 按需
-- 漏 scripts 的价值：确定性步骤写成可执行脚本（封装 API/鉴权/重试），省 token 且稳定，LLM 只负责判断和整合
-
-**参考答案**：
-> 结构：weather-skill/ 下 SKILL.md（YAML frontmatter: name+description 必填 + Markdown 正文）+ references/ + scripts/。frontmatter 是唯一常驻 system prompt 的部分（每 Skill 一行）。流程：①常驻发现：system prompt 索引表一行一条 ②模型自主触发：判断命中→调文件读取工具读 SKILL.md ③执行正文指令（如"运行 scripts/fetch_weather.py --city 北京"）④按需深入：正文没覆盖的读 references/ ⑤脚本输出进上下文，模型整合作答。哲学：文件系统+模型自主读取代替插件路由注册；frontmatter 常驻换全文按需加载；脚本固化确定性步骤。未命中 Skill 全程只花一行描述的钱。
-
-### Q10 PDF 表格解析效果与原因
-
-**我的回答**：fitz + plumber 结合，plumber 读管道舒服、表格转 markdown；合并单元格解析有问题，原因是原生库的缺陷。
-
-**点评/错误**：
-- "还可以"零分表述，要量化（规则表/无线框表/合并单元格表分别多少准确率）
-- 归因没触底：不是"库不行"，是 **PDF 本质是绘图指令集**（坐标画线+印字），**没有表格逻辑结构**——解析是结构重建。无线框靠 x 坐标聚类猜列会串列；合并单元格线条不符合矩形网格假设、数据找不到归属表头；嵌套表头压平语义丢失
-- markdown **语法不支持 rowspan/colspan**——表示层缺陷要点破，解法是换 HTML 表格或 JSON
-- 没给解法：规则库处理规则表格 + 视觉模型处理复杂表格 + HTML/JSON 表示 + 置信度校验降级
-
-**参考答案**：
-> 量化：规则表格 95%+；无线框 60~70%（串列严重）；合并单元格+嵌套表头初始方案接近不可用。根因：PDF 是绘图指令集没有逻辑结构，机器靠猜。解法分层：①解析层——规则库（lines 策略）处理规则表，视觉多模态模型（页面渲染成图）处理无框线和复杂表 ②表示层——markdown 换 HTML（支持 rowspan/colspan）或结构化 JSON ③校验层——数值/行数一致性校验，低置信度降级为"表头+原始文本块"（错误的结构比没结构危害大）。复杂表格提升到 85%+ 可用，badcase 进人工修正。总结：**解析是在做"结构重建"，按难度分层选武器。**
-
-### Q11 RAG 评测体系 + 自动生成问题注意事项
-
-**我的回答**：一部分规则、一部分人工、一部分 LLM as judge；生成的要注意体现维度（忠实度、相关度，参考 RAGAS）。
-
-**点评/错误**：
-- 混合框架对但是词的堆砌，没说**什么指标用什么手段**
-- **没回答题眼："自动生成评测问题的注意事项"**——只说"注意体现维度"太薄
-- 漏了评测集质量闭环（生成集本身要抽检校准，垃圾进垃圾出）
-- RAGAS 提了没用好：点"基于 RAGAS 扩展"既专业又省力
-
-**参考答案**：
-> 三层混合：可规则化的用规则/代码（格式合规、引用可回溯）；语义类用 LLM as judge（忠实度/相关度/完整度）；金标准人工抽检校准（校准 judge 一致率后才上线当裁判）。流水线：人工金标准 200~500 条（多跳/表格/数值分层配比）→ LLM 从语料自动生成扩充 → 每次改动（换 embedding/调 chunk/换 reranker）自动跑回归看板拦截劣化 → 线上 badcase 回流。**生成问题注意事项**：①生成≠出题——要有答案可验证性：先抽 evidence 再基于 evidence 生成，答案能定位回去，否则标准答案本身是幻觉 ②难度类型分层：事实/推理/多跳/表格，还要生成**语料里没有答案的题考察拒答** ③防问法偏置：LLM 生成问句风格单一，要注入多样化改写，否则过拟合生成问法、真实问法一上就崩 ④语义去重+抽检验真 ⑤污染隔离：记录语料版本，改语料后旧题重校验。总结：**自动生成解决"量"，人工金标准解决"准"，LLM judge 解决"规模化打分"。**
-
-### Q12 多跳问题
-
-**我的回答**：像数据库查一个表拿结果再查另一个表；最简单解法把表变大，但会慢；给信息加关系用专门的表维护一起送进去。
-
-**点评/错误**：
-- 定义答偏：多跳不是"查多库/多表"，是**回答需要串联多个证据，第二个证据的检索词藏在第一个证据的答案里**（例：查《面纱》作者得毛姆 → 拿"毛姆"再查作品）。关键特征：**检索词动态产生，第一跳输出是第二跳输入**。数据库类比接近"子查询"，但难点是模型事先不知道查什么而 SQL 是事先规划的
-- "把表变大"偏题且自相矛盾——它只缓解（依赖物理相邻、大 chunk 稀释语义），没解决"模型不知道第二跳查什么"
-- 经典方法一个没提：IRCoT / ReAct / 查询分解 / GraphRAG
-
-**参考答案**：
-> 定义：多跳=后一跳的检索依据藏在前一跳的答案里，单轮 query→chunk→answer 管道天然失效。解法谱系：①迭代检索（IRCoT）：检索和推理交替，从中间推理句抽新检索词再检索 ②Agent 化（ReAct，工程最常用）：检索封装成工具，循环"思考→检索→观察"，第二跳检索词从观察里自然产生 ③查询改写/分解：LLM 先拆子问题逐个检索汇总，适合结构清晰的复合问题 ④GraphRAG：离线抽实体关系建图谱，检索沿关系边多跳游走喂子图，适合实体关系密集的领域，构建维护成本高 ⑤缓解手段：chunk 扩展/父子文档/关联拼接，治标不治本。工程建议：先量化多跳题占比（分层评测集），低占比上 ReAct 性价比最高，高且关系稳定再上 GraphRAG。锚点：**多跳本质=检索词依赖前序结果，解法=把一次检索变成检索-推理循环。**
-
-### Q13 大表格/多表格查询如何提高准确率（未考，补课）
-
-**参考答案**：
-> ①结构化预处理：先做表 schema 提取（表头层级、合并单元格还原成 HTML/JSON），全局表头在行级 chunk 里拼接（每行都带上下文语义，否则单独一行无意义）②大表切分：按逻辑块（行组/列组）分区索引，配表格摘要（这个表讲什么、关键列含义）做路由 ③查询路线分层：简单查找走向量/关键词召回定位行；聚合/比较/计算走 **Text-to-SQL**（表格入库）或代码执行器——**数值计算绝不让 LLM 心算** ④多表：先 schema linking（理解表间外键/关联），再生成 join 查询 ⑤评测驱动：单元格级 F1 + 数值精确匹配。
-
-### Q14 BM25 底层实现
-
-**我的回答**：IF/IDF，词频和逆文档概率，找 query 词信息占比最多的作为关键词；一句话中出现频率高、文档中稀有，说明信息量最多。
-
-**点评/错误**：
-- **答成 TF-IDF 了**（而下一题就是问区别，等于提前交了弹药）
-- 术语错："逆文档**概率**"应为"逆文档**频率**"
-- 漏了 BM25 两大改进：词频饱和、文档长度归一化
-- 漏了实现层：倒排索引、posting list、打分累加、WAND 剪枝
-
-**参考答案**：
-> 公式：score(D,Q) = Σ IDF(qi) × f(qi,D)×(k1+1) / [ f(qi,D) + k1×(1-b+b×|D|/avgdl) ]。三部分：①IDF 项 log((N-df+0.5)/(df+0.5)+1)——越稀有权重越高 ②词频饱和（k1≈1.2~2.0）：TF 增益递减，防堆词频刷分 ③长度归一化（b≈0.75）：和全库平均长度比较，防偏向长文。底层实现：离线分词建**倒排索引** term→[(doc_id, tf, doc_len)]，预计算 N/df/avgdl；在线 query 分词→取 posting list→score buffer 累加→top-k；大规模用 **WAND/Block-Max WAND** 剪枝（维护每词贡献上界跳过不可能进 top-k 的文档）。工业界直接用 Lucene/ES（默认 k1=1.2, b=0.75）。收尾：BM25 是词级精确匹配，"电脑"命中不了"计算机"，所以必须和向量召回互补——这就是多路召回的理由。
-
-### Q15 BM25 vs TF-IDF（过关题）
-
-**我的回答**：BM25 是增强版 TF-IDF，升级两点：词频饱和防堆词频刷分；文档长度归一化防长短影响分数。
-
-**点评**：✅ 过关——内化后的表述不是背公式，两个升级点都准确。补充两点让答案完整：①第三个区别：IDF 公式本身不同——TF-IDF 是 log(N/df)，BM25 用 Robertson-Sparck Jones 概率框架带 0.5 平滑（防 df=0 除零、df=N 权重为 0/负）②归一化机制不同：TF-IDF 常用余弦归一化，BM25 是参数化 b（0~1 可调）。收尾金句：BM25 实践 benchmark 几乎总优于 TF-IDF，工业界关键词检索默认就是它（Lucene/ES 默认打分）。
-
-### Q16 Agent 运行慢如何提效
-
-**我的回答**：①模型智力不够换模型 ②增加 skill 复用 SOP ③多开 subagent 主 agent 协调 ④工具描述准确、区分边界。
-
-**点评/错误**：
-- **结构性跑题**：问的是"慢"（延迟/耗时），答的基本是"不准"（效果/质量）。换模型不会变快（反而更慢）
-- 开放题正确姿势：先定位（tracing 拆耗时构成）→ 再分层给方案 → 收尾总结
-
-**参考答案**：
-> 定位：一轮耗时 = 模型推理 + 工具执行 + 上下文传输，tracing 看占比再对症下药。三层：**一、降延迟**：①prompt cache（system prompt+工具定义+历史前缀稳定化，TTFT 降一个量级）②上下文瘦身（压缩算法+工具渐进式加载）③流式输出+提前规划（感知延迟）④并行工具调用（一次输出多个无依赖调用）。**二、减轮数**：①确定性步骤脚本化（一次脚本顶三轮 LLM 交互）②工具输出结构化信息密度高，减少"看不懂再调一次"的浪费轮（工具描述准确边界清晰放在这里才对位）③子代理并行（优化总墙钟时间，仅限可拆分任务）。**三、感知缓解**：中间过程可视化，慢但看起来不慢。
-
-### Q17 模型推理加速（合并收尾）
-
-**参考答案**：
-> 心智模型：**prefill 是计算瓶颈（compute-bound），decode 是显存带宽瓶颈（memory-bound）**，优化手段完全分开。
-> Prefill 侧：FlashAttention（IO 感知精确注意力，减显存读写）；prompt cache（跳过重复前缀 prefill，最狠）；TP/PP/DP 并行切分。
-> Decode 侧：PagedAttention/vLLM（OS 分页管理 KV 显存，碎片小→并发 batch 塞更多，吞吐翻倍级）；continuous batching（完成一个补位一个）；投机解码（小草稿模型猜 k 个 token 大模型并行验证，2~3 倍，输出分布不变）；量化（INT8/FP8/AWQ，带宽压力降）；GQA/MQA（KV cache 体积砍一个量级）。
-> 工程落地：别用 HF transformers 原生推理，上 vLLM/SGLang/TensorRT-LLM。
-> 串联金句：**推理优化是服务端榨硬件，prompt cache 是让服务端不用重复榨，Agent 应用的职责是把上下文结构设计成可缓存的形状。**
-
-### Q18 Prompt cache 原理
-
-**我的回答**：每次把前缀 prompt 存起来，下次发现有相同类似的就注入，相当于缓存节省性能；客户端做的；服务端可节省成本、TTFT 减少。
-
-**点评/错误**：
-- **主体搞错**：prompt cache 是**推理服务端**做的，缓存的是 **KV cache（注意力中间态）**不是 prompt 文本。客户端能做的只是保持前缀稳定。别和"客户端语义缓存（相似问题返回缓存答案）"混着说
-- **匹配机制错**：是**逐字节精确前缀匹配**（按 token 块对齐），第 k 个位置差一个字，k 之后全部失效——不是"相同类似就注入"
-- 漏了推理两阶段框架（prefill/decode）没它讲不清为什么省 TTFT
-
-**参考答案**：
-> 从推理两阶段讲：prefill 把输入并行算一遍生成 KV cache，decode 逐 token 生成。prompt cache 本质：**把 prompt 前缀的 KV cache 暂存在推理服务端**，下次前缀逐字节相同就跳过这部分 prefill，装载现成 KV 继续算。三个关键：①精确前缀匹配按块对齐，差一字全失效 ②收益：prefill 省掉→TTFT 大降+缓存部分折扣计费（Anthropic 读 0.1 倍，OpenAI 五折）③有 TTL（几分钟），连续对话收益最大。**为什么 Agent 特别吃这个**：①Agent 是多轮追加式对话，第 N+1 轮是第 N 轮的超集，前缀天然命中 ②system prompt+工具定义几万 token 且静态，不命中每轮都全价 ③这决定了工程设计：system prompt 逐字节稳定、消息 append-only、动态内容往后放——**上下文结构的稳定性就是缓存命中的生命线**。
-
-### Q19 SFT / RLHF / PPO / DPO
-
-**我的回答**：SFT 监督学习微调；RLHF 人类偏好对齐让输出符合人的习惯；RLHF 包含 PPO、DPO 和 SFT；DPO 包含奖励函数惩罚函数还要评分模型，而 DPO 则不需要。
-
-**点评/错误**：
-- **包含关系错**：RLHF 按定义只含基于人类反馈的强化学习，SFT 是**前置阶段**不是组成部分。正确：SFT →（RM 训练）→ 偏好优化（PPO 或 DPO 二选一）
-- **DPO 说反又自相矛盾**："DPO 包含奖励函数惩罚函数还要评分模型，而 DPO 则不需要"——后半句才是对的，DPO（Direct Preference Optimization）的卖点就是**不需要奖励模型**，把 RM+RL 两步合并成一步直接在偏好对上优化
-- 漏 PPO 四模型：策略模型（被训）/参考模型（SFT 冻结版算 KL 约束防漂移）/奖励模型（打分）/价值模型（算优势）——**KL 惩罚**防 reward hacking 防训崩，不提等于没理解
-
-**参考答案**：
-> 关系图：SFT（监督微调打底）→ 偏好对齐：路线 A RLHF+PPO（在线 RL，需 RM），路线 B DPO（离线直接优化，无需 RM）。SFT：监督学习教格式和知识打底，只会模仿学不会"两个都对里选更好"。RLHF：人类标"A 比 B 好"→ 训 RM（Bradley-Terry 成对损失）→ RM 当 reward 做 RL。PPO：RM 打分，clip 限单步更新 + KL 惩罚防偏离参考模型（防 hacking 防训崩），四模型同飞，贵但天花板高。DPO：推导出 RLHF 目标闭式解，跳过 RM 和 RL 循环，直接在偏好对上优化，稳定便宜实现简单，但离线数据定上限、泛化不如在线探索。何时用哪个：有可验证 reward（代码能跑/数学有标准答案）→ RLVR/PPO 系（reasoning 模型都走这条路）；只有偏好数据要快速对齐风格 → DPO 性价比之王；知识注入/格式学习 → SFT 就够；实践组合：SFT → DPO 快对齐 → 再在线 RL 冲上限。锚点：**SFT 打底学模仿，RLHF 对齐学偏好；PPO 在线探索贵而强，DPO 离线直接便宜稳。**
-
-### Q20 RL 训练震荡不达标怎么解决
-
-**我的回答**：感觉是微调更新的参数量比较小。
-
-**点评/错误**：
-- 基本没答上，因果不通：更新幅度小是**学得慢**（欠拟合），**震荡**是步子太大、信号方差太大造成的——方向正好相反
-- 这是开放诊断题，预期是**诊断框架**不是猜单点原因
-
-**参考答案**：
-> 先看 reward 曲线拆三种情况对症下药：**①reward 在涨、实际任务不达标**→ reward hacking（复读/格式套路/讨好 judge），修补奖励：加反作弊约束（长度惩罚、重复惩罚、格式硬约束）。**②reward 震荡不收敛**→ 优化层：降 LR+warmup+加大 batch（RL 有效 batch 小是震荡经典原因）；advantage 方差太大查基线/归一化（GRPO 组内归一化、PPO value loss）——RL 天生高方差是震荡的数学根源；KL 系数两头扫（太松漂移震荡太紧学不动）。**③reward 低位平**→ 探索不到正例：奖励太稀疏加过程奖励/shaping；任务太难上**课程学习**（简单题训起逐步加难）或先 SFT 冷启动再 RL 精修（DeepSeek-R1 做法：先冷启动 SFT 再 RL，避免早期探索无方向）；数据矛盾标注清洗。锚点：**先拆 reward 曲线定层：涨了不达标是 hacking，震荡查 LR/方差/KL，低位平上课程和冷启动。**
-
-### Q21 多个字符串的最大公共子串（未完成，待补）
-
-**题意确认（面试技巧）**：面试官原话"类似于力扣 1143"其实不严谨——1143 是**子序列**（不连续，双串二维 DP 取 max 转移）；"公共子串"（连续）对应 **LC 718**（dp[i][j] = dp[i-1][j-1]+1 仅当字符相等，不等归零）；多串变体没有原题，是 718 扩展。真实面试先确认题意（连续还是不连续）本身就是加分行为。
-
-**参考思路 A（枚举+校验，简洁实用）**：以最短串为基准，按长度从大到小枚举其所有子串（去重），逐个检查是否为其他串的子串（`in` / find / 哈希集合）；第一个出现命中的长度就是最大长度，收集该长度所有命中子串，提前退出。
-**参考思路 B（多维 DP）**：n 个串的公共子串 DP 是 n 维（dp[i1][i2]...[in]，全部字符相等时 +1 否则归零），3 串以上时空复杂度爆炸，面试提一句即可，主打思路 A。
-
+                <h1 id="腾讯-CSIG-一面模拟（Agent-平台-RAG-方向）"><a href="#腾讯-CSIG-一面模拟（Agent-平台-RAG-方向）" class="headerlink" title="腾讯 CSIG 一面模拟（Agent 平台 &#x2F; RAG 方向）"></a>腾讯 CSIG 一面模拟（Agent 平台 &#x2F; RAG 方向）</h1><ul>
+<li>日期：2026-09-09</li>
+<li>形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案）</li>
+<li>状态：Q1~Q20 已完成，Q21（手撕）未作答，待补</li>
+</ul>
+<h2 id="总评"><a href="#总评" class="headerlink" title="总评"></a>总评</h2><ul>
+<li>需要补的三块（按优先级）：<ol>
+<li><strong>概念精确性</strong>：BM25&#x2F;TF-IDF 混淆、MCP 传输协议演进（SSE → Streamable HTTP）、RLHF&#x2F;SFT&#x2F;PPO&#x2F;DPO 包含关系、prompt cache 属于服务端 KV cache（不是客户端）</li>
+<li><strong>开放题先搭框架再填内容</strong>：Q16（agent 提效）、Q20（训练震荡）都吃亏在上来就抛零散点子。套路：先定义问题 → 拆层分类 → 逐层给方案 → 一句话收尾</li>
+<li><strong>所有项目描述带数字</strong>：自我介绍、表格解析效果、压缩节省比例，没有数字的项目权重减半</li>
+</ol>
+</li>
+<li>强项：Skill&#x2F;MCP 有实操感知、”渐进式加载”方向感好、BM25 vs TF-IDF 二次内化后表述准确</li>
+</ul>
+<h2 id="错误清单（复盘专用）"><a href="#错误清单（复盘专用）" class="headerlink" title="错误清单（复盘专用）"></a>错误清单（复盘专用）</h2><table>
+<thead>
+<tr>
+<th>题号</th>
+<th>我的错误</th>
+<th>正确认知</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Q1</td>
+<td>只有项目流水账，无”我”、无数字、没提 Agent 平台</td>
+<td>我是谁→做过什么(带数字)→和岗位匹配，每句埋追问钩子</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>说”丢弃”老信息；压缩产物说成”普通 message”</td>
+<td>老信息是<strong>摘要压缩</strong>不是丢弃；产物是结构化摘要块；工具结果是最大 token 源</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>只答”常驻防注意力溃散”</td>
+<td>漏了 prompt cache：system prompt 是 KV cache 前缀锚点，动了缓存全失效</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>说”MCP 从有状态变无状态”</td>
+<td>变的是传输层 SSE→Streamable HTTP，会话生命周期概念仍在</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q5</td>
+<td>不适合场景基本没答，未提炼判断维度</td>
+<td>适合&#x3D;标准化+高复用+接生态；不适合&#x3D;私有高频&#x2F;性能热路径&#x2F;快速演进</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Q6</td>
+<td>说”RPC”、说”SSE&#x2F;TCP”；漏 initialize 握手；只知 tools</td>
+<td>JSON-RPC 2.0 + stdio&#x2F;HTTP 传输；initialize 能力协商是灵魂；三类原语 tools&#x2F;resources&#x2F;prompts</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q7</td>
+<td>“长连接不能复用”——<strong>结论反了</strong></td>
+<td>SSE 是”POST 上行 + SSE 下行”双通道，下行长连接全程复用；上行每请求独立 POST</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q8</td>
+<td>只说”有张索引表”</td>
+<td>缺 meta-tool（search_tools）机制、索引常驻位置、缓存与淘汰</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Q9</td>
+<td>默认 Skill 有数据库&#x2F;匹配器</td>
+<td><strong>Skill 就是文件系统目录</strong>（SKILL.md + references&#x2F; + scripts&#x2F;），模型自己读 system prompt 索引自主触发</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q10</td>
+<td>“效果还可以”无数字；归因”原生库有问题”</td>
+<td>PDF 是绘图指令集没有表格逻辑结构，解析&#x3D;结构重建；按难度分层选武器；markdown 不支持合并单元格</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q11</td>
+<td>没答”自动生成问题的注意事项”（题眼）</td>
+<td>生成≠出题：答案可验证性、难度分层、防问法偏置、去重、污染隔离</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Q12</td>
+<td>定义成”查多库”，解法说”把表变大”</td>
+<td>多跳&#x3D;检索词依赖前序结果；解法&#x3D;迭代检索(IRCoT)&#x2F;Agent 化(ReAct)&#x2F;查询分解&#x2F;GraphRAG</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q14</td>
+<td>把 BM25 答成 TF-IDF；”逆文档<strong>概率</strong>“术语错</td>
+<td>BM25 &#x3D; TF-IDF + 词频饱和(k1) + 长度归一化(b) + 概率框架 IDF；底层&#x3D;倒排索引+posting list</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q16</td>
+<td>问的是”慢”，答的全是”不准”（换模型&#x2F;加skill）</td>
+<td>先 tracing 定位，再分三层：降延迟&#x2F;减轮数&#x2F;感知缓解</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q17</td>
+<td>未单独作答（与 Q18 合并收尾）</td>
+<td>prefill 算力瓶颈 vs decode 带宽瓶颈，两阶段优化手段分开</td>
+<td>中</td>
+</tr>
+<tr>
+<td>Q18</td>
+<td>“这是客户端做的”、”相同类似的就注入”</td>
+<td><strong>服务端 KV cache</strong>，逐字节前缀匹配，差一字全失效；有 TTL</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q19</td>
+<td>“RLHF 包含 PPO&#x2F;DPO&#x2F;SFT”；DPO 前后自相矛盾</td>
+<td>SFT 是前置阶段不属 RLHF；PPO 需 RM+KL 惩罚四模型，DPO 不需 RM</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q20</td>
+<td>只答”更新的参数量比较小”（因果都不通）</td>
+<td>先拆 reward 曲线定层：hacking&#x2F;震荡查LR方差KL&#x2F;低位平上课程学习+冷启动</td>
+<td>高</td>
+</tr>
+<tr>
+<td>Q21</td>
+<td>未作答</td>
+<td>见文末参考实现，先刷 LC 718 → 1143 再做多串变体</td>
+<td>高</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="逐题实录"><a href="#逐题实录" class="headerlink" title="逐题实录"></a>逐题实录</h2><h3 id="Q1-自我介绍"><a href="#Q1-自我介绍" class="headerlink" title="Q1 自我介绍"></a>Q1 自我介绍</h3><p><strong>我的回答</strong>：主要在 RAG 项目，参与招投标书生成：解析招标书的主体信息&#x2F;资质要求&#x2F;投标书格式&#x2F;评分要求，按格式生成章节，RAG 检索历史标书召回图文，综合主体信息撰写章节。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>这不是自我介绍，是项目流程描述。框架应是：我是谁 → 做过什么（1<del>2 个项目各 3</del>4 句）→ 为什么匹配</li>
+<li>没有”我”：架构是谁设计的、模块谁写的没区分，”参与了”是最弱表述</li>
+<li>没有任何数字：语料规模、检索指标、耗时缩短、表格准确率</li>
+<li>完全没提 Agent 平台（后面全是它的题，自我介绍里应埋钩子）</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>X 年 AI 应用开发经验，方向 Agent 平台 + RAG 工程化。第一块 Agent 基础平台：负责上下文管理模块，设计分层压缩方案（滑动窗口+摘要压缩+关键信息抽取），token 消耗降 X%，关键信息零丢失；Skill 体系和 MCP 接入是我主导的。第二块标书生成 RAG：端到端负责 RAG 链路，多模态解析表格&#x2F;资质，多路召回+重排，基于评分要求做章节约束生成，编制时间从 X 天降到 X 小时。这两块正好匹配岗位。</p>
+</blockquote>
+<h3 id="Q2-上下文压缩算法实现"><a href="#Q2-上下文压缩算法实现" class="headerlink" title="Q2 上下文压缩算法实现"></a>Q2 上下文压缩算法实现</h3><p><strong>我的回答</strong>：阈值触发；保最老+最近，中间可丢；压缩后结构和正常 message 一样。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>“丢弃”是致命伤——正确表述是<strong>摘要压缩</strong>（有损但不消失），丢&#x3D;截断，压缩&#x3D;compaction，两个层次</li>
+<li>“结构和 message 一样”&#x3D;没答采分点：产物是<strong>结构化摘要块</strong>（目标&#x2F;决策&#x2F;关键实体&#x2F;待办），作为 user message 注入</li>
+<li>漏了最大 token 源：<strong>工具调用结果</strong>——保留工具名+参数+结论，结果体截断&#x2F;摘要</li>
+<li>漏了”什么必须留”的标准：用户目标、已确认决策、关键实体必留；探索过程、失败尝试、大段输出可压</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>触发：上下文到窗口 80% 主动触发 + 大工具结果返回前预防性压缩，单独 LLM 调用异步摘要。策略分层：system prompt 和定调消息原文保留；最近 N 轮原文保留；中段历史做摘要（目标&#x2F;决策&#x2F;实体&#x2F;约束）；工具调用保留”什么工具+参数+结论”，结果体一句话或丢弃。产物：结构化摘要块（目标&#x2F;决策&#x2F;状态&#x2F;待办四段式）作为 user message 放新上下文开头，接最近原生消息。兜底：不能丢的状态压缩前写穿到外部存储，上下文有损、外部无损。验证指标：任务完成率 + 关键信息召回，不只是省 token。</p>
+</blockquote>
+<h3 id="Q3-System-prompt-参与压缩吗"><a href="#Q3-System-prompt-参与压缩吗" class="headerlink" title="Q3 System prompt 参与压缩吗"></a>Q3 System prompt 参与压缩吗</h3><p><strong>我的回答</strong>：不参与，需要常驻，否则模型混乱注意力溃散。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>结论对，但漏了<strong>prompt cache</strong> 这个工程动因（面试官真正想听的）</li>
+<li>system prompt 在最前缀，是 KV Cache 命中的锚点，逐字节稳定才能命中缓存（TTFT+成本）</li>
+<li>加分项：稳定规则放 system prompt（跨会话不变），动态状态放摘要块——动态内容不进前缀，就不存在缓存失效</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>不参与。功能层面：system prompt 是任务指令&#x2F;行为约束&#x2F;工具规范，丢了行为退化，且本身不占多少 token。缓存层面：prefix prompt cache 从最前逐段匹配，system prompt 是锚点，动了整个缓存全失效。设计：压缩只动中段，两端不动（system prompt 绝对稳定 → 动态摘要块 → 最近 N 轮原生消息）。</p>
+</blockquote>
+<h3 id="Q4-Skill-和-MCP-的区别"><a href="#Q4-Skill-和-MCP-的区别" class="headerlink" title="Q4 Skill 和 MCP 的区别"></a>Q4 Skill 和 MCP 的区别</h3><p><strong>我的回答</strong>：Skill 类似 SOP 操作手册；MCP 是 function calling 的外部连接协议化复用；以前有状态最近变无状态。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>核心区别没点透：<strong>Skill 是知识&#x2F;流程（教模型怎么做），MCP 是工具&#x2F;连接（让模型够得着）</strong>，认知层 vs 执行层，互补不互斥</li>
+<li>漏加载机制差异：Skill 渐进式（平时只占一行 name+description），MCP 连接建立时全量注册工具定义占 token</li>
+<li><strong>“有状态→无状态”说错</strong>：变的是传输层 SSE（强制长连接）→ Streamable HTTP（不强制长连接，Mcp-Session-Id 维持会话，可选 stateless 模式）；会话生命周期概念一直在</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>一句话：Skill 解决”模型知道怎么做”，MCP 解决”模型能调到外部系统”。MCP：标准化协议，tools&#x2F;resources&#x2F;prompts 三类原语，解决 M×N 集成问题，传输从 stdio&#x2F;SSE 演进到 Streamable HTTP。Skill：按需加载的知识包（SKILL.md+脚本），命中才全文加载。三个差异：①内容性质：能力 vs 知识；②加载方式：全量注册 vs 渐进式；③依赖：Skill 可编排 MCP 工具。例：周报生成用 MCP 接 GitHub&#x2F;日历（能力），用 Skill 定结构和方法（知识）。</p>
+</blockquote>
+<h3 id="Q5-MCP-适合-不适合的场景"><a href="#Q5-MCP-适合-不适合的场景" class="headerlink" title="Q5 MCP 适合&#x2F;不适合的场景"></a>Q5 MCP 适合&#x2F;不适合的场景</h3><p><strong>我的回答</strong>：适合复用场景（地图&#x2F;知识库&#x2F;爬虫）；不适合不易复用的功能；具体没想到过。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>正例对但没归纳维度：<strong>标准化、稳定、多方共用</strong></li>
+<li>不适合场景没答出来：①私有高频业务逻辑（抽协议过度设计）②性能敏感热路径（MCP 每调用过序列化+进程&#x2F;网络边界，毫秒级）③快速演进的探索性功能</li>
+<li>漏了生态价值：接大平台官方 MCP Server（GitHub&#x2F;Slack&#x2F;Postgres），M+N 兑现价值的主场景</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>适合三维度：①标准化+高复用（地图&#x2F;天气&#x2F;知识库&#x2F;爬虫）②接生态现成 Server ③工具边界清晰无状态调用。不适合：①私有高频业务逻辑（标书章节编排这种跟业务状态强耦合的）②性能敏感热路径（进程内细粒度操作）③还在快速演进的功能。总结：<strong>稳定、通用、要复用的外部能力用 MCP；私有、多变、内部的不要为协议而协议。</strong></p>
+</blockquote>
+<h3 id="Q6-MCP-工作原理"><a href="#Q6-MCP-工作原理" class="headerlink" title="Q6 MCP 工作原理"></a>Q6 MCP 工作原理</h3><p><strong>我的回答</strong>：RPC 远程调用，SSE&#x2F;TCP 建连，获得标注来源的 function calling JSON 发给大模型，模型决定调用后 RPC 传给 MCP 服务器，结果再给模型。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>“RPC”太泛 → <strong>JSON-RPC 2.0</strong>；传输层没有裸 TCP，是 stdio（本地子进程）或 HTTP 类</li>
+<li><strong>漏 initialize 握手和能力协商</strong>（MCP 的灵魂）：initialize（版本+capabilities）→ 响应声明能力 → notifications&#x2F;initialized，会话才建立</li>
+<li>三类原语漏两类：tools（模型控制）&#x2F; resources（应用控制，类似 GET）&#x2F; prompts（用户控制，斜杠命令）——控制权归属是设计精髓</li>
+<li>消息流向：工具定义<strong>合并进请求的 tools 数组</strong>；结果作为 tool result 回填后<strong>继续推理，可能循环多次</strong></li>
+<li>漏通知机制：tools&#x2F;list_changed 动态刷新</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>本质：基于 JSON-RPC 2.0 的标准协议+可插拔传输（stdio&#x2F;Streamable HTTP&#x2F;SSE），Host&#x2F;Client&#x2F;Server 三方。握手：①传输层连上 ②Client 发 initialize（版本+capabilities）③Server 返回确认版本+声明能力 ④Client 发 initialized 通知。发现：tools&#x2F;list 拿定义（name&#x2F;description&#x2F;inputSchema）合并进 LLM 请求。调用：LLM 输出 tool_use → tools&#x2F;call（JSON-RPC request）→ Server 执行返回 result → tool result 回填对话继续推理，循环到最终回答。动态：notifications&#x2F;tools&#x2F;list_changed 刷新。工具带 server 前缀防命名冲突。</p>
+</blockquote>
+<p><strong>补充讲解（三类原语）</strong>：</p>
+<ul>
+<li>Tools &#x3D; 模型控制（POST 类比）：LLM 自主决定调用，可有副作用</li>
+<li>Resources &#x3D; 应用控制（GET 类比）：服务端数据 URI 寻址、只读，宿主决定何时读（如 IDE 自动注入打开的文件），支持 subscribe；判断标准：背景上下文用 resource，主动搜索用 tool</li>
+<li>Prompts &#x3D; 用户控制：服务端预定义模板，用户显式选（斜杠命令），领域最佳实践固化在模板里</li>
+<li>进阶：客户端侧反向原语 sampling（服务端借客户端 LLM 补全）&#x2F; roots（文件系统边界）&#x2F; elicitation（向用户要输入）——MCP 是双向协议</li>
+</ul>
+<h3 id="Q7-SSE-传输的完整数据流"><a href="#Q7-SSE-传输的完整数据流" class="headerlink" title="Q7 SSE 传输的完整数据流"></a>Q7 SSE 传输的完整数据流</h3><p><strong>我的回答</strong>：SSE 是 server send event 流式输出，和 websocket 不一样，长连接不能复用。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li><strong>结论反了</strong>：SSE 长连接恰恰被全程复用——作为所有”服务端→客户端”消息的下行通道</li>
+<li>“和 websocket 不一样”没讲机制：SSE 单向、跑在普通 HTTP（text&#x2F;event-stream）、自带断线重连（Last-Event-ID）；WS 双向独立协议</li>
+<li>漏了初始化关键：SSE 连上后服务端<strong>第一条事件是 endpoint 事件</strong>，告知 POST 地址</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>旧版 SSE 传输（2024-11-05 协议）是双通道设计：<br>①GET &#x2F;sse 建 SSE 长连接（下行）→ 服务端推 endpoint 事件（&#x2F;messages?sessionId&#x3D;abc）<br>②POST initialize 到该地址 → HTTP 层立刻回 202 Accepted（空 body）→ 真正结果从 SSE 流推回<br>③POST notifications&#x2F;initialized，会话建立<br>④tools&#x2F;call 同样：POST→202→结果从 SSE 推回<br><strong>复用分方向</strong>：下行复用（整会话所有响应&#x2F;通知&#x2F;反向 sampling 都走这一条流，按 JSON-RPC id 多路分发）；上行不复用（每请求独立 POST）。<br>设计原因：需要服务端主动推送（进度通知、sampling），纯 HTTP 请求-响应做不到。<br>代价：长连接+会话状态、粘性路由、对网关不友好、不适配 serverless → 演进为 <strong>Streamable HTTP</strong>（单一 &#x2F;mcp 端点，POST 响应按需选 JSON 或升级 SSE 流，Mcp-Session-Id 维持会话可重连，支持无状态模式）。<br>记忆锚点：<strong>POST 上行，SSE 下行；下行一条流全复用，上行每请求一 POST</strong>。</p>
+</blockquote>
+<h3 id="Q8-用-MCP-实现渐进式加载"><a href="#Q8-用-MCP-实现渐进式加载" class="headerlink" title="Q8 用 MCP 实现渐进式加载"></a>Q8 用 MCP 实现渐进式加载</h3><p><strong>我的回答</strong>：做索引表放 name&#x2F;description&#x2F;input output schema，渐进式加载。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>方向对（索引先行、按需展开）但只给了数据结构没给流程</li>
+<li>缺：索引放哪（常驻 system prompt）、<strong>谁发起展开</strong>（meta-tool，如 search_tools(query)，模型先搜、宿主把命中工具完整 schema 动态注入本轮 tools 数组）、生命周期（会话内缓存+LRU 淘汰）</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>本质：把”发现工具”和”调用工具”拆两阶段，schema 按需进上下文。三层漏斗：①轻量索引常驻 system prompt（每工具 name+一句话，20~30 token）②meta-tool 按需展开：模型调 search_tools(“查天气”)，宿主语义匹配，命中工具完整 inputSchema 动态注入本轮 tools，下一轮才能正式调用 ③会话内缓存已展开定义，主题切换按 LRU 淘汰，配合 tools&#x2F;list_changed 刷新。补充：按域分组动态挂载 server；只读数据用 Resources 替代 Tools（省定义 token）；压缩描述文本。权衡：多一轮搜索延迟换 token，搜索质量是生命线，高频工具白名单直通。Anthropic 官方 Tool Search Tool 就是产品化实现（deferred 工具+tool_search_tool_regex）。哲学：<strong>上下文里只放目录，不放全书</strong>。</p>
+</blockquote>
+<h3 id="Q9-Skill-底层存储-天气查询完整流程"><a href="#Q9-Skill-底层存储-天气查询完整流程" class="headerlink" title="Q9 Skill 底层存储 + 天气查询完整流程"></a>Q9 Skill 底层存储 + 天气查询完整流程</h3><p><strong>我的回答</strong>：skill 有 name 和 description，加载时根据描述匹配，匹配成功读取内容，内容标注每步操作和调用工具。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li><strong>踩了陷阱</strong>：问”底层数据库”，而 Skill <strong>没有数据库</strong>——就是文件系统目录，一个 Skill 一个文件夹。这本身是得分点：git 可版本管理、用户可直接编辑、离线可移植、天然适合渐进式读取</li>
+<li>“根据描述匹配”没说清主体：不是检索器&#x2F;向量库匹配，是<strong>模型自己</strong>看 system prompt 里的索引自主判断，<strong>主动调文件读取工具打开 SKILL.md</strong>——加载是模型行为不是系统路由（Skill 和传统插件路由的本质区别）</li>
+<li>漏三层渐进式：①frontmatter 元数据常驻 ②命中读正文 ③references&#x2F;scripts 按需</li>
+<li>漏 scripts 的价值：确定性步骤写成可执行脚本（封装 API&#x2F;鉴权&#x2F;重试），省 token 且稳定，LLM 只负责判断和整合</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>结构：weather-skill&#x2F; 下 SKILL.md（YAML frontmatter: name+description 必填 + Markdown 正文）+ references&#x2F; + scripts&#x2F;。frontmatter 是唯一常驻 system prompt 的部分（每 Skill 一行）。流程：①常驻发现：system prompt 索引表一行一条 ②模型自主触发：判断命中→调文件读取工具读 SKILL.md ③执行正文指令（如”运行 scripts&#x2F;fetch_weather.py –city 北京”）④按需深入：正文没覆盖的读 references&#x2F; ⑤脚本输出进上下文，模型整合作答。哲学：文件系统+模型自主读取代替插件路由注册；frontmatter 常驻换全文按需加载；脚本固化确定性步骤。未命中 Skill 全程只花一行描述的钱。</p>
+</blockquote>
+<h3 id="Q10-PDF-表格解析效果与原因"><a href="#Q10-PDF-表格解析效果与原因" class="headerlink" title="Q10 PDF 表格解析效果与原因"></a>Q10 PDF 表格解析效果与原因</h3><p><strong>我的回答</strong>：fitz + plumber 结合，plumber 读管道舒服、表格转 markdown；合并单元格解析有问题，原因是原生库的缺陷。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>“还可以”零分表述，要量化（规则表&#x2F;无线框表&#x2F;合并单元格表分别多少准确率）</li>
+<li>归因没触底：不是”库不行”，是 <strong>PDF 本质是绘图指令集</strong>（坐标画线+印字），<strong>没有表格逻辑结构</strong>——解析是结构重建。无线框靠 x 坐标聚类猜列会串列；合并单元格线条不符合矩形网格假设、数据找不到归属表头；嵌套表头压平语义丢失</li>
+<li>markdown <strong>语法不支持 rowspan&#x2F;colspan</strong>——表示层缺陷要点破，解法是换 HTML 表格或 JSON</li>
+<li>没给解法：规则库处理规则表格 + 视觉模型处理复杂表格 + HTML&#x2F;JSON 表示 + 置信度校验降级</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>量化：规则表格 95%+；无线框 60~70%（串列严重）；合并单元格+嵌套表头初始方案接近不可用。根因：PDF 是绘图指令集没有逻辑结构，机器靠猜。解法分层：①解析层——规则库（lines 策略）处理规则表，视觉多模态模型（页面渲染成图）处理无框线和复杂表 ②表示层——markdown 换 HTML（支持 rowspan&#x2F;colspan）或结构化 JSON ③校验层——数值&#x2F;行数一致性校验，低置信度降级为”表头+原始文本块”（错误的结构比没结构危害大）。复杂表格提升到 85%+ 可用，badcase 进人工修正。总结：<strong>解析是在做”结构重建”，按难度分层选武器。</strong></p>
+</blockquote>
+<h3 id="Q11-RAG-评测体系-自动生成问题注意事项"><a href="#Q11-RAG-评测体系-自动生成问题注意事项" class="headerlink" title="Q11 RAG 评测体系 + 自动生成问题注意事项"></a>Q11 RAG 评测体系 + 自动生成问题注意事项</h3><p><strong>我的回答</strong>：一部分规则、一部分人工、一部分 LLM as judge；生成的要注意体现维度（忠实度、相关度，参考 RAGAS）。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>混合框架对但是词的堆砌，没说<strong>什么指标用什么手段</strong></li>
+<li>**没回答题眼：”自动生成评测问题的注意事项”**——只说”注意体现维度”太薄</li>
+<li>漏了评测集质量闭环（生成集本身要抽检校准，垃圾进垃圾出）</li>
+<li>RAGAS 提了没用好：点”基于 RAGAS 扩展”既专业又省力</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>三层混合：可规则化的用规则&#x2F;代码（格式合规、引用可回溯）；语义类用 LLM as judge（忠实度&#x2F;相关度&#x2F;完整度）；金标准人工抽检校准（校准 judge 一致率后才上线当裁判）。流水线：人工金标准 200~500 条（多跳&#x2F;表格&#x2F;数值分层配比）→ LLM 从语料自动生成扩充 → 每次改动（换 embedding&#x2F;调 chunk&#x2F;换 reranker）自动跑回归看板拦截劣化 → 线上 badcase 回流。<strong>生成问题注意事项</strong>：①生成≠出题——要有答案可验证性：先抽 evidence 再基于 evidence 生成，答案能定位回去，否则标准答案本身是幻觉 ②难度类型分层：事实&#x2F;推理&#x2F;多跳&#x2F;表格，还要生成<strong>语料里没有答案的题考察拒答</strong> ③防问法偏置：LLM 生成问句风格单一，要注入多样化改写，否则过拟合生成问法、真实问法一上就崩 ④语义去重+抽检验真 ⑤污染隔离：记录语料版本，改语料后旧题重校验。总结：<strong>自动生成解决”量”，人工金标准解决”准”，LLM judge 解决”规模化打分”。</strong></p>
+</blockquote>
+<h3 id="Q12-多跳问题"><a href="#Q12-多跳问题" class="headerlink" title="Q12 多跳问题"></a>Q12 多跳问题</h3><p><strong>我的回答</strong>：像数据库查一个表拿结果再查另一个表；最简单解法把表变大，但会慢；给信息加关系用专门的表维护一起送进去。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>定义答偏：多跳不是”查多库&#x2F;多表”，是<strong>回答需要串联多个证据，第二个证据的检索词藏在第一个证据的答案里</strong>（例：查《面纱》作者得毛姆 → 拿”毛姆”再查作品）。关键特征：<strong>检索词动态产生，第一跳输出是第二跳输入</strong>。数据库类比接近”子查询”，但难点是模型事先不知道查什么而 SQL 是事先规划的</li>
+<li>“把表变大”偏题且自相矛盾——它只缓解（依赖物理相邻、大 chunk 稀释语义），没解决”模型不知道第二跳查什么”</li>
+<li>经典方法一个没提：IRCoT &#x2F; ReAct &#x2F; 查询分解 &#x2F; GraphRAG</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>定义：多跳&#x3D;后一跳的检索依据藏在前一跳的答案里，单轮 query→chunk→answer 管道天然失效。解法谱系：①迭代检索（IRCoT）：检索和推理交替，从中间推理句抽新检索词再检索 ②Agent 化（ReAct，工程最常用）：检索封装成工具，循环”思考→检索→观察”，第二跳检索词从观察里自然产生 ③查询改写&#x2F;分解：LLM 先拆子问题逐个检索汇总，适合结构清晰的复合问题 ④GraphRAG：离线抽实体关系建图谱，检索沿关系边多跳游走喂子图，适合实体关系密集的领域，构建维护成本高 ⑤缓解手段：chunk 扩展&#x2F;父子文档&#x2F;关联拼接，治标不治本。工程建议：先量化多跳题占比（分层评测集），低占比上 ReAct 性价比最高，高且关系稳定再上 GraphRAG。锚点：<strong>多跳本质&#x3D;检索词依赖前序结果，解法&#x3D;把一次检索变成检索-推理循环。</strong></p>
+</blockquote>
+<h3 id="Q13-大表格-多表格查询如何提高准确率（未考，补课）"><a href="#Q13-大表格-多表格查询如何提高准确率（未考，补课）" class="headerlink" title="Q13 大表格&#x2F;多表格查询如何提高准确率（未考，补课）"></a>Q13 大表格&#x2F;多表格查询如何提高准确率（未考，补课）</h3><p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>①结构化预处理：先做表 schema 提取（表头层级、合并单元格还原成 HTML&#x2F;JSON），全局表头在行级 chunk 里拼接（每行都带上下文语义，否则单独一行无意义）②大表切分：按逻辑块（行组&#x2F;列组）分区索引，配表格摘要（这个表讲什么、关键列含义）做路由 ③查询路线分层：简单查找走向量&#x2F;关键词召回定位行；聚合&#x2F;比较&#x2F;计算走 <strong>Text-to-SQL</strong>（表格入库）或代码执行器——<strong>数值计算绝不让 LLM 心算</strong> ④多表：先 schema linking（理解表间外键&#x2F;关联），再生成 join 查询 ⑤评测驱动：单元格级 F1 + 数值精确匹配。</p>
+</blockquote>
+<h3 id="Q14-BM25-底层实现"><a href="#Q14-BM25-底层实现" class="headerlink" title="Q14 BM25 底层实现"></a>Q14 BM25 底层实现</h3><p><strong>我的回答</strong>：IF&#x2F;IDF，词频和逆文档概率，找 query 词信息占比最多的作为关键词；一句话中出现频率高、文档中稀有，说明信息量最多。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li><strong>答成 TF-IDF 了</strong>（而下一题就是问区别，等于提前交了弹药）</li>
+<li>术语错：”逆文档<strong>概率</strong>“应为”逆文档<strong>频率</strong>“</li>
+<li>漏了 BM25 两大改进：词频饱和、文档长度归一化</li>
+<li>漏了实现层：倒排索引、posting list、打分累加、WAND 剪枝</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>公式：score(D,Q) &#x3D; Σ IDF(qi) × f(qi,D)×(k1+1) &#x2F; [ f(qi,D) + k1×(1-b+b×|D|&#x2F;avgdl) ]。三部分：①IDF 项 log((N-df+0.5)&#x2F;(df+0.5)+1)——越稀有权重越高 ②词频饱和（k1≈1.2~2.0）：TF 增益递减，防堆词频刷分 ③长度归一化（b≈0.75）：和全库平均长度比较，防偏向长文。底层实现：离线分词建<strong>倒排索引</strong> term→[(doc_id, tf, doc_len)]，预计算 N&#x2F;df&#x2F;avgdl；在线 query 分词→取 posting list→score buffer 累加→top-k；大规模用 <strong>WAND&#x2F;Block-Max WAND</strong> 剪枝（维护每词贡献上界跳过不可能进 top-k 的文档）。工业界直接用 Lucene&#x2F;ES（默认 k1&#x3D;1.2, b&#x3D;0.75）。收尾：BM25 是词级精确匹配，”电脑”命中不了”计算机”，所以必须和向量召回互补——这就是多路召回的理由。</p>
+</blockquote>
+<h3 id="Q15-BM25-vs-TF-IDF（过关题）"><a href="#Q15-BM25-vs-TF-IDF（过关题）" class="headerlink" title="Q15 BM25 vs TF-IDF（过关题）"></a>Q15 BM25 vs TF-IDF（过关题）</h3><p><strong>我的回答</strong>：BM25 是增强版 TF-IDF，升级两点：词频饱和防堆词频刷分；文档长度归一化防长短影响分数。</p>
+<p><strong>点评</strong>：✅ 过关——内化后的表述不是背公式，两个升级点都准确。补充两点让答案完整：①第三个区别：IDF 公式本身不同——TF-IDF 是 log(N&#x2F;df)，BM25 用 Robertson-Sparck Jones 概率框架带 0.5 平滑（防 df&#x3D;0 除零、df&#x3D;N 权重为 0&#x2F;负）②归一化机制不同：TF-IDF 常用余弦归一化，BM25 是参数化 b（0~1 可调）。收尾金句：BM25 实践 benchmark 几乎总优于 TF-IDF，工业界关键词检索默认就是它（Lucene&#x2F;ES 默认打分）。</p>
+<h3 id="Q16-Agent-运行慢如何提效"><a href="#Q16-Agent-运行慢如何提效" class="headerlink" title="Q16 Agent 运行慢如何提效"></a>Q16 Agent 运行慢如何提效</h3><p><strong>我的回答</strong>：①模型智力不够换模型 ②增加 skill 复用 SOP ③多开 subagent 主 agent 协调 ④工具描述准确、区分边界。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li><strong>结构性跑题</strong>：问的是”慢”（延迟&#x2F;耗时），答的基本是”不准”（效果&#x2F;质量）。换模型不会变快（反而更慢）</li>
+<li>开放题正确姿势：先定位（tracing 拆耗时构成）→ 再分层给方案 → 收尾总结</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>定位：一轮耗时 &#x3D; 模型推理 + 工具执行 + 上下文传输，tracing 看占比再对症下药。三层：<strong>一、降延迟</strong>：①prompt cache（system prompt+工具定义+历史前缀稳定化，TTFT 降一个量级）②上下文瘦身（压缩算法+工具渐进式加载）③流式输出+提前规划（感知延迟）④并行工具调用（一次输出多个无依赖调用）。<strong>二、减轮数</strong>：①确定性步骤脚本化（一次脚本顶三轮 LLM 交互）②工具输出结构化信息密度高，减少”看不懂再调一次”的浪费轮（工具描述准确边界清晰放在这里才对位）③子代理并行（优化总墙钟时间，仅限可拆分任务）。<strong>三、感知缓解</strong>：中间过程可视化，慢但看起来不慢。</p>
+</blockquote>
+<h3 id="Q17-模型推理加速（合并收尾）"><a href="#Q17-模型推理加速（合并收尾）" class="headerlink" title="Q17 模型推理加速（合并收尾）"></a>Q17 模型推理加速（合并收尾）</h3><p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>心智模型：<strong>prefill 是计算瓶颈（compute-bound），decode 是显存带宽瓶颈（memory-bound）</strong>，优化手段完全分开。<br>Prefill 侧：FlashAttention（IO 感知精确注意力，减显存读写）；prompt cache（跳过重复前缀 prefill，最狠）；TP&#x2F;PP&#x2F;DP 并行切分。<br>Decode 侧：PagedAttention&#x2F;vLLM（OS 分页管理 KV 显存，碎片小→并发 batch 塞更多，吞吐翻倍级）；continuous batching（完成一个补位一个）；投机解码（小草稿模型猜 k 个 token 大模型并行验证，2~3 倍，输出分布不变）；量化（INT8&#x2F;FP8&#x2F;AWQ，带宽压力降）；GQA&#x2F;MQA（KV cache 体积砍一个量级）。<br>工程落地：别用 HF transformers 原生推理，上 vLLM&#x2F;SGLang&#x2F;TensorRT-LLM。<br>串联金句：<strong>推理优化是服务端榨硬件，prompt cache 是让服务端不用重复榨，Agent 应用的职责是把上下文结构设计成可缓存的形状。</strong></p>
+</blockquote>
+<h3 id="Q18-Prompt-cache-原理"><a href="#Q18-Prompt-cache-原理" class="headerlink" title="Q18 Prompt cache 原理"></a>Q18 Prompt cache 原理</h3><p><strong>我的回答</strong>：每次把前缀 prompt 存起来，下次发现有相同类似的就注入，相当于缓存节省性能；客户端做的；服务端可节省成本、TTFT 减少。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li><strong>主体搞错</strong>：prompt cache 是<strong>推理服务端</strong>做的，缓存的是 <strong>KV cache（注意力中间态）</strong>不是 prompt 文本。客户端能做的只是保持前缀稳定。别和”客户端语义缓存（相似问题返回缓存答案）”混着说</li>
+<li><strong>匹配机制错</strong>：是<strong>逐字节精确前缀匹配</strong>（按 token 块对齐），第 k 个位置差一个字，k 之后全部失效——不是”相同类似就注入”</li>
+<li>漏了推理两阶段框架（prefill&#x2F;decode）没它讲不清为什么省 TTFT</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>从推理两阶段讲：prefill 把输入并行算一遍生成 KV cache，decode 逐 token 生成。prompt cache 本质：<strong>把 prompt 前缀的 KV cache 暂存在推理服务端</strong>，下次前缀逐字节相同就跳过这部分 prefill，装载现成 KV 继续算。三个关键：①精确前缀匹配按块对齐，差一字全失效 ②收益：prefill 省掉→TTFT 大降+缓存部分折扣计费（Anthropic 读 0.1 倍，OpenAI 五折）③有 TTL（几分钟），连续对话收益最大。<strong>为什么 Agent 特别吃这个</strong>：①Agent 是多轮追加式对话，第 N+1 轮是第 N 轮的超集，前缀天然命中 ②system prompt+工具定义几万 token 且静态，不命中每轮都全价 ③这决定了工程设计：system prompt 逐字节稳定、消息 append-only、动态内容往后放——<strong>上下文结构的稳定性就是缓存命中的生命线</strong>。</p>
+</blockquote>
+<h3 id="Q19-SFT-RLHF-PPO-DPO"><a href="#Q19-SFT-RLHF-PPO-DPO" class="headerlink" title="Q19 SFT &#x2F; RLHF &#x2F; PPO &#x2F; DPO"></a>Q19 SFT &#x2F; RLHF &#x2F; PPO &#x2F; DPO</h3><p><strong>我的回答</strong>：SFT 监督学习微调；RLHF 人类偏好对齐让输出符合人的习惯；RLHF 包含 PPO、DPO 和 SFT；DPO 包含奖励函数惩罚函数还要评分模型，而 DPO 则不需要。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li><strong>包含关系错</strong>：RLHF 按定义只含基于人类反馈的强化学习，SFT 是<strong>前置阶段</strong>不是组成部分。正确：SFT →（RM 训练）→ 偏好优化（PPO 或 DPO 二选一）</li>
+<li><strong>DPO 说反又自相矛盾</strong>：”DPO 包含奖励函数惩罚函数还要评分模型，而 DPO 则不需要”——后半句才是对的，DPO（Direct Preference Optimization）的卖点就是<strong>不需要奖励模型</strong>，把 RM+RL 两步合并成一步直接在偏好对上优化</li>
+<li>漏 PPO 四模型：策略模型（被训）&#x2F;参考模型（SFT 冻结版算 KL 约束防漂移）&#x2F;奖励模型（打分）&#x2F;价值模型（算优势）——<strong>KL 惩罚</strong>防 reward hacking 防训崩，不提等于没理解</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>关系图：SFT（监督微调打底）→ 偏好对齐：路线 A RLHF+PPO（在线 RL，需 RM），路线 B DPO（离线直接优化，无需 RM）。SFT：监督学习教格式和知识打底，只会模仿学不会”两个都对里选更好”。RLHF：人类标”A 比 B 好”→ 训 RM（Bradley-Terry 成对损失）→ RM 当 reward 做 RL。PPO：RM 打分，clip 限单步更新 + KL 惩罚防偏离参考模型（防 hacking 防训崩），四模型同飞，贵但天花板高。DPO：推导出 RLHF 目标闭式解，跳过 RM 和 RL 循环，直接在偏好对上优化，稳定便宜实现简单，但离线数据定上限、泛化不如在线探索。何时用哪个：有可验证 reward（代码能跑&#x2F;数学有标准答案）→ RLVR&#x2F;PPO 系（reasoning 模型都走这条路）；只有偏好数据要快速对齐风格 → DPO 性价比之王；知识注入&#x2F;格式学习 → SFT 就够；实践组合：SFT → DPO 快对齐 → 再在线 RL 冲上限。锚点：<strong>SFT 打底学模仿，RLHF 对齐学偏好；PPO 在线探索贵而强，DPO 离线直接便宜稳。</strong></p>
+</blockquote>
+<h3 id="Q20-RL-训练震荡不达标怎么解决"><a href="#Q20-RL-训练震荡不达标怎么解决" class="headerlink" title="Q20 RL 训练震荡不达标怎么解决"></a>Q20 RL 训练震荡不达标怎么解决</h3><p><strong>我的回答</strong>：感觉是微调更新的参数量比较小。</p>
+<p><strong>点评&#x2F;错误</strong>：</p>
+<ul>
+<li>基本没答上，因果不通：更新幅度小是<strong>学得慢</strong>（欠拟合），<strong>震荡</strong>是步子太大、信号方差太大造成的——方向正好相反</li>
+<li>这是开放诊断题，预期是<strong>诊断框架</strong>不是猜单点原因</li>
+</ul>
+<p><strong>参考答案</strong>：</p>
+<blockquote>
+<p>先看 reward 曲线拆三种情况对症下药：<strong>①reward 在涨、实际任务不达标</strong>→ reward hacking（复读&#x2F;格式套路&#x2F;讨好 judge），修补奖励：加反作弊约束（长度惩罚、重复惩罚、格式硬约束）。<strong>②reward 震荡不收敛</strong>→ 优化层：降 LR+warmup+加大 batch（RL 有效 batch 小是震荡经典原因）；advantage 方差太大查基线&#x2F;归一化（GRPO 组内归一化、PPO value loss）——RL 天生高方差是震荡的数学根源；KL 系数两头扫（太松漂移震荡太紧学不动）。<strong>③reward 低位平</strong>→ 探索不到正例：奖励太稀疏加过程奖励&#x2F;shaping；任务太难上<strong>课程学习</strong>（简单题训起逐步加难）或先 SFT 冷启动再 RL 精修（DeepSeek-R1 做法：先冷启动 SFT 再 RL，避免早期探索无方向）；数据矛盾标注清洗。锚点：<strong>先拆 reward 曲线定层：涨了不达标是 hacking，震荡查 LR&#x2F;方差&#x2F;KL，低位平上课程和冷启动。</strong></p>
+</blockquote>
+<h3 id="Q21-多个字符串的最大公共子串（未完成，待补）"><a href="#Q21-多个字符串的最大公共子串（未完成，待补）" class="headerlink" title="Q21 多个字符串的最大公共子串（未完成，待补）"></a>Q21 多个字符串的最大公共子串（未完成，待补）</h3><p><strong>题意确认（面试技巧）</strong>：面试官原话”类似于力扣 1143”其实不严谨——1143 是<strong>子序列</strong>（不连续，双串二维 DP 取 max 转移）；”公共子串”（连续）对应 <strong>LC 718</strong>（dp[i][j] &#x3D; dp[i-1][j-1]+1 仅当字符相等，不等归零）；多串变体没有原题，是 718 扩展。真实面试先确认题意（连续还是不连续）本身就是加分行为。</p>
+<p><strong>参考思路 A（枚举+校验，简洁实用）</strong>：以最短串为基准，按长度从大到小枚举其所有子串（去重），逐个检查是否为其他串的子串（<code>in</code> &#x2F; find &#x2F; 哈希集合）；第一个出现命中的长度就是最大长度，收集该长度所有命中子串，提前退出。<br><strong>参考思路 B（多维 DP）</strong>：n 个串的公共子串 DP 是 n 维（dp[i1][i2]…[in]，全部字符相等时 +1 否则归零），3 串以上时空复杂度爆炸，面试提一句即可，主打思路 A。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_common_substrings</span>(<span class="hljs-params">strings: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]:<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> strings:<br>        <span class="hljs-keyword">return</span> []<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">any</span>(<span class="hljs-keyword">not</span> s <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> strings):<br>        <span class="hljs-keyword">return</span> []<br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(strings) == <span class="hljs-number">1</span>:<br>        <span class="hljs-keyword">return</span> [strings[<span class="hljs-number">0</span>]]<br>    base = <span class="hljs-built_in">min</span>(strings, key=<span class="hljs-built_in">len</span>)<br>    n = <span class="hljs-built_in">len</span>(base)<br>    <span class="hljs-keyword">for</span> length <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):          <span class="hljs-comment"># 长度从大到小，首个命中的长度即答案</span><br>        hits = []<br>        seen = <span class="hljs-built_in">set</span>()<br>        <span class="hljs-keyword">for</span> start <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - length + <span class="hljs-number">1</span>):<br>            sub = base[start:start + length]<br>            <span class="hljs-keyword">if</span> sub <span class="hljs-keyword">in</span> seen:<br>                <span class="hljs-keyword">continue</span><br>            seen.add(sub)<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">all</span>(sub <span class="hljs-keyword">in</span> s <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> strings):<br>                hits.append(sub)<br>        <span class="hljs-keyword">if</span> hits:<br>            <span class="hljs-keyword">return</span> hits                      <span class="hljs-comment"># 同一长度所有并列答案</span><br>    <span class="hljs-keyword">return</span> []<br></code></pre></td></tr></table></figure>
-复杂度：O(L²) 个候选子串 × 每个校验 O(总串长)，加 seen 去重。边界：空串列表→[]；任一串为空→[]；单串→自身；并列答案全部返回。
-
----
-
-## 下次复测清单
-
-1. 复测弱项：MCP 传输协议演进（SSE 数据流重述）、RLHF 关系图重画、prompt cache 主体、BM25 底层实现重述
-2. 补做 Q21：先 LC 718 → LC 1143（区分子串/子序列）→ 多串变体默写上面的参考实现
-3. 重写自我介绍（带数字版），下次开场直接用a
-
-
+<p>复杂度：O(L²) 个候选子串 × 每个校验 O(总串长)，加 seen 去重。边界：空串列表→[]；任一串为空→[]；单串→自身；并列答案全部返回。</p>
+<hr>
+<h2 id="下次复测清单"><a href="#下次复测清单" class="headerlink" title="下次复测清单"></a>下次复测清单</h2><ol>
+<li>复测弱项：MCP 传输协议演进（SSE 数据流重述）、RLHF 关系图重画、prompt cache 主体、BM25 底层实现重述</li>
+<li>补做 Q21：先 LC 718 → LC 1143（区分子串&#x2F;子序列）→ 多串变体默写上面的参考实现</li>
+<li>重写自我介绍（带数字版），下次开场直接用a</li>
+</ol>
 
                 
               </div>

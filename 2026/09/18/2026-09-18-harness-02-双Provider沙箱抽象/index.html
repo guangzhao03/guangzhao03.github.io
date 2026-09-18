@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# 02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境  &gt; 核对日期：2026-09-17。代码根目录：&#96;E:\MoreProject\learn_foresign_engine&#96;。结论依据当前工作区实现，不等于所有线上部署已经采用相同配置。 &gt; &gt; 本文选取关键源码逐行解释，行尾注释为教学添加。代码块是节选，不代表完整文件；所有源码引用都相对于仓库根目录。没有修改业务代码或">
+    <meta name="description" content="02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境 核对日期：2026-09-17。代码根目录：E:\MoreProject\learn_foresign_engine。结论依据当前工作区实现，不等于所有线上部署已经采用相同配置。 本文选取关键源码逐行解释，行尾注释为教学添加。代码块是节选，不代表完整文件；所有源码引用都相对于仓库根目录。没有修改业务代码或创建云端资源。  1.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/18/2026-09-18-harness-02-%E5%8F%8CProvider%E6%B2%99%E7%AE%B1%E6%8A%BD%E8%B1%A1/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# 02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境  &gt; 核对日期：2026-09-17。代码根目录：&#96;E:\MoreProject\learn_foresign_engine&#96;。结论依据当前工作区实现，不等于所有线上部署已经采用相同配置。 &gt; &gt; 本文选取关键源码逐行解释，行尾注释为教学添加。代码块是节选，不代表完整文件；所有源码引用都相对于仓库根目录。没有修改业务代码或">
+<meta property="og:description" content="02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境 核对日期：2026-09-17。代码根目录：E:\MoreProject\learn_foresign_engine。结论依据当前工作区实现，不等于所有线上部署已经采用相同配置。 本文选取关键源码逐行解释，行尾注释为教学添加。代码块是节选，不代表完整文件；所有源码引用都相对于仓库根目录。没有修改业务代码或创建云端资源。  1.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-18T07:29:29.000Z">
 <meta property="article:modified_time" content="2026-09-18T07:29:29.000Z">
@@ -337,7 +337,7 @@
         
         
         
-          120 分钟
+          117 分钟
         
       </span>
     
@@ -381,271 +381,304 @@
             
               <div class="markdown-body">
                 
-                
-# 02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境
-
-> 核对日期：2026-09-17。代码根目录：`E:\MoreProject\learn_foresign_engine`。结论依据当前工作区实现，不等于所有线上部署已经采用相同配置。
->
-> 本文选取关键源码逐行解释，行尾注释为教学添加。代码块是节选，不代表完整文件；所有源码引用都相对于仓库根目录。没有修改业务代码或创建云端资源。
-
-## 1. 面试前先修正三个事实
-
-| 原先的概括 | 当前源码所表现的实现 | 面试应该怎么说 |
-|---|---|---|
-| OpenSandbox 用 PVC 持久化工作区 | workspace 当前挂载 hostPath | 自建 K8s 工作区采用节点本地目录，恢复需要考虑节点绑定 |
-| 腾讯没有 pause/resume | 优先 platform pause/connect，必要时才降级 | 能力不对等时采用能力适配与冷恢复 |
-| 腾讯工作区在 COS | Registry 当前装配 CfsVolumeProvider | 使用 CFS 子路径承载工作区，旧 COS 注释不代表当前装配 |
-
-**为什么要强调？** 面试官问“Pod 调到另一个节点文件还在吗”，hostPath 和网络文件系统的答案完全不同。把它们统称为“持久卷”而不说明存储语义，会掩盖真正的设计约束。
-
-## 2. 核心抽象不是两个 SDK，而是三种身份
-
-以一个 Desktop 为例：
-
-| 身份 | 示例概念 | 是否应随冷重建变化 |
-|---|---|---|
-| desktopId | 用户看到的稳定工作空间 | 不变 |
-| sandboxId | 当前云平台计算实例 | 可以变 |
-| volumeName | 工作区持久存储命名，通常 workspace-桌面ID | 尽量不变 |
-
-数据模型位置：`packages/backend/prisma/schema.prisma:341`。
-
-冷恢复的本质是：**为同一个业务 Desktop 更换计算实例，重新关联已有工作区。** 这不是把一个正在运行的进程迁移到另一个云，更不是保证内存和连接继续存在。
-
-业务服务通常拿 desktopId；缓存解析出 `{ sandboxId, provider }`；连接池按 provider 和 sandboxId 找执行连接；文件/命令走统一接口。
-
-## 3. 阅读地图
-
-| 源码位置 | 关注点 |
-|---|---|
-| `packages/backend/src/sandbox/infrastructure/runtime/sandbox-provider.types.ts:22` | provider 归一化 |
-| `packages/backend/src/sandbox/infrastructure/runtime/sandbox-provider.registry.ts:22` | Registry 运行时查找 |
-| `packages/backend/src/sandbox/sandbox.module.ts:92` | 两套能力如何装配 |
-| `packages/backend/src/sandbox/infrastructure/runtime/sandbox-runtime.provider.ts:67` | 文件、命令、连接能力 |
-| `packages/backend/src/sandbox/infrastructure/runtime/sandbox-manager.provider.interface.ts:29` | 暂停、恢复、销毁等管理能力 |
-| `packages/backend/src/sandbox/infrastructure/volume/volume-provider.interface.ts:18` | 持久工作区能力 |
-| `packages/backend/src/desktop/desktop.service.ts:583` | Desktop 创建时选择渠道 |
-| `packages/backend/src/sandbox/application/sandbox-lifecycle.service.ts:206` | 创建步骤与失败补偿 |
-| `packages/backend/src/sandbox/application/sandbox-lifecycle.service.ts:443` | 启动/恢复的状态分支 |
-| `packages/backend/src/sandbox/application/sandbox-lifecycle.service.ts:655` | 冷重建 |
-| `packages/backend/src/sandbox/infrastructure/tencent/tencent-sandbox.adapters.ts:187` | 命令返回语义适配 |
-
-## 4. Registry、Strategy、Adapter 分别解决什么
-
-不要只背“这里用了 Registry 模式”。这里三种思想同时存在：
-
-- **Registry**：按 provider 名字查出一组对象，解决“运行时去哪里拿实现”。
-- **Strategy**：runtime、manager、volume 有可替换实现，解决“同一个业务动作选择哪套行为”。
-- **Adapter**：腾讯 SDK 的返回值、错误模型、端点访问方式被转换成平台接口，解决“外部语义如何对齐”。
-
-Registry 本身不实现暂停、文件读写，也不负责自动抹平两家能力差异。
-
-### 4.1 源码逐行注释：注册表查询
-
-来源：`packages/backend/src/sandbox/infrastructure/runtime/sandbox-provider.registry.ts:38-52`。
-
+                <h1 id="02｜双-Provider-沙箱抽象：同一套业务如何支持两套执行环境"><a href="#02｜双-Provider-沙箱抽象：同一套业务如何支持两套执行环境" class="headerlink" title="02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境"></a>02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境</h1><blockquote>
+<p>核对日期：2026-09-17。代码根目录：<code>E:\MoreProject\learn_foresign_engine</code>。结论依据当前工作区实现，不等于所有线上部署已经采用相同配置。</p>
+<p>本文选取关键源码逐行解释，行尾注释为教学添加。代码块是节选，不代表完整文件；所有源码引用都相对于仓库根目录。没有修改业务代码或创建云端资源。</p>
+</blockquote>
+<h2 id="1-面试前先修正三个事实"><a href="#1-面试前先修正三个事实" class="headerlink" title="1. 面试前先修正三个事实"></a>1. 面试前先修正三个事实</h2><table>
+<thead>
+<tr>
+<th>原先的概括</th>
+<th>当前源码所表现的实现</th>
+<th>面试应该怎么说</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OpenSandbox 用 PVC 持久化工作区</td>
+<td>workspace 当前挂载 hostPath</td>
+<td>自建 K8s 工作区采用节点本地目录，恢复需要考虑节点绑定</td>
+</tr>
+<tr>
+<td>腾讯没有 pause&#x2F;resume</td>
+<td>优先 platform pause&#x2F;connect，必要时才降级</td>
+<td>能力不对等时采用能力适配与冷恢复</td>
+</tr>
+<tr>
+<td>腾讯工作区在 COS</td>
+<td>Registry 当前装配 CfsVolumeProvider</td>
+<td>使用 CFS 子路径承载工作区，旧 COS 注释不代表当前装配</td>
+</tr>
+</tbody></table>
+<p><strong>为什么要强调？</strong> 面试官问“Pod 调到另一个节点文件还在吗”，hostPath 和网络文件系统的答案完全不同。把它们统称为“持久卷”而不说明存储语义，会掩盖真正的设计约束。</p>
+<h2 id="2-核心抽象不是两个-SDK，而是三种身份"><a href="#2-核心抽象不是两个-SDK，而是三种身份" class="headerlink" title="2. 核心抽象不是两个 SDK，而是三种身份"></a>2. 核心抽象不是两个 SDK，而是三种身份</h2><p>以一个 Desktop 为例：</p>
+<table>
+<thead>
+<tr>
+<th>身份</th>
+<th>示例概念</th>
+<th>是否应随冷重建变化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>desktopId</td>
+<td>用户看到的稳定工作空间</td>
+<td>不变</td>
+</tr>
+<tr>
+<td>sandboxId</td>
+<td>当前云平台计算实例</td>
+<td>可以变</td>
+</tr>
+<tr>
+<td>volumeName</td>
+<td>工作区持久存储命名，通常 workspace-桌面ID</td>
+<td>尽量不变</td>
+</tr>
+</tbody></table>
+<p>数据模型位置：<code>packages/backend/prisma/schema.prisma:341</code>。</p>
+<p>冷恢复的本质是：<strong>为同一个业务 Desktop 更换计算实例，重新关联已有工作区。</strong> 这不是把一个正在运行的进程迁移到另一个云，更不是保证内存和连接继续存在。</p>
+<p>业务服务通常拿 desktopId；缓存解析出 <code>&#123; sandboxId, provider &#125;</code>；连接池按 provider 和 sandboxId 找执行连接；文件&#x2F;命令走统一接口。</p>
+<h2 id="3-阅读地图"><a href="#3-阅读地图" class="headerlink" title="3. 阅读地图"></a>3. 阅读地图</h2><table>
+<thead>
+<tr>
+<th>源码位置</th>
+<th>关注点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>packages/backend/src/sandbox/infrastructure/runtime/sandbox-provider.types.ts:22</code></td>
+<td>provider 归一化</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/infrastructure/runtime/sandbox-provider.registry.ts:22</code></td>
+<td>Registry 运行时查找</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/sandbox.module.ts:92</code></td>
+<td>两套能力如何装配</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/infrastructure/runtime/sandbox-runtime.provider.ts:67</code></td>
+<td>文件、命令、连接能力</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/infrastructure/runtime/sandbox-manager.provider.interface.ts:29</code></td>
+<td>暂停、恢复、销毁等管理能力</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/infrastructure/volume/volume-provider.interface.ts:18</code></td>
+<td>持久工作区能力</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/desktop/desktop.service.ts:583</code></td>
+<td>Desktop 创建时选择渠道</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/application/sandbox-lifecycle.service.ts:206</code></td>
+<td>创建步骤与失败补偿</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/application/sandbox-lifecycle.service.ts:443</code></td>
+<td>启动&#x2F;恢复的状态分支</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/application/sandbox-lifecycle.service.ts:655</code></td>
+<td>冷重建</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/sandbox/infrastructure/tencent/tencent-sandbox.adapters.ts:187</code></td>
+<td>命令返回语义适配</td>
+</tr>
+</tbody></table>
+<h2 id="4-Registry、Strategy、Adapter-分别解决什么"><a href="#4-Registry、Strategy、Adapter-分别解决什么" class="headerlink" title="4. Registry、Strategy、Adapter 分别解决什么"></a>4. Registry、Strategy、Adapter 分别解决什么</h2><p>不要只背“这里用了 Registry 模式”。这里三种思想同时存在：</p>
+<ul>
+<li><strong>Registry</strong>：按 provider 名字查出一组对象，解决“运行时去哪里拿实现”。</li>
+<li><strong>Strategy</strong>：runtime、manager、volume 有可替换实现，解决“同一个业务动作选择哪套行为”。</li>
+<li><strong>Adapter</strong>：腾讯 SDK 的返回值、错误模型、端点访问方式被转换成平台接口，解决“外部语义如何对齐”。</li>
+</ul>
+<p>Registry 本身不实现暂停、文件读写，也不负责自动抹平两家能力差异。</p>
+<h3 id="4-1-源码逐行注释：注册表查询"><a href="#4-1-源码逐行注释：注册表查询" class="headerlink" title="4.1 源码逐行注释：注册表查询"></a>4.1 源码逐行注释：注册表查询</h3><p>来源：<code>packages/backend/src/sandbox/infrastructure/runtime/sandbox-provider.registry.ts:38-52</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">private</span> <span class="hljs-title function_">bundle</span>(<span class="hljs-attr">provider</span>?: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>): <span class="hljs-title class_">SandboxProviderBundle</span> &#123; <span class="hljs-comment">// L38：输入可能来自数据库或旧调用方，允许缺省值。</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">bundles</span>[<span class="hljs-title function_">normalizeSandboxProvider</span>(provider)]; <span class="hljs-comment">// L39：先归一为受支持渠道，再从装配好的能力组查找。</span><br>&#125; <span class="hljs-comment">// L40：结束 bundle 查询；此处并不创建新的云实例。</span><br><span class="hljs-title function_">getRuntime</span>(<span class="hljs-attr">provider</span>?: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>): <span class="hljs-title class_">SandboxRuntimeProvider</span> &#123; <span class="hljs-comment">// L42：暴露计算连接、文件命令及端点相关能力。</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">bundle</span>(provider).<span class="hljs-property">runtime</span>; <span class="hljs-comment">// L43：返回该渠道的 Runtime 实现，而不是用全局默认替换所有 Desktop。</span><br>&#125; <span class="hljs-comment">// L44：结束 Runtime 查询。</span><br><span class="hljs-title function_">getManager</span>(<span class="hljs-attr">provider</span>?: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>): <span class="hljs-title class_">SandboxManagerProvider</span> &#123; <span class="hljs-comment">// L46：暴露平台实例的生命周期管理能力。</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">bundle</span>(provider).<span class="hljs-property">manager</span>; <span class="hljs-comment">// L47：暂停、恢复、销毁交给对应厂商实现。</span><br>&#125; <span class="hljs-comment">// L48：结束 Manager 查询。</span><br><span class="hljs-title function_">getVolume</span>(<span class="hljs-attr">provider</span>?: <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>): <span class="hljs-title class_">VolumeProvider</span> &#123; <span class="hljs-comment">// L50：暴露工作区存储管理能力。</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">bundle</span>(provider).<span class="hljs-property">volume</span>; <span class="hljs-comment">// L51：计算实例和工作区存储不必有完全相同的生命周期。</span><br>&#125; <span class="hljs-comment">// L52：结束 Volume 查询。</span><br></code></pre></td></tr></table></figure>
 
-`normalizeSandboxProvider` 当前只有精确值 tencent 走腾讯，其余值回退 opensandbox。它不是严格的非法值拒绝器；外部输入是否严格校验要看调用边界。
-
-### 4.2 源码逐行注释：装配决定了“当前用什么存储”
-
-来源：`packages/backend/src/sandbox/sandbox.module.ts:99-109`。
-
+<p><code>normalizeSandboxProvider</code> 当前只有精确值 tencent 走腾讯，其余值回退 opensandbox。它不是严格的非法值拒绝器；外部输入是否严格校验要看调用边界。</p>
+<h3 id="4-2-源码逐行注释：装配决定了“当前用什么存储”"><a href="#4-2-源码逐行注释：装配决定了“当前用什么存储”" class="headerlink" title="4.2 源码逐行注释：装配决定了“当前用什么存储”"></a>4.2 源码逐行注释：装配决定了“当前用什么存储”</h3><p>来源：<code>packages/backend/src/sandbox/sandbox.module.ts:99-109</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> <span class="hljs-attr">openSandboxVolume</span>: <span class="hljs-title class_">VolumeProvider</span> = <span class="hljs-comment">// L99：在应用装配时选择 OpenSandbox 对应的卷实现。</span><br>  process.<span class="hljs-property">env</span>.<span class="hljs-property">SANDBOX_NETWORK_MODE</span> === <span class="hljs-string">&#x27;kubernetes&#x27;</span> <span class="hljs-comment">// L100：区分 K8s 与本地部署环境，不是区分 Desktop 的厂商。</span><br>    ? <span class="hljs-keyword">new</span> <span class="hljs-title function_">K8sVolumeProvider</span>() <span class="hljs-comment">// L101：K8s 环境使用节点准备/清理等集群卷管理逻辑。</span><br>    : <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalVolumeProvider</span>(); <span class="hljs-comment">// L102：本地环境采用本地卷实现。</span><br><span class="hljs-keyword">const</span> <span class="hljs-attr">openSandboxBundle</span>: <span class="hljs-title class_">SandboxProviderBundle</span> = &#123; <span class="hljs-comment">// L104：将一套厂商能力聚合为注册表条目。</span><br>  <span class="hljs-attr">runtime</span>: openSandboxFactory <span class="hljs-keyword">as</span> <span class="hljs-built_in">unknown</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">SandboxRuntimeProvider</span>, <span class="hljs-comment">// L105：将已有 OpenSandbox 工厂接入窄接口，保留现有调用形状。</span><br>  <span class="hljs-attr">manager</span>: openSandboxManager <span class="hljs-keyword">as</span> <span class="hljs-built_in">unknown</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">SandboxManagerProvider</span>, <span class="hljs-comment">// L106：接入已有生命周期管理实现。</span><br>  <span class="hljs-attr">volume</span>: openSandboxVolume, <span class="hljs-comment">// L107：绑定刚才按部署环境选定的存储管理器。</span><br>  <span class="hljs-attr">available</span>: openSandboxAvailable, <span class="hljs-comment">// L108：让上层能在业务创建前检查配置是否完整。</span><br>&#125;; <span class="hljs-comment">// L109：结束 OpenSandbox 能力组。</span><br></code></pre></td></tr></table></figure>
 
-来源：同文件 `:111-132`。
-
+<p>来源：同文件 <code>:111-132</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> <span class="hljs-attr">tencentBundle</span>: <span class="hljs-title class_">SandboxProviderBundle</span> = tencentAvailable <span class="hljs-comment">// L111：腾讯配置是否可用决定使用真实实现还是报错占位实现。</span><br>  ? &#123; <span class="hljs-comment">// L112：已配置时构造腾讯能力组。</span><br>      <span class="hljs-attr">runtime</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">TencentSandboxConnectionFactory</span>( <span class="hljs-comment">// L113：腾讯 Runtime 工厂承担创建、连接和端点适配。</span><br>        <span class="hljs-literal">undefined</span>, <span class="hljs-comment">// L114：沿用构造函数该参数的默认行为。</span><br>        <span class="hljs-literal">undefined</span>, <span class="hljs-comment">// L115：沿用下一参数的默认行为，不在此注入替代值。</span><br>        <span class="hljs-title function_">getSharedCfsPrefixBootstrapper</span>(), <span class="hljs-comment">// L116：注入共享的 CFS 子路径准备器，减少重复准备。</span><br>      ), <span class="hljs-comment">// L117：结束 Runtime 工厂构造。</span><br>      <span class="hljs-attr">manager</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">TencentSandboxManagerProvider</span>(), <span class="hljs-comment">// L118：腾讯实例的 pause/connect/kill 等语义在这里适配。</span><br>      <span class="hljs-attr">volume</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">CfsVolumeProvider</span>(<span class="hljs-literal">undefined</span>, <span class="hljs-title function_">getSharedCfsPrefixBootstrapper</span>()), <span class="hljs-comment">// L119：明确实际装配的是 CFS，而不是旧 COS 实现。</span><br>      <span class="hljs-attr">available</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// L120：标记该渠道可被创建流程选用。</span><br>    &#125; <span class="hljs-comment">// L121：结束可用实现分支。</span><br>  : &#123; <span class="hljs-comment">// L122：未配置腾讯时不让单 OpenSandbox 部署启动失败。</span><br>      <span class="hljs-attr">runtime</span>: createUnavailableProviderProxy&lt;<span class="hljs-title class_">SandboxRuntimeProvider</span>&gt;(<span class="hljs-string">&#x27;tencent&#x27;</span>, <span class="hljs-string">&#x27;runtime&#x27;</span>), <span class="hljs-comment">// L123：误调用未配置 Runtime 时给出明确错误。</span><br>      <span class="hljs-attr">manager</span>: createUnavailableProviderProxy&lt;<span class="hljs-title class_">SandboxManagerProvider</span>&gt;(<span class="hljs-string">&#x27;tencent&#x27;</span>, <span class="hljs-string">&#x27;manager&#x27;</span>), <span class="hljs-comment">// L124：管理能力同样使用报错占位对象。</span><br>      <span class="hljs-attr">volume</span>: createUnavailableProviderProxy&lt;<span class="hljs-title class_">VolumeProvider</span>&gt;(<span class="hljs-string">&#x27;tencent&#x27;</span>, <span class="hljs-string">&#x27;volume&#x27;</span>), <span class="hljs-comment">// L125：卷能力也不能静默假成功。</span><br>      <span class="hljs-attr">available</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// L126：让业务层在调用前识别不可用渠道。</span><br>    &#125;; <span class="hljs-comment">// L127：结束腾讯能力组选择。</span><br><span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SandboxProviderRegistry</span>(&#123; <span class="hljs-comment">// L129：同时注册两套能力，不是启动时只能二选一。</span><br>  <span class="hljs-attr">opensandbox</span>: openSandboxBundle, <span class="hljs-comment">// L130：OpenSandbox 条目。</span><br>  <span class="hljs-attr">tencent</span>: tencentBundle, <span class="hljs-comment">// L131：腾讯条目，包括未配置占位状态。</span><br>&#125;); <span class="hljs-comment">// L132：返回供业务服务运行时查找的注册表。</span><br></code></pre></td></tr></table></figure>
 
-PTY 工厂还有惰性 resolver 回填，避免 Registry → ConnectionPool → PTY Factory → Registry 的构造期循环依赖。它是依赖装配问题，不是厂商网络请求问题。
-
-## 5. 为什么叫“窄接口”
-
-上层只依赖所需能力，而不把整个 SDK 类型散落到业务服务。接口不是对所有厂商 API 的一比一复制；但当前形状有意沿用 OpenSandbox，减少既有调用方迁移成本。
-
-### 5.1 源码逐行注释：文件接口
-
-来源：`packages/backend/src/sandbox/infrastructure/runtime/sandbox-runtime.provider.ts:67-75`。
-
+<p>PTY 工厂还有惰性 resolver 回填，避免 Registry → ConnectionPool → PTY Factory → Registry 的构造期循环依赖。它是依赖装配问题，不是厂商网络请求问题。</p>
+<h2 id="5-为什么叫“窄接口”"><a href="#5-为什么叫“窄接口”" class="headerlink" title="5. 为什么叫“窄接口”"></a>5. 为什么叫“窄接口”</h2><p>上层只依赖所需能力，而不把整个 SDK 类型散落到业务服务。接口不是对所有厂商 API 的一比一复制；但当前形状有意沿用 OpenSandbox，减少既有调用方迁移成本。</p>
+<h3 id="5-1-源码逐行注释：文件接口"><a href="#5-1-源码逐行注释：文件接口" class="headerlink" title="5.1 源码逐行注释：文件接口"></a>5.1 源码逐行注释：文件接口</h3><p>来源：<code>packages/backend/src/sandbox/infrastructure/runtime/sandbox-runtime.provider.ts:67-75</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">SandboxFiles</span> &#123; <span class="hljs-comment">// L67：上层依赖平台文件能力，而不是具体云 SDK 类型。</span><br>  <span class="hljs-title function_">readFile</span>(<span class="hljs-attr">path</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">string</span>&gt;; <span class="hljs-comment">// L68：文本读取，返回字符串供业务直接处理。</span><br>  <span class="hljs-title function_">readBytes</span>(<span class="hljs-attr">path</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">Uint8Array</span>&gt;; <span class="hljs-comment">// L69：二进制读取，避免强行使用文本编码破坏内容。</span><br>  <span class="hljs-title function_">writeFiles</span>(<span class="hljs-attr">entries</span>: <span class="hljs-title class_">WriteFileEntry</span>[]): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;; <span class="hljs-comment">// L70：批量写入路径与内容，适配器负责厂商调用。</span><br>  <span class="hljs-title function_">deleteFiles</span>(<span class="hljs-attr">paths</span>: <span class="hljs-built_in">string</span>[]): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;; <span class="hljs-comment">// L71：文件删除与目录删除分别表达。</span><br>  <span class="hljs-title function_">deleteDirectories</span>(<span class="hljs-attr">paths</span>: <span class="hljs-built_in">string</span>[]): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;; <span class="hljs-comment">// L72：目录删除能力，不应从文件删除语义猜测。</span><br>  <span class="hljs-title function_">createDirectories</span>(<span class="hljs-attr">entries</span>: <span class="hljs-title class_">CreateDirectoryEntry</span>[]): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;; <span class="hljs-comment">// L73：创建工具和用户任务所需目录。</span><br>  <span class="hljs-title function_">replaceContents</span>(<span class="hljs-attr">entries</span>: <span class="hljs-title class_">ReplaceContentEntry</span>[]): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;; <span class="hljs-comment">// L74：按旧内容/新内容表达替换，业务不关心底层实现方式。</span><br>&#125; <span class="hljs-comment">// L75：结束文件能力接口。</span><br></code></pre></td></tr></table></figure>
 
-### 5.2 源码逐行注释：命令接口
-
-来源：同文件 `:80-95`。
-
+<h3 id="5-2-源码逐行注释：命令接口"><a href="#5-2-源码逐行注释：命令接口" class="headerlink" title="5.2 源码逐行注释：命令接口"></a>5.2 源码逐行注释：命令接口</h3><p>来源：同文件 <code>:80-95</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">SandboxCommands</span> &#123; <span class="hljs-comment">// L80：将命令执行统一为普通结果与流式回调。</span><br>  <span class="hljs-title function_">run</span>( <span class="hljs-comment">// L81：执行单个命令，不声明跨调用的 shell 状态持久化。</span><br>    <span class="hljs-attr">cmd</span>: <span class="hljs-built_in">string</span>, <span class="hljs-comment">// L82：要执行的命令文本，其安全边界仍需上层和执行面负责。</span><br>    <span class="hljs-attr">opts</span>?: <span class="hljs-title class_">CommandRunOptions</span>, <span class="hljs-comment">// L83：超时、工作目录、环境变量、uid 等执行选项。</span><br>    <span class="hljs-attr">handlers</span>?: <span class="hljs-title class_">CommandStreamHandlers</span>, <span class="hljs-comment">// L84：可选 stdout/stderr 和完成回调。</span><br>  ): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">CommandResult</span>&gt;; <span class="hljs-comment">// L85：最终返回统一日志结构和可选退出码。</span><br>  <span class="hljs-title function_">createSession</span>(<span class="hljs-attr">opts</span>?: &#123; <span class="hljs-attr">workingDirectory</span>?: <span class="hljs-built_in">string</span> &#125;): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">string</span>&gt;; <span class="hljs-comment">// L86：创建命令会话句柄；实际语义是否持久 shell 取决于实现。</span><br>  <span class="hljs-title function_">runInSession</span>( <span class="hljs-comment">// L87：在指定句柄下执行命令。</span><br>    <span class="hljs-attr">sessionId</span>: <span class="hljs-built_in">string</span>, <span class="hljs-comment">// L88：命令 session，不是平台聊天或 Agent SDK Session。</span><br>    <span class="hljs-attr">cmd</span>: <span class="hljs-built_in">string</span>, <span class="hljs-comment">// L89：本次命令文本。</span><br>    <span class="hljs-attr">opts</span>?: <span class="hljs-title class_">CommandRunOptions</span>, <span class="hljs-comment">// L90：本次执行选项。</span><br>    <span class="hljs-attr">handlers</span>?: <span class="hljs-title class_">CommandStreamHandlers</span>, <span class="hljs-comment">// L91：本次流输出回调。</span><br>  ): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">CommandResult</span>&gt;; <span class="hljs-comment">// L92：返回统一命令结果。</span><br>  <span class="hljs-title function_">deleteSession</span>(<span class="hljs-attr">sessionId</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;; <span class="hljs-comment">// L93：释放命令会话资源或模拟状态。</span><br>  <span class="hljs-title function_">interrupt</span>(<span class="hljs-attr">sessionId</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt;; <span class="hljs-comment">// L94：请求中断，但要核对厂商是否真正支持。</span><br>&#125; <span class="hljs-comment">// L95：结束命令能力接口。</span><br></code></pre></td></tr></table></figure>
 
-### 5.3 Adapter 的工程含量在语义，而不是改名
-
-| 差异 | 适配方式 | 代价/限制 |
-|---|---|---|
-| 命令非零退出 | 腾讯 SDK 可能抛带 stdout/stderr/exitCode 的异常，适配成普通 CommandResult | 网络异常仍应抛出，不能全部吞掉 |
-| 端点访问 | 返回 URL 与 headers，而不只 URL | 业务客户端必须透传正确网关认证信息 |
-| 命令 session | 腾讯侧主要通过 cwd 模拟 | 不保证 export/cd 等 shell 内存状态跨命令保留 |
-| 指标 | 腾讯 ConnectedSandbox metrics 当前为空对象 | 接口存在不代表实际指标齐全 |
-| 创建规格 | 腾讯资源档位映射 templateId | 不是任意传 cpu/memory 就能生效 |
-| 节点管理 | OpenSandbox 有节点解析和钉定；腾讯没有这层能力 | 可选能力不能假装完全一致 |
-
-**面试答法：统一的是业务调用契约，尽量集中语义差异，不是证明所有云能力等价。**
-
-## 6. Desktop 如何决定 provider
-
-创建时：DesktopService 归一化 provider → 检查 available → 处理腾讯规格/审批 → 落库 → provisionContainer 从数据库读取 provider 和规格 → lifecycle 选择相应实现。
-
-已有 Desktop 执行命令时：desktopId → SandboxIdCache 查 `{sandboxId, provider}` → provider-aware 连接池 → Registry → ConnectedSandbox.files/commands。
-
-关联源码：
-
-- Desktop 创建：`packages/backend/src/desktop/desktop.service.ts:583-605`。
-- provision：同文件 `:1067-1154`。
-- 缓存：`packages/backend/src/sandbox/application/sandbox-id-cache.service.ts:84-117`。
-- 连接池：`packages/backend/src/sandbox/application/sandbox-connection-pool.service.ts:146`、`:520`。
-
-缓存冷重建后要失效。只改数据库、不失效多副本缓存，会让其他 worker 继续操作旧实例。这里既有 ID 缓存，也有每个进程自己的连接对象，不能把两者当成一个 Redis key。
-
-## 7. 存储：hostPath 与 CFS 真正区别在哪
-
-### 7.1 源码逐行注释：OpenSandbox 工作区挂载
-
-来源：`packages/backend/src/sandbox/infrastructure/opensandbox/sdk-connection.config.ts:193-201`。
-
+<h3 id="5-3-Adapter-的工程含量在语义，而不是改名"><a href="#5-3-Adapter-的工程含量在语义，而不是改名" class="headerlink" title="5.3 Adapter 的工程含量在语义，而不是改名"></a>5.3 Adapter 的工程含量在语义，而不是改名</h3><table>
+<thead>
+<tr>
+<th>差异</th>
+<th>适配方式</th>
+<th>代价&#x2F;限制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>命令非零退出</td>
+<td>腾讯 SDK 可能抛带 stdout&#x2F;stderr&#x2F;exitCode 的异常，适配成普通 CommandResult</td>
+<td>网络异常仍应抛出，不能全部吞掉</td>
+</tr>
+<tr>
+<td>端点访问</td>
+<td>返回 URL 与 headers，而不只 URL</td>
+<td>业务客户端必须透传正确网关认证信息</td>
+</tr>
+<tr>
+<td>命令 session</td>
+<td>腾讯侧主要通过 cwd 模拟</td>
+<td>不保证 export&#x2F;cd 等 shell 内存状态跨命令保留</td>
+</tr>
+<tr>
+<td>指标</td>
+<td>腾讯 ConnectedSandbox metrics 当前为空对象</td>
+<td>接口存在不代表实际指标齐全</td>
+</tr>
+<tr>
+<td>创建规格</td>
+<td>腾讯资源档位映射 templateId</td>
+<td>不是任意传 cpu&#x2F;memory 就能生效</td>
+</tr>
+<tr>
+<td>节点管理</td>
+<td>OpenSandbox 有节点解析和钉定；腾讯没有这层能力</td>
+<td>可选能力不能假装完全一致</td>
+</tr>
+</tbody></table>
+<p><strong>面试答法：统一的是业务调用契约，尽量集中语义差异，不是证明所有云能力等价。</strong></p>
+<h2 id="6-Desktop-如何决定-provider"><a href="#6-Desktop-如何决定-provider" class="headerlink" title="6. Desktop 如何决定 provider"></a>6. Desktop 如何决定 provider</h2><p>创建时：DesktopService 归一化 provider → 检查 available → 处理腾讯规格&#x2F;审批 → 落库 → provisionContainer 从数据库读取 provider 和规格 → lifecycle 选择相应实现。</p>
+<p>已有 Desktop 执行命令时：desktopId → SandboxIdCache 查 <code>&#123;sandboxId, provider&#125;</code> → provider-aware 连接池 → Registry → ConnectedSandbox.files&#x2F;commands。</p>
+<p>关联源码：</p>
+<ul>
+<li>Desktop 创建：<code>packages/backend/src/desktop/desktop.service.ts:583-605</code>。</li>
+<li>provision：同文件 <code>:1067-1154</code>。</li>
+<li>缓存：<code>packages/backend/src/sandbox/application/sandbox-id-cache.service.ts:84-117</code>。</li>
+<li>连接池：<code>packages/backend/src/sandbox/application/sandbox-connection-pool.service.ts:146</code>、<code>:520</code>。</li>
+</ul>
+<p>缓存冷重建后要失效。只改数据库、不失效多副本缓存，会让其他 worker 继续操作旧实例。这里既有 ID 缓存，也有每个进程自己的连接对象，不能把两者当成一个 Redis key。</p>
+<h2 id="7-存储：hostPath-与-CFS-真正区别在哪"><a href="#7-存储：hostPath-与-CFS-真正区别在哪" class="headerlink" title="7. 存储：hostPath 与 CFS 真正区别在哪"></a>7. 存储：hostPath 与 CFS 真正区别在哪</h2><h3 id="7-1-源码逐行注释：OpenSandbox-工作区挂载"><a href="#7-1-源码逐行注释：OpenSandbox-工作区挂载" class="headerlink" title="7.1 源码逐行注释：OpenSandbox 工作区挂载"></a>7.1 源码逐行注释：OpenSandbox 工作区挂载</h3><p>来源：<code>packages/backend/src/sandbox/infrastructure/opensandbox/sdk-connection.config.ts:193-201</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">buildVolume</span>(<span class="hljs-params"><span class="hljs-attr">volumeName</span>: <span class="hljs-built_in">string</span>, env = process.env</span>): <span class="hljs-title class_">Volume</span> &#123; <span class="hljs-comment">// L193：按稳定工作区名称构造挂载配置。</span><br>  <span class="hljs-keyword">const</span> mountPath = <span class="hljs-string">&#x27;/home/sandbox/workspace&#x27;</span>; <span class="hljs-comment">// L194：容器内统一路径，让上层工具不感知厂商差异。</span><br>  <span class="hljs-keyword">const</span> hostPrefix = env.<span class="hljs-property">SANDBOX_VOLUME_HOST_PREFIX</span>?.<span class="hljs-title function_">trim</span>() || <span class="hljs-string">&#x27;/data/opensandbox/local-path&#x27;</span>; <span class="hljs-comment">// L195：宿主机目录前缀来自配置，默认是节点本地路径。</span><br>  <span class="hljs-keyword">return</span> &#123; <span class="hljs-comment">// L196：返回给 OpenSandbox SDK 的卷声明。</span><br>    <span class="hljs-attr">name</span>: volumeName, <span class="hljs-comment">// L197：平台内的卷标识。</span><br>    <span class="hljs-attr">host</span>: &#123; <span class="hljs-attr">path</span>: <span class="hljs-string">`<span class="hljs-subst">$&#123;hostPrefix&#125;</span>/<span class="hljs-subst">$&#123;volumeName&#125;</span>`</span> &#125;, <span class="hljs-comment">// L198：决定性证据：挂宿主机路径，不是声明一个 PVC claim。</span><br>    mountPath, <span class="hljs-comment">// L199：映射到容器内工作区。</span><br>  &#125;; <span class="hljs-comment">// L200：结束卷声明。</span><br>&#125; <span class="hljs-comment">// L201：结束挂载配置函数。</span><br></code></pre></td></tr></table></figure>
 
-共享 Gradle 缓存另有 hostPath/PVC 选项，不要把它的 PVC 分支套到 workspace 上。
-
-K8sVolumeProvider 会通过 workspace-cleaner 准备目录/权限、清理目录，并能查询节点、钉定 BatchSandbox。上方旧注释写“未实现钉定”也应与当前实际方法对照；不能只读注释当最终事实。
-
-**关键限制：**相同路径在不同节点上可能是完全不同的数据。原实例 pause/resume 的节点钉定，不等于创建新实例时已经把旧节点约束传进去。
-
-### 7.2 腾讯 CFS 的子路径隔离
-
-腾讯模板定义 CFS StorageMount，实例通过 x-mounts metadata 选择 `subPath=volumeName`。Backend 用 bootstrap 沙箱准备子目录，再让业务实例挂载。
-
-关联源码：
-
-- `packages/backend/src/sandbox/infrastructure/tencent/tencent-connection.config.ts:292-337`。
-- `packages/backend/src/sandbox/infrastructure/tencent/cfs-prefix.bootstrapper.ts:30-145`。
-- `packages/backend/src/sandbox/infrastructure/volume/cfs-volume.provider.ts:12`。
-
-为什么选 CFS？Git 工作区需要接近 POSIX 的权限、目录和文件锁语义，不能只看到“云存储”就把对象存储等同于普通文件系统。
-
-CFS 当前 delete 实现并未真正执行工作区删除。因此“业务 Desktop 删除完成”和“所有存储数据已经物理清除”不能划等号。这是数据生命周期需要完善的地方。
-
-## 8. pause/resume：先原地恢复，再考虑重建
-
-### 8.1 源码逐行注释：腾讯 pause 的能力分支
-
-来源：`packages/backend/src/sandbox/infrastructure/tencent/tencent-sandbox-manager.provider.ts:115-138`。为避免引用过时 COS 文案，以下分成两个真实片段，省略 catch 内日志部分。
-
+<p>共享 Gradle 缓存另有 hostPath&#x2F;PVC 选项，不要把它的 PVC 分支套到 workspace 上。</p>
+<p>K8sVolumeProvider 会通过 workspace-cleaner 准备目录&#x2F;权限、清理目录，并能查询节点、钉定 BatchSandbox。上方旧注释写“未实现钉定”也应与当前实际方法对照；不能只读注释当最终事实。</p>
+<p><strong>关键限制：</strong>相同路径在不同节点上可能是完全不同的数据。原实例 pause&#x2F;resume 的节点钉定，不等于创建新实例时已经把旧节点约束传进去。</p>
+<h3 id="7-2-腾讯-CFS-的子路径隔离"><a href="#7-2-腾讯-CFS-的子路径隔离" class="headerlink" title="7.2 腾讯 CFS 的子路径隔离"></a>7.2 腾讯 CFS 的子路径隔离</h3><p>腾讯模板定义 CFS StorageMount，实例通过 x-mounts metadata 选择 <code>subPath=volumeName</code>。Backend 用 bootstrap 沙箱准备子目录，再让业务实例挂载。</p>
+<p>关联源码：</p>
+<ul>
+<li><code>packages/backend/src/sandbox/infrastructure/tencent/tencent-connection.config.ts:292-337</code>。</li>
+<li><code>packages/backend/src/sandbox/infrastructure/tencent/cfs-prefix.bootstrapper.ts:30-145</code>。</li>
+<li><code>packages/backend/src/sandbox/infrastructure/volume/cfs-volume.provider.ts:12</code>。</li>
+</ul>
+<p>为什么选 CFS？Git 工作区需要接近 POSIX 的权限、目录和文件锁语义，不能只看到“云存储”就把对象存储等同于普通文件系统。</p>
+<p>CFS 当前 delete 实现并未真正执行工作区删除。因此“业务 Desktop 删除完成”和“所有存储数据已经物理清除”不能划等号。这是数据生命周期需要完善的地方。</p>
+<h2 id="8-pause-resume：先原地恢复，再考虑重建"><a href="#8-pause-resume：先原地恢复，再考虑重建" class="headerlink" title="8. pause&#x2F;resume：先原地恢复，再考虑重建"></a>8. pause&#x2F;resume：先原地恢复，再考虑重建</h2><h3 id="8-1-源码逐行注释：腾讯-pause-的能力分支"><a href="#8-1-源码逐行注释：腾讯-pause-的能力分支" class="headerlink" title="8.1 源码逐行注释：腾讯 pause 的能力分支"></a>8.1 源码逐行注释：腾讯 pause 的能力分支</h3><p>来源：<code>packages/backend/src/sandbox/infrastructure/tencent/tencent-sandbox-manager.provider.ts:115-138</code>。为避免引用过时 COS 文案，以下分成两个真实片段，省略 catch 内日志部分。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">async</span> <span class="hljs-title function_">pauseSandbox</span>(<span class="hljs-attr">sandboxId</span>: <span class="hljs-built_in">string</span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; &#123; <span class="hljs-comment">// L115：对当前计算实例发起暂停请求。</span><br>  <span class="hljs-keyword">const</span> sdk = <span class="hljs-keyword">await</span> <span class="hljs-title function_">loadE2bSdk</span>(); <span class="hljs-comment">// L117：加载腾讯 AGS 兼容的 E2B SDK。</span><br>  <span class="hljs-keyword">const</span> <span class="hljs-title class_">Sandbox</span> = sdk.<span class="hljs-property">Sandbox</span>; <span class="hljs-comment">// L118：取得平台实例入口。</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-title class_">Sandbox</span>.<span class="hljs-property">pause</span> === <span class="hljs-string">&#x27;function&#x27;</span>) &#123; <span class="hljs-comment">// L120：先检查 SDK 是否提供 pause 能力。</span><br>    <span class="hljs-keyword">const</span> keepMemory = <span class="hljs-variable language_">this</span>.<span class="hljs-property">pauseMode</span> === <span class="hljs-string">&#x27;platform&#x27;</span>; <span class="hljs-comment">// L122：platform 模式请求保留内存；其他模式不作相同保证。</span><br>    <span class="hljs-keyword">try</span> &#123; <span class="hljs-comment">// L123：尝试平台暂停。</span><br>      <span class="hljs-keyword">await</span> <span class="hljs-title class_">Sandbox</span>.<span class="hljs-title function_">pause</span>(sandboxId, &#123; ...<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">e2bApiOpts</span>(), keepMemory &#125;); <span class="hljs-comment">// L124：发送平台认证配置及暂停语义参数。</span><br>      <span class="hljs-keyword">return</span>; <span class="hljs-comment">// L125：暂停成功就结束，不再 kill 实例。</span><br>    &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-attr">err</span>: <span class="hljs-built_in">any</span>) &#123; <span class="hljs-comment">// L126：此处捕获 pause 错误并记录降级日志；后续日志与括号见原文件。</span><br></code></pre></td></tr></table></figure>
 
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">killSandbox</span>(sandboxId); <span class="hljs-comment">// L137：pause 不可用或失败后降级终止计算实例；持久工作区由独立存储生命周期决定。</span><br></code></pre></td></tr></table></figure>
 
-此处 catch 范围包含所有 pause 错误，不只是平台明确“不支持”。报告边界时应说实际行为，而不是把注释解释成严格错误分类。
-
-resume 中 platform 使用 Sandbox.connect 唤醒 paused 实例；遇到明确不存在则抛 ColdResumeRequiredError，由 lifecycle 接管重建。不能用“404 一律删除 Desktop”处理，因为腾讯还可能以特殊 404 文案表达 paused 状态。
-
-### 8.2 业务状态与云状态
-
-常见归一映射：Creating→creating，Running→running，Pausing→stopping，Paused→stopped，Resuming→starting，Deleting→deleting，Deleted→deleted。Terminated 或特定容器退出失败可以映射为停止后可恢复。
-
-startRuntime 会区分：
-
-- 已 Running：不重复 resume。
-- Resuming：等待完成。
-- Paused：resume 后等 Running。
-- Pausing：先等待停止，再恢复。
-- Terminated/特定已退出状态：尝试冷重建。
-- 真正 missing：结合 provider、业务状态和冷恢复配置判断，不是一律重建。
-
-stopRuntime 的迟到回调不能把 deleting 改回 stopped，因此有条件状态更新。这是生命周期并发控制，与 SDK API 参数适配是两类问题。
-
-## 9. Cold Resume 完整拆解
-
-### 9.1 先尝试领取重建权
-
-来源：`packages/backend/src/sandbox/application/sandbox-lifecycle.service.ts:669-676`。
-
+<p>此处 catch 范围包含所有 pause 错误，不只是平台明确“不支持”。报告边界时应说实际行为，而不是把注释解释成严格错误分类。</p>
+<p>resume 中 platform 使用 Sandbox.connect 唤醒 paused 实例；遇到明确不存在则抛 ColdResumeRequiredError，由 lifecycle 接管重建。不能用“404 一律删除 Desktop”处理，因为腾讯还可能以特殊 404 文案表达 paused 状态。</p>
+<h3 id="8-2-业务状态与云状态"><a href="#8-2-业务状态与云状态" class="headerlink" title="8.2 业务状态与云状态"></a>8.2 业务状态与云状态</h3><p>常见归一映射：Creating→creating，Running→running，Pausing→stopping，Paused→stopped，Resuming→starting，Deleting→deleting，Deleted→deleted。Terminated 或特定容器退出失败可以映射为停止后可恢复。</p>
+<p>startRuntime 会区分：</p>
+<ul>
+<li>已 Running：不重复 resume。</li>
+<li>Resuming：等待完成。</li>
+<li>Paused：resume 后等 Running。</li>
+<li>Pausing：先等待停止，再恢复。</li>
+<li>Terminated&#x2F;特定已退出状态：尝试冷重建。</li>
+<li>真正 missing：结合 provider、业务状态和冷恢复配置判断，不是一律重建。</li>
+</ul>
+<p>stopRuntime 的迟到回调不能把 deleting 改回 stopped，因此有条件状态更新。这是生命周期并发控制，与 SDK API 参数适配是两类问题。</p>
+<h2 id="9-Cold-Resume-完整拆解"><a href="#9-Cold-Resume-完整拆解" class="headerlink" title="9. Cold Resume 完整拆解"></a>9. Cold Resume 完整拆解</h2><h3 id="9-1-先尝试领取重建权"><a href="#9-1-先尝试领取重建权" class="headerlink" title="9.1 先尝试领取重建权"></a>9.1 先尝试领取重建权</h3><p>来源：<code>packages/backend/src/sandbox/application/sandbox-lifecycle.service.ts:669-676</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> claimed = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">prisma</span>.<span class="hljs-property">desktop</span>.<span class="hljs-title function_">updateMany</span>(&#123; <span class="hljs-comment">// L669：用条件更新尝试取得此 Desktop 的重建执行权。</span><br>  <span class="hljs-attr">where</span>: &#123; <span class="hljs-comment">// L670：匹配调用时观察到的资源状态。</span><br>    <span class="hljs-attr">id</span>: desktop.<span class="hljs-property">id</span>, <span class="hljs-comment">// L671：限定具体业务 Desktop。</span><br>    <span class="hljs-attr">sandboxId</span>: desktop.<span class="hljs-property">sandboxId</span>, <span class="hljs-comment">// L672：防止旧实例的请求覆盖已换成新实例的 Desktop。</span><br>    <span class="hljs-attr">status</span>: desktop.<span class="hljs-property">status</span> ?? &#123; <span class="hljs-attr">notIn</span>: [<span class="hljs-string">&#x27;deleting&#x27;</span>, <span class="hljs-string">&#x27;deleted&#x27;</span>] &#125;, <span class="hljs-comment">// L673：有状态时比较原状态，否则至少排除删除状态。</span><br>  &#125;, <span class="hljs-comment">// L674：结束条件。</span><br>  <span class="hljs-attr">data</span>: &#123; <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;starting&#x27;</span> &#125;, <span class="hljs-comment">// L675：进入恢复中状态，其他路径可以观察到。</span><br>&#125;); <span class="hljs-comment">// L676：返回命中数量，由后续 claimed.count 判断是否继续。</span><br></code></pre></td></tr></table></figure>
 
-**不要直接背原注释中的“绝不能再次创建实例”。** 如果输入 status 已经是 starting，条件不一定构成一次性转换；数据库更新和云端创建也不是同一个事务。这是实现防重建竞争的机制，不是所有故障下的 exactly-once 证明。
-
-### 9.2 复用工作区、更换计算实例
-
-来源：同文件 `:703-720`，省略原有旧 COS 注释。
-
+<p><strong>不要直接背原注释中的“绝不能再次创建实例”。</strong> 如果输入 status 已经是 starting，条件不一定构成一次性转换；数据库更新和云端创建也不是同一个事务。这是实现防重建竞争的机制，不是所有故障下的 exactly-once 证明。</p>
+<h3 id="9-2-复用工作区、更换计算实例"><a href="#9-2-复用工作区、更换计算实例" class="headerlink" title="9.2 复用工作区、更换计算实例"></a>9.2 复用工作区、更换计算实例</h3><p>来源：同文件 <code>:703-720</code>，省略原有旧 COS 注释。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> envOverrides = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">resolveProjectEnvOverrides</span>(desktop.<span class="hljs-property">id</span>); <span class="hljs-comment">// L703：新实例不会继承旧进程环境，需重新获取项目环境变量。</span><br><span class="hljs-keyword">const</span> &#123; <span class="hljs-attr">sandboxId</span>: newSandboxId, nodeName &#125; = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">provisionNewRuntime</span>( <span class="hljs-comment">// L706：复用创建流程，得到新的计算实例及节点信息。</span><br>  metadata, <span class="hljs-comment">// L707：带业务 Desktop 关联元信息。</span><br>  volumeName, <span class="hljs-comment">// L708：复用旧工作区名称，这是文件延续的关键输入。</span><br>  envOverrides, <span class="hljs-comment">// L709：注入当前项目的环境配置。</span><br>  provider, <span class="hljs-comment">// L710：仍然使用 Desktop 对应渠道，不自动跨云迁移。</span><br>  &#123; templateId &#125;, <span class="hljs-comment">// L711：腾讯按保存规格解析模板，避免重建时规格悄悄变化。</span><br>); <span class="hljs-comment">// L712：等待创建流程返回。</span><br><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">prisma</span>.<span class="hljs-property">desktop</span>.<span class="hljs-title function_">update</span>(&#123; <span class="hljs-comment">// L714：将稳定业务对象重新绑定到新计算实例。</span><br>  <span class="hljs-attr">where</span>: &#123; <span class="hljs-attr">id</span>: desktop.<span class="hljs-property">id</span> &#125;, <span class="hljs-comment">// L715：更新同一个 Desktop，不创建另一个用户工作空间。</span><br>  <span class="hljs-attr">data</span>: &#123; <span class="hljs-comment">// L716：写入运行时身份。</span><br>    <span class="hljs-attr">sandboxId</span>: newSandboxId, <span class="hljs-comment">// L717：替换旧实例 ID。</span><br>    ...(nodeName ? &#123; nodeName &#125; : &#123;&#125;), <span class="hljs-comment">// L718：渠道能返回节点时保存节点信息。</span><br>  &#125;, <span class="hljs-comment">// L719：结束更新数据。</span><br>&#125;); <span class="hljs-comment">// L720：完成业务身份到新实例的映射。</span><br></code></pre></td></tr></table></figure>
 
-之后还有：腾讯实例 TTL 跟踪 → 失效旧 ID/连接缓存 → 尽力清理旧实例 → finalizeRunning → 更新配置与活动状态。
-
-### 9.3 能保留什么
-
-| 状态 | 冷恢复是否保留 | 原因 |
-|---|---|---|
-| CFS 挂载里的工作区文件 | 通常可以 | 存储独立于计算实例 |
-| 工作区中的 Git 对象 | 取决于是否在保留挂载中 | 属于文件状态 |
-| 正在运行的 SDK/命令 | 不保留 | 进程已经终止 |
-| Shell export 等内存状态 | 不保留 | 不是文件系统内容 |
-| 原 HTTP/SSE 连接 | 不保留 | 连接绑定旧进程/端点 |
-| Backend 数据库聊天记录 | 不受实例重建直接影响 | 控制面持久化独立存在 |
-| hostPath 跨节点数据 | 不能仅凭相同 volumeName 保证 | 不同节点本地磁盘不同 |
-
-## 10. 创建失败补偿与恢复失败补偿不能盲目复用
-
-正常新建失败：清理刚创建的实例和卷，看起来合理。
-
-恢复旧工作区失败：如果复用同一 provisioning 方法，把幂等 volume.create 也视为“本次创建的新卷”，后续失败补偿可能误处理旧数据。当前源码的统一流程存在这类语义边界，需要区分**新建资源所有权**与**复用既有资源**。
-
-相关位置：`sandbox-lifecycle.service.ts:233-236`、`:297-304`、`:705-712`。
-
-面试可将其作为审慎的改进方向：明确资源是否由本次流程创建，补偿仅回收本次拥有的资源；不要把“所有异常都 delete”称为完善回滚。本文没有执行破坏性验证，也没有修复这些路径。
-
-## 11. 抽象的裂缝，要坦诚而不是回避
-
-1. lifecycle 仍有腾讯专属错误与规格解析分支，不是全项目零 if-else。
-2. 命令 session、metrics、interrupt 等能力并不完全等价。
-3. hostPath 节点约束与 CFS 挂载语义无法用一个 volumeName 自动解决。
-4. CFS 实际清理语义仍不完整。
-5. 仍有旧默认 provider 注入路径，不能说所有调用方都已完全迁移。
-6. 模板资源档位、平台续期等能力仍带明显厂商特征。
-
-抽象价值是**将差异集中在较少且可解释的地方**，不是让差异消失。
-
-## 12. 面试表达与追问
-
-### 一分钟版
-
-> 我们将 Desktop 业务身份、sandbox 计算实例和 workspace 存储身份分开。Backend 同时装配 OpenSandbox 与腾讯 AGS，根据 Desktop.sandboxProvider 通过 Registry 选择 runtime、manager、volume 和 PTY；文件、命令和端点使用统一窄接口。适配的难点不是替换 SDK 名称，而是命令异常、端点鉴权、模板规格、暂停能力与存储语义。无法原地恢复时重新创建计算实例并挂回原工作区，同时刷新跨副本缓存；代价是内存态丢失。当前 OpenSandbox 用 hostPath，腾讯用 CFS，恢复保障不能一概而论。
-
-### 问：为什么不写两个独立业务服务？
-
-会让会话、文件、工具、恢复逻辑重复，日后修复容易漂移。通过共同接口复用通用业务，厂商适配集中维护；但统一接口也需要清楚表达可选能力或降级，不应制造虚假一致性。
-
-### 问：为什么不自动从腾讯切到 OpenSandbox？
-
-provider 选择与存储位置、模板配置、网络端点、配额和数据迁移相关。当前冷恢复仍在原渠道重新创建，不是自动跨云故障切换。跨云需要单独的数据复制和一致性方案。
-
-### 问：资源规格为什么映射模板？
-
-腾讯侧资源规格固化在预建模板中，简单传 CPU/内存参数可能不生效。因此业务规格需要映射到有效模板，缺失要明确报错，而不是静默退回默认规格。
-
-### 问：抽象有没有过度设计？
-
-已有两个真实渠道和大量通用调用方，存在明确复用需求；接口形状沿用既有 SDK，优先控制改造成本。未来是否再拆能力，要看新的真实需求，而不是先做一个万能云框架。
-
-## 13. 自测与继续阅读
-
-- 用不超过 30 秒解释三个身份为什么分开。
-- 不看表格说出两家接口形状一样但语义不同的三个例子。
-- 解释为什么 hostPath 冷重建不能只看 volumeName。
-- 说明 Registry 和 Adapter 谁负责厂商差异。
-- 说明数据删除、实例删除、暂停分别影响什么。
-- 能否把“设计已实现”与“改进建议”分开表达？
-
-结合 [01｜主链路](01-Agent平台主链路.md) 看 Provider 如何服务一次聊天，再读 [03｜Runtime](03-沙箱内Agent-Runtime.md) 了解实例内的执行。
-
-
+<p>之后还有：腾讯实例 TTL 跟踪 → 失效旧 ID&#x2F;连接缓存 → 尽力清理旧实例 → finalizeRunning → 更新配置与活动状态。</p>
+<h3 id="9-3-能保留什么"><a href="#9-3-能保留什么" class="headerlink" title="9.3 能保留什么"></a>9.3 能保留什么</h3><table>
+<thead>
+<tr>
+<th>状态</th>
+<th>冷恢复是否保留</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CFS 挂载里的工作区文件</td>
+<td>通常可以</td>
+<td>存储独立于计算实例</td>
+</tr>
+<tr>
+<td>工作区中的 Git 对象</td>
+<td>取决于是否在保留挂载中</td>
+<td>属于文件状态</td>
+</tr>
+<tr>
+<td>正在运行的 SDK&#x2F;命令</td>
+<td>不保留</td>
+<td>进程已经终止</td>
+</tr>
+<tr>
+<td>Shell export 等内存状态</td>
+<td>不保留</td>
+<td>不是文件系统内容</td>
+</tr>
+<tr>
+<td>原 HTTP&#x2F;SSE 连接</td>
+<td>不保留</td>
+<td>连接绑定旧进程&#x2F;端点</td>
+</tr>
+<tr>
+<td>Backend 数据库聊天记录</td>
+<td>不受实例重建直接影响</td>
+<td>控制面持久化独立存在</td>
+</tr>
+<tr>
+<td>hostPath 跨节点数据</td>
+<td>不能仅凭相同 volumeName 保证</td>
+<td>不同节点本地磁盘不同</td>
+</tr>
+</tbody></table>
+<h2 id="10-创建失败补偿与恢复失败补偿不能盲目复用"><a href="#10-创建失败补偿与恢复失败补偿不能盲目复用" class="headerlink" title="10. 创建失败补偿与恢复失败补偿不能盲目复用"></a>10. 创建失败补偿与恢复失败补偿不能盲目复用</h2><p>正常新建失败：清理刚创建的实例和卷，看起来合理。</p>
+<p>恢复旧工作区失败：如果复用同一 provisioning 方法，把幂等 volume.create 也视为“本次创建的新卷”，后续失败补偿可能误处理旧数据。当前源码的统一流程存在这类语义边界，需要区分<strong>新建资源所有权</strong>与<strong>复用既有资源</strong>。</p>
+<p>相关位置：<code>sandbox-lifecycle.service.ts:233-236</code>、<code>:297-304</code>、<code>:705-712</code>。</p>
+<p>面试可将其作为审慎的改进方向：明确资源是否由本次流程创建，补偿仅回收本次拥有的资源；不要把“所有异常都 delete”称为完善回滚。本文没有执行破坏性验证，也没有修复这些路径。</p>
+<h2 id="11-抽象的裂缝，要坦诚而不是回避"><a href="#11-抽象的裂缝，要坦诚而不是回避" class="headerlink" title="11. 抽象的裂缝，要坦诚而不是回避"></a>11. 抽象的裂缝，要坦诚而不是回避</h2><ol>
+<li>lifecycle 仍有腾讯专属错误与规格解析分支，不是全项目零 if-else。</li>
+<li>命令 session、metrics、interrupt 等能力并不完全等价。</li>
+<li>hostPath 节点约束与 CFS 挂载语义无法用一个 volumeName 自动解决。</li>
+<li>CFS 实际清理语义仍不完整。</li>
+<li>仍有旧默认 provider 注入路径，不能说所有调用方都已完全迁移。</li>
+<li>模板资源档位、平台续期等能力仍带明显厂商特征。</li>
+</ol>
+<p>抽象价值是<strong>将差异集中在较少且可解释的地方</strong>，不是让差异消失。</p>
+<h2 id="12-面试表达与追问"><a href="#12-面试表达与追问" class="headerlink" title="12. 面试表达与追问"></a>12. 面试表达与追问</h2><h3 id="一分钟版"><a href="#一分钟版" class="headerlink" title="一分钟版"></a>一分钟版</h3><blockquote>
+<p>我们将 Desktop 业务身份、sandbox 计算实例和 workspace 存储身份分开。Backend 同时装配 OpenSandbox 与腾讯 AGS，根据 Desktop.sandboxProvider 通过 Registry 选择 runtime、manager、volume 和 PTY；文件、命令和端点使用统一窄接口。适配的难点不是替换 SDK 名称，而是命令异常、端点鉴权、模板规格、暂停能力与存储语义。无法原地恢复时重新创建计算实例并挂回原工作区，同时刷新跨副本缓存；代价是内存态丢失。当前 OpenSandbox 用 hostPath，腾讯用 CFS，恢复保障不能一概而论。</p>
+</blockquote>
+<h3 id="问：为什么不写两个独立业务服务？"><a href="#问：为什么不写两个独立业务服务？" class="headerlink" title="问：为什么不写两个独立业务服务？"></a>问：为什么不写两个独立业务服务？</h3><p>会让会话、文件、工具、恢复逻辑重复，日后修复容易漂移。通过共同接口复用通用业务，厂商适配集中维护；但统一接口也需要清楚表达可选能力或降级，不应制造虚假一致性。</p>
+<h3 id="问：为什么不自动从腾讯切到-OpenSandbox？"><a href="#问：为什么不自动从腾讯切到-OpenSandbox？" class="headerlink" title="问：为什么不自动从腾讯切到 OpenSandbox？"></a>问：为什么不自动从腾讯切到 OpenSandbox？</h3><p>provider 选择与存储位置、模板配置、网络端点、配额和数据迁移相关。当前冷恢复仍在原渠道重新创建，不是自动跨云故障切换。跨云需要单独的数据复制和一致性方案。</p>
+<h3 id="问：资源规格为什么映射模板？"><a href="#问：资源规格为什么映射模板？" class="headerlink" title="问：资源规格为什么映射模板？"></a>问：资源规格为什么映射模板？</h3><p>腾讯侧资源规格固化在预建模板中，简单传 CPU&#x2F;内存参数可能不生效。因此业务规格需要映射到有效模板，缺失要明确报错，而不是静默退回默认规格。</p>
+<h3 id="问：抽象有没有过度设计？"><a href="#问：抽象有没有过度设计？" class="headerlink" title="问：抽象有没有过度设计？"></a>问：抽象有没有过度设计？</h3><p>已有两个真实渠道和大量通用调用方，存在明确复用需求；接口形状沿用既有 SDK，优先控制改造成本。未来是否再拆能力，要看新的真实需求，而不是先做一个万能云框架。</p>
+<h2 id="13-自测与继续阅读"><a href="#13-自测与继续阅读" class="headerlink" title="13. 自测与继续阅读"></a>13. 自测与继续阅读</h2><ul>
+<li>用不超过 30 秒解释三个身份为什么分开。</li>
+<li>不看表格说出两家接口形状一样但语义不同的三个例子。</li>
+<li>解释为什么 hostPath 冷重建不能只看 volumeName。</li>
+<li>说明 Registry 和 Adapter 谁负责厂商差异。</li>
+<li>说明数据删除、实例删除、暂停分别影响什么。</li>
+<li>能否把“设计已实现”与“改进建议”分开表达？</li>
+</ul>
+<p>结合 <a href="01-Agent%E5%B9%B3%E5%8F%B0%E4%B8%BB%E9%93%BE%E8%B7%AF.md">01｜主链路</a> 看 Provider 如何服务一次聊天，再读 <a href="03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime.md">03｜Runtime</a> 了解实例内的执行。</p>
 
                 
               </div>

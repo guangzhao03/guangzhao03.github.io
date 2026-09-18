@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day4  大模型应用开发  **大模型应用**是基于大模型的推理、分析、生成能力，**结合传统编程**能力，开发出的各种应用。  传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。  目前大模型应用开发主要分为四种：  1、纯prompt回答  2、agent+function calling  3、fine-tuning  4、Rag  必须写在properties里面  #">
+    <meta name="description" content="day4大模型应用开发 大模型应用是基于大模型的推理、分析、生成能力，结合传统编程能力，开发出的各种应用。 传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。 目前大模型应用开发主要分为四种： 1、纯prompt回答 2、agent+function calling 3、fine-tuning 4、Rag &lt;spring-ai.version&gt;必须写在properties里">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day4">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/04/21/2026-04-21-Java-AIGC-day4/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day4  大模型应用开发  **大模型应用**是基于大模型的推理、分析、生成能力，**结合传统编程**能力，开发出的各种应用。  传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。  目前大模型应用开发主要分为四种：  1、纯prompt回答  2、agent+function calling  3、fine-tuning  4、Rag  必须写在properties里面  #">
+<meta property="og:description" content="day4大模型应用开发 大模型应用是基于大模型的推理、分析、生成能力，结合传统编程能力，开发出的各种应用。 传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。 目前大模型应用开发主要分为四种： 1、纯prompt回答 2、agent+function calling 3、fine-tuning 4、Rag &lt;spring-ai.version&gt;必须写在properties里">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-04-21T01:46:51.000Z">
 <meta property="article:modified_time" content="2026-04-21T01:46:51.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.4k 字
+          14k 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          62 分钟
+          118 分钟
         
       </span>
     
@@ -382,460 +382,292 @@
             
               <div class="markdown-body">
                 
-                
-# day4
-
-大模型应用开发
-
-**大模型应用**是基于大模型的推理、分析、生成能力，**结合传统编程**能力，开发出的各种应用。
-
-传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。
-
-目前大模型应用开发主要分为四种：
-
-1、纯prompt回答
-
-2、agent+function calling
-
-3、fine-tuning
-
-4、Rag
-
-<spring-ai.version>必须写在properties里面
-
-## SpringAI入门
-
-SpringAI完全适配了SpringBoot的自动装配功能，而且给不同的大模型提供了不同的starter
-
-我们可以根据自己选择的平台来选择引入不同的依赖。这里我们先以**Ollama**为例。
-
-首先，在项目pom.xml中添加spring-ai的版本信息：
-
+                <h1 id="day4"><a href="#day4" class="headerlink" title="day4"></a>day4</h1><p>大模型应用开发</p>
+<p><strong>大模型应用</strong>是基于大模型的推理、分析、生成能力，<strong>结合传统编程</strong>能力，开发出的各种应用。</p>
+<p>传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。</p>
+<p>目前大模型应用开发主要分为四种：</p>
+<p>1、纯prompt回答</p>
+<p>2、agent+function calling</p>
+<p>3、fine-tuning</p>
+<p>4、Rag</p>
+<p>&lt;spring-ai.version&gt;必须写在properties里面</p>
+<h2 id="SpringAI入门"><a href="#SpringAI入门" class="headerlink" title="SpringAI入门"></a>SpringAI入门</h2><p>SpringAI完全适配了SpringBoot的自动装配功能，而且给不同的大模型提供了不同的starter</p>
+<p>我们可以根据自己选择的平台来选择引入不同的依赖。这里我们先以<strong>Ollama</strong>为例。</p>
+<p>首先，在项目pom.xml中添加spring-ai的版本信息：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">spring-ai.version</span>&gt;</span>1.0.0-M6<span class="hljs-tag">&lt;/<span class="hljs-name">spring-ai.version</span>&gt;</span><br>必须在<span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>里面<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br>然后添加依赖管理<br><span class="hljs-tag">&lt;<span class="hljs-name">dependencyManagement</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.ai<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-ai-bom<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring-ai.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencyManagement</span>&gt;</span><br>最后，引入spring-ai-ollama的依赖：<br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.ai<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-ai-ollama-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-引入依赖之后要配置模型信息，因为我们一般都是yml文件，所以要把.properties改成yml再修改
-
+<p>引入依赖之后要配置模型信息，因为我们一般都是yml文件，所以要把.properties改成yml再修改</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">ai-demo</span><br>  <span class="hljs-attr">ai:</span><br>    <span class="hljs-attr">ollama:</span><br>      <span class="hljs-attr">base-url:</span> <span class="hljs-string">http://localhost:11434</span> <span class="hljs-comment"># ollama服务地址， 这就是默认值</span><br>      <span class="hljs-attr">chat:</span><br>        <span class="hljs-attr">model:</span> <span class="hljs-string">deepseek-r1:7b</span> <span class="hljs-comment"># 模型名称</span><br>        <span class="hljs-attr">options:</span><br>          <span class="hljs-attr">temperature:</span> <span class="hljs-number">0.8</span> <span class="hljs-comment"># 模型温度，影响模型生成结果的随机性，越小越稳定</span><br></code></pre></td></tr></table></figure>
 
-### ChatClient
-
-ChatClient中封装了与AI大模型对话的各种API，同时支持同步式或响应式交互。
-
-不过，在使用之前，首先我们需要声明一个ChatClient。
-
-在com.itheima.ai.config包下新建一个CommonConfiguration类：
-
+<h3 id="ChatClient"><a href="#ChatClient" class="headerlink" title="ChatClient"></a>ChatClient</h3><p>ChatClient中封装了与AI大模型对话的各种API，同时支持同步式或响应式交互。</p>
+<p>不过，在使用之前，首先我们需要声明一个ChatClient。</p>
+<p>在com.itheima.ai.config包下新建一个CommonConfiguration类：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.chatrobot.config;<br><br><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.ChatClient;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.model.ChatModel; <span class="hljs-comment">// 引入通用的 ChatModel 接口</span><br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CommonConfiguration</span> &#123;<br><br>    <span class="hljs-comment">// 推荐做法：直接注入通用的 ChatModel 接口。</span><br>    <span class="hljs-comment">// Spring AI 会自动将你 yml 中配置的 deepseek (OpenAI 协议) 模型实现类注入进来</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">ChatClient</span> <span class="hljs-title function_">chatClient</span><span class="hljs-params">(ChatModel chatModel)</span> &#123;<br>        <span class="hljs-keyword">return</span> ChatClient.builder(chatModel)<br>                <span class="hljs-comment">// 使用注入的 chatModel 创建 builder</span><br>                <span class="hljs-comment">//.defaultAdvisors(new SimpleLoggerAdvisor()) // 可选：你可以随时加回日志打印功能</span><br>                .build(); <span class="hljs-comment">// 构建 ChatClient 实例</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-.bulider是建造者模式，这里我们回忆一下建造者模式
+<p>.bulider是建造者模式，这里我们回忆一下建造者模式</p>
+<p>建造者模式是一种<strong>创建型设计模式</strong>。它的核心思想是：<strong>将一个复杂对象的构建过程与它的表示分离，使得同样的构建过程可以创建不同的表示。</strong></p>
+<p>通俗来说，如果你要买一个汉堡套餐，你不是直接对服务员说“给我一个包含两片面包、一块牛肉、一片生菜、一点沙拉酱的汉堡，外加一杯中杯可乐和一份小薯条”，而是通过一个“套餐搭配器（Builder）”，一步步地选择：</p>
+<ol>
+<li>选汉堡肉饼 -&gt; 2. 选配菜 -&gt; 3. 选饮料 -&gt; 4. 选小食 -&gt; 5. 最后点击“完成订单（Build）”。</li>
+</ol>
+<p>定义好ChatClient接着我们要进行controller实验</p>
+<h4 id="同步调用"><a href="#同步调用" class="headerlink" title="同步调用"></a>同步调用</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.chatrobot.controller;<br><br><span class="hljs-keyword">import</span> lombok.RequiredArgsConstructor;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.ChatClient;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestParam;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/ai&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ChatController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ChatClient chatClient;<br>    <span class="hljs-comment">// 请求方式和路径不要改动，将来要与前端联调</span><br>    <span class="hljs-meta">@RequestMapping(&quot;/chat&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">String</span> <span class="hljs-title function_">chat</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(defaultValue = &quot;讲个笑话&quot;)</span> String prompt)</span> &#123;<br>        <span class="hljs-keyword">return</span> chatClient<br>                .prompt(prompt)<br>                <span class="hljs-comment">// 传入user提示词</span><br>                .call()<br>                <span class="hljs-comment">// 同步请求，会等待AI全部输出完才返回结果</span><br>                .content();<br>                <span class="hljs-comment">//返回响应内容</span><br>        <span class="hljs-comment">//注意，基于call()方法的调用属于同步调用，需要所有响应结果全部返回后才能返回给前端。</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-建造者模式是一种**创建型设计模式**。它的核心思想是：**将一个复杂对象的构建过程与它的表示分离，使得同样的构建过程可以创建不同的表示。**
-
-通俗来说，如果你要买一个汉堡套餐，你不是直接对服务员说“给我一个包含两片面包、一块牛肉、一片生菜、一点沙拉酱的汉堡，外加一杯中杯可乐和一份小薯条”，而是通过一个“套餐搭配器（Builder）”，一步步地选择：
-
-1. 选汉堡肉饼 -> 2. 选配菜 -> 3. 选饮料 -> 4. 选小食 -> 5. 最后点击“完成订单（Build）”。
-
-定义好ChatClient接着我们要进行controller实验
-
-#### 同步调用
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.chatrobot.controller;<br><br><span class="hljs-keyword">import</span> lombok.RequiredArgsConstructor;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.ChatClient;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestParam;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/ai&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ChatController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ChatClient chatClient;<br>    <span class="hljs-comment">// 请求方式和路径不要改动，将来要与前端联调</span><br>    <span class="hljs-meta">@RequestMapping(&quot;/chat&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">String</span> <span class="hljs-title function_">chat</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(defaultValue = &quot;讲个笑话&quot;)</span> String prompt)</span> &#123;<br>        <span class="hljs-keyword">return</span> chatClient<br>                .prompt(prompt)<br>                <span class="hljs-comment">// 传入user提示词</span><br>                .call()<br>                <span class="hljs-comment">// 同步请求，会等待AI全部输出完才返回结果</span><br>                .content();<br>                <span class="hljs-comment">//返回响应内容</span><br>        <span class="hljs-comment">//注意，基于call()方法的调用属于同步调用，需要所有响应结果全部返回后才能返回给前端。</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-#### 流式调用
-
-同步调用需要等待很长时间页面才能看到结果，用户体验不好。为了解决这个问题，我们可以改进调用方式为流式调用。
-
-在`SpringAI`中使用了`WebFlux`技术实现流式调用。
-
-修改刚才`ChatController`中的chat方法：
-
-### System设定
-
-可以发现，当我们询问AI你是谁的时候，它回答自己是DeepSeek-R1，这是大模型底层的设定。如果我们希望AI按照新的设定工作，就需要给它设置System背景信息。
-
-在SpringAI中，设置System信息非常方便，不需要在每次发送时封装到Message，而是创建ChatClient时指定即可。
-
-我们修改`CommonConfiguration`中的代码，给`ChatClient`设定默认的System信息：
-
-.defaultSystem（）方法
-
-### 日志功能
-
-默认情况下，应用于AI的交互时不记录日志的，我们无法得知SpringAI组织的提示词到底长什么样，有没有问题。这样不方便我们调试。
-
-#### Advisor
-
-SpringAI基于AOP机制实现与大模型对话过程的增强、拦截、修改等功能。所有的增强通知都需要实现**Advisor**接口。
-
-Spring提供了一些Advisor的默认实现，来实现一些基本的增强功能：
-
-- `SimpleLoggerAdvisor`：日志记录的Advisor
-- `MessageChatMemoryAdvisor`：会话记忆的Advisor
-- `QuestionAnswerAdvisor`：实现RAG的Advisor
-
-当然，我们也可以自定义Advisor，具体可以参考https://docs.spring.io/spring-ai/reference/1.0/api/advisors.html#_implementing_an_advisor
-
-.defaultAdvisors(new SimpleLoggerAdvisor()) *// 添加默认的Advisor,记录日志*
-
-### 对接前端
-
-在浏览器通过地址访问，非常麻烦，也不够优雅。如果能有一个优美的前端页面就好了。
-
-别着急，我提前给大家准备了一个前端页面。而且有两种不同的运行方式。
-
-npm运行在资料中给大家提供了前端的源代码：
-
-你只需要解压缩（最好放到非中文目录），然后进入解压后的目录，依次执行命令即可运行：
-
+<h4 id="流式调用"><a href="#流式调用" class="headerlink" title="流式调用"></a>流式调用</h4><p>同步调用需要等待很长时间页面才能看到结果，用户体验不好。为了解决这个问题，我们可以改进调用方式为流式调用。</p>
+<p>在<code>SpringAI</code>中使用了<code>WebFlux</code>技术实现流式调用。</p>
+<p>修改刚才<code>ChatController</code>中的chat方法：</p>
+<h3 id="System设定"><a href="#System设定" class="headerlink" title="System设定"></a>System设定</h3><p>可以发现，当我们询问AI你是谁的时候，它回答自己是DeepSeek-R1，这是大模型底层的设定。如果我们希望AI按照新的设定工作，就需要给它设置System背景信息。</p>
+<p>在SpringAI中，设置System信息非常方便，不需要在每次发送时封装到Message，而是创建ChatClient时指定即可。</p>
+<p>我们修改<code>CommonConfiguration</code>中的代码，给<code>ChatClient</code>设定默认的System信息：</p>
+<p>.defaultSystem（）方法</p>
+<h3 id="日志功能"><a href="#日志功能" class="headerlink" title="日志功能"></a>日志功能</h3><p>默认情况下，应用于AI的交互时不记录日志的，我们无法得知SpringAI组织的提示词到底长什么样，有没有问题。这样不方便我们调试。</p>
+<h4 id="Advisor"><a href="#Advisor" class="headerlink" title="Advisor"></a>Advisor</h4><p>SpringAI基于AOP机制实现与大模型对话过程的增强、拦截、修改等功能。所有的增强通知都需要实现<strong>Advisor</strong>接口。</p>
+<p>Spring提供了一些Advisor的默认实现，来实现一些基本的增强功能：</p>
+<ul>
+<li><code>SimpleLoggerAdvisor</code>：日志记录的Advisor</li>
+<li><code>MessageChatMemoryAdvisor</code>：会话记忆的Advisor</li>
+<li><code>QuestionAnswerAdvisor</code>：实现RAG的Advisor</li>
+</ul>
+<p>当然，我们也可以自定义Advisor，具体可以参考<a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/1.0/api/advisors.html#_implementing_an_advisor">https://docs.spring.io/spring-ai/reference/1.0/api/advisors.html#_implementing_an_advisor</a></p>
+<p>.defaultAdvisors(new SimpleLoggerAdvisor()) <em>&#x2F;&#x2F; 添加默认的Advisor,记录日志</em></p>
+<h3 id="对接前端"><a href="#对接前端" class="headerlink" title="对接前端"></a>对接前端</h3><p>在浏览器通过地址访问，非常麻烦，也不够优雅。如果能有一个优美的前端页面就好了。</p>
+<p>别着急，我提前给大家准备了一个前端页面。而且有两种不同的运行方式。</p>
+<p>npm运行在资料中给大家提供了前端的源代码：</p>
+<p>你只需要解压缩（最好放到非中文目录），然后进入解压后的目录，依次执行命令即可运行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 安装依赖</span><br>npm install<br><span class="hljs-comment"># 运行程序</span><br>npm run dev<br></code></pre></td></tr></table></figure>
 
-启动后，访问 http://localhost:5173即可看到页面：
-
-Nginx运行
-
-如果你不关心源码，我也给大家提供了构建好的Nginx程序：
-
+<p>启动后，访问 <a href="http://localhost:5173即可看到页面：">http://localhost:5173即可看到页面：</a></p>
+<p>Nginx运行</p>
+<p>如果你不关心源码，我也给大家提供了构建好的Nginx程序：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Bash"><span class="hljs-comment"># 启动Nginx</span><br>start nginx.exe<br><span class="hljs-comment"># 停止</span><br>nginx.exe -s stop<br></code></pre></td></tr></table></figure>
 
-#### 解决CORS问题
-
-前后端在不同域名，存在跨域问题，因此我们需要在服务端解决cors问题。在`com.itheima.ai.config`包中添加一个`MvcConfiguration`类：
-
-### 回话记忆功能
-
-现在，我们的AI聊天机器人是没有记忆功能的，上一次聊天的内容，下一次就忘掉了。
-
-我们之前说过，让AI有会话记忆的方式就是把每一次历史对话内容拼接到Prompt中，一起发送过去。是不是还挺麻烦的。
-
-别担心，好消息是，我们并不需要自己来拼接，SpringAI自带了会话记忆功能，可以帮我们把历史会话保存下来，下一次请求AI时会自动拼接，非常方便。
-
-#### ChatMemory
-
-会话记忆功能同样是基于AOP实现，Spring提供了一个`MessageChatMemoryAdvisor`的通知，我们可以像之前添加日志通知一样添加到`ChatClient`即可。
-
-不过，要注意的是，`MessageChatMemoryAdvisor`需要指定一个`ChatMemory`实例，也就是会话历史保存的方式。
-
+<h4 id="解决CORS问题"><a href="#解决CORS问题" class="headerlink" title="解决CORS问题"></a>解决CORS问题</h4><p>前后端在不同域名，存在跨域问题，因此我们需要在服务端解决cors问题。在<code>com.itheima.ai.config</code>包中添加一个<code>MvcConfiguration</code>类：</p>
+<h3 id="回话记忆功能"><a href="#回话记忆功能" class="headerlink" title="回话记忆功能"></a>回话记忆功能</h3><p>现在，我们的AI聊天机器人是没有记忆功能的，上一次聊天的内容，下一次就忘掉了。</p>
+<p>我们之前说过，让AI有会话记忆的方式就是把每一次历史对话内容拼接到Prompt中，一起发送过去。是不是还挺麻烦的。</p>
+<p>别担心，好消息是，我们并不需要自己来拼接，SpringAI自带了会话记忆功能，可以帮我们把历史会话保存下来，下一次请求AI时会自动拼接，非常方便。</p>
+<h4 id="ChatMemory"><a href="#ChatMemory" class="headerlink" title="ChatMemory"></a>ChatMemory</h4><p>会话记忆功能同样是基于AOP实现，Spring提供了一个<code>MessageChatMemoryAdvisor</code>的通知，我们可以像之前添加日志通知一样添加到<code>ChatClient</code>即可。</p>
+<p>不过，要注意的是，<code>MessageChatMemoryAdvisor</code>需要指定一个<code>ChatMemory</code>实例，也就是会话历史保存的方式。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ChatMemory</span> &#123;<br><br>    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> consider a non-blocking interface for streaming usages</span><br><br>    <span class="hljs-keyword">default</span> <span class="hljs-type">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(String conversationId, Message message)</span> &#123;<br>       <span class="hljs-built_in">this</span>.add(conversationId, List.of(message));<br>    &#125;<br><br>    <span class="hljs-comment">// 添加会话信息到指定conversationId的会话历史中</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(String conversationId, List&lt;Message&gt; messages)</span>;<br><br>    <span class="hljs-comment">// 根据conversationId查询历史会话</span><br>    <span class="hljs-type">List</span>&lt;Message&gt; <span class="hljs-title function_">get</span><span class="hljs-params">(String conversationId, <span class="hljs-type">int</span> lastN)</span>;<br><br>    <span class="hljs-comment">// 清除指定conversationId的会话历史</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">clear</span><span class="hljs-params">(String conversationId)</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 
-目前，在SpringAI中有两个ChatMemory的实现：
-
-- `InMemoryChatMemory`：会话历史保存在内存中
-- `CassandraChatMemory`：会话保存在Cassandra数据库中（需要引入额外依赖，并且绑定了向量数据库，不够灵活）
-
-我们暂时选择用`InMemoryChatMemory`来实现。
-
-#### 添加会话记忆Advisor
-
-在`CommonConfiguration`中注册`ChatMemory`对象：
-
+<p>目前，在SpringAI中有两个ChatMemory的实现：</p>
+<ul>
+<li><code>InMemoryChatMemory</code>：会话历史保存在内存中</li>
+<li><code>CassandraChatMemory</code>：会话保存在Cassandra数据库中（需要引入额外依赖，并且绑定了向量数据库，不够灵活）</li>
+</ul>
+<p>我们暂时选择用<code>InMemoryChatMemory</code>来实现。</p>
+<h4 id="添加会话记忆Advisor"><a href="#添加会话记忆Advisor" class="headerlink" title="添加会话记忆Advisor"></a>添加会话记忆Advisor</h4><p>在<code>CommonConfiguration</code>中注册<code>ChatMemory</code>对象：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">ChatMemory</span> <span class="hljs-title function_">chatMemory</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">InMemoryChatMemory</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
 
-然后添加`MessageChatMemoryAdvisor`到`ChatClient`：
-
+<p>然后添加<code>MessageChatMemoryAdvisor</code>到<code>ChatClient</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">ChatClient</span> <span class="hljs-title function_">chatClient</span><span class="hljs-params">(OllamaChatModel model, ChatMemory chatMemory)</span> &#123;<br>    <span class="hljs-keyword">return</span> ChatClient.builder(model) <span class="hljs-comment">// 创建ChatClient工厂实例</span><br>            .defaultSystem(<span class="hljs-string">&quot;您是一家名为“黑马程序员”的职业教育公司的客户聊天助手，你的名字叫小黑。请以友好、乐于助人和愉快的方式解答学生的各种问题。&quot;</span>)<br>            .defaultAdvisors(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleLoggerAdvisor</span>()) <span class="hljs-comment">// 添加默认的Advisor,记录日志</span><br>            .defaultAdvisors(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MessageChatMemoryAdvisor</span>(chatMemory))<br>            .build(); <span class="hljs-comment">// 构建ChatClient实例</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-OK，现在聊天会话已经有记忆功能了，不过**现在的会话记忆还是不完善的，我们还有继续补充**。
-
-### 会话历史
-
-会话历史与会话记忆是两个不同的事情：
-
-**会话记忆**：是指让大模型记住每一轮对话的内容，不至于前一句刚问完，下一句就忘了。
-
-**会话历史**：是指要记录总共有多少不同的对话
-
-在ChatMemory中，会记录一个会话中的所有消息，记录方式是以`conversationId`为key，以`List<Message>`为value，根据这些历史消息，大模型就能继续回答问题，这就是所谓的会话记忆。
-
-比如上图中，有3个不同的会话历史，就会有3个`conversationId`，管理会话历史，就是记住这些`conversationId`，当需要的时候查询出`conversationId`的列表。
-
-注意，在接下来业务中，我们以`chatId`来代指`conversationId`.
-
-#### 管理会话id
-
-由于会话记忆是以`conversationId`来管理的，也就是**会话id（**以后简称为chatId**）。**将来要查询会话历史，其实就是查询历史中有哪些chatId.
-
-因此，为了实现查询会话历史记录，我们必须记录所有的chatId，我们需要定义一个管理会话历史的标准接口。
-
-我们定义一个`com.itheima.ai.repository`包，然后新建一个`ChatHistoryRepository`接口：
-
-#### 保存会话ID
-
-接下来，修改ChatController中的chat方法，做到3点：
-
-- 添加一个请求参数：chatId，每次前端请求AI时都需要传递chatId
-- 每次处理请求时，将chatId存储到ChatRepository
-- 每次发请求到AI大模型时，都传递自定义的chatId
-
-  .advisors(a -> a.param(*CHAT_MEMORY_CONVERSATION_ID_KEY*, chatId))
-
-这里传递chatId给Advisor的方式是通过AdvisorContext，也就是以key-value形式存入上下文：
-
-#### 查询会话历史
-
-我们定义一个新的Controller，专门实现会话历史的查询。包含两个接口：
-
-- 根据业务类型查询会话历史列表（我们将来有3个不同业务，需要分别记录历史。大家的业务可能是按userId记录，根据UserId查询）
-- 根据chatId查询指定会话的历史消息
-
-### 持久化记忆
-
-#### mysql持久化
-
-之前我们是将对话记忆存储在了`InMemoryChatMemory`，本质是存在了内存里，一旦重启服务，上下文全部消失，所以无法使用，真正想要使用，肯定还是需要持久化
-
-这里我们选择mysql持久化，其他redis等方式，本质上是一样的，我们可以举一反三
-
-准备mysql环境就是经典的：yml配置、mybatisplus依赖、sql脚本、实体类、mapper接口
-
-想要持久化到数据库，那就要自己定义ChatMemory
-
-我们新建一个`MysqlChatMemory`，并实现ChatMemory接口
-
-所有记忆都要基于chatmemory去实现，实现类+mapper工具，完成mysql的读写
-
-### 持久化对话历史
-
-也是利用mysql然后把原来存在栈区
-
-## Function Calling（智能客服）
-
-由于AI擅长的是非结构化数据的分析，如果需求中包含严格的逻辑校验或需要读写数据库，纯Prompt模式就难以实现了。
-
-#### 定义Function
-
-接下来，我们来定义AI要用到的`Function`，在`SpringAI`中叫做`Tool`
-
-我们需要定义三个`Function`：
-
-- 根据条件筛选和查询课程
-- 查询校区列表
-- 新增试听预约单
-
-学生在与智能客服对话时，会有一定的偏好，比如兴趣不同、对价格敏感、对学习时长敏感、学历等。如果把这些条件用SQL来表示，是这样的：
-
-- edu：例如学生学历是高中，则查询时要满足 edu <= 2
-- type：学生的学习兴趣，要跟类型精确匹配，type = '自媒体'
-- price：学生对价格敏感，则查询时需要按照价格升序排列：order by price asc
-- duration: 学生对学习时长敏感，则查询时要按照时长升序：order by duration asc 
-
+<p>OK，现在聊天会话已经有记忆功能了，不过<strong>现在的会话记忆还是不完善的，我们还有继续补充</strong>。</p>
+<h3 id="会话历史"><a href="#会话历史" class="headerlink" title="会话历史"></a>会话历史</h3><p>会话历史与会话记忆是两个不同的事情：</p>
+<p><strong>会话记忆</strong>：是指让大模型记住每一轮对话的内容，不至于前一句刚问完，下一句就忘了。</p>
+<p><strong>会话历史</strong>：是指要记录总共有多少不同的对话</p>
+<p>在ChatMemory中，会记录一个会话中的所有消息，记录方式是以<code>conversationId</code>为key，以<code>List&lt;Message&gt;</code>为value，根据这些历史消息，大模型就能继续回答问题，这就是所谓的会话记忆。</p>
+<p>比如上图中，有3个不同的会话历史，就会有3个<code>conversationId</code>，管理会话历史，就是记住这些<code>conversationId</code>，当需要的时候查询出<code>conversationId</code>的列表。</p>
+<p>注意，在接下来业务中，我们以<code>chatId</code>来代指<code>conversationId</code>.</p>
+<h4 id="管理会话id"><a href="#管理会话id" class="headerlink" title="管理会话id"></a>管理会话id</h4><p>由于会话记忆是以<code>conversationId</code>来管理的，也就是<strong>会话id（</strong>以后简称为chatId<strong>）。</strong>将来要查询会话历史，其实就是查询历史中有哪些chatId.</p>
+<p>因此，为了实现查询会话历史记录，我们必须记录所有的chatId，我们需要定义一个管理会话历史的标准接口。</p>
+<p>我们定义一个<code>com.itheima.ai.repository</code>包，然后新建一个<code>ChatHistoryRepository</code>接口：</p>
+<h4 id="保存会话ID"><a href="#保存会话ID" class="headerlink" title="保存会话ID"></a>保存会话ID</h4><p>接下来，修改ChatController中的chat方法，做到3点：</p>
+<ul>
+<li><p>添加一个请求参数：chatId，每次前端请求AI时都需要传递chatId</p>
+</li>
+<li><p>每次处理请求时，将chatId存储到ChatRepository</p>
+</li>
+<li><p>每次发请求到AI大模型时，都传递自定义的chatId</p>
+<p>.advisors(a -&gt; a.param(<em>CHAT_MEMORY_CONVERSATION_ID_KEY</em>, chatId))</p>
+</li>
+</ul>
+<p>这里传递chatId给Advisor的方式是通过AdvisorContext，也就是以key-value形式存入上下文：</p>
+<h4 id="查询会话历史"><a href="#查询会话历史" class="headerlink" title="查询会话历史"></a>查询会话历史</h4><p>我们定义一个新的Controller，专门实现会话历史的查询。包含两个接口：</p>
+<ul>
+<li>根据业务类型查询会话历史列表（我们将来有3个不同业务，需要分别记录历史。大家的业务可能是按userId记录，根据UserId查询）</li>
+<li>根据chatId查询指定会话的历史消息</li>
+</ul>
+<h3 id="持久化记忆"><a href="#持久化记忆" class="headerlink" title="持久化记忆"></a>持久化记忆</h3><h4 id="mysql持久化"><a href="#mysql持久化" class="headerlink" title="mysql持久化"></a>mysql持久化</h4><p>之前我们是将对话记忆存储在了<code>InMemoryChatMemory</code>，本质是存在了内存里，一旦重启服务，上下文全部消失，所以无法使用，真正想要使用，肯定还是需要持久化</p>
+<p>这里我们选择mysql持久化，其他redis等方式，本质上是一样的，我们可以举一反三</p>
+<p>准备mysql环境就是经典的：yml配置、mybatisplus依赖、sql脚本、实体类、mapper接口</p>
+<p>想要持久化到数据库，那就要自己定义ChatMemory</p>
+<p>我们新建一个<code>MysqlChatMemory</code>，并实现ChatMemory接口</p>
+<p>所有记忆都要基于chatmemory去实现，实现类+mapper工具，完成mysql的读写</p>
+<h3 id="持久化对话历史"><a href="#持久化对话历史" class="headerlink" title="持久化对话历史"></a>持久化对话历史</h3><p>也是利用mysql然后把原来存在栈区</p>
+<h2 id="Function-Calling（智能客服）"><a href="#Function-Calling（智能客服）" class="headerlink" title="Function Calling（智能客服）"></a>Function Calling（智能客服）</h2><p>由于AI擅长的是非结构化数据的分析，如果需求中包含严格的逻辑校验或需要读写数据库，纯Prompt模式就难以实现了。</p>
+<h4 id="定义Function"><a href="#定义Function" class="headerlink" title="定义Function"></a>定义Function</h4><p>接下来，我们来定义AI要用到的<code>Function</code>，在<code>SpringAI</code>中叫做<code>Tool</code></p>
+<p>我们需要定义三个<code>Function</code>：</p>
+<ul>
+<li>根据条件筛选和查询课程</li>
+<li>查询校区列表</li>
+<li>新增试听预约单</li>
+</ul>
+<p>学生在与智能客服对话时，会有一定的偏好，比如兴趣不同、对价格敏感、对学习时长敏感、学历等。如果把这些条件用SQL来表示，是这样的：</p>
+<ul>
+<li>edu：例如学生学历是高中，则查询时要满足 edu &lt;&#x3D; 2</li>
+<li>type：学生的学习兴趣，要跟类型精确匹配，type &#x3D; ‘自媒体’</li>
+<li>price：学生对价格敏感，则查询时需要按照价格升序排列：order by price asc</li>
+<li>duration: 学生对学习时长敏感，则查询时要按照时长升序：order by duration asc</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.ai.entity.query;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.ai.tool.annotation.ToolParam;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CourseQuery</span> &#123;<br>    <span class="hljs-meta">@ToolParam(required = false, description = &quot;课程类型：编程、设计、自媒体、其它&quot;)</span><br>    <span class="hljs-keyword">private</span> String type;<br>    <span class="hljs-meta">@ToolParam(required = false, description = &quot;学历要求：0-无、1-初中、2-高中、3-大专、4-本科及本科以上&quot;)</span><br>    <span class="hljs-keyword">private</span> Integer edu;<br>    <span class="hljs-meta">@ToolParam(required = false, description = &quot;排序方式&quot;)</span><br>    <span class="hljs-keyword">private</span> List&lt;Sort&gt; sorts;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Sort</span> &#123;<br>        <span class="hljs-meta">@ToolParam(required = false, description = &quot;排序字段: price或duration&quot;)</span><br>        <span class="hljs-keyword">private</span> String field;<br>        <span class="hljs-meta">@ToolParam(required = false, description = &quot;是否是升序: true/false&quot;)</span><br>        <span class="hljs-keyword">private</span> Boolean asc;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-这里的`@ToolParam`注解是SpringAI提供的用来解释`Function`参数的注解。其中的信息都会通过提示词的方式发送给AI模型。
-
-同样的道理，大家也可以给`Function`定义专门的VO，作为返回值给到大模型。这里我们就省略了。。
-
-#### 实现定义Function
-
-所谓的`Function`，就是一个个的函数，`SpringAI`提供了一个`@Tool`注解来标记这些特殊的函数。我们可以任意定义一个`Spring`的`Bean`，然后将其中的方法用`@Tool`标记即可：
-
-接下来，我们就来定义上一节说的三个Function：
-
-- 根据条件筛选和查询课程
-- 查询校区列表
-- 新增试听预约单
-
+<p>这里的<code>@ToolParam</code>注解是SpringAI提供的用来解释<code>Function</code>参数的注解。其中的信息都会通过提示词的方式发送给AI模型。</p>
+<p>同样的道理，大家也可以给<code>Function</code>定义专门的VO，作为返回值给到大模型。这里我们就省略了。。</p>
+<h4 id="实现定义Function"><a href="#实现定义Function" class="headerlink" title="实现定义Function"></a>实现定义Function</h4><p>所谓的<code>Function</code>，就是一个个的函数，<code>SpringAI</code>提供了一个<code>@Tool</code>注解来标记这些特殊的函数。我们可以任意定义一个<code>Spring</code>的<code>Bean</code>，然后将其中的方法用<code>@Tool</code>标记即可：</p>
+<p>接下来，我们就来定义上一节说的三个Function：</p>
+<ul>
+<li>根据条件筛选和查询课程</li>
+<li>查询校区列表</li>
+<li>新增试听预约单</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-keyword">package</span> com.itheima.ai.tools;<br><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;<br><span class="hljs-keyword">import</span> com.itheima.ai.entity.po.Course;<br><span class="hljs-keyword">import</span> com.itheima.ai.entity.po.CourseReservation;<br><span class="hljs-keyword">import</span> com.itheima.ai.entity.po.School;<br><span class="hljs-keyword">import</span> com.itheima.ai.entity.query.CourseQuery;<br><span class="hljs-keyword">import</span> com.itheima.ai.service.ICourseReservationService;<br><span class="hljs-keyword">import</span> com.itheima.ai.service.ICourseService;<br><span class="hljs-keyword">import</span> com.itheima.ai.service.ISchoolService;<br><span class="hljs-keyword">import</span> lombok.RequiredArgsConstructor;<br><span class="hljs-keyword">import</span> org.springframework.ai.tool.annotation.Tool;<br><span class="hljs-keyword">import</span> org.springframework.ai.tool.annotation.ToolParam;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CourseTools</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICourseService courseService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ISchoolService schoolService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICourseReservationService courseReservationService;<br><br>    <span class="hljs-meta">@Tool(description = &quot;根据条件查询课程&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">List</span>&lt;Course&gt; <span class="hljs-title function_">queryCourse</span><span class="hljs-params">(<span class="hljs-meta">@ToolParam(required = false, description = &quot;课程查询条件&quot;)</span> CourseQuery query)</span> &#123;<br>        <span class="hljs-keyword">if</span>(query==<span class="hljs-literal">null</span>)&#123;<br>            <span class="hljs-keyword">return</span> courseService.list();<br>        &#125;<br>        <span class="hljs-type">QueryWrapper</span>&lt;Course&gt; <span class="hljs-variable">qw</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">QueryWrapper</span>&lt;&gt;();<br>        qw.le(query.getEdu()!=<span class="hljs-literal">null</span>,<span class="hljs-string">&quot;edu&quot;</span>,query.getEdu());<br>        qw.eq(StrUtil.isNotBlank(query.getType()),<span class="hljs-string">&quot;type&quot;</span>,query.getType());<br>        <span class="hljs-keyword">if</span>(CollUtil.isNotEmpty(query.getSorts()))&#123;<br>            <span class="hljs-keyword">for</span> (CourseQuery.Sort sort : query.getSorts()) &#123;<br>                qw.orderBy(<span class="hljs-literal">true</span>,sort.getIsAsc(),sort.getField());<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> courseService.list(qw);<br>    &#125;<br><br>    <span class="hljs-meta">@Tool(description = &quot;查询所有校区&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">List</span>&lt;School&gt; <span class="hljs-title function_">queryAllSchools</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> schoolService.list();<br>    &#125;<br><br>    <span class="hljs-meta">@Tool(description = &quot;生成课程预约单,并返回生成的预约单号&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">String</span> <span class="hljs-title function_">generateCourseReservation</span><span class="hljs-params">(</span><br><span class="hljs-params">            String courseName, String studentName, String contactInfo, String school, String remark)</span> &#123;<br>        <span class="hljs-type">CourseReservation</span> <span class="hljs-variable">courseReservation</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CourseReservation</span>();<br>        courseReservation.setCourse(courseName);<br>        courseReservation.setStudentName(studentName);<br>        courseReservation.setContactInfo(contactInfo);<br>        courseReservation.setSchool(school);<br>        courseReservation.setRemark(remark);<br>        courseReservationService.save(courseReservation);<br>        <span class="hljs-keyword">return</span> String.valueOf(courseReservation.getId());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-## Rag
-
-要从内容相似度来判断，这就不得不提到**向量模型**的知识了。
-
-两个向量之间**欧式距离越近**，我们认为两个向量的**相似度越高**。（余弦距离相反，越大相似度越高）
-
-如果我们能**把文本转为向量**，就可以**通过向量距离来判断文本的相似度**了。
-
-有不少的专门的**向量模型**，就可以实现将文本向量化。一个好的向量模型，就是要**尽可能让文本含义相似的向量，在空间中距离更近**：
-
-向量模型是帮我们生成向量的，如此庞大的知识库，谁来帮我们从中**比较和检索数据**呢？
-
-这就需要用到**向量数据库**了。
-
-### 向量数据库
-
-向量数据库的主要作用有两个：
-
-- 存储向量数据
-- 基于相似度检索数据
-
-有许多公司都有向量数据库这个框架
-
-这些库都实现了统一的接口：`VectorStore`，因此操作方式一模一样，大家学会任意一个，其它就都不是问题。
-
-- [SimpleVectorStore](https://github.com/spring-projects/spring-ai/blob/main/spring-ai-core/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java) - A simple implementation of persistent vector storage, good for educational purposes.
-
-除了这个SimpleVectorStore库以外，向量库是基于内存实现，其它所有向量数据库都是需要安装部署的。每个企业用的向量库都不一样。
-
-VectorStore操作向量化的基本单位是Document，我们在使用时需要将自己的知识库分割转换为一个个的Document，然后写VectorStore.
-
-### 文件读取和转换
-
-前面说过，知识库太大，是需要拆分成文档片段，然后再做向量化的。而且SpringAI中向量库接收的是Document类型的文档，也就是说，我们处理文档还要转成Document格式。
-
-不过，文档读取、拆分、转换的动作并不需要我们亲自完成。在SpringAI中提供了各种文档读取的工具，可以参考官网：
-
-比如PDF文档读取和拆分，SpringAI提供了两种默认的拆分原则：
-
-- `PagePdfDocumentReader` ：按页拆分，推荐使用
-- `ParagraphPdfDocumentReader` ：按pdf的目录拆分，不推荐，因为很多PDF不规范，没有章节标签
-
-### 总结
-
-- PDFReader：读取文档并拆分为片段
-- 向量大模型：将文本片段向量化
-- 向量数据库：存储向量，检索向量
-
-解决的问题
-
-- 要解决大模型的知识限制问题，需要外挂知识库
-- 受到大模型上下文限制，知识库不能简单的直接拼接在提示词中
-- 我们需要从庞大的知识库中找到与用户问题相关的一小部分，再组装成提示词
-- 这些可以利用**文档读取器**、**向量大模型**、**向量数据库**来解决。
-
-所以RAG要做的事情就是将知识库分割，然后利用向量模型做向量化，存入向量数据库，然后查询的时候去检索：
-
-**第一阶段（存储知识库）**：
-
-- 将知识库内容切片，分为一个个片段
-- 将每个片段利用向量模型向量化
-- 将所有向量化后的片段写入向量数据库
-
-**第二阶段（检索知识库）**：
-
-- 每当用户询问AI时，将用户问题向量化
-- 拿着问题向量去向量数据库检索最相关的片段
-
-**第三阶段（对话大模型）**：
-
-- 将检索到的片段、用户的问题一起拼接为提示词
-- 发送提示词给大模型，得到响应
-
-## 目标
-
-现在RAG所需要的基本工具都有了。
-
-接下来，我们就来实现一个非常火爆的个人知识库AI应用，ChatPDF
-
-这个网站其实就是把你个人的PDF文件作为知识库，让AI基于PDF内容来回答你的问题，对于大学生、研究人员、专业人士来说，非常方便。
-
-### PDF上传下载、向量化
-
-既然是ChatPDF，也就是说所有知识库都是PDF形式的，由用户提交给我们。所以，我们需要先实现一个上传PDF的接口，在接口中实现下列功能：
-
-- 校验文件格式是否为PDF
-- 保存文件信息
-  - 保存文件（可以是oss或本地保存）
-  - 保存会话ID和文件路径的映射关系（方便查询会话历史的时候再次读取文件）
-- 文档拆分和向量化（文档太大，需要拆分为一个个片段，分别向量化）
-
-另外，将来用户查询会话历史，我们还需要返回pdf文件给前端用于预览，所以需要实现一个下载PDF接口，包含下面功能：
-
-- 读取文件
-- 返回文件给前端
-
-### PDF文件管理
-
-由于将来要实现PDF下载功能，我们需要记住每一个chatId对应的PDF文件名称。
-
-所以，我们定义一个类，记录chatId与pdf文件的映射关系，同时实现基本的文件保存功能。
-
-先在`com.itheima.ai.repository`中定义接口：
-
-### 配置ChatClient
-
-接下来就是最后的环节了，实现RAG的对话流程。
-
-理论上来说，我们每次与AI对话的完整流程是这样的：
-
-- 将用户的问题利用向量大模型做向量化 `OpenAiEmbeddingModel`
-- 去向量数据库检索相关的文档 `VectorStore`
-- 拼接提示词，发送给大模型
-- 解析响应结果
-
-不过，`SpringAI`同样基于AOP技术帮我们完成了全部流程，用到的是一个名`QuestionAnswerAdvisor`的Advisor。我们只需要把`VectorStore`配置到Advisor即可。
-
-我们在`CommonConfiguration`中给ChatPDF也单独定义一个`ChatClient`：
-
-## 多模态
-
-多模态是指不同类型的数据输入，如文本、图像、声音、视频等。目前为止，我们与大模型交互都是基于普通文本输入，这跟我们选择的大模型有关。
-
-deepseek、qwen-max等模型都是纯文本模型，在ollama和百炼平台，我们也能找到很多多模态模型。
-
-## Spring AI MCP
-
-MCP（Model Context Protocol ）叫作模型上下文协议，是一种标准化协议，它能够使 AI 大模型以结构化的方式与外部工具和资源进行交互。它支持多种传输机制，以在不同环境中提供灵活性。
-
-由上图，可以看出，在Java应用程序中，通过MCP Client可以与各种的MCP Server进行交互，增强了AI大模型的能力。
-
-看上去，似乎和Tool Calling差不多，也是增强大模型的能力，不同的是，MCP是标准，更通用。
-
-举两个场景来说明：
-
-- 在SpringAI中编写的Tools，可以放到Python中使用吗？，显然是不可以的，要想让Python中使用，就得使用Python语言重写一次Tool，才能使用，这就是不通用性的体现。
-- 在企业项目开发中，我们采用了Spring AI框架来构建智能体。这些智能体通常需要执行一系列通用功能，如天气查询、商品检索及下单等。基于以往的做法，每当开发新项目时，都需要重新编写实现这些功能的工具（Tool），这显然不利于代码复用。为解决这一问题，可以采用MCP标准进行服务器端开发，并将这些常用工具封装成服务接口。这样一来，其他的智能体只需通过调用该服务即可轻松访问所需功能，从而极大地提高了代码的复用性和开发效率。
-
-SpringAI对MCP做了支持，简化了Java项目中的MCP开发
-
-MCP Client 负责建立和管理与 MCP 服务器之间的连接，以及管理：
-
-- 协议版本协商以确保与服务器的兼容性
-- 功能协商以确定可用特性
-- 消息传输和 JSON-RPC 通信
-- **工具发现与执行**
-- 资源访问与管理
-- 提示系统（Prompt ）交互
-- 可选功能：
-  - 根管理
-  - 采样支持 
-- **同步和异步操作** 
-- **传输选项：**
-  - 基于标准输入输出（stdio）的进程间通信传输
-  - 基于 Java HttpClient 的 SSE 客户端传输
-  - 用于响应式 HTTP 流的 WebFlux SSE 客户端传输
-
-### MCP Server
-
-- 服务器端协议操作实现
-  - **工具暴露与发现**
-  - 基于URI的资源管理
-  - 提示模板提供与处理
-  - 与客户端的能力协商
-  - 结构化日志记录和通知
-- 并发客户端连接管理
-- **同步和异步API支持**
-- **传输实现：**
-  - 基于标准输入输出（stdio）的进程间通信传输
-  - 基于Servlet的SSE（服务器发送事件）服务器传输
-  - 用于响应式HTTP流的WebFlux SSE服务器传输
-  - WebMVC SSE 服务器传输，用于基于 Servlet 的 HTTP 流式传输
-
-SSE（Server-Sent Events）
-
-### MCP Client实战
-
-就是通过先在本机通过npm安装`@executeautomation/playwright-mcp-server`
-
-安装插件安装依赖然后增加json文件，然后形参加入ToolCallbackProvider tools，创建bean对象的时候加.defaultTools(tools)
-
-### MCP Server实战
-
-
-
-
-
-MCP有SSE 就像是长连接，STDIO 就像是管道
-
-STDIO是自己本地电脑里面的，SSE是外部服务器
-
-## 拓展
-
-截止SpringAI的1.0.0-M6版本为止，SpringAI的OpenAiModel和阿里云百炼的部分接口存在兼容性问题，包括但不限于以下两个问题：
-
-- FunctionCalling的stream模式，阿里云百炼返回的tool-arguments是不完整的，需要拼接，而OpenAI则是完整的，无需拼接。
-- 音频识别中的数据格式，阿里云百炼的qwen-omni模型要求的参数格式为data:;base64,${media-data}，而OpenAI是直接{media-data}
-
-
-
+<h2 id="Rag"><a href="#Rag" class="headerlink" title="Rag"></a>Rag</h2><p>要从内容相似度来判断，这就不得不提到<strong>向量模型</strong>的知识了。</p>
+<p>两个向量之间<strong>欧式距离越近</strong>，我们认为两个向量的<strong>相似度越高</strong>。（余弦距离相反，越大相似度越高）</p>
+<p>如果我们能<strong>把文本转为向量</strong>，就可以<strong>通过向量距离来判断文本的相似度</strong>了。</p>
+<p>有不少的专门的<strong>向量模型</strong>，就可以实现将文本向量化。一个好的向量模型，就是要<strong>尽可能让文本含义相似的向量，在空间中距离更近</strong>：</p>
+<p>向量模型是帮我们生成向量的，如此庞大的知识库，谁来帮我们从中<strong>比较和检索数据</strong>呢？</p>
+<p>这就需要用到<strong>向量数据库</strong>了。</p>
+<h3 id="向量数据库"><a href="#向量数据库" class="headerlink" title="向量数据库"></a>向量数据库</h3><p>向量数据库的主要作用有两个：</p>
+<ul>
+<li>存储向量数据</li>
+<li>基于相似度检索数据</li>
+</ul>
+<p>有许多公司都有向量数据库这个框架</p>
+<p>这些库都实现了统一的接口：<code>VectorStore</code>，因此操作方式一模一样，大家学会任意一个，其它就都不是问题。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-ai/blob/main/spring-ai-core/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java">SimpleVectorStore</a> - A simple implementation of persistent vector storage, good for educational purposes.</li>
+</ul>
+<p>除了这个SimpleVectorStore库以外，向量库是基于内存实现，其它所有向量数据库都是需要安装部署的。每个企业用的向量库都不一样。</p>
+<p>VectorStore操作向量化的基本单位是Document，我们在使用时需要将自己的知识库分割转换为一个个的Document，然后写VectorStore.</p>
+<h3 id="文件读取和转换"><a href="#文件读取和转换" class="headerlink" title="文件读取和转换"></a>文件读取和转换</h3><p>前面说过，知识库太大，是需要拆分成文档片段，然后再做向量化的。而且SpringAI中向量库接收的是Document类型的文档，也就是说，我们处理文档还要转成Document格式。</p>
+<p>不过，文档读取、拆分、转换的动作并不需要我们亲自完成。在SpringAI中提供了各种文档读取的工具，可以参考官网：</p>
+<p>比如PDF文档读取和拆分，SpringAI提供了两种默认的拆分原则：</p>
+<ul>
+<li><code>PagePdfDocumentReader</code> ：按页拆分，推荐使用</li>
+<li><code>ParagraphPdfDocumentReader</code> ：按pdf的目录拆分，不推荐，因为很多PDF不规范，没有章节标签</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>PDFReader：读取文档并拆分为片段</li>
+<li>向量大模型：将文本片段向量化</li>
+<li>向量数据库：存储向量，检索向量</li>
+</ul>
+<p>解决的问题</p>
+<ul>
+<li>要解决大模型的知识限制问题，需要外挂知识库</li>
+<li>受到大模型上下文限制，知识库不能简单的直接拼接在提示词中</li>
+<li>我们需要从庞大的知识库中找到与用户问题相关的一小部分，再组装成提示词</li>
+<li>这些可以利用<strong>文档读取器</strong>、<strong>向量大模型</strong>、<strong>向量数据库</strong>来解决。</li>
+</ul>
+<p>所以RAG要做的事情就是将知识库分割，然后利用向量模型做向量化，存入向量数据库，然后查询的时候去检索：</p>
+<p><strong>第一阶段（存储知识库）</strong>：</p>
+<ul>
+<li>将知识库内容切片，分为一个个片段</li>
+<li>将每个片段利用向量模型向量化</li>
+<li>将所有向量化后的片段写入向量数据库</li>
+</ul>
+<p><strong>第二阶段（检索知识库）</strong>：</p>
+<ul>
+<li>每当用户询问AI时，将用户问题向量化</li>
+<li>拿着问题向量去向量数据库检索最相关的片段</li>
+</ul>
+<p><strong>第三阶段（对话大模型）</strong>：</p>
+<ul>
+<li>将检索到的片段、用户的问题一起拼接为提示词</li>
+<li>发送提示词给大模型，得到响应</li>
+</ul>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>现在RAG所需要的基本工具都有了。</p>
+<p>接下来，我们就来实现一个非常火爆的个人知识库AI应用，ChatPDF</p>
+<p>这个网站其实就是把你个人的PDF文件作为知识库，让AI基于PDF内容来回答你的问题，对于大学生、研究人员、专业人士来说，非常方便。</p>
+<h3 id="PDF上传下载、向量化"><a href="#PDF上传下载、向量化" class="headerlink" title="PDF上传下载、向量化"></a>PDF上传下载、向量化</h3><p>既然是ChatPDF，也就是说所有知识库都是PDF形式的，由用户提交给我们。所以，我们需要先实现一个上传PDF的接口，在接口中实现下列功能：</p>
+<ul>
+<li>校验文件格式是否为PDF</li>
+<li>保存文件信息<ul>
+<li>保存文件（可以是oss或本地保存）</li>
+<li>保存会话ID和文件路径的映射关系（方便查询会话历史的时候再次读取文件）</li>
+</ul>
+</li>
+<li>文档拆分和向量化（文档太大，需要拆分为一个个片段，分别向量化）</li>
+</ul>
+<p>另外，将来用户查询会话历史，我们还需要返回pdf文件给前端用于预览，所以需要实现一个下载PDF接口，包含下面功能：</p>
+<ul>
+<li>读取文件</li>
+<li>返回文件给前端</li>
+</ul>
+<h3 id="PDF文件管理"><a href="#PDF文件管理" class="headerlink" title="PDF文件管理"></a>PDF文件管理</h3><p>由于将来要实现PDF下载功能，我们需要记住每一个chatId对应的PDF文件名称。</p>
+<p>所以，我们定义一个类，记录chatId与pdf文件的映射关系，同时实现基本的文件保存功能。</p>
+<p>先在<code>com.itheima.ai.repository</code>中定义接口：</p>
+<h3 id="配置ChatClient"><a href="#配置ChatClient" class="headerlink" title="配置ChatClient"></a>配置ChatClient</h3><p>接下来就是最后的环节了，实现RAG的对话流程。</p>
+<p>理论上来说，我们每次与AI对话的完整流程是这样的：</p>
+<ul>
+<li>将用户的问题利用向量大模型做向量化 <code>OpenAiEmbeddingModel</code></li>
+<li>去向量数据库检索相关的文档 <code>VectorStore</code></li>
+<li>拼接提示词，发送给大模型</li>
+<li>解析响应结果</li>
+</ul>
+<p>不过，<code>SpringAI</code>同样基于AOP技术帮我们完成了全部流程，用到的是一个名<code>QuestionAnswerAdvisor</code>的Advisor。我们只需要把<code>VectorStore</code>配置到Advisor即可。</p>
+<p>我们在<code>CommonConfiguration</code>中给ChatPDF也单独定义一个<code>ChatClient</code>：</p>
+<h2 id="多模态"><a href="#多模态" class="headerlink" title="多模态"></a>多模态</h2><p>多模态是指不同类型的数据输入，如文本、图像、声音、视频等。目前为止，我们与大模型交互都是基于普通文本输入，这跟我们选择的大模型有关。</p>
+<p>deepseek、qwen-max等模型都是纯文本模型，在ollama和百炼平台，我们也能找到很多多模态模型。</p>
+<h2 id="Spring-AI-MCP"><a href="#Spring-AI-MCP" class="headerlink" title="Spring AI MCP"></a>Spring AI MCP</h2><p>MCP（Model Context Protocol ）叫作模型上下文协议，是一种标准化协议，它能够使 AI 大模型以结构化的方式与外部工具和资源进行交互。它支持多种传输机制，以在不同环境中提供灵活性。</p>
+<p>由上图，可以看出，在Java应用程序中，通过MCP Client可以与各种的MCP Server进行交互，增强了AI大模型的能力。</p>
+<p>看上去，似乎和Tool Calling差不多，也是增强大模型的能力，不同的是，MCP是标准，更通用。</p>
+<p>举两个场景来说明：</p>
+<ul>
+<li>在SpringAI中编写的Tools，可以放到Python中使用吗？，显然是不可以的，要想让Python中使用，就得使用Python语言重写一次Tool，才能使用，这就是不通用性的体现。</li>
+<li>在企业项目开发中，我们采用了Spring AI框架来构建智能体。这些智能体通常需要执行一系列通用功能，如天气查询、商品检索及下单等。基于以往的做法，每当开发新项目时，都需要重新编写实现这些功能的工具（Tool），这显然不利于代码复用。为解决这一问题，可以采用MCP标准进行服务器端开发，并将这些常用工具封装成服务接口。这样一来，其他的智能体只需通过调用该服务即可轻松访问所需功能，从而极大地提高了代码的复用性和开发效率。</li>
+</ul>
+<p>SpringAI对MCP做了支持，简化了Java项目中的MCP开发</p>
+<p>MCP Client 负责建立和管理与 MCP 服务器之间的连接，以及管理：</p>
+<ul>
+<li>协议版本协商以确保与服务器的兼容性</li>
+<li>功能协商以确定可用特性</li>
+<li>消息传输和 JSON-RPC 通信</li>
+<li><strong>工具发现与执行</strong></li>
+<li>资源访问与管理</li>
+<li>提示系统（Prompt ）交互</li>
+<li>可选功能：<ul>
+<li>根管理</li>
+<li>采样支持</li>
+</ul>
+</li>
+<li><strong>同步和异步操作</strong> </li>
+<li><strong>传输选项：</strong><ul>
+<li>基于标准输入输出（stdio）的进程间通信传输</li>
+<li>基于 Java HttpClient 的 SSE 客户端传输</li>
+<li>用于响应式 HTTP 流的 WebFlux SSE 客户端传输</li>
+</ul>
+</li>
+</ul>
+<h3 id="MCP-Server"><a href="#MCP-Server" class="headerlink" title="MCP Server"></a>MCP Server</h3><ul>
+<li>服务器端协议操作实现<ul>
+<li><strong>工具暴露与发现</strong></li>
+<li>基于URI的资源管理</li>
+<li>提示模板提供与处理</li>
+<li>与客户端的能力协商</li>
+<li>结构化日志记录和通知</li>
+</ul>
+</li>
+<li>并发客户端连接管理</li>
+<li><strong>同步和异步API支持</strong></li>
+<li><strong>传输实现：</strong><ul>
+<li>基于标准输入输出（stdio）的进程间通信传输</li>
+<li>基于Servlet的SSE（服务器发送事件）服务器传输</li>
+<li>用于响应式HTTP流的WebFlux SSE服务器传输</li>
+<li>WebMVC SSE 服务器传输，用于基于 Servlet 的 HTTP 流式传输</li>
+</ul>
+</li>
+</ul>
+<p>SSE（Server-Sent Events）</p>
+<h3 id="MCP-Client实战"><a href="#MCP-Client实战" class="headerlink" title="MCP Client实战"></a>MCP Client实战</h3><p>就是通过先在本机通过npm安装<code>@executeautomation/playwright-mcp-server</code></p>
+<p>安装插件安装依赖然后增加json文件，然后形参加入ToolCallbackProvider tools，创建bean对象的时候加.defaultTools(tools)</p>
+<h3 id="MCP-Server实战"><a href="#MCP-Server实战" class="headerlink" title="MCP Server实战"></a>MCP Server实战</h3><p>MCP有SSE 就像是长连接，STDIO 就像是管道</p>
+<p>STDIO是自己本地电脑里面的，SSE是外部服务器</p>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><p>截止SpringAI的1.0.0-M6版本为止，SpringAI的OpenAiModel和阿里云百炼的部分接口存在兼容性问题，包括但不限于以下两个问题：</p>
+<ul>
+<li>FunctionCalling的stream模式，阿里云百炼返回的tool-arguments是不完整的，需要拼接，而OpenAI则是完整的，无需拼接。</li>
+<li>音频识别中的数据格式，阿里云百炼的qwen-omni模型要求的参数格式为data:;base64,${media-data}，而OpenAI是直接{media-data}</li>
+</ul>
 
                 
               </div>

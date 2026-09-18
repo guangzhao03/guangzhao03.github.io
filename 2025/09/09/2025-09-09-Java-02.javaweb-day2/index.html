@@ -19,19 +19,21 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day2  JavaScript  js负责网页的行为  - JavaScript（简称js）是一门跨平台，面向对象的脚本语言，是用来控制网页行为，实现页面的交互效果。 - 组成：   - ECMAScript：规定了js基础语法核心知识，包括变量、数据类型、流程控制、函数、对象等。   - BOM:浏览器对象模型，用于操作浏览器本身，如：页面弹窗、地址栏操作、关闭窗口等。   - DOM：">
+    <meta name="description" content="day2JavaScript  js负责网页的行为  JavaScript（简称js）是一门跨平台，面向对象的脚本语言，是用来控制网页行为，实现页面的交互效果。 组成： ECMAScript：规定了js基础语法核心知识，包括变量、数据类型、流程控制、函数、对象等。 BOM:浏览器对象模型，用于操作浏览器本身，如：页面弹窗、地址栏操作、关闭窗口等。 DOM：文档对象模型，用于操作html文档，如：改">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day2">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/09/09/2025-09-09-Java-02.javaweb-day2/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day2  JavaScript  js负责网页的行为  - JavaScript（简称js）是一门跨平台，面向对象的脚本语言，是用来控制网页行为，实现页面的交互效果。 - 组成：   - ECMAScript：规定了js基础语法核心知识，包括变量、数据类型、流程控制、函数、对象等。   - BOM:浏览器对象模型，用于操作浏览器本身，如：页面弹窗、地址栏操作、关闭窗口等。   - DOM：">
+<meta property="og:description" content="day2JavaScript  js负责网页的行为  JavaScript（简称js）是一门跨平台，面向对象的脚本语言，是用来控制网页行为，实现页面的交互效果。 组成： ECMAScript：规定了js基础语法核心知识，包括变量、数据类型、流程控制、函数、对象等。 BOM:浏览器对象模型，用于操作浏览器本身，如：页面弹窗、地址栏操作、关闭窗口等。 DOM：文档对象模型，用于操作html文档，如：改">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-09-09-Java-02.javaweb-day2-image-20250906162621593.png">
 <meta property="article:published_time" content="2025-09-09T00:56:07.000Z">
 <meta property="article:modified_time" content="2025-09-09T00:56:07.000Z">
 <meta property="article:author" content="coolcys">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="JavaWeb">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://guangzhao03.github.io/img/posts/2025-09-09-Java-02.javaweb-day2-image-20250906162621593.png">
   
   
   
@@ -327,7 +329,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.6k 字
+          5.3k 字
         
       </span>
     
@@ -338,7 +340,7 @@
         
         
         
-          47 分钟
+          44 分钟
         
       </span>
     
@@ -382,327 +384,310 @@
             
               <div class="markdown-body">
                 
-                
-# day2
-
-JavaScript  js负责网页的行为
-
-- JavaScript（简称js）是一门跨平台，面向对象的脚本语言，是用来控制网页行为，实现页面的交互效果。
-- 组成：
-  - ECMAScript：规定了js基础语法核心知识，包括变量、数据类型、流程控制、函数、对象等。
-  - BOM:浏览器对象模型，用于操作浏览器本身，如：页面弹窗、地址栏操作、关闭窗口等。
-  - DOM：文档对象模型，用于操作html文档，如：改变标签内的内容、改变标签内字体样式等。
-
-JavaScript和Java是完全不同的语言，不论是概念还是设计，但是基础语法类似。
-
-ECMA国际，制定了标准化的脚本程序设计语言ECMAScript，这种语言得到广泛应用。而JavaScript是遵守ECMAScript的标准的。
-
-- JS核心语法
-- JS事件监听
-
-
-
-## JS核心语法
-
-### 引入方式
-
-- 内部脚本：将JS代码定义在HTML页面中
-  - JavaScript代码必须位于<script></script>中
-  - 在HTML文档中，可以在任何地方放置任意的script标签
-  - 一般会把脚本置于body元素的底部，可改善显示速度
-
-- 外部脚本：
-  - 将JS代码定义在外部JS文件中，然后引入HTML页面中
-
-### 基础语法
-
-#### 变量&常量
-
-- JS中用let关键字来声明变量（弱类型语言，变量可以存放不同类型的值）
-- 变量名需遵循如下规则：
-  - 只能用数字、字母、下划线、美元符号组成，且数字不能开头
-  - 变量名严格区分大小写，如name和Name是不同的变量
-  - 不能使用关键字，如let、var、if、for等。
-
-- JS中用const关键字来声明常量
-- 一旦声明，常量不可修改。
-
-#### 数据类型
-
-- JavaScript的数据类型分为：基本数据类型和引用数据类型（对象）
-
-- 基本数据类型：
-  - number：数字（整数、小数、NAN）
-  - boolean：布尔
-  - null：对象为空    typeof返回的是object
-  - undefined：当声明的变量未初始化时
-  - string：字符串 反引号 单引号 双引号
-- typeof获取数据类型
-
-- 模板字符串语法：
-  - ``反引号
-  - 内容拼接的时候，使用＄{}
-
-#### 函数
-
-- 介绍：函数（funcition）是被设计用来执行特定任务的代码块，方便程序的封装复用。
-
-- 定义：JavaScript中的函数通过function关键字进行定义，语法为：
-
+                <h1 id="day2"><a href="#day2" class="headerlink" title="day2"></a>day2</h1><p>JavaScript  js负责网页的行为</p>
+<ul>
+<li>JavaScript（简称js）是一门跨平台，面向对象的脚本语言，是用来控制网页行为，实现页面的交互效果。</li>
+<li>组成：<ul>
+<li>ECMAScript：规定了js基础语法核心知识，包括变量、数据类型、流程控制、函数、对象等。</li>
+<li>BOM:浏览器对象模型，用于操作浏览器本身，如：页面弹窗、地址栏操作、关闭窗口等。</li>
+<li>DOM：文档对象模型，用于操作html文档，如：改变标签内的内容、改变标签内字体样式等。</li>
+</ul>
+</li>
+</ul>
+<p>JavaScript和Java是完全不同的语言，不论是概念还是设计，但是基础语法类似。</p>
+<p>ECMA国际，制定了标准化的脚本程序设计语言ECMAScript，这种语言得到广泛应用。而JavaScript是遵守ECMAScript的标准的。</p>
+<ul>
+<li>JS核心语法</li>
+<li>JS事件监听</li>
+</ul>
+<h2 id="JS核心语法"><a href="#JS核心语法" class="headerlink" title="JS核心语法"></a>JS核心语法</h2><h3 id="引入方式"><a href="#引入方式" class="headerlink" title="引入方式"></a>引入方式</h3><ul>
+<li><p>内部脚本：将JS代码定义在HTML页面中</p>
+<ul>
+<li>JavaScript代码必须位于<script></script>中</li>
+<li>在HTML文档中，可以在任何地方放置任意的script标签</li>
+<li>一般会把脚本置于body元素的底部，可改善显示速度</li>
+</ul>
+</li>
+<li><p>外部脚本：</p>
+<ul>
+<li>将JS代码定义在外部JS文件中，然后引入HTML页面中</li>
+</ul>
+</li>
+</ul>
+<h3 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h3><h4 id="变量-常量"><a href="#变量-常量" class="headerlink" title="变量&amp;常量"></a>变量&amp;常量</h4><ul>
+<li><p>JS中用let关键字来声明变量（弱类型语言，变量可以存放不同类型的值）</p>
+</li>
+<li><p>变量名需遵循如下规则：</p>
+<ul>
+<li>只能用数字、字母、下划线、美元符号组成，且数字不能开头</li>
+<li>变量名严格区分大小写，如name和Name是不同的变量</li>
+<li>不能使用关键字，如let、var、if、for等。</li>
+</ul>
+</li>
+<li><p>JS中用const关键字来声明常量</p>
+</li>
+<li><p>一旦声明，常量不可修改。</p>
+</li>
+</ul>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><ul>
+<li><p>JavaScript的数据类型分为：基本数据类型和引用数据类型（对象）</p>
+</li>
+<li><p>基本数据类型：</p>
+<ul>
+<li>number：数字（整数、小数、NAN）</li>
+<li>boolean：布尔</li>
+<li>null：对象为空    typeof返回的是object</li>
+<li>undefined：当声明的变量未初始化时</li>
+<li>string：字符串 反引号 单引号 双引号</li>
+</ul>
+</li>
+<li><p>typeof获取数据类型</p>
+</li>
+<li><p>模板字符串语法：</p>
+<ul>
+<li>&#96;&#96;反引号</li>
+<li>内容拼接的时候，使用＄{}</li>
+</ul>
+</li>
+</ul>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><ul>
+<li><p>介绍：函数（funcition）是被设计用来执行特定任务的代码块，方便程序的封装复用。</p>
+</li>
+<li><p>定义：JavaScript中的函数通过function关键字进行定义，语法为：</p>
+</li>
+</ul>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fuctionname</span>(<span class="hljs-params">参数<span class="hljs-number">1</span>，参数<span class="hljs-number">2.</span>..</span>)&#123;<br>    <span class="hljs-comment">//执行的代码</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-#### 匿名函数
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> add=<span class="hljs-keyword">function</span>(<span class="hljs-params">a,b</span>)&#123;<br>    <span class="hljs-keyword">return</span> a+b<br>&#125;<br><span class="hljs-keyword">let</span> <span class="hljs-title function_">add</span>=(<span class="hljs-params">a,b</span>)=&gt;&#123;<br>    <span class="hljs-keyword">return</span> a+b<br>&#125;<br></code></pre></td></tr></table></figure>
-
-#### 自定义对象
-
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> 对象名=&#123;<br>    属性名<span class="hljs-number">1</span>：属性值<span class="hljs-number">1</span>,<br>    属性名<span class="hljs-number">2</span>：属性值<span class="hljs-number">2</span>,<br>    方法名：<span class="hljs-title function_">funciton</span>(<span class="hljs-params">形参列表</span>)&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-在箭头函数中this指向的不是当前对象，指向的是当前对象的父级
-
-#### json
-
-- 概念JavaScript Object Notation JavaScript对象标记法
-- 由于其语法简单，层次结构鲜明，现多用于作为数据载体，在网络中进行传输。
-
-js转json  JSON.stringfy()
-
-json转js JSON.parse()
-
-### DOM
-
-- 概念 Document Object Model，文档对象模型
-- 将标记语言的各个组成部分封装为对应的对象：
-  - Document：整个文档对象
-  - Element：元素对象
-  - Atrribute：属性对象
-  - Text：文本对象
-  - Comment：注释对象
-
-将HTML页面转化为js的对象
-
-DOM树
-
-- JavaScript通过DOM，就能够对HTML进行操作：
-  - 改变HTML元素的内容
-  - 改变HTML元素的样式
-  - 对HTML DOM事件做出响应
-  - 添加和删除HTML元素
-
-#### DOM操作
-
-把页面上所有元素当作对象来处理
-
-- 操作步骤：
-  - 获取要操作的DOM元素对象
-  - 操作DOM对象的属性或方法
-
-- 获取DOM对象
-
-  - 根据CSS选择器来获取DOM元素，获取匹配到的第一个元素：document.querySelector('选择器')
-  - 根据CSS选择器来获取DOM元素，获取匹配到的所有元素：document.querySelectorAll('选择器')
-
-  注意：得到的是一个NodeList节点集合，是一个伪数组（有长度、有索引的数组）
-
-### 事件监听
-
-- 事件：HTML事件是发生在HTML元素上的“事情”。比如：
-  - 按钮被点击
-  - 鼠标移动到元素
-  - 按下键盘按键
-- 事件监听：JavaScript可以在事件触发时，就立即调用一个函数做出响应，也称为事件绑定或注册事件。
-
-#### 语法
-
-语法：事件源.addEventListener('事件类型'，事件触发执行的函数)；
-
-- 事件监听三要素
-  - 事件源：哪个dom元素触发了事件，要获取dom元素
-  - 事件类型：用什么方式触发，比如鼠标单击
-  - 事件触发执行函数：要做什么事
-
-早期写法 （了解）：事件源.on事件=function(){...}
-
-新语法：可以多次绑定同一事件
-
-老语法：如果多次绑定同一事件就会覆盖事件监听触发的事件
-
-
-
-子元素的背景色会覆盖父元素的背景色。
-
-#### 常见事件
-
-1、鼠标事件 click、mouseenter、mouseleave
-
-2、键盘事件 keydown、keyup、
-
-3、焦点事件 focus、blur
-
-4、表单事件 input、submit
-
-#### JS模块化
-
-如果一个js要用另一个js的函数 需要import {}from xxx
-
-另一个js的函数需要export
-
-模块化js
-
-script 标签里面设置 type属性为module
-
-## Vue
-
-- Vue是一款用于**构建用户界面**的**渐进式**的JavaScript框架
-
-构建用户界面：基于数据渲染出用于看到的界面
-
-渐进式：可以根据开发者需求选择Vue的组件
-
-主要分为：Vue核心包开发（局部，模块改造）、Vue核心包 Vue插件工程化开发（整站开发）
-
-![image-20250906162621593](/img/posts/2025-09-09-Java-02.javaweb-day2-image-20250906162621593.png)
-
-- 框架：就是一套完整的项目解决方案，用于快速构建项目。
-- 优点：大大提升前端项目的开发效率。
-- 缺点：需要理解记忆框架的使用规则。
-
-### Vue快速入门
-
-- 准备：
-  - 引入Vue模块（官方提供）
-  - 创建Vue程序应用实例，控制视图的元素
-  - 准备元素（div），被Vue控制
-- 数据驱动视图
-  - 准备数据
-  - 通过插值表达式渲染页面
-
-> 引入createApp函数从Vue中，然后调用createApp函数 形参是一个对象   createApp函数返回的调用mount方法指定div标签的某个id ‘#APP’
-
-> 在createApp函数中调用方法的参数中要声明一种方法为data方法 这个data方法的返回值就是我们定义的数据 return返回的是对象 返回的对象内容是vue应用实例所定义的数据。
-
-插值表达式为{{}}嵌套的两个大括号
-
-Vue的 data一整个部分要基于后端发送的信息来特殊定制
-
-### 常用指令
-
-- 指令：HTML标签上带有 v-前缀的特殊属性，不同的指令具有不同的含义，可以实现不同的功能。
-
-| 指令                  | 作用                                                 |
-| --------------------- | ---------------------------------------------------- |
-| v-for                 | 列表渲染                                             |
-| v-bind                | 为HTML标签捆绑属性                                   |
-| v-if/v-else-if/v-else | 条件性渲染某元素                                     |
-| v-show                | 根据条件展示某元素                                   |
-| v-model               | 在表单元素上创建双向数据绑定（动态获取表单值or设置） |
-| v-on                  | 为HTML标签绑定事件                                   |
-
--  v-for
-
-<tr v-for="for (item,index) in items":key="item.id">{{item}}</tr>
-
-key作为元素的唯一标识，便于vue进行列表项的正确排序复用，提升渲染性能。
-
-插值表达式不能加入到标签内 所以有了v-bind为标签捆绑属性值
-
-- v-bind
-
-语法： v-bind:属性名=“属性值”
-
-简化：:属性名=“属性值”
-
-- v-if/v-show
-
-- v-if
-
- 语法： v-if=“表达式”，表达式true显示否则隐藏
-
-原理：基于条件判断，来控制创建或移除元素节点（条件渲染）  不频繁显示的场景
-
-其他 v-else-if  v-else
-
-- v-show
-
-语法 v-show=“表达式” true显示否则隐藏
-
-原来：基于CSS样式的display来控制和显示与隐藏	频繁显示的场景
-
-- v-model
-
-作用：在表单元素上使用，双向数据绑定。可以方便的获取或设置表单项数据
-
-语法：v-model=“变量名”
-
-注意：v-model中绑定的变量，必须在data中定义(createApp)
-
-- v-on
-
-作用：为html标签绑定事件
-
-语法：
-
- v-on:事件名="方法名"
-
-简写为：@事件名=“...”
-
-## Ajax
-
-发送请求给服务端以及接收服务端发送的信息。
-
-- 介绍：Asychronous JavaScript And XML 异步的JavaScript和XML
-
-XML：Extensible Markup Language 可扩展**标记语言**，本质是一种数据格式，可以用来存储复杂的数据结构
-
-HTML也是标记语言 有标签
-
-作用：
-
-- 数据交换：通过Ajax可以给服务器发送请求，并获取服务器响应的数据
-- 异步交互：可以在不重新加载整个页面的情况下，与服务器交换数据并更新部分网页的技术，如：搜索联想、用户名是否可用的校验等。
-
- ### Axios
-
-- 介绍：Axios对原生的Ajax进行封装，简化书写，快速开发。
-- 官网 http://www.axios-http.cn/
-- 步骤：
-  - 引入Axios的js文件(参照官网)
-  - 使用Axios发送情况，并获取响应结果。
-
-### Axios-请求方式别名
-
-- 为了方便起见，Axios已经为所有支持的请求方法提供了别名
-- 格式：axios.请求方式(url,[,data[,config]])
-
+<h4 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> add=<span class="hljs-keyword">function</span>(<span class="hljs-params">a,b</span>)&#123;<br>    <span class="hljs-keyword">return</span> a+b<br>&#125;<br><span class="hljs-keyword">let</span> <span class="hljs-title function_">add</span>=(<span class="hljs-params">a,b</span>)=&gt;&#123;<br>    <span class="hljs-keyword">return</span> a+b<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="自定义对象"><a href="#自定义对象" class="headerlink" title="自定义对象"></a>自定义对象</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">let</span> 对象名=&#123;<br>    属性名<span class="hljs-number">1</span>：属性值<span class="hljs-number">1</span>,<br>    属性名<span class="hljs-number">2</span>：属性值<span class="hljs-number">2</span>,<br>    方法名：<span class="hljs-title function_">funciton</span>(<span class="hljs-params">形参列表</span>)&#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在箭头函数中this指向的不是当前对象，指向的是当前对象的父级</p>
+<h4 id="json"><a href="#json" class="headerlink" title="json"></a>json</h4><ul>
+<li>概念JavaScript Object Notation JavaScript对象标记法</li>
+<li>由于其语法简单，层次结构鲜明，现多用于作为数据载体，在网络中进行传输。</li>
+</ul>
+<p>js转json  JSON.stringfy()</p>
+<p>json转js JSON.parse()</p>
+<h3 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h3><ul>
+<li>概念 Document Object Model，文档对象模型</li>
+<li>将标记语言的各个组成部分封装为对应的对象：<ul>
+<li>Document：整个文档对象</li>
+<li>Element：元素对象</li>
+<li>Atrribute：属性对象</li>
+<li>Text：文本对象</li>
+<li>Comment：注释对象</li>
+</ul>
+</li>
+</ul>
+<p>将HTML页面转化为js的对象</p>
+<p>DOM树</p>
+<ul>
+<li>JavaScript通过DOM，就能够对HTML进行操作：<ul>
+<li>改变HTML元素的内容</li>
+<li>改变HTML元素的样式</li>
+<li>对HTML DOM事件做出响应</li>
+<li>添加和删除HTML元素</li>
+</ul>
+</li>
+</ul>
+<h4 id="DOM操作"><a href="#DOM操作" class="headerlink" title="DOM操作"></a>DOM操作</h4><p>把页面上所有元素当作对象来处理</p>
+<ul>
+<li><p>操作步骤：</p>
+<ul>
+<li>获取要操作的DOM元素对象</li>
+<li>操作DOM对象的属性或方法</li>
+</ul>
+</li>
+<li><p>获取DOM对象</p>
+<ul>
+<li>根据CSS选择器来获取DOM元素，获取匹配到的第一个元素：document.querySelector(‘选择器’)</li>
+<li>根据CSS选择器来获取DOM元素，获取匹配到的所有元素：document.querySelectorAll(‘选择器’)</li>
+</ul>
+<p>注意：得到的是一个NodeList节点集合，是一个伪数组（有长度、有索引的数组）</p>
+</li>
+</ul>
+<h3 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h3><ul>
+<li>事件：HTML事件是发生在HTML元素上的“事情”。比如：<ul>
+<li>按钮被点击</li>
+<li>鼠标移动到元素</li>
+<li>按下键盘按键</li>
+</ul>
+</li>
+<li>事件监听：JavaScript可以在事件触发时，就立即调用一个函数做出响应，也称为事件绑定或注册事件。</li>
+</ul>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><p>语法：事件源.addEventListener(‘事件类型’，事件触发执行的函数)；</p>
+<ul>
+<li>事件监听三要素<ul>
+<li>事件源：哪个dom元素触发了事件，要获取dom元素</li>
+<li>事件类型：用什么方式触发，比如鼠标单击</li>
+<li>事件触发执行函数：要做什么事</li>
+</ul>
+</li>
+</ul>
+<p>早期写法 （了解）：事件源.on事件&#x3D;function(){…}</p>
+<p>新语法：可以多次绑定同一事件</p>
+<p>老语法：如果多次绑定同一事件就会覆盖事件监听触发的事件</p>
+<p>子元素的背景色会覆盖父元素的背景色。</p>
+<h4 id="常见事件"><a href="#常见事件" class="headerlink" title="常见事件"></a>常见事件</h4><p>1、鼠标事件 click、mouseenter、mouseleave</p>
+<p>2、键盘事件 keydown、keyup、</p>
+<p>3、焦点事件 focus、blur</p>
+<p>4、表单事件 input、submit</p>
+<h4 id="JS模块化"><a href="#JS模块化" class="headerlink" title="JS模块化"></a>JS模块化</h4><p>如果一个js要用另一个js的函数 需要import {}from xxx</p>
+<p>另一个js的函数需要export</p>
+<p>模块化js</p>
+<p>script 标签里面设置 type属性为module</p>
+<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><ul>
+<li>Vue是一款用于<strong>构建用户界面</strong>的<strong>渐进式</strong>的JavaScript框架</li>
+</ul>
+<p>构建用户界面：基于数据渲染出用于看到的界面</p>
+<p>渐进式：可以根据开发者需求选择Vue的组件</p>
+<p>主要分为：Vue核心包开发（局部，模块改造）、Vue核心包 Vue插件工程化开发（整站开发）</p>
+<p><img src="/img/posts/2025-09-09-Java-02.javaweb-day2-image-20250906162621593.png" srcset="/img/loading.gif" lazyload alt="image-20250906162621593"></p>
+<ul>
+<li>框架：就是一套完整的项目解决方案，用于快速构建项目。</li>
+<li>优点：大大提升前端项目的开发效率。</li>
+<li>缺点：需要理解记忆框架的使用规则。</li>
+</ul>
+<h3 id="Vue快速入门"><a href="#Vue快速入门" class="headerlink" title="Vue快速入门"></a>Vue快速入门</h3><ul>
+<li>准备：<ul>
+<li>引入Vue模块（官方提供）</li>
+<li>创建Vue程序应用实例，控制视图的元素</li>
+<li>准备元素（div），被Vue控制</li>
+</ul>
+</li>
+<li>数据驱动视图<ul>
+<li>准备数据</li>
+<li>通过插值表达式渲染页面</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>引入createApp函数从Vue中，然后调用createApp函数 形参是一个对象   createApp函数返回的调用mount方法指定div标签的某个id ‘#APP’</p>
+</blockquote>
+<blockquote>
+<p>在createApp函数中调用方法的参数中要声明一种方法为data方法 这个data方法的返回值就是我们定义的数据 return返回的是对象 返回的对象内容是vue应用实例所定义的数据。</p>
+</blockquote>
+<p>插值表达式为&#123;&#123;&#125;&#125;嵌套的两个大括号</p>
+<p>Vue的 data一整个部分要基于后端发送的信息来特殊定制</p>
+<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><ul>
+<li>指令：HTML标签上带有 v-前缀的特殊属性，不同的指令具有不同的含义，可以实现不同的功能。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v-for</td>
+<td>列表渲染</td>
+</tr>
+<tr>
+<td>v-bind</td>
+<td>为HTML标签捆绑属性</td>
+</tr>
+<tr>
+<td>v-if&#x2F;v-else-if&#x2F;v-else</td>
+<td>条件性渲染某元素</td>
+</tr>
+<tr>
+<td>v-show</td>
+<td>根据条件展示某元素</td>
+</tr>
+<tr>
+<td>v-model</td>
+<td>在表单元素上创建双向数据绑定（动态获取表单值or设置）</td>
+</tr>
+<tr>
+<td>v-on</td>
+<td>为HTML标签绑定事件</td>
+</tr>
+</tbody></table>
+<ul>
+<li>v-for</li>
+</ul>
+<tr v-for="for (item,index) in items":key="item.id">&#123;&#123;item&#125;&#125;</tr>
+
+<p>key作为元素的唯一标识，便于vue进行列表项的正确排序复用，提升渲染性能。</p>
+<p>插值表达式不能加入到标签内 所以有了v-bind为标签捆绑属性值</p>
+<ul>
+<li>v-bind</li>
+</ul>
+<p>语法： v-bind:属性名&#x3D;“属性值”</p>
+<p>简化：:属性名&#x3D;“属性值”</p>
+<ul>
+<li><p>v-if&#x2F;v-show</p>
+</li>
+<li><p>v-if</p>
+</li>
+</ul>
+<p> 语法： v-if&#x3D;“表达式”，表达式true显示否则隐藏</p>
+<p>原理：基于条件判断，来控制创建或移除元素节点（条件渲染）  不频繁显示的场景</p>
+<p>其他 v-else-if  v-else</p>
+<ul>
+<li>v-show</li>
+</ul>
+<p>语法 v-show&#x3D;“表达式” true显示否则隐藏</p>
+<p>原来：基于CSS样式的display来控制和显示与隐藏	频繁显示的场景</p>
+<ul>
+<li>v-model</li>
+</ul>
+<p>作用：在表单元素上使用，双向数据绑定。可以方便的获取或设置表单项数据</p>
+<p>语法：v-model&#x3D;“变量名”</p>
+<p>注意：v-model中绑定的变量，必须在data中定义(createApp)</p>
+<ul>
+<li>v-on</li>
+</ul>
+<p>作用：为html标签绑定事件</p>
+<p>语法：</p>
+<p> v-on:事件名&#x3D;”方法名”</p>
+<p>简写为：@事件名&#x3D;“…”</p>
+<h2 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h2><p>发送请求给服务端以及接收服务端发送的信息。</p>
+<ul>
+<li>介绍：Asychronous JavaScript And XML 异步的JavaScript和XML</li>
+</ul>
+<p>XML：Extensible Markup Language 可扩展<strong>标记语言</strong>，本质是一种数据格式，可以用来存储复杂的数据结构</p>
+<p>HTML也是标记语言 有标签</p>
+<p>作用：</p>
+<ul>
+<li>数据交换：通过Ajax可以给服务器发送请求，并获取服务器响应的数据</li>
+<li>异步交互：可以在不重新加载整个页面的情况下，与服务器交换数据并更新部分网页的技术，如：搜索联想、用户名是否可用的校验等。</li>
+</ul>
+<h3 id="Axios"><a href="#Axios" class="headerlink" title="Axios"></a>Axios</h3><ul>
+<li>介绍：Axios对原生的Ajax进行封装，简化书写，快速开发。</li>
+<li>官网 <a target="_blank" rel="noopener" href="http://www.axios-http.cn/">http://www.axios-http.cn/</a></li>
+<li>步骤：<ul>
+<li>引入Axios的js文件(参照官网)</li>
+<li>使用Axios发送情况，并获取响应结果。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Axios-请求方式别名"><a href="#Axios-请求方式别名" class="headerlink" title="Axios-请求方式别名"></a>Axios-请求方式别名</h3><ul>
+<li>为了方便起见，Axios已经为所有支持的请求方法提供了别名</li>
+<li>格式：axios.请求方式(url,[,data[,config]])</li>
+</ul>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">//axios发送异步请求get</span><br>       <span class="hljs-comment">//    axios(&#123;</span><br>       <span class="hljs-comment">//     url:&#x27; https://mock.apifox.cn/m1/3083103-0-default/emps/list&#x27;,</span><br>       <span class="hljs-comment">//     method:&#x27;get&#x27;</span><br>       <span class="hljs-comment">//    &#125;).then((result)=&gt;&#123; //成功回调</span><br>       <span class="hljs-comment">//         console.log(result.data)</span><br>       <span class="hljs-comment">//    &#125;).catch((err)=&gt;&#123;  //失败回调</span><br>       <span class="hljs-comment">//         console.log(err)</span><br>       <span class="hljs-comment">//    &#125;)</span><br>           axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;https://mock.apifox.cn/m1/3083103-0-default/emps/list&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">result</span>)=&gt;</span>&#123; <span class="hljs-comment">//成功回调</span><br>               <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">data</span>)<br>           &#125;).<span class="hljs-title function_">catch</span>(<span class="hljs-function">(<span class="hljs-params">err</span>)=&gt;</span>&#123;  <span class="hljs-comment">//失败回调</span><br>               <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)<br>           &#125;)<br><span class="hljs-comment">//Post</span><br><span class="hljs-comment">//     axios(&#123;</span><br>       <span class="hljs-comment">//     url:&#x27;https://mock.apifox.cn/m1/3083103-0-default/emps/update&#x27;,</span><br>       <span class="hljs-comment">//     method:&#x27;post&#x27;,</span><br>       <span class="hljs-comment">//     data:&#x27;id=1&#x27;//post请求方式，请求体</span><br>       <span class="hljs-comment">//    &#125;).then((result)=&gt;&#123; //成功回调</span><br>       <span class="hljs-comment">//         console.log(result.data)</span><br>       <span class="hljs-comment">//    &#125;).catch((err)=&gt;&#123;  //失败回调</span><br>       <span class="hljs-comment">//         console.log(err)</span><br>       <span class="hljs-comment">//    &#125;)</span><br>           axios.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;https://mock.apifox.cn/m1/3083103-0-default/emps/update&#x27;</span>, <span class="hljs-string">&#x27;id=1&#x27;</span>)..<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">result</span>) =&gt;</span> &#123;<br>               <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result.<span class="hljs-property">data</span>)<br>           &#125;).<span class="hljs-title function_">catch</span>(<span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;<br>               <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)<br>           &#125;);<br>       &#125;)<br></code></pre></td></tr></table></figure>
 
-注意：异步交互请求消息并不会等待。
-
-### async&await
-
-- 可以通过async、await可以让异步变成同步操作。async就是来声明一个异步方法，await是用来等待异步任务执行。
-
+<p>注意：异步交互请求消息并不会等待。</p>
+<h3 id="async-await"><a href="#async-await" class="headerlink" title="async&amp;await"></a>async&amp;await</h3><ul>
+<li>可以通过async、await可以让异步变成同步操作。async就是来声明一个异步方法，await是用来等待异步任务执行。</li>
+</ul>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-attr">method</span>:&#123;<br>    <span class="hljs-keyword">async</span> <span class="hljs-title function_">search</span>(<span class="hljs-params"></span>)&#123;<br>        <span class="hljs-keyword">let</span> result=<span class="hljs-keyword">await</span> axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;&#x27;</span>);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">employee</span>=result.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-注意：await关键字只在async函数内有效，await关键字取代then函数，等待获取到请求成功的结果值。
-
-### Vue生命周期
-
-如何做到在页面加载完毕后自动发起请求，请求服务端？
-
-vue生命周期
-
-- 生命周期：指一个对象从创建到销毁的过程
-- 生命周期的八个阶段：每触发一个生命周期事件，会自动执行一个生命周期方法（钩子）。
-
-beforeCreate、created、beforeMount、mounted、beforUpdate、Update、beforeUnmount、unmounted
-
-- 生命周期的八个阶段：每触发一个生命周期事件，会自动执行一个生命周期方法（钩子）
-
-一般来说在mounted挂载阶段的时候发送请求数据
-
-
+<p>注意：await关键字只在async函数内有效，await关键字取代then函数，等待获取到请求成功的结果值。</p>
+<h3 id="Vue生命周期"><a href="#Vue生命周期" class="headerlink" title="Vue生命周期"></a>Vue生命周期</h3><p>如何做到在页面加载完毕后自动发起请求，请求服务端？</p>
+<p>vue生命周期</p>
+<ul>
+<li>生命周期：指一个对象从创建到销毁的过程</li>
+<li>生命周期的八个阶段：每触发一个生命周期事件，会自动执行一个生命周期方法（钩子）。</li>
+</ul>
+<p>beforeCreate、created、beforeMount、mounted、beforUpdate、Update、beforeUnmount、unmounted</p>
+<ul>
+<li>生命周期的八个阶段：每触发一个生命周期事件，会自动执行一个生命周期方法（钩子）</li>
+</ul>
+<p>一般来说在mounted挂载阶段的时候发送请求数据</p>
 
                 
               </div>

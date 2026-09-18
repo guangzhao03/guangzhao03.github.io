@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day8  ## 代码块  - 代码块是类的五大成分之一（成员变量、构造器、方法、代码块、内部类）  代码块主要分为：静态代码块和实例代码块  ### 静态代码块  格式：static{}  特点：**类加载**时自动执行，由于类只会加载一次，所以静态代码块也只会执行一次。  作用：完成类的初始化，例如：对静态变量的初始化赋值。  Arrays.toString()  打印数组的内容  ##">
+    <meta name="description" content="day8代码块 代码块是类的五大成分之一（成员变量、构造器、方法、代码块、内部类）  代码块主要分为：静态代码块和实例代码块 静态代码块格式：static{} 特点：类加载时自动执行，由于类只会加载一次，所以静态代码块也只会执行一次。 作用：完成类的初始化，例如：对静态变量的初始化赋值。 Arrays.toString() 打印数组的内容 实例代码块格式：{} 特点：每次创建对象时候，执行实例代码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day8">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/06/21/2025-06-21-Java-01.SE-day8/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day8  ## 代码块  - 代码块是类的五大成分之一（成员变量、构造器、方法、代码块、内部类）  代码块主要分为：静态代码块和实例代码块  ### 静态代码块  格式：static{}  特点：**类加载**时自动执行，由于类只会加载一次，所以静态代码块也只会执行一次。  作用：完成类的初始化，例如：对静态变量的初始化赋值。  Arrays.toString()  打印数组的内容  ##">
+<meta property="og:description" content="day8代码块 代码块是类的五大成分之一（成员变量、构造器、方法、代码块、内部类）  代码块主要分为：静态代码块和实例代码块 静态代码块格式：static{} 特点：类加载时自动执行，由于类只会加载一次，所以静态代码块也只会执行一次。 作用：完成类的初始化，例如：对静态变量的初始化赋值。 Arrays.toString() 打印数组的内容 实例代码块格式：{} 特点：每次创建对象时候，执行实例代码">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-21T15:52:31.000Z">
 <meta property="article:modified_time" content="2025-06-21T15:52:31.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.6k 字
+          5.4k 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          47 分钟
+          45 分钟
         
       </span>
     
@@ -382,301 +382,214 @@
             
               <div class="markdown-body">
                 
-                
-# day8
-
-## 代码块
-
-- 代码块是类的五大成分之一（成员变量、构造器、方法、代码块、内部类）
-
-代码块主要分为：静态代码块和实例代码块
-
-### 静态代码块
-
-格式：static{}
-
-特点：**类加载**时自动执行，由于类只会加载一次，所以静态代码块也只会执行一次。
-
-作用：完成类的初始化，例如：对静态变量的初始化赋值。
-
-Arrays.toString()
-
-打印数组的内容
-
-### 实例代码块
-
-格式：{}
-
-特点：每次创建**对象**时候，执行实例代码块，并在构造器前执行。
-
-作用：和构造器一样，都是用来完成对象的初始化，例如：对实例变量进行初始化赋值。
-
-## 内部类
-
-- 如果一个类定义在一个类的内部，这个类就是内部类。
-- 场景：当一个类的内部，包含了一个完整的事物，且这个事物没有必要单独设计时，就可以把这个事物设计为内部类。
-
-四种：成员内部类、静态内部类、局部内部类、**匿名内部类**
-
-### 成员内部类
-
-无static修饰，属于外部类的对象持有的。
-
-Outer.Inner oi=new Outer().new Inner();
-
-oi.show();
-
-成员内部类访问外部类的特点（扩展）
-
-1. 成员内部类中可以直接访问外部类的静态成员，也可以直接访问外部类的实例成员
-2. 成员内部类的实例方法中，可以直接拿到当前寄生的外部类对象，外部类名.this
-
-### 静态内部类
-
-外部类名.内部类名 对象名=new 外部类.内部类()
-
-Outer.Inner in=new Outer.Inner();
-
-1. 静态内部类中是否可以直接访问外部类的静态成员？可以 
-2. 静态内部类中是否可以直接访问外部类的实例成员？不可以
-
-### 局部内部类
-
-在方法中定义的局部内部类
-
-### 匿名内部类
-
-- 特殊的局部内部类；
-- 所谓匿名：指得程序员不需要为这个类声明名字，默认有个隐藏的名字。
-
+                <h1 id="day8"><a href="#day8" class="headerlink" title="day8"></a>day8</h1><h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><ul>
+<li>代码块是类的五大成分之一（成员变量、构造器、方法、代码块、内部类）</li>
+</ul>
+<p>代码块主要分为：静态代码块和实例代码块</p>
+<h3 id="静态代码块"><a href="#静态代码块" class="headerlink" title="静态代码块"></a>静态代码块</h3><p>格式：static{}</p>
+<p>特点：<strong>类加载</strong>时自动执行，由于类只会加载一次，所以静态代码块也只会执行一次。</p>
+<p>作用：完成类的初始化，例如：对静态变量的初始化赋值。</p>
+<p>Arrays.toString()</p>
+<p>打印数组的内容</p>
+<h3 id="实例代码块"><a href="#实例代码块" class="headerlink" title="实例代码块"></a>实例代码块</h3><p>格式：{}</p>
+<p>特点：每次创建<strong>对象</strong>时候，执行实例代码块，并在构造器前执行。</p>
+<p>作用：和构造器一样，都是用来完成对象的初始化，例如：对实例变量进行初始化赋值。</p>
+<h2 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h2><ul>
+<li>如果一个类定义在一个类的内部，这个类就是内部类。</li>
+<li>场景：当一个类的内部，包含了一个完整的事物，且这个事物没有必要单独设计时，就可以把这个事物设计为内部类。</li>
+</ul>
+<p>四种：成员内部类、静态内部类、局部内部类、<strong>匿名内部类</strong></p>
+<h3 id="成员内部类"><a href="#成员内部类" class="headerlink" title="成员内部类"></a>成员内部类</h3><p>无static修饰，属于外部类的对象持有的。</p>
+<p>Outer.Inner oi&#x3D;new Outer().new Inner();</p>
+<p>oi.show();</p>
+<p>成员内部类访问外部类的特点（扩展）</p>
+<ol>
+<li>成员内部类中可以直接访问外部类的静态成员，也可以直接访问外部类的实例成员</li>
+<li>成员内部类的实例方法中，可以直接拿到当前寄生的外部类对象，外部类名.this</li>
+</ol>
+<h3 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h3><p>外部类名.内部类名 对象名&#x3D;new 外部类.内部类()</p>
+<p>Outer.Inner in&#x3D;new Outer.Inner();</p>
+<ol>
+<li>静态内部类中是否可以直接访问外部类的静态成员？可以 </li>
+<li>静态内部类中是否可以直接访问外部类的实例成员？不可以</li>
+</ol>
+<h3 id="局部内部类"><a href="#局部内部类" class="headerlink" title="局部内部类"></a>局部内部类</h3><p>在方法中定义的局部内部类</p>
+<h3 id="匿名内部类"><a href="#匿名内部类" class="headerlink" title="匿名内部类"></a>匿名内部类</h3><ul>
+<li>特殊的局部内部类；</li>
+<li>所谓匿名：指得程序员不需要为这个类声明名字，默认有个隐藏的名字。</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">new</span> 类或者接口&#123;					<span class="hljs-keyword">new</span> <span class="hljs-title class_">Animal</span>&#123;<br>    类体（一般是方法重写） 			<span class="hljs-meta">@overrider</span><br>        							<span class="hljs-keyword">public</span> <span class="hljs-type">void</span> <span class="hljs-title function_">cry</span><span class="hljs-params">()</span>&#123;&#125;<br>&#125;;								&#125;;<br></code></pre></td></tr></table></figure>
 
-- 特点：匿名内部类本质是一个子类，并会立即创建出一个子类对象。
-- 作用：用于更方便的创建一个子类对象
-
-匿名内部类实际上有一个名字：外部类$编号.class
-
-内名内部类本质是子类，同时还会立即创建一个子类对象
-
-#### 常见使用场景
-
-- 通常作为一个对象参数传输给方法。
-- 需求：学生，老师要参加游泳比赛。
-
-#### 应用场景
-
-- 调用别人提供的方法实现需求时，这个方法正好可以让我们传输一个匿名内部类对象给其使用。
-
-> 例如 一个button的.addActionListener()   接受的是个接口对象，我们直接用匿名内部类创建对象并重写接口的方法
-
-开发中不是我们主动去写匿名内部类，而是我们要用别人的功能的时候，别人可以让我们写一个匿名内部类，我们才写。
-
-### 函数式编程
-
-Lambda、方法引用
-
-此函数类似数学中的函数（强调做什么），只要输入的数据一致返回的结果也一致。
-
-Java中的函数 （Lambda表达式）：(x)->2x+1
-
-- 使用Lambda函数替代某些匿名内部类对象，从而让程序代码更简洁，可读性更好。
-
-#### Lambda表达式
-
-- JDK8开始新增的一种语法形式，他表示函数。
-- 可以用于替代某些匿名内部类对象，从而让程序更加简洁，可读性更好。
-
-(被重写方法的形参列表)->{
-
-​	被重写方法的方法体代码。
-
-}
-
-**Lambda并不是可以简化全部的匿名内部类，Lambda只能简化函数接口式的匿名内部类**
-
-> 函数式接口：有且只有一个抽象方法的接口。
-
-@FunctionalInterface //声明式函数式接口的注解
-
-原理可以进行上下文推断。
-
-#### Lambda表达式的省略规则
-
-作用：进一步简化Lambda表达式
-
-具体规则：
-
-- 参数类型全部可以省略不写。
-- 如果只有一个参数，参数类型省略的同时“()”也可以省略，但多个参数不能省略“()”
-- 如果Lambda表达式中只有一行代码，大括号可以不写，同时要省略分号";"，如果这行代码式return语句，也必须去掉return.
-
+<ul>
+<li>特点：匿名内部类本质是一个子类，并会立即创建出一个子类对象。</li>
+<li>作用：用于更方便的创建一个子类对象</li>
+</ul>
+<p>匿名内部类实际上有一个名字：外部类$编号.class</p>
+<p>内名内部类本质是子类，同时还会立即创建一个子类对象</p>
+<h4 id="常见使用场景"><a href="#常见使用场景" class="headerlink" title="常见使用场景"></a>常见使用场景</h4><ul>
+<li>通常作为一个对象参数传输给方法。</li>
+<li>需求：学生，老师要参加游泳比赛。</li>
+</ul>
+<h4 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h4><ul>
+<li>调用别人提供的方法实现需求时，这个方法正好可以让我们传输一个匿名内部类对象给其使用。</li>
+</ul>
+<blockquote>
+<p>例如 一个button的.addActionListener()   接受的是个接口对象，我们直接用匿名内部类创建对象并重写接口的方法</p>
+</blockquote>
+<p>开发中不是我们主动去写匿名内部类，而是我们要用别人的功能的时候，别人可以让我们写一个匿名内部类，我们才写。</p>
+<h3 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h3><p>Lambda、方法引用</p>
+<p>此函数类似数学中的函数（强调做什么），只要输入的数据一致返回的结果也一致。</p>
+<p>Java中的函数 （Lambda表达式）：(x)-&gt;2x+1</p>
+<ul>
+<li>使用Lambda函数替代某些匿名内部类对象，从而让程序代码更简洁，可读性更好。</li>
+</ul>
+<h4 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h4><ul>
+<li>JDK8开始新增的一种语法形式，他表示函数。</li>
+<li>可以用于替代某些匿名内部类对象，从而让程序更加简洁，可读性更好。</li>
+</ul>
+<p>(被重写方法的形参列表)-&gt;{</p>
+<p>​	被重写方法的方法体代码。</p>
+<p>}</p>
+<p><strong>Lambda并不是可以简化全部的匿名内部类，Lambda只能简化函数接口式的匿名内部类</strong></p>
+<blockquote>
+<p>函数式接口：有且只有一个抽象方法的接口。</p>
+</blockquote>
+<p>@FunctionalInterface &#x2F;&#x2F;声明式函数式接口的注解</p>
+<p>原理可以进行上下文推断。</p>
+<h4 id="Lambda表达式的省略规则"><a href="#Lambda表达式的省略规则" class="headerlink" title="Lambda表达式的省略规则"></a>Lambda表达式的省略规则</h4><p>作用：进一步简化Lambda表达式</p>
+<p>具体规则：</p>
+<ul>
+<li>参数类型全部可以省略不写。</li>
+<li>如果只有一个参数，参数类型省略的同时“()”也可以省略，但多个参数不能省略“()”</li>
+<li>如果Lambda表达式中只有一行代码，大括号可以不写，同时要省略分号”;”，如果这行代码式return语句，也必须去掉return.</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>       <span class="hljs-type">Student</span> [] <span class="hljs-variable">students</span><span class="hljs-operator">=</span><span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>[<span class="hljs-number">6</span>];<br>       students[<span class="hljs-number">0</span>]=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>(<span class="hljs-string">&quot;张三&quot;</span>, <span class="hljs-number">18</span>, <span class="hljs-number">1.75</span>, <span class="hljs-string">&#x27;男&#x27;</span>);<br>       students[<span class="hljs-number">1</span>]=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>(<span class="hljs-string">&quot;李四&quot;</span>, <span class="hljs-number">19</span>, <span class="hljs-number">1.75</span>, <span class="hljs-string">&#x27;男&#x27;</span>);<br>       students[<span class="hljs-number">2</span>]=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>(<span class="hljs-string">&quot;王五&quot;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">1.75</span>, <span class="hljs-string">&#x27;男&#x27;</span>);<br>       students[<span class="hljs-number">3</span>]=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>(<span class="hljs-string">&quot;赵六&quot;</span>, <span class="hljs-number">21</span>, <span class="hljs-number">1.75</span>, <span class="hljs-string">&#x27;男&#x27;</span>);<br>       students[<span class="hljs-number">4</span>]=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>(<span class="hljs-string">&quot;孙七&quot;</span>, <span class="hljs-number">22</span>, <span class="hljs-number">1.75</span>, <span class="hljs-string">&#x27;男&#x27;</span>);<br>       students[<span class="hljs-number">5</span>]=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>(<span class="hljs-string">&quot;周八&quot;</span>, <span class="hljs-number">23</span>, <span class="hljs-number">1.75</span>, <span class="hljs-string">&#x27;男&#x27;</span>);<br>    	<span class="hljs-comment">//匿名函数类</span><br>        Arrays.sort(students,<span class="hljs-keyword">new</span> <span class="hljs-title class_">Comparator</span>&lt;Student&gt;()&#123;<br>            <span class="hljs-meta">@Override</span><br>           <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compare</span><span class="hljs-params">(Student o1, Student o2)</span>&#123;<br>                <span class="hljs-keyword">return</span> o1.getAge()-o2.getAge();<br>            &#125;<br>        &#125;<br>        );<br>		<span class="hljs-comment">//Lambda表达式</span><br>        Arrays.sort(students,(Student o1, Student o2)-&gt;&#123;<br>                        <span class="hljs-keyword">return</span> o1.getAge()-o2.getAge();<br>                    &#125;<br>        );<br>    	<span class="hljs-comment">//简化Lambda表达式</span><br>        Arrays.sort(students,(o1,  o2)-&gt;  o1.getAge()-o2.getAge());<br>		         <br>        <span class="hljs-keyword">for</span> (Student student : students) &#123;<br>            System.out.println(student);<br>        &#125;<br>    &#125;<br><br></code></pre></td></tr></table></figure>
 
-#### 方法引用
-
-简化Lambda表达式
-
-静态方法的引用，实例方法的引用，特定类型方法的引用，构造器引用。
-
-#### 静态方法引用
-
-类名::静态方法
-
-使用场景：
-
-- 如果某个Lambda表达式里只调用一个静态方法，并且”->“前后参数的形式一致，就可以使用静态方法引用。
-
+<h4 id="方法引用"><a href="#方法引用" class="headerlink" title="方法引用"></a>方法引用</h4><p>简化Lambda表达式</p>
+<p>静态方法的引用，实例方法的引用，特定类型方法的引用，构造器引用。</p>
+<h4 id="静态方法引用"><a href="#静态方法引用" class="headerlink" title="静态方法引用"></a>静态方法引用</h4><p>类名::静态方法</p>
+<p>使用场景：</p>
+<ul>
+<li>如果某个Lambda表达式里只调用一个静态方法，并且”-&gt;“前后参数的形式一致，就可以使用静态方法引用。</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//静态方法引用   compareByAge 是类的静态方法 </span><br>  	Arrays.sort(students,(o1,  o2)-&gt;  Student.compareByAge(o1,o2));<br>  	<span class="hljs-comment">//简化</span><br>  	Arrays.sort(students,Student::compareByAge);<br></code></pre></td></tr></table></figure>
 
 
 
-#### 实例方法引用
-
-对象名::实例方法
-
-使用场景
-
-- 如果某个Lambda表示式里只是通过对象名称调用一个实例方法，并且"->"前后参数的形式一致，就可以使用实例方法引用。
-
+<h4 id="实例方法引用"><a href="#实例方法引用" class="headerlink" title="实例方法引用"></a>实例方法引用</h4><p>对象名::实例方法</p>
+<p>使用场景</p>
+<ul>
+<li>如果某个Lambda表示式里只是通过对象名称调用一个实例方法，并且”-&gt;”前后参数的形式一致，就可以使用实例方法引用。</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//实例方法</span><br>  	<span class="hljs-type">Student</span> <span class="hljs-variable">t</span><span class="hljs-operator">=</span><span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>();<br>  	Arrays.sort(students,(o1,  o2)-&gt;  t.compareByAge(o1,o2));<br>  	<span class="hljs-comment">//简化</span><br>  	Arrays.sort(students,t::compareByAge);	<br></code></pre></td></tr></table></figure>
 
-#### 特定类型方法引用
-
-特定类的名称::方法
-
-使用场景
-
-- 如果某个Lambda表达式里只是调用一个特定类型的实例方法，并且前面参数列表中的第一个参数是作为方法的主调，后面的所有参数都是作为该实例方法的入参的，则此时就可以使用特定类型的方法引用。
-
+<h4 id="特定类型方法引用"><a href="#特定类型方法引用" class="headerlink" title="特定类型方法引用"></a>特定类型方法引用</h4><p>特定类的名称::方法</p>
+<p>使用场景</p>
+<ul>
+<li>如果某个Lambda表达式里只是调用一个特定类型的实例方法，并且前面参数列表中的第一个参数是作为方法的主调，后面的所有参数都是作为该实例方法的入参的，则此时就可以使用特定类型的方法引用。</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java">String []names=&#123;<span class="hljs-string">&quot;TOM&quot;</span>,<span class="hljs-string">&quot;Jerry&quot;</span>,<span class="hljs-string">&quot;Bob&quot;</span>,<span class="hljs-string">&quot;Dlei&quot;</span>,<span class="hljs-string">&quot;Jack&quot;</span>&#125;;  <span class="hljs-comment">//忽略大小写排序</span><br>     Arrays.sort(names,<span class="hljs-keyword">new</span> <span class="hljs-title class_">Comparator</span>&lt;String&gt;()&#123;<br>         <span class="hljs-meta">@Override</span><br>         <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compare</span><span class="hljs-params">(String o1,String o2)</span>&#123;<br>             <span class="hljs-keyword">return</span> o1.compareToIgnoreCase(o2);<br>         &#125;<br>     &#125;);<br>     <span class="hljs-comment">//简化</span><br>     Arrays.sort(names,( o1, o2)-&gt;o1.compareToIgnoreCase(o2));<br><br>     <span class="hljs-comment">//特定类型方法引用 字符串就是特定类</span><br>     Arrays.sort(names,String::compareToIgnoreCase);<br>	<br><br></code></pre></td></tr></table></figure>
 
-#### 构造器方法引用
-
-类名::new
-
-使用场景
-
-- 如果某个Lambda表达式里只是创建对象，并且"->"前后参数情况一致，就可以使用构造器引用。
-
+<h4 id="构造器方法引用"><a href="#构造器方法引用" class="headerlink" title="构造器方法引用"></a>构造器方法引用</h4><p>类名::new</p>
+<p>使用场景</p>
+<ul>
+<li>如果某个Lambda表达式里只是创建对象，并且”-&gt;”前后参数情况一致，就可以使用构造器引用。</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">test2</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br><span class="hljs-comment">//        CarFactory c=new CarFactory()&#123;</span><br><span class="hljs-comment">//            @Override</span><br><span class="hljs-comment">//            public Car getCar(String name) &#123;</span><br><span class="hljs-comment">//                Car c=new Car(name);</span><br><span class="hljs-comment">//                return c;</span><br><span class="hljs-comment">//            &#125;</span><br><span class="hljs-comment">//        &#125;;</span><br>        <span class="hljs-comment">//匿名内部类变Lambda</span><br>        <span class="hljs-type">CarFactory</span> <span class="hljs-variable">c</span><span class="hljs-operator">=</span>name-&gt;<span class="hljs-keyword">new</span> <span class="hljs-title class_">Car</span>(name);<br>        <span class="hljs-comment">//变构造器方法引用 </span><br>        <span class="hljs-type">CarFactory</span> <span class="hljs-variable">c</span><span class="hljs-operator">=</span>Car::<span class="hljs-keyword">new</span>;<br><br>        <span class="hljs-type">Car</span> <span class="hljs-variable">c1</span><span class="hljs-operator">=</span>c.getCar(<span class="hljs-string">&quot;a&quot;</span>);<br>        System.out.println(c1);<br><br>    &#125;<br><br>&#125;<br><br><span class="hljs-keyword">interface</span>  <span class="hljs-title class_">CarFactory</span>&#123;<br>    <span class="hljs-type">Car</span> <span class="hljs-title function_">getCar</span><span class="hljs-params">(String name)</span>;<br>&#125;<br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Car</span>&#123;<br>    String name;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-//记住看匿名类创建对象的函数类接口的形参列表
-
-### 常用API
-
-#### String
-
-- String代表字符串，它的对象可以封装字符串数据，并提供了很多方法完成对字符串的处理。
-
-1、创建字符串对象，封装字符串数据。
-
-2、调用String提供操作字符串数据的方法。
-
-##### String创建字符串对象的方式
-
-方式一：
-
-String name="小黑"；
-
-String name="黑马程序员";
-
-方式二：
-
-| 构造器                         | 说明                                   |
-| ------------------------------ | -------------------------------------- |
-| public String()                | 创建一个空白字符串对象，不含有任何内容 |
-| public String(String original) | 根据传入字符串内容，来创建字符串对象   |
-| public String(char[] chars)    | 根据字符串数组内容，来创建字符串对象   |
-| public String(byte[] bytes)    | 根据字节数组的内容，来创建字符串对象   |
-
-字符串创建对象的区别。
-
-- 只要是以"..."方式写出的字符串对象，会存储到字符串常量池，且相同内容的字符串只存储一次。
-- 通过new方法创建的字符串对象，每new一次都会产生一个新的对象放在堆内存中。
-
-JAVA为了节约内存 
-
-### ArrayList
-
-集合：是一种容器，用来装数据的，类似数组
-
-集合大小可变，功能丰富，开发中用的多。
-
-集合种类多：ArrayList、Set、List、Map、HashMap
-
-1、创建ArrayList对象，代表一个集合容器
-
-2、调用ArrayList提供的方法，对容器中数据进行增删改查。
-
-ArrayList <String> list=new ArrayList<>();
-
-### GUI编程
-
-Graphical User Interface
-
-通过图形元素（窗口、按钮、文本框）与用户进行交互
-
-与命令行相比，GUI更直观、友好。
-
-#### Java的GUI编程包
-
-- AWT(Abstract Window Toolkit)
-
-提供一组原生的GUI组件，依赖操作系统的本地窗口系统。
-
-- Swing
-
-基于AWT,提供了更丰富的GUI组件，轻量级组件，不依赖本地窗口系统。
-
-常用Swing组件
-
-- JFrame：窗口
-- JPanel：用于组织其他组件的容器
-- JButton：按钮组件
-- JTextField：输入框
-- JTable：表格
-
-#### 常见的布局管理器
-
-Layout Manager可以决定组件在容器中的布局方式，避免了手动设置每个组件的位置和大小，从而简化GUI设计过程。
-
-- FlowLayout
-- BorderLayout
-- GridLayout
-- BoxLayout
-
-FlowLayout：水平排列从左到右，排满换行。
-
-BorderLayout：东南西北中
-
-GridLayout：将容器划分成等大小的网格
-
-BoxLayout：沿X排和沿Y排
-
-#### 事件处理
-
-- GUI编程，事件的处理是通过事件监听器(Event Listener)来完成的
-
-常用的事件监听器对象
-
-- 点击事件监听器 ActionListener
-- 按键事件监听器 KeyListener
-- 鼠标行为监听器 MouseListener
-- ...
-
-给组件添加监听器对象
-
-#### 事件的三种写法
-
-第一种：直接提供实现类，用于创建事件监听对象。
-
-第二种：直接使用匿名内部类的对象，代表事件监听对象。
-
-第三种：自定义窗口，让窗口对象实现事件接口。
-
-> 第三种不仅继承窗口，也实现了事件监听接口。全部合并。
-
-
+<p>&#x2F;&#x2F;记住看匿名类创建对象的函数类接口的形参列表</p>
+<h3 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h3><h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><ul>
+<li>String代表字符串，它的对象可以封装字符串数据，并提供了很多方法完成对字符串的处理。</li>
+</ul>
+<p>1、创建字符串对象，封装字符串数据。</p>
+<p>2、调用String提供操作字符串数据的方法。</p>
+<h5 id="String创建字符串对象的方式"><a href="#String创建字符串对象的方式" class="headerlink" title="String创建字符串对象的方式"></a>String创建字符串对象的方式</h5><p>方式一：</p>
+<p>String name&#x3D;”小黑”；</p>
+<p>String name&#x3D;”黑马程序员”;</p>
+<p>方式二：</p>
+<table>
+<thead>
+<tr>
+<th>构造器</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public String()</td>
+<td>创建一个空白字符串对象，不含有任何内容</td>
+</tr>
+<tr>
+<td>public String(String original)</td>
+<td>根据传入字符串内容，来创建字符串对象</td>
+</tr>
+<tr>
+<td>public String(char[] chars)</td>
+<td>根据字符串数组内容，来创建字符串对象</td>
+</tr>
+<tr>
+<td>public String(byte[] bytes)</td>
+<td>根据字节数组的内容，来创建字符串对象</td>
+</tr>
+</tbody></table>
+<p>字符串创建对象的区别。</p>
+<ul>
+<li>只要是以”…”方式写出的字符串对象，会存储到字符串常量池，且相同内容的字符串只存储一次。</li>
+<li>通过new方法创建的字符串对象，每new一次都会产生一个新的对象放在堆内存中。</li>
+</ul>
+<p>JAVA为了节约内存 </p>
+<h3 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h3><p>集合：是一种容器，用来装数据的，类似数组</p>
+<p>集合大小可变，功能丰富，开发中用的多。</p>
+<p>集合种类多：ArrayList、Set、List、Map、HashMap</p>
+<p>1、创建ArrayList对象，代表一个集合容器</p>
+<p>2、调用ArrayList提供的方法，对容器中数据进行增删改查。</p>
+<p>ArrayList <String> list&#x3D;new ArrayList&lt;&gt;();</p>
+<h3 id="GUI编程"><a href="#GUI编程" class="headerlink" title="GUI编程"></a>GUI编程</h3><p>Graphical User Interface</p>
+<p>通过图形元素（窗口、按钮、文本框）与用户进行交互</p>
+<p>与命令行相比，GUI更直观、友好。</p>
+<h4 id="Java的GUI编程包"><a href="#Java的GUI编程包" class="headerlink" title="Java的GUI编程包"></a>Java的GUI编程包</h4><ul>
+<li>AWT(Abstract Window Toolkit)</li>
+</ul>
+<p>提供一组原生的GUI组件，依赖操作系统的本地窗口系统。</p>
+<ul>
+<li>Swing</li>
+</ul>
+<p>基于AWT,提供了更丰富的GUI组件，轻量级组件，不依赖本地窗口系统。</p>
+<p>常用Swing组件</p>
+<ul>
+<li>JFrame：窗口</li>
+<li>JPanel：用于组织其他组件的容器</li>
+<li>JButton：按钮组件</li>
+<li>JTextField：输入框</li>
+<li>JTable：表格</li>
+</ul>
+<h4 id="常见的布局管理器"><a href="#常见的布局管理器" class="headerlink" title="常见的布局管理器"></a>常见的布局管理器</h4><p>Layout Manager可以决定组件在容器中的布局方式，避免了手动设置每个组件的位置和大小，从而简化GUI设计过程。</p>
+<ul>
+<li>FlowLayout</li>
+<li>BorderLayout</li>
+<li>GridLayout</li>
+<li>BoxLayout</li>
+</ul>
+<p>FlowLayout：水平排列从左到右，排满换行。</p>
+<p>BorderLayout：东南西北中</p>
+<p>GridLayout：将容器划分成等大小的网格</p>
+<p>BoxLayout：沿X排和沿Y排</p>
+<h4 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h4><ul>
+<li>GUI编程，事件的处理是通过事件监听器(Event Listener)来完成的</li>
+</ul>
+<p>常用的事件监听器对象</p>
+<ul>
+<li>点击事件监听器 ActionListener</li>
+<li>按键事件监听器 KeyListener</li>
+<li>鼠标行为监听器 MouseListener</li>
+<li>…</li>
+</ul>
+<p>给组件添加监听器对象</p>
+<h4 id="事件的三种写法"><a href="#事件的三种写法" class="headerlink" title="事件的三种写法"></a>事件的三种写法</h4><p>第一种：直接提供实现类，用于创建事件监听对象。</p>
+<p>第二种：直接使用匿名内部类的对象，代表事件监听对象。</p>
+<p>第三种：自定义窗口，让窗口对象实现事件接口。</p>
+<blockquote>
+<p>第三种不仅继承窗口，也实现了事件监听接口。全部合并。</p>
+</blockquote>
 
                 
               </div>

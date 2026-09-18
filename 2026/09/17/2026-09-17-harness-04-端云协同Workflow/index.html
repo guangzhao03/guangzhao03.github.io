@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# 04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行  &gt; 核对日期：2026-09-17。代码根目录：&#96;E:\MoreProject\learn_foresign_engine&#96;。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。 &gt; &gt; 所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件">
+    <meta name="description" content="04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行 核对日期：2026-09-17。代码根目录：E:\MoreProject\learn_foresign_engine。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。 所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件。  1. 先把三个容易">
 <meta property="og:type" content="article">
 <meta property="og:title" content="04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/17/2026-09-17-harness-04-%E7%AB%AF%E4%BA%91%E5%8D%8F%E5%90%8CWorkflow/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# 04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行  &gt; 核对日期：2026-09-17。代码根目录：&#96;E:\MoreProject\learn_foresign_engine&#96;。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。 &gt; &gt; 所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件">
+<meta property="og:description" content="04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行 核对日期：2026-09-17。代码根目录：E:\MoreProject\learn_foresign_engine。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。 所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件。  1. 先把三个容易">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-17T02:14:53.000Z">
 <meta property="article:modified_time" content="2026-09-17T02:14:53.000Z">
@@ -326,7 +326,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          16k 字
+          15k 字
         
       </span>
     
@@ -337,7 +337,7 @@
         
         
         
-          132 分钟
+          128 分钟
         
       </span>
     
@@ -381,342 +381,380 @@
             
               <div class="markdown-body">
                 
-                
-# 04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行
-
-> 核对日期：2026-09-17。代码根目录：`E:\MoreProject\learn_foresign_engine`。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。
->
-> 所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件。
-
-## 1. 先把三个容易讲错的概念纠正
-
-### 1.1 executionLocation 不是一个万能调度开关
-
-原来的概括是“节点标 local，云端自动下发到 IDE”。当前源码更具体：
-
-- 引擎创建 `human_first` 节点执行时，可先停在 waiting_human_input，不立即启动 Agent。
-- 初始 NodeExecution 的 executionLocation 可仍为 cloud。
-- 本地工具经 MCP 业务入口发现候选、主动 start-local 认领，服务端才写入 local + local_plugin。
-- 因而不是所有 waiting_human_input 都等于本地任务，也不能说定义里填 local 就保证平台推送并启动本地进程。
-
-代码：`packages/backend/src/workflow/workflow-engine.service.ts:1244-1258`、`:1410`；本地认领：`packages/backend/src/twork-agent-mcp/twork-node-execution.service.ts:212`。
-
-### 1.2 Git SHA 校验不是数字签名验签
-
-更准确的术语是：**服务端校验提交存在性、祖先关系和实例分支可达性。**
-
-这里没有看到使用公钥验证 GPG/SSH commit signature 的流程。SHA 用于标识 Git 对象与关系，不证明提交者身份、代码安全、测试通过，也不能泛称“防止所有历史被改写”。
-
-身份授权由 PAT、scope、实例权限、节点执行人等机制负责；Git 图校验负责证明“这份交付建立在指定基线之上，且已进入实例远端分支”。
-
-### 1.3 随机 lease token 不等于单调 fencing token
-
-- leaseToken：随机秘密凭证，服务端存哈希；证明持有某次租约凭证。
-- stateVersion：递增版本，用于 CAS 抢占，防止两个请求基于同一旧状态都成功。
-- executionOwnerId：业务执行用户。
-- clientSessionId：本地调用会话身份。
-
-严格分布式 fencing 通常要求下游资源比较递增代次并拒绝陈旧操作。这里只能按具体路径描述凭证校验和 CAS，不能把随机 token 本身称为全系统严格 fence。
-
-## 2. 为什么会需要端云协同
-
-以“分析需求 → 修改本机仓库 → 云端后续评审”为例：
-
-- 云端适合统一上下文、流程状态和自动节点执行。
-- 本地 IDE 可能已具备开发环境、用户手头未提交的修改、需要人参与的工具。
-- 不能为了跑一个节点把整条 Workflow 都迁移到本机。
-- 因而将**节点执行权**交给本地，保留**工作流推进权和完成判定**在云端。
-
-这不替代 CI：Git 提交已回传不代表测试一定通过。CI 可以作为后续质量门禁，或由具体工作流节点执行，但不是 SHA 本身能保证的事情。
-
-## 3. 先看全链路
-
-| 步骤 | 调用方/服务 | 关键产物 |
-|---|---|---|
-| 1 | WorkflowEngine.triggerNode | waiting_human_input 等待中的节点执行 |
-| 2 | 本地 MCP 工具查询 | 可读节点上下文、可执行候选、busy 状态 |
-| 3 | start-local | PAT/权限校验、CAS 认领、startHeadSha、lease |
-| 4 | 本地 IDE/用户 | 按基线修改、测试、commit、非强制 push |
-| 5 | complete-local | baseSha、commitSha、summary、幂等键 |
-| 6 | GitCollaborationService | fetch 远端、存在性/祖先关系校验 |
-| 7 | 服务端 worktree 同步 | 确认干净、复核远端、快进 |
-| 8 | WorkflowEngine 完成收口 | 写交付信息、更新权威 HEAD、completed |
-| 9 | onNodeCompleted | 判断后继节点、条件路由与汇合，继续执行 |
-
-**本地执行者是主动调用工具领取，不是云端可以随意遥控一台 IDE 执行命令。** MCP 提供工具发现、参数和调用语义；业务租约、Git 校验和状态机仍是平台自己实现的。
-
-## 4. 源码阅读地图
-
-| 文件位置 | 关注点 |
-|---|---|
-| `packages/backend/src/workflow/workflow-engine.service.ts:1184` | 节点创建与 human_first 分支 |
-| `packages/backend/src/twork-agent-mcp/twork-agent-run.service.ts:434` | 本地可执行候选与忙碌状态 |
-| `packages/backend/src/twork-agent-mcp/twork-agent-discovery.service.ts:329` | 节点上下文、祖先结果聚合 |
-| `packages/backend/src/twork-agent-mcp/twork-agent-mcp.controller.ts:1254` | start-local REST 业务入口 |
-| `packages/backend/src/twork-agent-mcp/twork-node-execution.service.ts:26` | 本地认领完整校验 |
-| `packages/backend/src/twork-agent-mcp/twork-agent-mcp.controller.ts:1300` | complete-local 业务入口 |
-| `packages/backend/src/twork-agent-mcp/twork-local-execution-completion.service.ts:48` | 交付幂等与收口编排 |
-| `packages/backend/src/workflow/workflow-git-collaboration.service.ts:392` | SHA 和远端分支校验 |
-| `packages/backend/src/workflow/workflow-engine.service.ts:3696` | 本地交付转为引擎完成 |
-| `packages/backend/src/twork-agent-mcp/twork-node-execution.service.ts:426` | 另一组接口使用的 lease token 校验 |
-
-## 5. 节点发现：可读不等于可执行
-
-getMcpRunnableAgents 区分：
-
-- currentNodes：展示实例执行进度。
-- availableAgents：当前调用用户实际可认领/执行的候选。
-- busyAgents：已有云端执行、本地活跃 lease 等占用。
-
-发现接口能看到节点，不代表有权修改它。节点执行人、实例归属、当前占用、云端 run/session 状态都影响是否可执行。
-
-上下文聚合还会向上遍历已完成的传递祖先，而不只是取直接上游：这样本地执行者可以看到需求、设计等前置节点产物，而不是孤立拿到一句节点名。对应 `twork-agent-discovery.service.ts:422-510`。
-
-### 5.1 租约过期的“展示恢复”
-
-当本地 running 租约过期，候选查询可将它对外回显为 localExecutionPreviousStatus，重新让调用者看到可认领状态。**这不是后台定时器已经把数据库 status 改回去了。**
-
-新 start-local 接受 expiredLocalClaim 时，才进行实际重新认领。展示状态、数据库原始状态和执行权限是不同层，不能合称“15 分钟自动恢复一切”。
-
-## 6. 本地认领：先拿执行权，再碰 Git
-
-startLocalExecution 先执行节点写授权和业务检查：
-
-1. 调用者身份和实例/节点权限合法。
-2. 实例启用 git_enabled，并存在 instanceBranch 和 authoritativeHeadSha。
-3. 可选 expectedHeadSha 必须与权威 HEAD 一致。
-4. 检查幂等键、同一 clientSession、当前状态是否允许领取。
-5. 不与活跃本地租约、云端 Agent run、云端 Session 冲突。
-6. 最后用 stateVersion + status + 无活跃 Session 条件做 CAS。
-
-为什么检查两遍？前面的查询提供可理解的业务错误，但查询后可能发生竞争；CAS 才是在写入时再次确认观察到的状态没有被改变。
-
-### 6.1 源码逐行注释：保存恢复状态与生成 lease
-
-来源：`packages/backend/src/twork-agent-mcp/twork-node-execution.service.ts:205-211`。
-
+                <h1 id="04｜端云协同-Workflow：本地认领、Git-交付与云端继续执行"><a href="#04｜端云协同-Workflow：本地认领、Git-交付与云端继续执行" class="headerlink" title="04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行"></a>04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行</h1><blockquote>
+<p>核对日期：2026-09-17。代码根目录：<code>E:\MoreProject\learn_foresign_engine</code>。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。</p>
+<p>所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件。</p>
+</blockquote>
+<h2 id="1-先把三个容易讲错的概念纠正"><a href="#1-先把三个容易讲错的概念纠正" class="headerlink" title="1. 先把三个容易讲错的概念纠正"></a>1. 先把三个容易讲错的概念纠正</h2><h3 id="1-1-executionLocation-不是一个万能调度开关"><a href="#1-1-executionLocation-不是一个万能调度开关" class="headerlink" title="1.1 executionLocation 不是一个万能调度开关"></a>1.1 executionLocation 不是一个万能调度开关</h3><p>原来的概括是“节点标 local，云端自动下发到 IDE”。当前源码更具体：</p>
+<ul>
+<li>引擎创建 <code>human_first</code> 节点执行时，可先停在 waiting_human_input，不立即启动 Agent。</li>
+<li>初始 NodeExecution 的 executionLocation 可仍为 cloud。</li>
+<li>本地工具经 MCP 业务入口发现候选、主动 start-local 认领，服务端才写入 local + local_plugin。</li>
+<li>因而不是所有 waiting_human_input 都等于本地任务，也不能说定义里填 local 就保证平台推送并启动本地进程。</li>
+</ul>
+<p>代码：<code>packages/backend/src/workflow/workflow-engine.service.ts:1244-1258</code>、<code>:1410</code>；本地认领：<code>packages/backend/src/twork-agent-mcp/twork-node-execution.service.ts:212</code>。</p>
+<h3 id="1-2-Git-SHA-校验不是数字签名验签"><a href="#1-2-Git-SHA-校验不是数字签名验签" class="headerlink" title="1.2 Git SHA 校验不是数字签名验签"></a>1.2 Git SHA 校验不是数字签名验签</h3><p>更准确的术语是：<strong>服务端校验提交存在性、祖先关系和实例分支可达性。</strong></p>
+<p>这里没有看到使用公钥验证 GPG&#x2F;SSH commit signature 的流程。SHA 用于标识 Git 对象与关系，不证明提交者身份、代码安全、测试通过，也不能泛称“防止所有历史被改写”。</p>
+<p>身份授权由 PAT、scope、实例权限、节点执行人等机制负责；Git 图校验负责证明“这份交付建立在指定基线之上，且已进入实例远端分支”。</p>
+<h3 id="1-3-随机-lease-token-不等于单调-fencing-token"><a href="#1-3-随机-lease-token-不等于单调-fencing-token" class="headerlink" title="1.3 随机 lease token 不等于单调 fencing token"></a>1.3 随机 lease token 不等于单调 fencing token</h3><ul>
+<li>leaseToken：随机秘密凭证，服务端存哈希；证明持有某次租约凭证。</li>
+<li>stateVersion：递增版本，用于 CAS 抢占，防止两个请求基于同一旧状态都成功。</li>
+<li>executionOwnerId：业务执行用户。</li>
+<li>clientSessionId：本地调用会话身份。</li>
+</ul>
+<p>严格分布式 fencing 通常要求下游资源比较递增代次并拒绝陈旧操作。这里只能按具体路径描述凭证校验和 CAS，不能把随机 token 本身称为全系统严格 fence。</p>
+<h2 id="2-为什么会需要端云协同"><a href="#2-为什么会需要端云协同" class="headerlink" title="2. 为什么会需要端云协同"></a>2. 为什么会需要端云协同</h2><p>以“分析需求 → 修改本机仓库 → 云端后续评审”为例：</p>
+<ul>
+<li>云端适合统一上下文、流程状态和自动节点执行。</li>
+<li>本地 IDE 可能已具备开发环境、用户手头未提交的修改、需要人参与的工具。</li>
+<li>不能为了跑一个节点把整条 Workflow 都迁移到本机。</li>
+<li>因而将<strong>节点执行权</strong>交给本地，保留<strong>工作流推进权和完成判定</strong>在云端。</li>
+</ul>
+<p>这不替代 CI：Git 提交已回传不代表测试一定通过。CI 可以作为后续质量门禁，或由具体工作流节点执行，但不是 SHA 本身能保证的事情。</p>
+<h2 id="3-先看全链路"><a href="#3-先看全链路" class="headerlink" title="3. 先看全链路"></a>3. 先看全链路</h2><table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>调用方&#x2F;服务</th>
+<th>关键产物</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>WorkflowEngine.triggerNode</td>
+<td>waiting_human_input 等待中的节点执行</td>
+</tr>
+<tr>
+<td>2</td>
+<td>本地 MCP 工具查询</td>
+<td>可读节点上下文、可执行候选、busy 状态</td>
+</tr>
+<tr>
+<td>3</td>
+<td>start-local</td>
+<td>PAT&#x2F;权限校验、CAS 认领、startHeadSha、lease</td>
+</tr>
+<tr>
+<td>4</td>
+<td>本地 IDE&#x2F;用户</td>
+<td>按基线修改、测试、commit、非强制 push</td>
+</tr>
+<tr>
+<td>5</td>
+<td>complete-local</td>
+<td>baseSha、commitSha、summary、幂等键</td>
+</tr>
+<tr>
+<td>6</td>
+<td>GitCollaborationService</td>
+<td>fetch 远端、存在性&#x2F;祖先关系校验</td>
+</tr>
+<tr>
+<td>7</td>
+<td>服务端 worktree 同步</td>
+<td>确认干净、复核远端、快进</td>
+</tr>
+<tr>
+<td>8</td>
+<td>WorkflowEngine 完成收口</td>
+<td>写交付信息、更新权威 HEAD、completed</td>
+</tr>
+<tr>
+<td>9</td>
+<td>onNodeCompleted</td>
+<td>判断后继节点、条件路由与汇合，继续执行</td>
+</tr>
+</tbody></table>
+<p><strong>本地执行者是主动调用工具领取，不是云端可以随意遥控一台 IDE 执行命令。</strong> MCP 提供工具发现、参数和调用语义；业务租约、Git 校验和状态机仍是平台自己实现的。</p>
+<h2 id="4-源码阅读地图"><a href="#4-源码阅读地图" class="headerlink" title="4. 源码阅读地图"></a>4. 源码阅读地图</h2><table>
+<thead>
+<tr>
+<th>文件位置</th>
+<th>关注点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>packages/backend/src/workflow/workflow-engine.service.ts:1184</code></td>
+<td>节点创建与 human_first 分支</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/twork-agent-mcp/twork-agent-run.service.ts:434</code></td>
+<td>本地可执行候选与忙碌状态</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/twork-agent-mcp/twork-agent-discovery.service.ts:329</code></td>
+<td>节点上下文、祖先结果聚合</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/twork-agent-mcp/twork-agent-mcp.controller.ts:1254</code></td>
+<td>start-local REST 业务入口</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/twork-agent-mcp/twork-node-execution.service.ts:26</code></td>
+<td>本地认领完整校验</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/twork-agent-mcp/twork-agent-mcp.controller.ts:1300</code></td>
+<td>complete-local 业务入口</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/twork-agent-mcp/twork-local-execution-completion.service.ts:48</code></td>
+<td>交付幂等与收口编排</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/workflow/workflow-git-collaboration.service.ts:392</code></td>
+<td>SHA 和远端分支校验</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/workflow/workflow-engine.service.ts:3696</code></td>
+<td>本地交付转为引擎完成</td>
+</tr>
+<tr>
+<td><code>packages/backend/src/twork-agent-mcp/twork-node-execution.service.ts:426</code></td>
+<td>另一组接口使用的 lease token 校验</td>
+</tr>
+</tbody></table>
+<h2 id="5-节点发现：可读不等于可执行"><a href="#5-节点发现：可读不等于可执行" class="headerlink" title="5. 节点发现：可读不等于可执行"></a>5. 节点发现：可读不等于可执行</h2><p>getMcpRunnableAgents 区分：</p>
+<ul>
+<li>currentNodes：展示实例执行进度。</li>
+<li>availableAgents：当前调用用户实际可认领&#x2F;执行的候选。</li>
+<li>busyAgents：已有云端执行、本地活跃 lease 等占用。</li>
+</ul>
+<p>发现接口能看到节点，不代表有权修改它。节点执行人、实例归属、当前占用、云端 run&#x2F;session 状态都影响是否可执行。</p>
+<p>上下文聚合还会向上遍历已完成的传递祖先，而不只是取直接上游：这样本地执行者可以看到需求、设计等前置节点产物，而不是孤立拿到一句节点名。对应 <code>twork-agent-discovery.service.ts:422-510</code>。</p>
+<h3 id="5-1-租约过期的“展示恢复”"><a href="#5-1-租约过期的“展示恢复”" class="headerlink" title="5.1 租约过期的“展示恢复”"></a>5.1 租约过期的“展示恢复”</h3><p>当本地 running 租约过期，候选查询可将它对外回显为 localExecutionPreviousStatus，重新让调用者看到可认领状态。<strong>这不是后台定时器已经把数据库 status 改回去了。</strong></p>
+<p>新 start-local 接受 expiredLocalClaim 时，才进行实际重新认领。展示状态、数据库原始状态和执行权限是不同层，不能合称“15 分钟自动恢复一切”。</p>
+<h2 id="6-本地认领：先拿执行权，再碰-Git"><a href="#6-本地认领：先拿执行权，再碰-Git" class="headerlink" title="6. 本地认领：先拿执行权，再碰 Git"></a>6. 本地认领：先拿执行权，再碰 Git</h2><p>startLocalExecution 先执行节点写授权和业务检查：</p>
+<ol>
+<li>调用者身份和实例&#x2F;节点权限合法。</li>
+<li>实例启用 git_enabled，并存在 instanceBranch 和 authoritativeHeadSha。</li>
+<li>可选 expectedHeadSha 必须与权威 HEAD 一致。</li>
+<li>检查幂等键、同一 clientSession、当前状态是否允许领取。</li>
+<li>不与活跃本地租约、云端 Agent run、云端 Session 冲突。</li>
+<li>最后用 stateVersion + status + 无活跃 Session 条件做 CAS。</li>
+</ol>
+<p>为什么检查两遍？前面的查询提供可理解的业务错误，但查询后可能发生竞争；CAS 才是在写入时再次确认观察到的状态没有被改变。</p>
+<h3 id="6-1-源码逐行注释：保存恢复状态与生成-lease"><a href="#6-1-源码逐行注释：保存恢复状态与生成-lease" class="headerlink" title="6.1 源码逐行注释：保存恢复状态与生成 lease"></a>6.1 源码逐行注释：保存恢复状态与生成 lease</h3><p>来源：<code>packages/backend/src/twork-agent-mcp/twork-node-execution.service.ts:205-211</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> previousStatus = sameLocalSession <span class="hljs-comment">// L205：先判断是否同一客户端会话再次认领。</span><br>  ? execution.<span class="hljs-property">localExecutionPreviousStatus</span> ?? <span class="hljs-string">&#x27;waiting_human_input&#x27;</span> <span class="hljs-comment">// L206：同会话保留首次认领前状态，缺省时回退等待输入。</span><br>  : expiredLocalClaim <span class="hljs-comment">// L207：否则判断是在接管已过期的本地认领。</span><br>    ? execution.<span class="hljs-property">localExecutionPreviousStatus</span>! <span class="hljs-comment">// L208：接管仍保留原始等待状态，不把 running 当作将来恢复目标。</span><br>    : execution.<span class="hljs-property">status</span>; <span class="hljs-comment">// L209：首次领取保存当前真实状态。</span><br><span class="hljs-keyword">const</span> leaseToken = <span class="hljs-title function_">randomBytes</span>(<span class="hljs-number">32</span>).<span class="hljs-title function_">toString</span>(<span class="hljs-string">&#x27;base64url&#x27;</span>); <span class="hljs-comment">// L210：生成随机 lease 凭证；不是单调递增的版本号。</span><br><span class="hljs-keyword">const</span> leaseExpiresAt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(now.<span class="hljs-title function_">getTime</span>() + <span class="hljs-number">15</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>); <span class="hljs-comment">// L211：本次认领有效期设为 15 分钟，客户端须按实际协议处理续期。</span><br></code></pre></td></tr></table></figure>
 
-同会话重试会经过新 token 生成和更新，不能说“明文 token 永远只返回一次且重试总是同一个”。幂等业务效果与返回凭证轮换需要分开理解。
-
-### 6.2 源码逐行注释：CAS 条件与状态写入
-
-来源：同文件 `:212-246`。
-
+<p>同会话重试会经过新 token 生成和更新，不能说“明文 token 永远只返回一次且重试总是同一个”。幂等业务效果与返回凭证轮换需要分开理解。</p>
+<h3 id="6-2-源码逐行注释：CAS-条件与状态写入"><a href="#6-2-源码逐行注释：CAS-条件与状态写入" class="headerlink" title="6.2 源码逐行注释：CAS 条件与状态写入"></a>6.2 源码逐行注释：CAS 条件与状态写入</h3><p>来源：同文件 <code>:212-246</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> claimed = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">prisma</span>.<span class="hljs-property">nodeExecution</span>.<span class="hljs-title function_">updateMany</span>(&#123; <span class="hljs-comment">// L212：条件更新，只有观察到的状态仍成立才认领。</span><br>  <span class="hljs-attr">where</span>: &#123; <span class="hljs-comment">// L213：开始写入时的竞争条件。</span><br>    <span class="hljs-attr">id</span>: execution.<span class="hljs-property">id</span>, <span class="hljs-comment">// L214：限定目标节点执行。</span><br>    <span class="hljs-attr">stateVersion</span>: execution.<span class="hljs-property">stateVersion</span>, <span class="hljs-comment">// L215：比较读取时版本，其他请求先更新会让本次失败。</span><br>    <span class="hljs-attr">status</span>: execution.<span class="hljs-property">status</span>, <span class="hljs-comment">// L216：同时比较状态，避免基于陈旧业务状态写入。</span><br>    <span class="hljs-attr">sessions</span>: &#123; <span class="hljs-comment">// L217：检查关联云端 Session，不能只检查节点自己的字段。</span><br>      <span class="hljs-attr">none</span>: &#123; <span class="hljs-comment">// L218：要求不存在符合以下条件的会话。</span><br>        <span class="hljs-attr">sessionKind</span>: <span class="hljs-string">&#x27;workflow_node&#x27;</span>, <span class="hljs-comment">// L219：仅针对工作流节点会话。</span><br>        <span class="hljs-attr">OR</span>: [ <span class="hljs-comment">// L220：执行中或压缩中任一状态都视为忙碌。</span><br>          &#123; <span class="hljs-attr">executionStatus</span>: <span class="hljs-string">&#x27;running&#x27;</span> &#125;, <span class="hljs-comment">// L221：云端正在执行时不能让本地同时占用。</span><br>          &#123; <span class="hljs-attr">compactionStatus</span>: <span class="hljs-string">&#x27;running&#x27;</span> &#125;, <span class="hljs-comment">// L222：云端正在压缩上下文时也不竞争同一节点。</span><br>        ], <span class="hljs-comment">// L223：结束忙碌状态列表。</span><br>      &#125;, <span class="hljs-comment">// L224：结束禁止存在的 Session 条件。</span><br>    &#125;, <span class="hljs-comment">// L225：结束关联 Session 过滤。</span><br>  &#125;, <span class="hljs-comment">// L226：结束 CAS 条件。</span><br>  <span class="hljs-attr">data</span>: &#123; <span class="hljs-comment">// L227：以下字段在同一次数据库更新中写入。</span><br>    <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;running&#x27;</span>, <span class="hljs-comment">// L228：节点进入执行中；local 并不是单独一套完成状态机。</span><br>    <span class="hljs-attr">executionOwnerId</span>: principal.<span class="hljs-property">employeeId</span>, <span class="hljs-comment">// L229：记录业务执行用户。</span><br>    <span class="hljs-attr">executionSource</span>: <span class="hljs-string">&#x27;local_plugin&#x27;</span>, <span class="hljs-comment">// L230：记录执行来源，与云端路径区分。</span><br>    <span class="hljs-attr">executionClaimedAt</span>: now, <span class="hljs-comment">// L231：保存认领时间用于诊断与审计。</span><br>    <span class="hljs-attr">executionLeaseHash</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">hashLease</span>(leaseToken), <span class="hljs-comment">// L232：只存 token 哈希，数据库字段不是可直接使用的明文凭证。</span><br>    <span class="hljs-attr">executionLeaseExpiresAt</span>: leaseExpiresAt, <span class="hljs-comment">// L233：保存租约到期时间。</span><br>    <span class="hljs-attr">executionLocation</span>: <span class="hljs-string">&#x27;local&#x27;</span>, <span class="hljs-comment">// L234：在真正认领时标记本地执行。</span><br>    <span class="hljs-attr">clientType</span>: input.<span class="hljs-property">clientType</span>, <span class="hljs-comment">// L235：记录本地工具类型。</span><br>    <span class="hljs-attr">clientSessionId</span>: input.<span class="hljs-property">clientSessionId</span>, <span class="hljs-comment">// L236：区分同一用户的不同本地会话。</span><br>    <span class="hljs-attr">localExecutionPreviousStatus</span>: previousStatus, <span class="hljs-comment">// L237：保存租约失效后对外恢复的基准状态。</span><br>    <span class="hljs-attr">localExecutionIdempotencyKeyHash</span>: idempotencyKeyHash, <span class="hljs-comment">// L238：认领幂等标识与 lease 凭证是两种用途。</span><br>    <span class="hljs-attr">startHeadSha</span>: binding.<span class="hljs-property">authoritativeHeadSha</span>, <span class="hljs-comment">// L239：锁定本次工作起点，不能完成时任意换基线。</span><br>    <span class="hljs-attr">errorMessage</span>: <span class="hljs-literal">null</span>, <span class="hljs-comment">// L240：清理上一次尝试留下的错误描述。</span><br>    <span class="hljs-attr">completedAt</span>: <span class="hljs-literal">null</span>, <span class="hljs-comment">// L241：新执行尚未完成。</span><br>    <span class="hljs-attr">finalizeStatus</span>: <span class="hljs-string">&#x27;pending&#x27;</span>, <span class="hljs-comment">// L242：交付收口还未开始。</span><br>    <span class="hljs-attr">startedAt</span>: now, <span class="hljs-comment">// L243：记录本次启动时间。</span><br>    <span class="hljs-attr">stateVersion</span>: &#123; <span class="hljs-attr">increment</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-comment">// L244：递增版本，使同一旧版本的其他竞争者失败。</span><br>  &#125;, <span class="hljs-comment">// L245：结束认领数据。</span><br>&#125;); <span class="hljs-comment">// L246：等待条件更新结果，后续 claimed.count !== 1 将返回冲突。</span><br></code></pre></td></tr></table></figure>
 
-两个人同时读到 version=7，第一人将其更新为 8；第二人的 where version=7 不再命中。这是乐观锁，而不是持有数据库事务 15 分钟。
-
-返回结果包括 instanceBranch、repository 信息、startHeadSha、leaseToken、leaseExpiresAt。**先拿到成功认领结果再开始本地工作**，避免已经改代码才发现节点被别人占用。
-
-## 7. 当前代码有两类收尾路径，不能混讲
-
-这是本次核对的重要结论。
-
-| 路径 | 输入特征 | 核心行为 |
-|---|---|---|
-| start-local → complete-local | baseSha、commitSha、summary、idempotencyKey | 本地提交并推送，服务端验证远端 Git 交付 |
-| prepare/reportProgress/finalize 服务方法 | leaseToken、clientSessionId、startHeadSha 等 | verifyLease 后进入另一套进度/收尾逻辑 |
-
-`TworkNodeExecutionService.verifyLease` 检查 owner、clientSessionId、token hash、过期时间。**但 controller 的 complete-local 调用的不是这个方法。**
-
-### 7.1 源码逐行注释：complete-local 实际下发了什么
-
-来源：`packages/backend/src/twork-agent-mcp/twork-agent-mcp.controller.ts:1314-1320`。这是 respond 包装器内的回调片段。
-
+<p>两个人同时读到 version&#x3D;7，第一人将其更新为 8；第二人的 where version&#x3D;7 不再命中。这是乐观锁，而不是持有数据库事务 15 分钟。</p>
+<p>返回结果包括 instanceBranch、repository 信息、startHeadSha、leaseToken、leaseExpiresAt。<strong>先拿到成功认领结果再开始本地工作</strong>，避免已经改代码才发现节点被别人占用。</p>
+<h2 id="7-当前代码有两类收尾路径，不能混讲"><a href="#7-当前代码有两类收尾路径，不能混讲" class="headerlink" title="7. 当前代码有两类收尾路径，不能混讲"></a>7. 当前代码有两类收尾路径，不能混讲</h2><p>这是本次核对的重要结论。</p>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>输入特征</th>
+<th>核心行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>start-local → complete-local</td>
+<td>baseSha、commitSha、summary、idempotencyKey</td>
+<td>本地提交并推送，服务端验证远端 Git 交付</td>
+</tr>
+<tr>
+<td>prepare&#x2F;reportProgress&#x2F;finalize 服务方法</td>
+<td>leaseToken、clientSessionId、startHeadSha 等</td>
+<td>verifyLease 后进入另一套进度&#x2F;收尾逻辑</td>
+</tr>
+</tbody></table>
+<p><code>TworkNodeExecutionService.verifyLease</code> 检查 owner、clientSessionId、token hash、过期时间。<strong>但 controller 的 complete-local 调用的不是这个方法。</strong></p>
+<h3 id="7-1-源码逐行注释：complete-local-实际下发了什么"><a href="#7-1-源码逐行注释：complete-local-实际下发了什么" class="headerlink" title="7.1 源码逐行注释：complete-local 实际下发了什么"></a>7.1 源码逐行注释：complete-local 实际下发了什么</h3><p>来源：<code>packages/backend/src/twork-agent-mcp/twork-agent-mcp.controller.ts:1314-1320</code>。这是 respond 包装器内的回调片段。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ts">() =&gt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">localCompletions</span>!.<span class="hljs-title function_">complete</span>(principal, &#123; <span class="hljs-comment">// L1314：进入独立的本地 Git 交付完成服务，而非 nodeExecutions.finalize。</span><br>  <span class="hljs-attr">nodeExecutionId</span>: params.<span class="hljs-property">nodeExecutionId</span>, <span class="hljs-comment">// L1315：目标节点来自路由参数。</span><br>  <span class="hljs-attr">baseSha</span>: body.<span class="hljs-property">baseSha</span>, <span class="hljs-comment">// L1316：调用方声明的工作起点，服务端会与 startHeadSha 比较。</span><br>  <span class="hljs-attr">commitSha</span>: body.<span class="hljs-property">commitSha</span>, <span class="hljs-comment">// L1317：调用方交付的提交身份，服务端要 fetch 后验证。</span><br>  <span class="hljs-attr">summary</span>: body.<span class="hljs-property">summary</span>, <span class="hljs-comment">// L1318：工作摘要供下游使用，不是 Git 校验的替代品。</span><br>  <span class="hljs-attr">idempotencyKey</span>: body.<span class="hljs-property">idempotencyKey</span>, <span class="hljs-comment">// L1319：支持响应丢失后的业务重试。</span><br>&#125;), <span class="hljs-comment">// L1320：结束 complete 入参；这里没有传 leaseToken 或 clientSessionId。</span><br></code></pre></td></tr></table></figure>
 
-因此不能声称 complete-local 具有与 verifyLease 完全相同的过期/token 检查。它有 PAT/scope、实例权限、执行人、当前 claim、baseSha 和 Git 验证等检查，但保障层次不同。
-
-这应作为**协议一致性需继续加固的边界**来讲，不应夸大成严格阻断所有陈旧本地调用。本文不展开利用方式或改动实现。
-
-## 8. 完成请求的幂等，不只是一个 requestId
-
-同一节点和幂等键命中已有完成记录时：
-
-- 指纹不同：同一个键被用于不同请求，冲突。
-- 相同请求已经 completed 且有 resultSnapshot：返回保存结果，不重复完整收尾。
-- processing：可以在一定条件下续接被中断的收尾。
-
-### 8.1 源码逐行注释：同键不同内容与完成回放
-
-来源：`packages/backend/src/twork-agent-mcp/twork-local-execution-completion.service.ts:65-76`。
-
+<p>因此不能声称 complete-local 具有与 verifyLease 完全相同的过期&#x2F;token 检查。它有 PAT&#x2F;scope、实例权限、执行人、当前 claim、baseSha 和 Git 验证等检查，但保障层次不同。</p>
+<p>这应作为<strong>协议一致性需继续加固的边界</strong>来讲，不应夸大成严格阻断所有陈旧本地调用。本文不展开利用方式或改动实现。</p>
+<h2 id="8-完成请求的幂等，不只是一个-requestId"><a href="#8-完成请求的幂等，不只是一个-requestId" class="headerlink" title="8. 完成请求的幂等，不只是一个 requestId"></a>8. 完成请求的幂等，不只是一个 requestId</h2><p>同一节点和幂等键命中已有完成记录时：</p>
+<ul>
+<li>指纹不同：同一个键被用于不同请求，冲突。</li>
+<li>相同请求已经 completed 且有 resultSnapshot：返回保存结果，不重复完整收尾。</li>
+<li>processing：可以在一定条件下续接被中断的收尾。</li>
+</ul>
+<h3 id="8-1-源码逐行注释：同键不同内容与完成回放"><a href="#8-1-源码逐行注释：同键不同内容与完成回放" class="headerlink" title="8.1 源码逐行注释：同键不同内容与完成回放"></a>8.1 源码逐行注释：同键不同内容与完成回放</h3><p>来源：<code>packages/backend/src/twork-agent-mcp/twork-local-execution-completion.service.ts:65-76</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">if</span> (sameRequest &amp;&amp; sameRequest.<span class="hljs-property">requestFingerprint</span> !== hashes.<span class="hljs-property">requestFingerprint</span>) &#123; <span class="hljs-comment">// L65：同幂等键必须对应相同语义请求，不能随意换交付内容。</span><br>  <span class="hljs-keyword">throw</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">error</span>( <span class="hljs-comment">// L66：统一生成协议错误。</span><br>    <span class="hljs-title class_">HttpStatus</span>.<span class="hljs-property">CONFLICT</span>, <span class="hljs-comment">// L67：返回 409，表达与已有请求冲突。</span><br>    <span class="hljs-string">&#x27;idempotency_conflict&#x27;</span>, <span class="hljs-comment">// L68：客户端可识别的稳定错误码。</span><br>    <span class="hljs-string">&#x27;The idempotency key was already used for another local completion request.&#x27;</span>, <span class="hljs-comment">// L69：说明不能用同一键冒充另一份请求。</span><br>    <span class="hljs-literal">false</span>, <span class="hljs-comment">// L70：当前相同冲突请求不应被无脑自动重试。</span><br>    <span class="hljs-string">&#x27;idempotencyKey&#x27;</span>, <span class="hljs-comment">// L71：指出错误关联字段。</span><br>  ); <span class="hljs-comment">// L72：结束错误构造。</span><br>&#125; <span class="hljs-comment">// L73：结束指纹一致性检查。</span><br><span class="hljs-keyword">if</span> (sameRequest?.<span class="hljs-property">status</span> === <span class="hljs-string">&#x27;completed&#x27;</span> &amp;&amp; sameRequest.<span class="hljs-property">resultSnapshot</span>) &#123; <span class="hljs-comment">// L74：只有已完成且保存结果时才直接回放。</span><br>  <span class="hljs-keyword">return</span> &#123; ...(sameRequest.<span class="hljs-property">resultSnapshot</span> <span class="hljs-keyword">as</span> <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">unknown</span>&gt;), <span class="hljs-attr">idempotent</span>: <span class="hljs-literal">true</span> &#125;; <span class="hljs-comment">// L75：返回原业务结果并标记幂等命中。</span><br>&#125; <span class="hljs-comment">// L76：结束完成请求回放。</span><br></code></pre></td></tr></table></figure>
 
-这处理的是“服务端成功了，客户端却没收到响应”的常见故障。它不意味着数据库、Git fetch/merge、状态更新和下游调度处于同一个原子事务。
-
-## 9. Git 交付校验：三个 SHA、两个祖先关系
-
-先定义：
-
-| 名字 | 来源 | 含义 |
-|---|---|---|
-| startHeadSha | start-local 时服务端权威 HEAD | 本次工作开始的基线 |
-| baseSha | complete-local 请求 | 必须与上述基线一致 |
-| commitSha | 本地交付 | 此次希望确认的提交 |
-| remoteHeadSha | 服务端 fetch 后读取 | 实例分支现在的远端头 |
-
-成功的有变更交付应满足：baseSha 是 commitSha 的祖先，commitSha 是 remoteHeadSha 的祖先。祖先关系允许相等，具体无变更情况有单独处理。
-
-**commitSha 不必永远等于 remoteHeadSha。** 远端可以已包含其后的提交，只要交付仍在实例分支历史上；后续服务端同步还会复核远端状态。
-
-### 9.1 为什么服务端自己 fetch
-
-不能相信客户端一句“我已经 push 了”。服务端使用自己的授权上下文，从实例绑定的仓库/分支拉取，并在沙箱 Git 环境检查对象。
-
-位置：`packages/backend/src/workflow/workflow-git-collaboration.service.ts:428-442`。这里更新的是远端跟踪引用；源码 fetch refspec 的 `+` 不能误读为本地插件可以 force push 远端。fetch 与 push 方向不同。
-
-### 9.2 源码逐行注释：对象存在与双祖先校验
-
-来源：同文件 `:464-483`。前面已验证 base commit 存在，并处理无变更分支。
-
+<p>这处理的是“服务端成功了，客户端却没收到响应”的常见故障。它不意味着数据库、Git fetch&#x2F;merge、状态更新和下游调度处于同一个原子事务。</p>
+<h2 id="9-Git-交付校验：三个-SHA、两个祖先关系"><a href="#9-Git-交付校验：三个-SHA、两个祖先关系" class="headerlink" title="9. Git 交付校验：三个 SHA、两个祖先关系"></a>9. Git 交付校验：三个 SHA、两个祖先关系</h2><p>先定义：</p>
+<table>
+<thead>
+<tr>
+<th>名字</th>
+<th>来源</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>startHeadSha</td>
+<td>start-local 时服务端权威 HEAD</td>
+<td>本次工作开始的基线</td>
+</tr>
+<tr>
+<td>baseSha</td>
+<td>complete-local 请求</td>
+<td>必须与上述基线一致</td>
+</tr>
+<tr>
+<td>commitSha</td>
+<td>本地交付</td>
+<td>此次希望确认的提交</td>
+</tr>
+<tr>
+<td>remoteHeadSha</td>
+<td>服务端 fetch 后读取</td>
+<td>实例分支现在的远端头</td>
+</tr>
+</tbody></table>
+<p>成功的有变更交付应满足：baseSha 是 commitSha 的祖先，commitSha 是 remoteHeadSha 的祖先。祖先关系允许相等，具体无变更情况有单独处理。</p>
+<p><strong>commitSha 不必永远等于 remoteHeadSha。</strong> 远端可以已包含其后的提交，只要交付仍在实例分支历史上；后续服务端同步还会复核远端状态。</p>
+<h3 id="9-1-为什么服务端自己-fetch"><a href="#9-1-为什么服务端自己-fetch" class="headerlink" title="9.1 为什么服务端自己 fetch"></a>9.1 为什么服务端自己 fetch</h3><p>不能相信客户端一句“我已经 push 了”。服务端使用自己的授权上下文，从实例绑定的仓库&#x2F;分支拉取，并在沙箱 Git 环境检查对象。</p>
+<p>位置：<code>packages/backend/src/workflow/workflow-git-collaboration.service.ts:428-442</code>。这里更新的是远端跟踪引用；源码 fetch refspec 的 <code>+</code> 不能误读为本地插件可以 force push 远端。fetch 与 push 方向不同。</p>
+<h3 id="9-2-源码逐行注释：对象存在与双祖先校验"><a href="#9-2-源码逐行注释：对象存在与双祖先校验" class="headerlink" title="9.2 源码逐行注释：对象存在与双祖先校验"></a>9.2 源码逐行注释：对象存在与双祖先校验</h3><p>来源：同文件 <code>:464-483</code>。前面已验证 base commit 存在，并处理无变更分支。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">assertCommitExists</span>( <span class="hljs-comment">// L464：确认交付提交在服务端仓库中确实可解析。</span><br>  desktopId, <span class="hljs-comment">// L465：定位执行 Git 校验的沙箱工作区。</span><br>  binding.<span class="hljs-property">repositoryPath</span>, <span class="hljs-comment">// L466：使用服务端绑定仓库路径，不接受客户端任意指定仓库。</span><br>  input.<span class="hljs-property">commitSha</span>, <span class="hljs-comment">// L467：要检查的交付对象。</span><br>  <span class="hljs-string">&#x27;commit_not_found&#x27;</span>, <span class="hljs-comment">// L468：不存在时返回明确错误，而不是认可客户端字符串。</span><br>); <span class="hljs-comment">// L469：等待对象存在性检查结束。</span><br><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">assertAncestor</span>( <span class="hljs-comment">// L470：检查交付是否延续认领时的基线。</span><br>  desktopId, <span class="hljs-comment">// L471：在相同沙箱中执行检查。</span><br>  binding.<span class="hljs-property">repositoryPath</span>, <span class="hljs-comment">// L472：在同一个可信仓库里比较关系。</span><br>  input.<span class="hljs-property">baseSha</span>, <span class="hljs-comment">// L473：祖先候选是认领基线。</span><br>  input.<span class="hljs-property">commitSha</span>, <span class="hljs-comment">// L474：后代候选是本地交付提交。</span><br>  <span class="hljs-string">&#x27;git_history_rewritten&#x27;</span>, <span class="hljs-comment">// L475：关系不成立则拒绝这种交付；错误名不代表检测所有历史篡改。</span><br>); <span class="hljs-comment">// L476：等待第一条祖先关系检查结束。</span><br><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">assertAncestor</span>( <span class="hljs-comment">// L477：确认交付提交属于实例远端分支当前历史。</span><br>  desktopId, <span class="hljs-comment">// L478：仍由服务端沙箱执行。</span><br>  binding.<span class="hljs-property">repositoryPath</span>, <span class="hljs-comment">// L479：使用绑定仓库，不混用本地工作目录。</span><br>  input.<span class="hljs-property">commitSha</span>, <span class="hljs-comment">// L480：这次的祖先候选变为交付提交。</span><br>  remoteHeadSha, <span class="hljs-comment">// L481：后代候选是服务端刚 fetch 得到的远端 HEAD。</span><br>  <span class="hljs-string">&#x27;commit_not_on_instance_branch&#x27;</span>, <span class="hljs-comment">// L482：不在远端实例分支上则拒绝，避免只提交未推送或推错分支。</span><br>); <span class="hljs-comment">// L483：等待第二条祖先关系检查结束。</span><br></code></pre></td></tr></table></figure>
 
-底层使用 `git merge-base --is-ancestor`。这证明可达性，不验证提交内容符合需求，也不验证作者签名。
-
-### 9.3 源码逐行注释：没有改代码也可以完成
-
-来源：同文件 `:450-462`。
-
+<p>底层使用 <code>git merge-base --is-ancestor</code>。这证明可达性，不验证提交内容符合需求，也不验证作者签名。</p>
+<h3 id="9-3-源码逐行注释：没有改代码也可以完成"><a href="#9-3-源码逐行注释：没有改代码也可以完成" class="headerlink" title="9.3 源码逐行注释：没有改代码也可以完成"></a>9.3 源码逐行注释：没有改代码也可以完成</h3><p>来源：同文件 <code>:450-462</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">if</span> (input.<span class="hljs-property">baseSha</span> === input.<span class="hljs-property">commitSha</span>) &#123; <span class="hljs-comment">// L450：基线与交付相同，表示本次没有新增代码提交。</span><br>  <span class="hljs-keyword">if</span> (remoteHeadSha !== input.<span class="hljs-property">baseSha</span>) &#123; <span class="hljs-comment">// L451：无变更完成要求远端仍停在该基线，不能忽略已变化的远端。</span><br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConflictException</span>(<span class="hljs-string">&#x27;remote_head_changed&#x27;</span>); <span class="hljs-comment">// L452：让调用方重新核对基线，而非把旧状态算作完成。</span><br>  &#125; <span class="hljs-comment">// L453：结束远端一致性检查。</span><br>  <span class="hljs-keyword">return</span> &#123; <span class="hljs-comment">// L454：直接形成无代码变更的验证结果。</span><br>    <span class="hljs-attr">instanceBranch</span>: binding.<span class="hljs-property">instanceBranch</span>, <span class="hljs-comment">// L455：记录交付所属实例分支。</span><br>    <span class="hljs-attr">baseSha</span>: input.<span class="hljs-property">baseSha</span>, <span class="hljs-comment">// L456：记录原始基线。</span><br>    <span class="hljs-attr">commitSha</span>: input.<span class="hljs-property">commitSha</span>, <span class="hljs-comment">// L457：记录与基线相同的交付 SHA。</span><br>    remoteHeadSha, <span class="hljs-comment">// L458：记录服务端确认的远端头。</span><br>    <span class="hljs-attr">changedFiles</span>: [], <span class="hljs-comment">// L459：没有文件差异，而不是伪造空提交。</span><br>    <span class="hljs-attr">diffStat</span>: &#123; <span class="hljs-attr">filesChanged</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">insertions</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">deletions</span>: <span class="hljs-number">0</span> &#125;, <span class="hljs-comment">// L460：下游可用统一结构处理零变更结果。</span><br>  &#125;; <span class="hljs-comment">// L461：返回无变更验证结果。</span><br>&#125; <span class="hljs-comment">// L462：结束无变更分支；有提交时继续双祖先检查。</span><br></code></pre></td></tr></table></figure>
 
-有变更时还会计算 name-status/numstat，形成 changedFiles 与 diffStat。摘要可以由本地提供，文件差异由服务端从 Git 计算，二者信任等级不同。
-
-## 10. 为什么验证通过还要同步 worktree
-
-验证成功只说明“远端 Git 图中有这份交付”，不说明云端后续节点的工作目录已经在正确版本。
-
-`syncInstanceWorktreeToRemoteHead`（同文件 `:513`）会检查：
-
-1. 服务端 worktree 是否干净，避免覆盖已有未提交修改。
-2. 远端 HEAD 是否仍等于刚验证的 expectedRemoteHeadSha。
-3. 用 fast-forward 路径同步，不能默默制造额外合并或覆盖本地分叉。
-
-这一步失败不能直接推进下游，否则下游读的文件可能不是刚认可的交付。
-
-**实例级 Git 锁的边界要谨慎：**源码另有 workflowInstanceGitLock 管理某些 finalize 路径；不要因此推断 complete-local 的 fetch→验证→同步→DB 收口整体都被同一个锁原子覆盖。需要逐个调用路径确认。
-
-## 11. 引擎收口：何时后继节点才开始
-
-`completeExternalNodeExecution` 在写入前再次查询当前状态，检查 running、owner、来源、location 与 startHeadSha，然后写入交付信息、清理认领字段、更新权威 HEAD、完成节点，最后 onNodeCompleted。
-
-### 11.1 源码逐行注释：更新实例权威头并推进
-
-来源：`packages/backend/src/workflow/workflow-engine.service.ts:3765-3782`。
-
+<p>有变更时还会计算 name-status&#x2F;numstat，形成 changedFiles 与 diffStat。摘要可以由本地提供，文件差异由服务端从 Git 计算，二者信任等级不同。</p>
+<h2 id="10-为什么验证通过还要同步-worktree"><a href="#10-为什么验证通过还要同步-worktree" class="headerlink" title="10. 为什么验证通过还要同步 worktree"></a>10. 为什么验证通过还要同步 worktree</h2><p>验证成功只说明“远端 Git 图中有这份交付”，不说明云端后续节点的工作目录已经在正确版本。</p>
+<p><code>syncInstanceWorktreeToRemoteHead</code>（同文件 <code>:513</code>）会检查：</p>
+<ol>
+<li>服务端 worktree 是否干净，避免覆盖已有未提交修改。</li>
+<li>远端 HEAD 是否仍等于刚验证的 expectedRemoteHeadSha。</li>
+<li>用 fast-forward 路径同步，不能默默制造额外合并或覆盖本地分叉。</li>
+</ol>
+<p>这一步失败不能直接推进下游，否则下游读的文件可能不是刚认可的交付。</p>
+<p><strong>实例级 Git 锁的边界要谨慎：</strong>源码另有 workflowInstanceGitLock 管理某些 finalize 路径；不要因此推断 complete-local 的 fetch→验证→同步→DB 收口整体都被同一个锁原子覆盖。需要逐个调用路径确认。</p>
+<h2 id="11-引擎收口：何时后继节点才开始"><a href="#11-引擎收口：何时后继节点才开始" class="headerlink" title="11. 引擎收口：何时后继节点才开始"></a>11. 引擎收口：何时后继节点才开始</h2><p><code>completeExternalNodeExecution</code> 在写入前再次查询当前状态，检查 running、owner、来源、location 与 startHeadSha，然后写入交付信息、清理认领字段、更新权威 HEAD、完成节点，最后 onNodeCompleted。</p>
+<h3 id="11-1-源码逐行注释：更新实例权威头并推进"><a href="#11-1-源码逐行注释：更新实例权威头并推进" class="headerlink" title="11.1 源码逐行注释：更新实例权威头并推进"></a>11.1 源码逐行注释：更新实例权威头并推进</h3><p>来源：<code>packages/backend/src/workflow/workflow-engine.service.ts:3765-3782</code>。</p>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">prisma</span>.<span class="hljs-property">workflowInstanceGitBinding</span>.<span class="hljs-title function_">update</span>(&#123; <span class="hljs-comment">// L3765：交付校验及执行信息写入后，更新实例级 Git 基线。</span><br>  <span class="hljs-attr">where</span>: &#123; <span class="hljs-attr">workflowInstanceId</span>: execution.<span class="hljs-property">instanceId</span> &#125;, <span class="hljs-comment">// L3766：限定当前 Workflow 实例，不修改其他实例分支。</span><br>  <span class="hljs-attr">data</span>: &#123; <span class="hljs-comment">// L3767：写入已验证的状态。</span><br>    <span class="hljs-attr">authoritativeHeadSha</span>: input.<span class="hljs-property">remoteHeadSha</span>, <span class="hljs-comment">// L3768：后续节点应从服务端验证过的远端 HEAD 出发。</span><br>    <span class="hljs-attr">branchStatus</span>: <span class="hljs-string">&#x27;ready&#x27;</span>, <span class="hljs-comment">// L3769：标记分支可继续协同。</span><br>  &#125;, <span class="hljs-comment">// L3770：结束 Git 绑定更新数据。</span><br>&#125;); <span class="hljs-comment">// L3771：等待实例级基线更新完成。</span><br><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">updateNodeStatus</span>( <span class="hljs-comment">// L3772：通过统一状态逻辑将节点置为完成，而不是只改一个展示字段。</span><br>  execution.<span class="hljs-property">id</span>, <span class="hljs-comment">// L3773：目标节点执行。</span><br>  <span class="hljs-variable constant_">NODE_EXECUTION_STATUS</span>.<span class="hljs-property">COMPLETED</span>, <span class="hljs-comment">// L3774：进入引擎认可的 completed 状态。</span><br>  input.<span class="hljs-property">operatorId</span>, <span class="hljs-comment">// L3775：记录当前操作用户。</span><br>  <span class="hljs-string">&#x27;local plugin Git completion verified&#x27;</span>, <span class="hljs-comment">// L3776：记录完成原因，供历史和审计使用。</span><br>); <span class="hljs-comment">// L3777：等待节点状态更新。</span><br><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">prisma</span>.<span class="hljs-property">nodeExecution</span>.<span class="hljs-title function_">update</span>(&#123; <span class="hljs-comment">// L3778：补充完成时间字段。</span><br>  <span class="hljs-attr">where</span>: &#123; <span class="hljs-attr">id</span>: execution.<span class="hljs-property">id</span> &#125;, <span class="hljs-comment">// L3779：限定同一个节点执行。</span><br>  <span class="hljs-attr">data</span>: &#123; completedAt &#125;, <span class="hljs-comment">// L3780：使用本次收口时间。</span><br>&#125;); <span class="hljs-comment">// L3781：等待完成时间落库。</span><br><span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">onNodeCompleted</span>(execution.<span class="hljs-property">id</span>); <span class="hljs-comment">// L3782：进入条件边、语义路由、合流和后继调度逻辑。</span><br></code></pre></td></tr></table></figure>
 
-源码写前复查是防御措施，但不是单条带所有版本条件的 CAS，也不能从多个 await 推导出整个流程原子性。应分清“重复完成可以续接/回放”与“不会出现任意中间状态”。
-
-## 12. 四层授权与两类凭证
-
-### 12.1 授权分层
-
-1. **身份**：Bearer PAT 验证，得到 employeeId、tenantId、scopes 等可信 principal。
-2. **功能权限**：workflow:read、workflow:execute、workflow:stop 等 scope。
-3. **资源权限**：实例、Desktop、定义、项目的归属和访问关系。
-4. **节点执行权限**：assignedExecutorId、executionOwnerId、当前运行状态和相互占用。
-
-可参考：`twork-mcp-auth.guard.ts:13`、`node-executor-authorization.service.ts:12`、`twork-agent-identity.service.ts:136`，均位于 `packages/backend/src/twork-agent-mcp/`。
-
-### 12.2 PAT 与 leaseToken 的区别
-
-| 凭证 | 表示什么 | 生命周期 |
-|---|---|---|
-| PAT | 谁在调用、有哪些授权 scope | 用户/工具访问凭证生命周期 |
-| leaseToken | 某次认领的临时凭证，适用于实际校验它的接口 | 当前认领的租约周期 |
-
-拥有 PAT 不代表可以写所有节点；拥有旧 lease 也不应被理解为无限期执行权。具体强制检查必须逐路由确认，尤其 complete-local 与 finalize 的差异。
-
-## 13. 异常场景与正确表述
-
-| 场景 | 当前机制 | 不要错误承诺 |
-|---|---|---|
-| 两个客户端同时认领 | stateVersion/status CAS，失败返回冲突 | 不是全工作流全局排他锁 |
-| 云端已运行 | 检查活跃 run/session，拒绝本地占用 | 查询检查不天然包含所有未来并发变化 |
-| 本地掉线 | 租约到期后候选回显可恢复，新会话可重领 | 到期不等于自动终止本机进程或回滚已 push 内容 |
-| 本地运行超过 15 分钟 | 按接口支持的续租/重新认领语义维护资格 | reportProgress 当前不能假定自动续期 |
-| 同键完成请求重试 | 指纹检查、resultSnapshot 回放 | 不同内容不能复用同键 |
-| commit 尚未到服务端 | commit_not_found 等明确失败 | 不以客户端字符串为完成证明 |
-| 基线关系不成立 | 祖先校验失败 | 不是密码学签名验证 |
-| 远端变化/worktree 脏 | 同步阶段拒绝或要求解决冲突 | 不自动 force 覆盖用户数据 |
-| Git 完成后 DB/响应中断 | processing 记录与续接逻辑 | 不能说 Git 与 DB 共同事务已提交 |
-
-特别注意：本地断联不等于没有副作用。执行者可能已 commit/push，或输出摘要已写入；只是节点 completed 和下游推进还有服务端门禁。
-
-## 14. 设计权衡：为什么这样做，而不是另一个方案
-
-### MCP 与消息队列不是互斥选项
-
-MCP 面向本地 AI 工具，提供可发现的业务动作和结构化参数；队列偏向任务投递和消费可靠性。可以使用 MCP 暴露领取/回传接口，同时在后端使用持久队列调度。
-
-不能说“队列不能人工确认”——它可以与审批系统结合；只是不能直接替代 MCP 的工具语义、用户上下文和本项目的权限检查。
-
-### 为什么 lease 放数据库
-
-节点状态、stateVersion、owner、lease 和幂等标识都与业务实体关联，放在同一持久化体系便于条件更新与审计。代价是要自己管理过期语义、查询回显和竞争；不是有 Redis TTL 才叫 lease。
-
-### 为什么用 Git 提交，而不是上传一个文件清单
-
-Git 提交能表示内容快照与父子关系，远端分支是双方共享的交付位置；服务端可以验证交付是否可达，并计算真实差异。文件清单只能描述“声称改了什么”，很难单独表达完整版本基线。
-
-但 SHA 不证明测试结果；如果工作流需要质量保证，应另加可验证测试报告、CI 结果或评审节点。
-
-## 15. 面试表达模板
-
-### 一分钟版
-
-> 我们把工作流推进留在云端，但允许本地 AI 工具认领节点执行。引擎产生等待中的节点后，本地经 MCP 获取上下文并申请执行权，服务端校验用户、实例和节点权限，用版本 CAS 避免与其他本地或云端执行冲突，同时返回实例分支和起始 HEAD。本地完成修改、测试、提交和推送后回传 baseSha、commitSha 与摘要；云端自己 fetch，校验基线祖先关系及提交在实例分支上的可达性，再同步工作区、完成节点并推进下游。Git 校验不是数字签名，租约和幂等也各有边界，不能宣传端到端 exactly-once。
-
-### 追问：人一直不回来怎么办？
-
-租约到期后可发现并重新认领，节点不应永久被某个客户端占住。但这不自动取消本地进程或撤销已经推送的 Git 状态，接管仍需要重新核对权威基线。
-
-### 追问：为什么一定要 startHeadSha？
-
-否则本地可能基于旧版本工作，服务端仅看“有一个 commit”无法判断是否延续正确实例基线。服务端认领时保存起点，完成时比对 baseSha，并验证提交 ancestry。
-
-### 追问：防历史改写能保证多强？
-
-当前检查确保基线是交付祖先、交付可达于远端分支；不证明全部仓库历史从未发生任何变更，不验证提交签名，也不证明提交语义正确。应准确说是基线连续性和分支归属校验。
-
-### 追问：哪些地方还需要改进？
-
-作为改进建议而非已实现功能：统一 complete-local 与 token/lease 代次校验语义，明确整段 Git 收口的并发边界，补全长耗时本地执行的续租契约，围绕中间状态建立故障恢复测试。不要把现有随机 token 直接宣传为所有下游都会执行的严格 fencing。
-
-## 16. 建议看的测试与自测题
-
-现有相关测试目录：`packages/backend/test/unit/`。
-
-- `twork-agent-mcp/twork-node-execution.service.test.ts`：认领与 lease。
-- `twork-agent-mcp/twork-local-execution-completion.service.test.ts`：本地交付完成。
-- `twork-agent-mcp/workflow-session-local-lease-fence.test.ts`：云端与本地占用交互。
-- `workflow/workflow-git-execution.test.ts`：Git 协作行为。
-
-这些是阅读入口，不代表本文已运行这些测试，更不代表完整生产并发保证。
-
-不看文档尝试回答：
-
-1. assignedExecutor、owner、clientSession、leaseToken、stateVersion 分别是什么？
-2. 两个客户端同时认领为什么不能只靠一次 SELECT？
-3. 为什么 Git 校验需要两个祖先关系，而不是只判断 commit 存在？
-4. commitSha 与 remoteHeadSha 可以不同吗？
-5. complete-local 是否实际传 leaseToken？
-6. 租约过期是否意味着本地工作被撤销？
-7. 为什么 Git 校验通过还不能立即调后继节点？
-8. 幂等如何处理“成功响应丢了”，有哪些不能解决的问题？
-
-## 17. 如何把四个功能连成一个项目故事
-
-- [01｜主链路](01-Agent平台主链路.md)：建立控制面、执行面和两层事件恢复的大图。
-- [02｜双 Provider](02-双Provider沙箱抽象.md)：解释执行环境与存储生命周期如何适配。
-- [03｜Runtime](03-沙箱内Agent-Runtime.md)：解释 SDK、工具、交互、写策略与流回放。
-- 本篇：解释执行面不只有云沙箱，本地节点也能通过受控交付参与同一工作流。
-
-简历里只写自己实际承担的部分；没有个人提交记录和职责证据，不把整个仓库功能都说成“我独立设计实现”。每个亮点按“业务问题 → 我的工作 → 核心机制 → 验证证据 → 局限/权衡”来讲，比堆砌 MCP、SSE、Registry 关键词更有说服力。
-
-
+<p>源码写前复查是防御措施，但不是单条带所有版本条件的 CAS，也不能从多个 await 推导出整个流程原子性。应分清“重复完成可以续接&#x2F;回放”与“不会出现任意中间状态”。</p>
+<h2 id="12-四层授权与两类凭证"><a href="#12-四层授权与两类凭证" class="headerlink" title="12. 四层授权与两类凭证"></a>12. 四层授权与两类凭证</h2><h3 id="12-1-授权分层"><a href="#12-1-授权分层" class="headerlink" title="12.1 授权分层"></a>12.1 授权分层</h3><ol>
+<li><strong>身份</strong>：Bearer PAT 验证，得到 employeeId、tenantId、scopes 等可信 principal。</li>
+<li><strong>功能权限</strong>：workflow:read、workflow:execute、workflow:stop 等 scope。</li>
+<li><strong>资源权限</strong>：实例、Desktop、定义、项目的归属和访问关系。</li>
+<li><strong>节点执行权限</strong>：assignedExecutorId、executionOwnerId、当前运行状态和相互占用。</li>
+</ol>
+<p>可参考：<code>twork-mcp-auth.guard.ts:13</code>、<code>node-executor-authorization.service.ts:12</code>、<code>twork-agent-identity.service.ts:136</code>，均位于 <code>packages/backend/src/twork-agent-mcp/</code>。</p>
+<h3 id="12-2-PAT-与-leaseToken-的区别"><a href="#12-2-PAT-与-leaseToken-的区别" class="headerlink" title="12.2 PAT 与 leaseToken 的区别"></a>12.2 PAT 与 leaseToken 的区别</h3><table>
+<thead>
+<tr>
+<th>凭证</th>
+<th>表示什么</th>
+<th>生命周期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PAT</td>
+<td>谁在调用、有哪些授权 scope</td>
+<td>用户&#x2F;工具访问凭证生命周期</td>
+</tr>
+<tr>
+<td>leaseToken</td>
+<td>某次认领的临时凭证，适用于实际校验它的接口</td>
+<td>当前认领的租约周期</td>
+</tr>
+</tbody></table>
+<p>拥有 PAT 不代表可以写所有节点；拥有旧 lease 也不应被理解为无限期执行权。具体强制检查必须逐路由确认，尤其 complete-local 与 finalize 的差异。</p>
+<h2 id="13-异常场景与正确表述"><a href="#13-异常场景与正确表述" class="headerlink" title="13. 异常场景与正确表述"></a>13. 异常场景与正确表述</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>当前机制</th>
+<th>不要错误承诺</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>两个客户端同时认领</td>
+<td>stateVersion&#x2F;status CAS，失败返回冲突</td>
+<td>不是全工作流全局排他锁</td>
+</tr>
+<tr>
+<td>云端已运行</td>
+<td>检查活跃 run&#x2F;session，拒绝本地占用</td>
+<td>查询检查不天然包含所有未来并发变化</td>
+</tr>
+<tr>
+<td>本地掉线</td>
+<td>租约到期后候选回显可恢复，新会话可重领</td>
+<td>到期不等于自动终止本机进程或回滚已 push 内容</td>
+</tr>
+<tr>
+<td>本地运行超过 15 分钟</td>
+<td>按接口支持的续租&#x2F;重新认领语义维护资格</td>
+<td>reportProgress 当前不能假定自动续期</td>
+</tr>
+<tr>
+<td>同键完成请求重试</td>
+<td>指纹检查、resultSnapshot 回放</td>
+<td>不同内容不能复用同键</td>
+</tr>
+<tr>
+<td>commit 尚未到服务端</td>
+<td>commit_not_found 等明确失败</td>
+<td>不以客户端字符串为完成证明</td>
+</tr>
+<tr>
+<td>基线关系不成立</td>
+<td>祖先校验失败</td>
+<td>不是密码学签名验证</td>
+</tr>
+<tr>
+<td>远端变化&#x2F;worktree 脏</td>
+<td>同步阶段拒绝或要求解决冲突</td>
+<td>不自动 force 覆盖用户数据</td>
+</tr>
+<tr>
+<td>Git 完成后 DB&#x2F;响应中断</td>
+<td>processing 记录与续接逻辑</td>
+<td>不能说 Git 与 DB 共同事务已提交</td>
+</tr>
+</tbody></table>
+<p>特别注意：本地断联不等于没有副作用。执行者可能已 commit&#x2F;push，或输出摘要已写入；只是节点 completed 和下游推进还有服务端门禁。</p>
+<h2 id="14-设计权衡：为什么这样做，而不是另一个方案"><a href="#14-设计权衡：为什么这样做，而不是另一个方案" class="headerlink" title="14. 设计权衡：为什么这样做，而不是另一个方案"></a>14. 设计权衡：为什么这样做，而不是另一个方案</h2><h3 id="MCP-与消息队列不是互斥选项"><a href="#MCP-与消息队列不是互斥选项" class="headerlink" title="MCP 与消息队列不是互斥选项"></a>MCP 与消息队列不是互斥选项</h3><p>MCP 面向本地 AI 工具，提供可发现的业务动作和结构化参数；队列偏向任务投递和消费可靠性。可以使用 MCP 暴露领取&#x2F;回传接口，同时在后端使用持久队列调度。</p>
+<p>不能说“队列不能人工确认”——它可以与审批系统结合；只是不能直接替代 MCP 的工具语义、用户上下文和本项目的权限检查。</p>
+<h3 id="为什么-lease-放数据库"><a href="#为什么-lease-放数据库" class="headerlink" title="为什么 lease 放数据库"></a>为什么 lease 放数据库</h3><p>节点状态、stateVersion、owner、lease 和幂等标识都与业务实体关联，放在同一持久化体系便于条件更新与审计。代价是要自己管理过期语义、查询回显和竞争；不是有 Redis TTL 才叫 lease。</p>
+<h3 id="为什么用-Git-提交，而不是上传一个文件清单"><a href="#为什么用-Git-提交，而不是上传一个文件清单" class="headerlink" title="为什么用 Git 提交，而不是上传一个文件清单"></a>为什么用 Git 提交，而不是上传一个文件清单</h3><p>Git 提交能表示内容快照与父子关系，远端分支是双方共享的交付位置；服务端可以验证交付是否可达，并计算真实差异。文件清单只能描述“声称改了什么”，很难单独表达完整版本基线。</p>
+<p>但 SHA 不证明测试结果；如果工作流需要质量保证，应另加可验证测试报告、CI 结果或评审节点。</p>
+<h2 id="15-面试表达模板"><a href="#15-面试表达模板" class="headerlink" title="15. 面试表达模板"></a>15. 面试表达模板</h2><h3 id="一分钟版"><a href="#一分钟版" class="headerlink" title="一分钟版"></a>一分钟版</h3><blockquote>
+<p>我们把工作流推进留在云端，但允许本地 AI 工具认领节点执行。引擎产生等待中的节点后，本地经 MCP 获取上下文并申请执行权，服务端校验用户、实例和节点权限，用版本 CAS 避免与其他本地或云端执行冲突，同时返回实例分支和起始 HEAD。本地完成修改、测试、提交和推送后回传 baseSha、commitSha 与摘要；云端自己 fetch，校验基线祖先关系及提交在实例分支上的可达性，再同步工作区、完成节点并推进下游。Git 校验不是数字签名，租约和幂等也各有边界，不能宣传端到端 exactly-once。</p>
+</blockquote>
+<h3 id="追问：人一直不回来怎么办？"><a href="#追问：人一直不回来怎么办？" class="headerlink" title="追问：人一直不回来怎么办？"></a>追问：人一直不回来怎么办？</h3><p>租约到期后可发现并重新认领，节点不应永久被某个客户端占住。但这不自动取消本地进程或撤销已经推送的 Git 状态，接管仍需要重新核对权威基线。</p>
+<h3 id="追问：为什么一定要-startHeadSha？"><a href="#追问：为什么一定要-startHeadSha？" class="headerlink" title="追问：为什么一定要 startHeadSha？"></a>追问：为什么一定要 startHeadSha？</h3><p>否则本地可能基于旧版本工作，服务端仅看“有一个 commit”无法判断是否延续正确实例基线。服务端认领时保存起点，完成时比对 baseSha，并验证提交 ancestry。</p>
+<h3 id="追问：防历史改写能保证多强？"><a href="#追问：防历史改写能保证多强？" class="headerlink" title="追问：防历史改写能保证多强？"></a>追问：防历史改写能保证多强？</h3><p>当前检查确保基线是交付祖先、交付可达于远端分支；不证明全部仓库历史从未发生任何变更，不验证提交签名，也不证明提交语义正确。应准确说是基线连续性和分支归属校验。</p>
+<h3 id="追问：哪些地方还需要改进？"><a href="#追问：哪些地方还需要改进？" class="headerlink" title="追问：哪些地方还需要改进？"></a>追问：哪些地方还需要改进？</h3><p>作为改进建议而非已实现功能：统一 complete-local 与 token&#x2F;lease 代次校验语义，明确整段 Git 收口的并发边界，补全长耗时本地执行的续租契约，围绕中间状态建立故障恢复测试。不要把现有随机 token 直接宣传为所有下游都会执行的严格 fencing。</p>
+<h2 id="16-建议看的测试与自测题"><a href="#16-建议看的测试与自测题" class="headerlink" title="16. 建议看的测试与自测题"></a>16. 建议看的测试与自测题</h2><p>现有相关测试目录：<code>packages/backend/test/unit/</code>。</p>
+<ul>
+<li><code>twork-agent-mcp/twork-node-execution.service.test.ts</code>：认领与 lease。</li>
+<li><code>twork-agent-mcp/twork-local-execution-completion.service.test.ts</code>：本地交付完成。</li>
+<li><code>twork-agent-mcp/workflow-session-local-lease-fence.test.ts</code>：云端与本地占用交互。</li>
+<li><code>workflow/workflow-git-execution.test.ts</code>：Git 协作行为。</li>
+</ul>
+<p>这些是阅读入口，不代表本文已运行这些测试，更不代表完整生产并发保证。</p>
+<p>不看文档尝试回答：</p>
+<ol>
+<li>assignedExecutor、owner、clientSession、leaseToken、stateVersion 分别是什么？</li>
+<li>两个客户端同时认领为什么不能只靠一次 SELECT？</li>
+<li>为什么 Git 校验需要两个祖先关系，而不是只判断 commit 存在？</li>
+<li>commitSha 与 remoteHeadSha 可以不同吗？</li>
+<li>complete-local 是否实际传 leaseToken？</li>
+<li>租约过期是否意味着本地工作被撤销？</li>
+<li>为什么 Git 校验通过还不能立即调后继节点？</li>
+<li>幂等如何处理“成功响应丢了”，有哪些不能解决的问题？</li>
+</ol>
+<h2 id="17-如何把四个功能连成一个项目故事"><a href="#17-如何把四个功能连成一个项目故事" class="headerlink" title="17. 如何把四个功能连成一个项目故事"></a>17. 如何把四个功能连成一个项目故事</h2><ul>
+<li><a href="01-Agent%E5%B9%B3%E5%8F%B0%E4%B8%BB%E9%93%BE%E8%B7%AF.md">01｜主链路</a>：建立控制面、执行面和两层事件恢复的大图。</li>
+<li><a href="02-%E5%8F%8CProvider%E6%B2%99%E7%AE%B1%E6%8A%BD%E8%B1%A1.md">02｜双 Provider</a>：解释执行环境与存储生命周期如何适配。</li>
+<li><a href="03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime.md">03｜Runtime</a>：解释 SDK、工具、交互、写策略与流回放。</li>
+<li>本篇：解释执行面不只有云沙箱，本地节点也能通过受控交付参与同一工作流。</li>
+</ul>
+<p>简历里只写自己实际承担的部分；没有个人提交记录和职责证据，不把整个仓库功能都说成“我独立设计实现”。每个亮点按“业务问题 → 我的工作 → 核心机制 → 验证证据 → 局限&#x2F;权衡”来讲，比堆砌 MCP、SSE、Registry 关键词更有说服力。</p>
 
                 
               </div>

@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="# day5  ## 面向对象  面向对象是一种编程范式，它将现实世界中的事物抽象为对象，对象具有属性（称为字段或属性）和行为（称为方法）。面向对象编程的设计思想是以对象为中心，通过对象之间的交互来完成程序的功能，具有灵活性和可扩展性，通过封装和继承可以更好地应对需求变化。  ## 构造器   1234567public class Student&#123;    	&#x2F;**构造器 *&#x2F;">
+    <meta name="description" content="day5面向对象面向对象是一种编程范式，它将现实世界中的事物抽象为对象，对象具有属性（称为字段或属性）和行为（称为方法）。面向对象编程的设计思想是以对象为中心，通过对象之间的交互来完成程序的功能，具有灵活性和可扩展性，通过封装和继承可以更好地应对需求变化。 构造器1234567public class Student&#123;    	&#x2F;**构造器 *&#x2F;    	public Student()">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day5">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/05/11/2025-05-11-Java-01.SE-day5/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="# day5  ## 面向对象  面向对象是一种编程范式，它将现实世界中的事物抽象为对象，对象具有属性（称为字段或属性）和行为（称为方法）。面向对象编程的设计思想是以对象为中心，通过对象之间的交互来完成程序的功能，具有灵活性和可扩展性，通过封装和继承可以更好地应对需求变化。  ## 构造器   1234567public class Student&#123;    	&#x2F;**构造器 *&#x2F;">
+<meta property="og:description" content="day5面向对象面向对象是一种编程范式，它将现实世界中的事物抽象为对象，对象具有属性（称为字段或属性）和行为（称为方法）。面向对象编程的设计思想是以对象为中心，通过对象之间的交互来完成程序的功能，具有灵活性和可扩展性，通过封装和继承可以更好地应对需求变化。 构造器1234567public class Student&#123;    	&#x2F;**构造器 *&#x2F;    	public Student()">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-11T15:41:28.000Z">
 <meta property="article:modified_time" content="2025-05-11T15:41:28.000Z">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          739 字
+          717 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          7 分钟
+          6 分钟
         
       </span>
     
@@ -382,79 +382,37 @@
             
               <div class="markdown-body">
                 
-                
-# day5
+                <h1 id="day5"><a href="#day5" class="headerlink" title="day5"></a>day5</h1><h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>面向对象是一种编程范式，它将现实世界中的事物抽象为对象，对象具有属性（称为字段或属性）和行为（称为方法）。面向对象编程的设计思想是以对象为中心，通过对象之间的交互来完成程序的功能，具有灵活性和可扩展性，通过封装和继承可以更好地应对需求变化。</p>
+<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span>&#123;<br>    	<span class="hljs-comment">/**构造器 */</span><br>    	<span class="hljs-type">public</span> <span class="hljs-title function_">Student</span><span class="hljs-params">()</span><br>        &#123;<br>            <br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-## 面向对象
-
-面向对象是一种编程范式，它将现实世界中的事物抽象为对象，对象具有属性（称为字段或属性）和行为（称为方法）。面向对象编程的设计思想是以对象为中心，通过对象之间的交互来完成程序的功能，具有灵活性和可扩展性，通过封装和继承可以更好地应对需求变化。
-
-## 构造器 
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span>&#123;<br>    	<span class="hljs-comment">/**构造器 */</span><br>    	<span class="hljs-type">public</span> <span class="hljs-title function_">Student</span><span class="hljs-params">()</span><br>        &#123;<br>            <br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-无参构造、有参构造。
-
-## this关键字
-
-this是一个变量，可以在方法中拿到当前对象。
-
-## 封装的设计要求
-
-合理隐藏、合理暴露
-
-## javabean=实体类
-
-- 要求1：全部成员都是私有且提供get/setter方法
-- 要求2：类中需要提供一个无参数构造器 有参数构造器可选
-
-实体类基本作用：可以创建对象，封装数据。
-
-### 应用场景？
-
-实体类只负责数据的存取，数据的业务交给其他类的对象处理和完成，实现数据和数据业务分离。
-
-## Static
-
-### static修饰成员变量
-
-静态变量（类的变量）被类的全部对象共享
-
-实例变量（对象变量）
-
-静态变量可以用类名直接访问（推荐）
-
-都可以拿对象.变量
-
-### static修饰方法
-
-静态方法  属于类
-
-实例方法  属于对象
-
-节约内存
-
-如果方法只是为了做一个功能而不直接访问对象的数据，定义为静态方法
-
-如果方法需要访问对象的数据，必须定义了实例方法
-
-（涉及实例数据用实例方法）
-
-同一个类中类名可以省略
-
-静态方法做工具类
-
-工具类：方法都是静态方法
-
-工具类没有创建对象的需求，所以构造器私有化
-
-## static注意事项
-
-1. 静态方法中可以直接访问静态成员，不可以访问实例成员
-2. 实例方法中可以直接访问静态成员，也可以访问实例成员
-3. 实例方法中可以出现this关键字，静态方法中不能出现this关键字
-
-
+<p>无参构造、有参构造。</p>
+<h2 id="this关键字"><a href="#this关键字" class="headerlink" title="this关键字"></a>this关键字</h2><p>this是一个变量，可以在方法中拿到当前对象。</p>
+<h2 id="封装的设计要求"><a href="#封装的设计要求" class="headerlink" title="封装的设计要求"></a>封装的设计要求</h2><p>合理隐藏、合理暴露</p>
+<h2 id="javabean-实体类"><a href="#javabean-实体类" class="headerlink" title="javabean&#x3D;实体类"></a>javabean&#x3D;实体类</h2><ul>
+<li>要求1：全部成员都是私有且提供get&#x2F;setter方法</li>
+<li>要求2：类中需要提供一个无参数构造器 有参数构造器可选</li>
+</ul>
+<p>实体类基本作用：可以创建对象，封装数据。</p>
+<h3 id="应用场景？"><a href="#应用场景？" class="headerlink" title="应用场景？"></a>应用场景？</h3><p>实体类只负责数据的存取，数据的业务交给其他类的对象处理和完成，实现数据和数据业务分离。</p>
+<h2 id="Static"><a href="#Static" class="headerlink" title="Static"></a>Static</h2><h3 id="static修饰成员变量"><a href="#static修饰成员变量" class="headerlink" title="static修饰成员变量"></a>static修饰成员变量</h3><p>静态变量（类的变量）被类的全部对象共享</p>
+<p>实例变量（对象变量）</p>
+<p>静态变量可以用类名直接访问（推荐）</p>
+<p>都可以拿对象.变量</p>
+<h3 id="static修饰方法"><a href="#static修饰方法" class="headerlink" title="static修饰方法"></a>static修饰方法</h3><p>静态方法  属于类</p>
+<p>实例方法  属于对象</p>
+<p>节约内存</p>
+<p>如果方法只是为了做一个功能而不直接访问对象的数据，定义为静态方法</p>
+<p>如果方法需要访问对象的数据，必须定义了实例方法</p>
+<p>（涉及实例数据用实例方法）</p>
+<p>同一个类中类名可以省略</p>
+<p>静态方法做工具类</p>
+<p>工具类：方法都是静态方法</p>
+<p>工具类没有创建对象的需求，所以构造器私有化</p>
+<h2 id="static注意事项"><a href="#static注意事项" class="headerlink" title="static注意事项"></a>static注意事项</h2><ol>
+<li>静态方法中可以直接访问静态成员，不可以访问实例成员</li>
+<li>实例方法中可以直接访问静态成员，也可以访问实例成员</li>
+<li>实例方法中可以出现this关键字，静态方法中不能出现this关键字</li>
+</ol>
 
                 
               </div>
