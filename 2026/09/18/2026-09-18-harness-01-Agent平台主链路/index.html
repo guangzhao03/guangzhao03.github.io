@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="01｜Agent 平台主链路：用户一句话如何变成沙箱行动 核对日期：2026-09-17；源码根目录：E:\MoreProject\learn_foresign_engine。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。  1. 先纠正">
+    <meta name="description" content="核对日期：2026-09-17；源码根目录：E:\MoreProject\learn_foresign_engine。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。  1. 先纠正原来的概括你原来理解的方向对，但面试必须说得更精确：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="01｜Agent 平台主链路：用户一句话如何变成沙箱行动">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/18/2026-09-18-harness-01-Agent%E5%B9%B3%E5%8F%B0%E4%B8%BB%E9%93%BE%E8%B7%AF/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="01｜Agent 平台主链路：用户一句话如何变成沙箱行动 核对日期：2026-09-17；源码根目录：E:\MoreProject\learn_foresign_engine。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。  1. 先纠正">
+<meta property="og:description" content="核对日期：2026-09-17；源码根目录：E:\MoreProject\learn_foresign_engine。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。  1. 先纠正原来的概括你原来理解的方向对，但面试必须说得更精确：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-18T01:11:14.000Z">
 <meta property="article:modified_time" content="2026-09-18T01:11:14.000Z">
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -381,7 +381,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="01｜Agent-平台主链路：用户一句话如何变成沙箱行动"><a href="#01｜Agent-平台主链路：用户一句话如何变成沙箱行动" class="headerlink" title="01｜Agent 平台主链路：用户一句话如何变成沙箱行动"></a>01｜Agent 平台主链路：用户一句话如何变成沙箱行动</h1><blockquote>
+                <blockquote>
 <p>核对日期：2026-09-17；源码根目录：<code>E:\MoreProject\learn_foresign_engine</code>。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。</p>
 <p>源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。</p>
 </blockquote>

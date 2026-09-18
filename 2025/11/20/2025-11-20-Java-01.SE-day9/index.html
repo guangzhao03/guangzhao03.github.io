@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="day9 异常、泛型、集合框架  集合框架、stream流  File、字符集、IO流框架  多线程  网络编程、综合项目  Java高级技术   异常、泛型、集合框架异常：程序可能出现的错误 RuntimeExcetion、其他异常（编译时异常）  运行时异常：数组索引越界访问、除数0、空指针异常 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件找不到   编译时异常提醒程序员容易出错，">
+    <meta name="description" content="异常、泛型、集合框架  集合框架、stream流  File、字符集、IO流框架  多线程  网络编程、综合项目  Java高级技术   异常、泛型、集合框架异常：程序可能出现的错误 RuntimeExcetion、其他异常（编译时异常）  运行时异常：数组索引越界访问、除数0、空指针异常 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件找不到   编译时异常提醒程序员容易出错，请注意">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day9">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/11/20/2025-11-20-Java-01.SE-day9/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="day9 异常、泛型、集合框架  集合框架、stream流  File、字符集、IO流框架  多线程  网络编程、综合项目  Java高级技术   异常、泛型、集合框架异常：程序可能出现的错误 RuntimeExcetion、其他异常（编译时异常）  运行时异常：数组索引越界访问、除数0、空指针异常 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件找不到   编译时异常提醒程序员容易出错，">
+<meta property="og:description" content="异常、泛型、集合框架  集合框架、stream流  File、字符集、IO流框架  多线程  网络编程、综合项目  Java高级技术   异常、泛型、集合框架异常：程序可能出现的错误 RuntimeExcetion、其他异常（编译时异常）  运行时异常：数组索引越界访问、除数0、空指针异常 编译时异常：编译阶段报错，编译不通过。日期解析异常、文件找不到   编译时异常提醒程序员容易出错，请注意">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-11-20-Java-01.SE-day9-image-20250703105851776.png">
 <meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-11-20-Java-01.SE-day9-image-20250707103620331.png">
@@ -76,7 +76,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -385,7 +385,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="day9"><a href="#day9" class="headerlink" title="day9"></a>day9</h1><ul>
+                <ul>
 <li><p>异常、泛型、集合框架</p>
 </li>
 <li><p>集合框架、stream流</p>

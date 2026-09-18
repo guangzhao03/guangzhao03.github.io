@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="day4大模型应用开发 大模型应用是基于大模型的推理、分析、生成能力，结合传统编程能力，开发出的各种应用。 传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。 目前大模型应用开发主要分为四种： 1、纯prompt回答 2、agent+function calling 3、fine-tuning 4、Rag &lt;spring-ai.version&gt;必须写在properties里">
+    <meta name="description" content="大模型应用开发 大模型应用是基于大模型的推理、分析、生成能力，结合传统编程能力，开发出的各种应用。 传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。 目前大模型应用开发主要分为四种： 1、纯prompt回答 2、agent+function calling 3、fine-tuning 4、Rag &lt;spring-ai.version&gt;必须写在properties里面 Sp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day4">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/04/21/2026-04-21-Java-AIGC-day4/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="day4大模型应用开发 大模型应用是基于大模型的推理、分析、生成能力，结合传统编程能力，开发出的各种应用。 传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。 目前大模型应用开发主要分为四种： 1、纯prompt回答 2、agent+function calling 3、fine-tuning 4、Rag &lt;spring-ai.version&gt;必须写在properties里">
+<meta property="og:description" content="大模型应用开发 大模型应用是基于大模型的推理、分析、生成能力，结合传统编程能力，开发出的各种应用。 传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。 目前大模型应用开发主要分为四种： 1、纯prompt回答 2、agent+function calling 3、fine-tuning 4、Rag &lt;spring-ai.version&gt;必须写在properties里面 Sp">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-04-21T01:46:51.000Z">
 <meta property="article:modified_time" content="2026-04-21T01:46:51.000Z">
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -382,7 +382,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="day4"><a href="#day4" class="headerlink" title="day4"></a>day4</h1><p>大模型应用开发</p>
+                <p>大模型应用开发</p>
 <p><strong>大模型应用</strong>是基于大模型的推理、分析、生成能力，<strong>结合传统编程</strong>能力，开发出的各种应用。</p>
 <p>传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。</p>
 <p>目前大模型应用开发主要分为四种：</p>

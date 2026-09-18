@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="day6继承和多态 继承和多态继承非私有的方法和成员变量 public class a extends b{ } 权限修饰符 java继承特性java只能单继承和多重继承 所有java类默认继承object类 方法重写声明不变，重新实现。 @override &#x2F;&#x2F;方法重写的标志注解 要求方法名称和形参列表必须与被重写方法一致，否则报错   安全可读性好  子类重写父类方法时，访">
+    <meta name="description" content="继承和多态 继承和多态继承非私有的方法和成员变量 public class a extends b{ } 权限修饰符 java继承特性java只能单继承和多重继承 所有java类默认继承object类 方法重写声明不变，重新实现。 @override &#x2F;&#x2F;方法重写的标志注解 要求方法名称和形参列表必须与被重写方法一致，否则报错   安全可读性好  子类重写父类方法时，访问权限必">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day6">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/05/13/2025-05-13-Java-01.SE-day6/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="day6继承和多态 继承和多态继承非私有的方法和成员变量 public class a extends b{ } 权限修饰符 java继承特性java只能单继承和多重继承 所有java类默认继承object类 方法重写声明不变，重新实现。 @override &#x2F;&#x2F;方法重写的标志注解 要求方法名称和形参列表必须与被重写方法一致，否则报错   安全可读性好  子类重写父类方法时，访">
+<meta property="og:description" content="继承和多态 继承和多态继承非私有的方法和成员变量 public class a extends b{ } 权限修饰符 java继承特性java只能单继承和多重继承 所有java类默认继承object类 方法重写声明不变，重新实现。 @override &#x2F;&#x2F;方法重写的标志注解 要求方法名称和形参列表必须与被重写方法一致，否则报错   安全可读性好  子类重写父类方法时，访问权限必">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-05-13-Java-01.SE-day6-image-20250512181705771.png">
 <meta property="article:published_time" content="2025-05-13T02:33:07.000Z">
@@ -75,7 +75,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -384,7 +384,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="day6"><a href="#day6" class="headerlink" title="day6"></a>day6</h1><p>继承和多态</p>
+                <p>继承和多态</p>
 <h2 id="继承和多态"><a href="#继承和多态" class="headerlink" title="继承和多态"></a>继承和多态</h2><p>继承非私有的方法和成员变量</p>
 <p>public class a extends b{</p>
 <p>}</p>

@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="字节一面真实面经复刻 · 复盘（2026-09-07） 题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集">
+    <meta name="description" content="题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集，发现 XX bad case”   Q4 幻觉处理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字节一面真实面经复刻 · 复盘（2026-09-07）">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/07/2026-09-07-%E5%85%AB%E8%82%A1-202697%E5%AD%97%E8%8A%82%E7%9C%9F%E5%AE%9E%E9%9D%A2%E7%BB%8F%E6%A8%A1%E6%8B%9F/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="字节一面真实面经复刻 · 复盘（2026-09-07） 题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集">
+<meta property="og:description" content="题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集，发现 XX bad case”   Q4 幻觉处理">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-07T02:40:39.000Z">
 <meta property="article:modified_time" content="2026-09-07T02:40:39.000Z">
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -326,7 +326,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k 字
+          2k 字
         
       </span>
     
@@ -337,7 +337,7 @@
         
         
         
-          18 分钟
+          17 分钟
         
       </span>
     
@@ -381,7 +381,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="字节一面真实面经复刻-·-复盘（2026-09-07）"><a href="#字节一面真实面经复刻-·-复盘（2026-09-07）" class="headerlink" title="字节一面真实面经复刻 · 复盘（2026-09-07）"></a>字节一面真实面经复刻 · 复盘（2026-09-07）</h1><blockquote>
+                <blockquote>
 <p>题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。</p>
 </blockquote>
 <h2 id="逐题表现"><a href="#逐题表现" class="headerlink" title="逐题表现"></a>逐题表现</h2><table>

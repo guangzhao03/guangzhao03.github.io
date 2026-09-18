@@ -64,7 +64,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -344,7 +344,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/18/2026-09-18-harness-02-%E5%8F%8CProvider%E6%B2%99%E7%AE%B1%E6%8A%BD%E8%B1%A1/" target="_self">
         <div>
-          02｜双 Provider 沙箱抽象：同一套业务如何支持两套执行环境 核对日期：2026-09-17。代码根目录：E:\MoreProject\learn_foresign_engine。结论依据当前工作区实现，不等于所有线上部署已经采用相同配置。 本文选取关键源码逐行解释，行尾注释为教学添加。代码块是节选，不代表完整文件；所有源码引用都相对于仓库根目录。没有修改业务代码或创建云端资源。  1.
+          核对日期：2026-09-17。代码根目录：E:\MoreProject\learn_foresign_engine。结论依据当前工作区实现，不等于所有线上部署已经采用相同配置。 本文选取关键源码逐行解释，行尾注释为教学添加。代码块是节选，不代表完整文件；所有源码引用都相对于仓库根目录。没有修改业务代码或创建云端资源。  1. 面试前先修正三个事实   原先的概括 当前源码所表现的实现 面试应该
         </div>
       </a>
 
@@ -405,7 +405,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/18/2026-09-18-harness-01-Agent%E5%B9%B3%E5%8F%B0%E4%B8%BB%E9%93%BE%E8%B7%AF/" target="_self">
         <div>
-          01｜Agent 平台主链路：用户一句话如何变成沙箱行动 核对日期：2026-09-17；源码根目录：E:\MoreProject\learn_foresign_engine。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。  1. 先纠正
+          核对日期：2026-09-17；源码根目录：E:\MoreProject\learn_foresign_engine。以下是当前工作区的静态源码讲解，不是线上部署审计或性能测试。 源码采用关键片段节选，每个展示的非空源码行都附教学注释和原行号；不连续片段分别标出来源，不将伪代码冒充完整函数。注释仅在本文添加，没有改业务源码。  1. 先纠正原来的概括你原来理解的方向对，但面试必须说得更精确：
         </div>
       </a>
 
@@ -466,7 +466,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/17/2026-09-17-harness-04-%E7%AB%AF%E4%BA%91%E5%8D%8F%E5%90%8CWorkflow/" target="_self">
         <div>
-          04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行 核对日期：2026-09-17。代码根目录：E:\MoreProject\learn_foresign_engine。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。 所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件。  1. 先把三个容易
+          核对日期：2026-09-17。代码根目录：E:\MoreProject\learn_foresign_engine。本文解释当前工作区实现，不执行本地 Git 提交、远端推送或真实云端工作流。 所有源码为关键路径节选，每行附原行号及教学解释；未展示的上下文会明确说明。注释只存在本文，没有修改项目源文件。  1. 先把三个容易讲错的概念纠正1.1 executionLocation 不是一个万能
         </div>
       </a>
 
@@ -527,7 +527,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/17/2026-09-17-harness-03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime/" target="_self">
         <div>
-          03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级 核对日期：2026-09-17。仓库：E:\MoreProject\learn_foresign_engine。依据当前工作区源码，不代表线上实际部署配置。 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 // L原行号：解释 为教学注释；片段之间有省略，
+          核对日期：2026-09-17。仓库：E:\MoreProject\learn_foresign_engine。依据当前工作区源码，不代表线上实际部署配置。 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 // L原行号：解释 为教学注释；片段之间有省略，不能拼起来当完整程序运行。项目源码未被修改。  1. 先理解：到底是谁在做什么
         </div>
       </a>
 
@@ -588,7 +588,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/10/2026-09-10-%E5%85%AB%E8%82%A1-2026910%E8%85%BE%E8%AE%AFAI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
         <div>
-          腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础） 日期：2026-09-10 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案），按真实面经题单走（37 题 + 手撕 LC 1081） 状态：Q1~Q35 已完成，Q36&#x2F;Q37（开放题）+ LC 1081 手撕未完成，待续  总评 需要补的四块（按优先级）： 循环回答（Q4&#x2F;Q14&#x2F;Q1
+          日期：2026-09-10 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案），按真实面经题单走（37 题 + 手撕 LC 1081） 状态：Q1~Q35 已完成，Q36&#x2F;Q37（开放题）+ LC 1081 手撕未完成，待续  总评 需要补的四块（按优先级）： 循环回答（Q4&#x2F;Q14&#x2F;Q15）：用名词解释名词，答案无新信息量——“步骤如何生成”答”
         </div>
       </a>
 
@@ -649,7 +649,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/09/2026-09-09-%E5%85%AB%E8%82%A1-202699%E8%85%BE%E8%AE%AFCSIG%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
         <div>
-          腾讯 CSIG 一面模拟（Agent 平台 &#x2F; RAG 方向） 日期：2026-09-09 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案） 状态：Q1~Q20 已完成，Q21（手撕）未作答，待补  总评 需要补的三块（按优先级）： 概念精确性：BM25&#x2F;TF-IDF 混淆、MCP 传输协议演进（SSE → Streamable HTTP）、RLHF&#x2
+          日期：2026-09-09 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案） 状态：Q1~Q20 已完成，Q21（手撕）未作答，待补  总评 需要补的三块（按优先级）： 概念精确性：BM25&#x2F;TF-IDF 混淆、MCP 传输协议演进（SSE → Streamable HTTP）、RLHF&#x2F;SFT&#x2F;PPO&#x2F;DPO 包含关系、prompt
         </div>
       </a>
 
@@ -710,7 +710,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/07/2026-09-07-%E5%85%AB%E8%82%A1-202697%E5%AD%97%E8%8A%82%E7%9C%9F%E5%AE%9E%E9%9D%A2%E7%BB%8F%E6%A8%A1%E6%8B%9F/" target="_self">
         <div>
-          字节一面真实面经复刻 · 复盘（2026-09-07） 题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集
+          题源：小红书真实字节一面面经（22 题，Java 岗）。Q1&#x2F;Q2（自我介绍、项目来源）、Q21（合并有序数组）及手撕环节跳过。  逐题表现   # 题目 表现 要点    Q3 项目最大挑战 ⚠️ 答了”链路测评+code review”但没接具体交付物——正是原面经楼主”面试官没听懂产出”的坑。下一句必须跟”我做了 XX 评估集，发现 XX bad case”   Q4 幻觉处理
         </div>
       </a>
 
@@ -771,7 +771,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/04/2026-09-04-%E5%85%AB%E8%82%A1-202694%E5%AD%97%E8%8A%82Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
         <div>
-          2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜
+          模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜底)+ A&#x2F;B 测试。结构:Agent 基础与情景 → RAG → 大模型基础
         </div>
       </a>
 
@@ -832,7 +832,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/02/2026-09-02-%E5%85%AB%E8%82%A1-202692%E7%99%BE%E5%BA%A6Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
         <div>
-          2026-09-02 百度 Agent 日常实习 模拟面试复盘 模拟范围:百度一面(技术面)风格。题池依据牛客&#x2F;CSDN 公开面经:百度 Agent 岗特色 &#x3D; RAG 问得深 + 大模型训练基础(RLHF&#x2F;DPO&#x2F;LoRA)会考。结构:Agent 基础 → RAG → 大模型基础 → 工程与评估 → 开放设计(项目部分跳过,简历未完成)   Q2 Agen
+          模拟范围:百度一面(技术面)风格。题池依据牛客&#x2F;CSDN 公开面经:百度 Agent 岗特色 &#x3D; RAG 问得深 + 大模型训练基础(RLHF&#x2F;DPO&#x2F;LoRA)会考。结构:Agent 基础 → RAG → 大模型基础 → 工程与评估 → 开放设计(项目部分跳过,简历未完成)   Q2 Agent vs Workflow ✅题目:Agent 和 Workf
         </div>
       </a>
 
@@ -893,7 +893,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2026/09/02/2026-09-02-%E5%85%AB%E8%82%A1-202691Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" target="_self">
         <div>
-          Agent 日常实习模拟面试复盘(2026-09-01) 覆盖范围:Agent 基础 &#x2F; Tool Use &#x2F; Memory &#x2F; Multi-Agent &#x2F; 工程与评估 &#x2F; 开放设计个人强弱项:机制理解强(Tool Use、Memory),短板在 Multi-Agent 模式、评估方法、术语准确性   一、Agent 基础Q1 什么是 Agent?
+          覆盖范围:Agent 基础 &#x2F; Tool Use &#x2F; Memory &#x2F; Multi-Agent &#x2F; 工程与评估 &#x2F; 开放设计个人强弱项:机制理解强(Tool Use、Memory),短板在 Multi-Agent 模式、评估方法、术语准确性   一、Agent 基础Q1 什么是 Agent?与普通 LLM 调用的区别 本质区别:控制流由谁决定。
         </div>
       </a>
 

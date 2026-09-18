@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级 核对日期：2026-09-17。仓库：E:\MoreProject\learn_foresign_engine。依据当前工作区源码，不代表线上实际部署配置。 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 &#x2F;&#x2F; L原行号：解释 为教学注释；片段之间有省略，">
+    <meta name="description" content="核对日期：2026-09-17。仓库：E:\MoreProject\learn_foresign_engine。依据当前工作区源码，不代表线上实际部署配置。 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 &#x2F;&#x2F; L原行号：解释 为教学注释；片段之间有省略，不能拼起来当完整程序运行。项目源码未被修改。  1. 先理解：到底是谁在做什么">
 <meta property="og:type" content="article">
 <meta property="og:title" content="03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/09/17/2026-09-17-harness-03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级 核对日期：2026-09-17。仓库：E:\MoreProject\learn_foresign_engine。依据当前工作区源码，不代表线上实际部署配置。 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 &#x2F;&#x2F; L原行号：解释 为教学注释；片段之间有省略，">
+<meta property="og:description" content="核对日期：2026-09-17。仓库：E:\MoreProject\learn_foresign_engine。依据当前工作区源码，不代表线上实际部署配置。 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 &#x2F;&#x2F; L原行号：解释 为教学注释；片段之间有省略，不能拼起来当完整程序运行。项目源码未被修改。  1. 先理解：到底是谁在做什么">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-17T02:01:28.000Z">
 <meta property="article:modified_time" content="2026-09-17T02:01:28.000Z">
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -381,7 +381,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="03｜沙箱内-Agent-Runtime：从接收任务到工具执行、断线回放与升级"><a href="#03｜沙箱内-Agent-Runtime：从接收任务到工具执行、断线回放与升级" class="headerlink" title="03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级"></a>03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级</h1><blockquote>
+                <blockquote>
 <p>核对日期：2026-09-17。仓库：<code>E:\MoreProject\learn_foresign_engine</code>。依据当前工作区源码，不代表线上实际部署配置。</p>
 <p>本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 <code>// L原行号：解释</code> 为教学注释；片段之间有省略，不能拼起来当完整程序运行。项目源码未被修改。</p>
 </blockquote>

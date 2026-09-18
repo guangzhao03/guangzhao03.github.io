@@ -64,7 +64,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -344,7 +344,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/09/13/2025-09-13-Java-02.javaweb-day4/" target="_self">
         <div>
-          day4 静态资源：服务器上存储的不会改变的数据，通常不会根据用户的请求而变化。比如HTML、CSS、JS、图片、视频等  动态资源：服务器根据用户请求和其他数据动态生成，内容可能会在每次请求时都发生变化。比如Servlet、JSP等（负责逻辑处理）Spring框架。   Web服务器（Tomcat）  B&#x2F;S架构：Browser&#x2F;Server，浏览器&#x2F;服务器架构模式
+          静态资源：服务器上存储的不会改变的数据，通常不会根据用户的请求而变化。比如HTML、CSS、JS、图片、视频等  动态资源：服务器根据用户请求和其他数据动态生成，内容可能会在每次请求时都发生变化。比如Servlet、JSP等（负责逻辑处理）Spring框架。   Web服务器（Tomcat）  B&#x2F;S架构：Browser&#x2F;Server，浏览器&#x2F;服务器架构模式。客户端
         </div>
       </a>
 
@@ -414,7 +414,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/09/10/2025-09-10-Java-02.javaweb-day3/" target="_self">
         <div>
-          day3Maven Maven是一款用于管理和构建Java项目的工具，是apache旗下的一个开源项目  依赖管理、项目构建、统一项目结构 依赖管理在maven的xml中添加dependency依赖 自动下载jar包 可以随时更改version 2、将编译、测试、打包、发布制定了一套标准化的项目构建流程 3、提供标准、统一的项目结构 兼容各个ide  Apache Maven是一个项目管理和构建工
+          Maven Maven是一款用于管理和构建Java项目的工具，是apache旗下的一个开源项目  依赖管理、项目构建、统一项目结构 依赖管理在maven的xml中添加dependency依赖 自动下载jar包 可以随时更改version 2、将编译、测试、打包、发布制定了一套标准化的项目构建流程 3、提供标准、统一的项目结构 兼容各个ide  Apache Maven是一个项目管理和构建工具，基于
         </div>
       </a>
 
@@ -484,7 +484,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/09/10/2025-09-10-Java-01.SE-day14/" target="_self">
         <div>
-          day14Java高级技术 反射、注解、动态代理 源码、框架、架构师 单元测试 就是针对最小的功能单元：方法，编写测试代码对其进行正确性测试  main如何进行单元测试的？有啥问题？  只能在main方法测试方法，去调用其他方法进行测试 无法实现自动化测试，一个方法测试失败，可能影响其他方法的测试 无法得到测试报告，需要程序员自己观察测试是否成功  Junit单元测试框架 可以用来对方法进行测试，
+          Java高级技术 反射、注解、动态代理 源码、框架、架构师 单元测试 就是针对最小的功能单元：方法，编写测试代码对其进行正确性测试  main如何进行单元测试的？有啥问题？  只能在main方法测试方法，去调用其他方法进行测试 无法实现自动化测试，一个方法测试失败，可能影响其他方法的测试 无法得到测试报告，需要程序员自己观察测试是否成功  Junit单元测试框架 可以用来对方法进行测试，它是第三方
         </div>
       </a>
 
@@ -554,7 +554,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/09/09/2025-09-09-Java-02.javaweb-day2/" target="_self">
         <div>
-          day2JavaScript  js负责网页的行为  JavaScript（简称js）是一门跨平台，面向对象的脚本语言，是用来控制网页行为，实现页面的交互效果。 组成： ECMAScript：规定了js基础语法核心知识，包括变量、数据类型、流程控制、函数、对象等。 BOM:浏览器对象模型，用于操作浏览器本身，如：页面弹窗、地址栏操作、关闭窗口等。 DOM：文档对象模型，用于操作html文档，如：改
+          JavaScript  js负责网页的行为  JavaScript（简称js）是一门跨平台，面向对象的脚本语言，是用来控制网页行为，实现页面的交互效果。 组成： ECMAScript：规定了js基础语法核心知识，包括变量、数据类型、流程控制、函数、对象等。 BOM:浏览器对象模型，用于操作浏览器本身，如：页面弹窗、地址栏操作、关闭窗口等。 DOM：文档对象模型，用于操作html文档，如：改变标签内
         </div>
       </a>
 
@@ -624,7 +624,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/09/04/2025-09-04-Java-02.javaweb-day1/" target="_self">
         <div>
-          day1Web：  Web：全球广域网，也称为万维网（www World Wide Web），能够通过浏览器访问网站  前端程序、服务端程序、数据库使用。 界面展示、业务逻辑处理、数据存储和管理 1、web前端基础 2、web后端基础 3、后端web实战 4、后端web进阶 5、前端web实战 6、项目部署 前端知识基础 网页由哪个部分组成  文字、图片、视频、音频、超链接  网页的本质  前端代
+          Web：  Web：全球广域网，也称为万维网（www World Wide Web），能够通过浏览器访问网站  前端程序、服务端程序、数据库使用。 界面展示、业务逻辑处理、数据存储和管理 1、web前端基础 2、web后端基础 3、后端web实战 4、后端web进阶 5、前端web实战 6、项目部署 前端知识基础 网页由哪个部分组成  文字、图片、视频、音频、超链接  网页的本质  前端代码  前
         </div>
       </a>
 
@@ -694,7 +694,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/08/11/2025-08-11-Java-01.SE-day10/" target="_self">
         <div>
-          day10Set集合 无序，不重复，无索引； HashSet：无序，不重复，无索引 LinkedHashSet：有序，不重复，无索引 TreeSet：排序，不重复，无索引  HashSet底层原理哈希值：  int类型的随机值，Java中每个对象都有一个哈希值  Java中所有对象，都可以调用Object类提供的hashcode()方法，返回对象自己的哈希值   对象哈希值的特点：  同一个对象多
+          Set集合 无序，不重复，无索引； HashSet：无序，不重复，无索引 LinkedHashSet：有序，不重复，无索引 TreeSet：排序，不重复，无索引  HashSet底层原理哈希值：  int类型的随机值，Java中每个对象都有一个哈希值  Java中所有对象，都可以调用Object类提供的hashcode()方法，返回对象自己的哈希值   对象哈希值的特点：  同一个对象多次调用ha
         </div>
       </a>
 
@@ -764,7 +764,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/08/04/2025-08-04-Java-01.SE-day3/" target="_self">
         <div>
-          day3if和switchif功能判断区间功能更强大 判断单值用switch，why？ switch 选择是基于树结构选择效率更高 if基于顺序结构一行一行判断是否满足 随机数案例生成随机数两个方法 1、Math.random() 生成[0,1)之间的小数 2、使用Random类 Random.nextInt(100) 生成[0,100)也就是[0,99]
+          if和switchif功能判断区间功能更强大 判断单值用switch，why？ switch 选择是基于树结构选择效率更高 if基于顺序结构一行一行判断是否满足 随机数案例生成随机数两个方法 1、Math.random() 生成[0,1)之间的小数 2、使用Random类 Random.nextInt(100) 生成[0,100)也就是[0,99]
         </div>
       </a>
 
@@ -834,7 +834,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/07/22/2025-07-22-Java-01.SE-RealTemp2/" target="_self">
         <div>
-          RealTemp2局域网内沟通软件1、GUI编程 2、网络通信 3、面向对象编程 4、各种API 时间获取的方案LocalData：代表本地日期 LocalTime：代表本地时间 LocalDataTime：代表本地日期、时间 123456789101112131415161718		Date d=new Date();        System.out.println(d);        /
+          局域网内沟通软件1、GUI编程 2、网络通信 3、面向对象编程 4、各种API 时间获取的方案LocalData：代表本地日期 LocalTime：代表本地时间 LocalDataTime：代表本地日期、时间 123456789101112131415161718		Date d=new Date();        System.out.println(d);        //格式化Simpl
         </div>
       </a>
 
@@ -904,7 +904,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/07/22/2025-07-22-Java-01.SE-day1_1/" target="_self">
         <div>
-          Java环境配置JAVA_HOME&#x3D;D:\Develop\Java\jdk-21 Path&#x3D;%JAVA_HOME%\bin 统一引用路径 通过JAVA_HOME 变量集中管理JDK安装路径例如，当 JDK 版本升级或安装路径变更时，只需修改 JAVA_HOME 的值，所有依赖该变量的配置（如 Path、CLASSPATH）会自动更新，无需逐项调整 好处当javahome升级的时
+          环境配置JAVA_HOME&#x3D;D:\Develop\Java\jdk-21 Path&#x3D;%JAVA_HOME%\bin 统一引用路径 通过JAVA_HOME 变量集中管理JDK安装路径例如，当 JDK 版本升级或安装路径变更时，只需修改 JAVA_HOME 的值，所有依赖该变量的配置（如 Path、CLASSPATH）会自动更新，无需逐项调整 好处当javahome升级的时候 pa
         </div>
       </a>
 
@@ -974,7 +974,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/07/22/2025-07-22-Java-01.SE-day13/" target="_self">
         <div>
-          day13Java网络编程  可以让设备中的程序与网络中其他设备的程序进行数据交互的技术。  基本的通信架构 基本的通信架构主要有两种形式，CS架构（Client客户端&#x2F;Server服务端）、BS架构（Browser浏览器&#x2F;Server服务端）  CS架构：客户端需要程序员开发，用户需要下载客户端 BS架构：不需要程序员开发客户端，需要用户下载浏览器 网络编程三要素：IP、端口
+          Java网络编程  可以让设备中的程序与网络中其他设备的程序进行数据交互的技术。  基本的通信架构 基本的通信架构主要有两种形式，CS架构（Client客户端&#x2F;Server服务端）、BS架构（Browser浏览器&#x2F;Server服务端）  CS架构：客户端需要程序员开发，用户需要下载客户端 BS架构：不需要程序员开发客户端，需要用户下载浏览器 网络编程三要素：IP、端口、协议 I
         </div>
       </a>
 

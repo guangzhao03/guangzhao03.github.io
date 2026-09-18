@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="2026&#x2F;3&#x2F;30字节后端Java 基础与底层数据结构 HashMap 与 Hashtable 的区别？ 平衡树与红黑树（的区别及应用场景）？ 计算机网络 一个请求从客户端发到服务端，经过哪些步骤？ TCP 为什么挥手（四次）比握手（三次）多一次？ 后端框架 (Spring) Spring 如何解决循环依赖？ 数据库与缓存中间件 什么是缓存雪崩？有什么解决方案？ 主从数据库如何">
+    <meta name="description" content="Java 基础与底层数据结构 HashMap 与 Hashtable 的区别？ 平衡树与红黑树（的区别及应用场景）？ 计算机网络 一个请求从客户端发到服务端，经过哪些步骤？ TCP 为什么挥手（四次）比握手（三次）多一次？ 后端框架 (Spring) Spring 如何解决循环依赖？ 数据库与缓存中间件 什么是缓存雪崩？有什么解决方案？ 主从数据库如何解决读不一致问题？  操作系统与并发 如果要检">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2026&#x2F;3&#x2F;30字节后端">
 <meta property="og:url" content="https://guangzhao03.github.io/2026/03/30/2026-03-30-%E5%85%AB%E8%82%A1-2026330%E5%AD%97%E8%8A%82%E5%90%8E%E7%AB%AF/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="2026&#x2F;3&#x2F;30字节后端Java 基础与底层数据结构 HashMap 与 Hashtable 的区别？ 平衡树与红黑树（的区别及应用场景）？ 计算机网络 一个请求从客户端发到服务端，经过哪些步骤？ TCP 为什么挥手（四次）比握手（三次）多一次？ 后端框架 (Spring) Spring 如何解决循环依赖？ 数据库与缓存中间件 什么是缓存雪崩？有什么解决方案？ 主从数据库如何">
+<meta property="og:description" content="Java 基础与底层数据结构 HashMap 与 Hashtable 的区别？ 平衡树与红黑树（的区别及应用场景）？ 计算机网络 一个请求从客户端发到服务端，经过哪些步骤？ TCP 为什么挥手（四次）比握手（三次）多一次？ 后端框架 (Spring) Spring 如何解决循环依赖？ 数据库与缓存中间件 什么是缓存雪崩？有什么解决方案？ 主从数据库如何解决读不一致问题？  操作系统与并发 如果要检">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-03-30T14:08:10.000Z">
 <meta property="article:modified_time" content="2026-03-30T14:08:10.000Z">
@@ -72,7 +72,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -326,7 +326,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          357 字
+          334 字
         
       </span>
     
@@ -381,7 +381,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="2026-3-30字节后端"><a href="#2026-3-30字节后端" class="headerlink" title="2026&#x2F;3&#x2F;30字节后端"></a>2026&#x2F;3&#x2F;30字节后端</h1><p><strong>Java 基础与底层数据结构</strong></p>
+                <p><strong>Java 基础与底层数据结构</strong></p>
 <p>HashMap 与 Hashtable 的区别？</p>
 <p>平衡树与红黑树（的区别及应用场景）？</p>
 <p><strong>计算机网络</strong></p>

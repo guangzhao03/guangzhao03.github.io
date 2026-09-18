@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="day15Vue工程化模块化、组件化、规范化、自动化 在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化  介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。 create-vue提供了如下功能： 统一的目录结构 本地调试 热部署 单元测试 集成上线打包   依赖环境NodeJS  npm Node Package">
+    <meta name="description" content="Vue工程化模块化、组件化、规范化、自动化 在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化  介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。 create-vue提供了如下功能： 统一的目录结构 本地调试 热部署 单元测试 集成上线打包   依赖环境NodeJS  npm Node Package Mana">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day15">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/11/07/2025-11-07-Java-02.javaweb-day15/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="day15Vue工程化模块化、组件化、规范化、自动化 在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化  介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。 create-vue提供了如下功能： 统一的目录结构 本地调试 热部署 单元测试 集成上线打包   依赖环境NodeJS  npm Node Package">
+<meta property="og:description" content="Vue工程化模块化、组件化、规范化、自动化 在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化  介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。 create-vue提供了如下功能： 统一的目录结构 本地调试 热部署 单元测试 集成上线打包   依赖环境NodeJS  npm Node Package Mana">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-07T02:11:08.000Z">
 <meta property="article:modified_time" content="2025-11-07T02:11:08.000Z">
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -382,7 +382,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="day15"><a href="#day15" class="headerlink" title="day15"></a>day15</h1><h2 id="Vue工程化"><a href="#Vue工程化" class="headerlink" title="Vue工程化"></a>Vue工程化</h2><p>模块化、组件化、规范化、自动化</p>
+                <h2 id="Vue工程化"><a href="#Vue工程化" class="headerlink" title="Vue工程化"></a>Vue工程化</h2><p>模块化、组件化、规范化、自动化</p>
 <p>在企业级的前端项目开发中，把前端开发所需要的工具、技术、流程、经验等进行规范化、标准化</p>
 <ul>
 <li>介绍：create-vue是Vue官方提供的最新的脚手架工具，用于快速生成一个工程化的Vue项目。</li>
@@ -399,7 +399,7 @@
 <p>npm Node Package Manager</p>
 <p>npm install xxx   </p>
 <p>类似于maven的功能</p>
-<p>npm create <a href="mailto:&#118;&#117;&#101;&#x40;&#x33;&#46;&#x33;&#x2e;&#x34;">&#118;&#117;&#101;&#x40;&#x33;&#46;&#x33;&#x2e;&#x34;</a>    创建项目工程</p>
+<p>npm create <a href="mailto:&#118;&#x75;&#x65;&#64;&#x33;&#46;&#x33;&#46;&#x34;">&#118;&#x75;&#x65;&#64;&#x33;&#46;&#x33;&#46;&#x34;</a>    创建项目工程</p>
 <p>cd    进入到工程目录</p>
 <p>npm install  安装依赖</p>
 <p>npm run dev 启动Vue项目  或者vscode找到npm脚本dev vite启动即可</p>
@@ -422,7 +422,7 @@
 <li>组件：组成网页的部件，如超链接、按钮、图片、表格、表单、分页条等等</li>
 <li>官网：<a target="_blank" rel="noopener" href="https://element-plus.org/zh-CN/#/zh-CN">https://element-plus.org/zh-CN/#/zh-CN</a></li>
 </ul>
-<p>npm install <a href="mailto:&#x65;&#108;&#x65;&#109;&#101;&#110;&#116;&#45;&#x70;&#108;&#x75;&#115;&#64;&#x33;&#46;&#x34;&#46;&#x34;">&#x65;&#108;&#x65;&#109;&#101;&#110;&#116;&#45;&#x70;&#108;&#x75;&#115;&#64;&#x33;&#46;&#x34;&#46;&#x34;</a> –sava</p>
+<p>npm install <a href="mailto:&#101;&#108;&#101;&#109;&#x65;&#x6e;&#x74;&#x2d;&#112;&#108;&#117;&#115;&#x40;&#x33;&#x2e;&#x34;&#46;&#52;">&#101;&#108;&#101;&#109;&#x65;&#x6e;&#x74;&#x2d;&#112;&#108;&#117;&#115;&#x40;&#x33;&#x2e;&#x34;&#46;&#52;</a> –sava</p>
 <p>–save会保存在package.json里面  如果移植的时候npm install 会自动下载这个包，如果没有–save 那么只在node_modules里面 不会npm install 自动下载包</p>
 
                 

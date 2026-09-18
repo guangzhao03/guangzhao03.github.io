@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="day14Java高级技术 反射、注解、动态代理 源码、框架、架构师 单元测试 就是针对最小的功能单元：方法，编写测试代码对其进行正确性测试  main如何进行单元测试的？有啥问题？  只能在main方法测试方法，去调用其他方法进行测试 无法实现自动化测试，一个方法测试失败，可能影响其他方法的测试 无法得到测试报告，需要程序员自己观察测试是否成功  Junit单元测试框架 可以用来对方法进行测试，">
+    <meta name="description" content="Java高级技术 反射、注解、动态代理 源码、框架、架构师 单元测试 就是针对最小的功能单元：方法，编写测试代码对其进行正确性测试  main如何进行单元测试的？有啥问题？  只能在main方法测试方法，去调用其他方法进行测试 无法实现自动化测试，一个方法测试失败，可能影响其他方法的测试 无法得到测试报告，需要程序员自己观察测试是否成功  Junit单元测试框架 可以用来对方法进行测试，它是第三方">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day14">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/09/10/2025-09-10-Java-01.SE-day14/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="day14Java高级技术 反射、注解、动态代理 源码、框架、架构师 单元测试 就是针对最小的功能单元：方法，编写测试代码对其进行正确性测试  main如何进行单元测试的？有啥问题？  只能在main方法测试方法，去调用其他方法进行测试 无法实现自动化测试，一个方法测试失败，可能影响其他方法的测试 无法得到测试报告，需要程序员自己观察测试是否成功  Junit单元测试框架 可以用来对方法进行测试，">
+<meta property="og:description" content="Java高级技术 反射、注解、动态代理 源码、框架、架构师 单元测试 就是针对最小的功能单元：方法，编写测试代码对其进行正确性测试  main如何进行单元测试的？有啥问题？  只能在main方法测试方法，去调用其他方法进行测试 无法实现自动化测试，一个方法测试失败，可能影响其他方法的测试 无法得到测试报告，需要程序员自己观察测试是否成功  Junit单元测试框架 可以用来对方法进行测试，它是第三方">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-09-10-Java-01.SE-day14-image-20250725203724623.png">
 <meta property="og:image" content="https://guangzhao03.github.io/img/posts/2025-09-10-Java-01.SE-day14-image-20250725204114848.png">
@@ -76,7 +76,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -385,7 +385,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="day14"><a href="#day14" class="headerlink" title="day14"></a>day14</h1><p>Java高级技术</p>
+                <p>Java高级技术</p>
 <p>反射、注解、动态代理</p>
 <p>源码、框架、架构师</p>
 <h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><ul>

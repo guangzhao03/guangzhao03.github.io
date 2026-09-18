@@ -19,12 +19,12 @@
   <meta name="author" content="coolcys">
   <meta name="keywords" content="Java,Python,算法,八股,Agent">
   
-    <meta name="description" content="day16Tlias案例  开发模式  整体布局  部门管理  员工管理  登录&#x2F;退出  班级管理（自己）  学员管理（自己）   开发模式 前后端分离开发模式 需求分析-&gt;接口定义-&gt;前后端并行开发-&gt;测试-&gt;联调测试 整体布局  准备工作 动态菜单  1、导入资料中准备的基础工程到Vscode 2、启动前端项目 动态菜单：Vue Router：Vue的官方路由">
+    <meta name="description" content="Tlias案例  开发模式  整体布局  部门管理  员工管理  登录&#x2F;退出  班级管理（自己）  学员管理（自己）   开发模式 前后端分离开发模式 需求分析-&gt;接口定义-&gt;前后端并行开发-&gt;测试-&gt;联调测试 整体布局  准备工作 动态菜单  1、导入资料中准备的基础工程到Vscode 2、启动前端项目 动态菜单：Vue Router：Vue的官方路由。为Vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="day16">
 <meta property="og:url" content="https://guangzhao03.github.io/2025/11/10/2025-11-10-Java-02.javaweb-day16/index.html">
 <meta property="og:site_name" content="coolcys">
-<meta property="og:description" content="day16Tlias案例  开发模式  整体布局  部门管理  员工管理  登录&#x2F;退出  班级管理（自己）  学员管理（自己）   开发模式 前后端分离开发模式 需求分析-&gt;接口定义-&gt;前后端并行开发-&gt;测试-&gt;联调测试 整体布局  准备工作 动态菜单  1、导入资料中准备的基础工程到Vscode 2、启动前端项目 动态菜单：Vue Router：Vue的官方路由">
+<meta property="og:description" content="Tlias案例  开发模式  整体布局  部门管理  员工管理  登录&#x2F;退出  班级管理（自己）  学员管理（自己）   开发模式 前后端分离开发模式 需求分析-&gt;接口定义-&gt;前后端并行开发-&gt;测试-&gt;联调测试 整体布局  准备工作 动态菜单  1、导入资料中准备的基础工程到Vscode 2、启动前端项目 动态菜单：Vue Router：Vue的官方路由。为Vue">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-10T07:09:16.000Z">
 <meta property="article:modified_time" content="2025-11-10T07:09:16.000Z">
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -382,7 +382,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="day16"><a href="#day16" class="headerlink" title="day16"></a>day16</h1><p>Tlias案例</p>
+                <p>Tlias案例</p>
 <ul>
 <li><p>开发模式</p>
 </li>
