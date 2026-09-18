@@ -1,0 +1,1097 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="光昭">
+  <meta name="keywords" content="Java,Python,算法,八股,Agent">
+  
+    <meta name="description" content="# day1  Web：  - Web：全球广域网，也称为万维网（www World Wide Web），能够通过浏览器访问网站  前端程序、服务端程序、数据库使用。  界面展示、业务逻辑处理、数据存储和管理  1、web前端基础  2、web后端基础  3、后端web实战  4、后端web进阶  5、前端web实战  6、项目部署  ## 前端知识基础  - 网页由哪个部分组成  文字、图片、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="day1">
+<meta property="og:url" content="https://guangzhao03.github.io/2025/09/04/2025-09-04-Java-02.javaweb-day1/index.html">
+<meta property="og:site_name" content="光昭">
+<meta property="og:description" content="# day1  Web：  - Web：全球广域网，也称为万维网（www World Wide Web），能够通过浏览器访问网站  前端程序、服务端程序、数据库使用。  界面展示、业务逻辑处理、数据存储和管理  1、web前端基础  2、web后端基础  3、后端web实战  4、后端web进阶  5、前端web实战  6、项目部署  ## 前端知识基础  - 网页由哪个部分组成  文字、图片、">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-04T14:47:07.000Z">
+<meta property="article:modified_time" content="2025-09-04T14:47:07.000Z">
+<meta property="article:author" content="光昭">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JavaWeb">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>day1 - 光昭</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>光昭</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="day1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-09-04 22:47" pubdate>
+          2025年9月4日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">day1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                
+# day1
+
+Web：
+
+- Web：全球广域网，也称为万维网（www World Wide Web），能够通过浏览器访问网站
+
+前端程序、服务端程序、数据库使用。
+
+界面展示、业务逻辑处理、数据存储和管理
+
+1、web前端基础
+
+2、web后端基础
+
+3、后端web实战
+
+4、后端web进阶
+
+5、前端web实战
+
+6、项目部署
+
+## 前端知识基础
+
+- 网页由哪个部分组成
+
+文字、图片、视频、音频、超链接
+
+- 网页的本质
+
+前端代码
+
+- 前端代码如何转化成页面
+
+经过浏览器转化成页面，浏览器对代码进行解析渲染的部分，称为浏览器内核。
+
+### Web标准
+
+- Web标准也称为网页标准，由一系列的标准组成，大部分由W3C（World Wide Web Construction，万维网联盟）负责制定
+- 三个组成部分
+  - HTML：负责网页的结构（页面元素和内容）
+  - CSS：负责网页的表现（页面元素的外观、位置等页面样式，如颜色：大小等）
+  - Javascrip：负责网页的行为（交互效果）
+
+### HTML
+
+- HTML（HyperText Markup Language）：超文本标记语言
+- 超文本：超越了文本的限制，比普通文本更加强大，除了文字信息，还可以定义图片、音频、视频等内容
+- 标记语言：由标签"<标签名>"构成的语言
+  - HTML标签都是预定义好的，例如使用<h1> 展示标题 <img>展示图片，使用<video>展示视频
+  - HTML代码直接在浏览器中运行，HTML标签由浏览器解析
+
+### CSS
+
+- CSS(Cascading Style Sheet)：层叠样式表，用于控制页面的样式(表现)
+
+MDN提供技术文档
+
+
+
+## HTML快速入门
+
+1、新建文本文件，后缀名改为.html
+
+2、编写HTML的基本骨架，定义标题
+
+3、在<body>中填入内容
+
+ < head>   < /head> 网页头部里面存放给浏览器看的信息，如：CSS样式
+
+< body>     </ body>   网页主题里面存放给用户看的信息，如：文字、图片、视频
+
+< title >      </ title >里面存放标题 网页上面的标题
+
+< h1>	< /h1> 里面存放内容的标题
+
+#### 标签特点
+
+- html标签不区分大小写，建议小写
+- html标签的属性值使用单引号/双引号都可以
+- html语法结构松散，但是建议规范书写
+
+### HTML常见样式和CSS标签
+
+- 央视新闻-标题
+- 央视新闻-正文
+- 案例
+
+- html页面在渲染展示的时候，是从上往下逐行解析的。
+
+vscode 右击open with liveserver可以自动刷新
+
+- 标题标签< h1> -  < h6>
+- 超链接标签< a href="" target="" >...< /a>a>
+  - href:指定资源访问的url
+  - target：指定在何处打开资源链接
+    - _blank:在新窗口打开
+    -   _self:在当前窗口打开(默认)_
+    - parent:在父窗口打开
+    -   _top:在顶部窗口打开
+
+- CSS引入方式
+  - 行内样式：写在标签的style属性中（配合javascript）
+  - 内部样式：卸载style标签中（可以写在页面任何位置，但通常约定写在head标签中
+  - 外部样式：写在一个单独的.css文件中（需要通过link标签在网页中引入）
+
+1、span 里面的style属性指定
+
+2、在head里面写 style样式下的span
+
+3、新建文件写span
+
+#### 颜色描述
+
+| 表示方式       | 属性值        | 说明                             | 实例             |
+| -------------- | ------------- | -------------------------------- | ---------------- |
+| 关键字         | 颜色英文单词  | red、green、blue                 | red、green、blue |
+| rgb表示法      | rgb(r,g,b)    | 红绿蓝三原色，取值0-255          | rgb(0,0,0)       |
+| rgba表示法     | rgba(r,g,b,a) | 红绿蓝三原色，a表示透明度取值0-1 | rgba(0,0,0,0.4)  |
+| 十六进制表示法 | #rrggbb       | #开头，将数字转化成十六进制表示  | #000000,#ff00    |
+
+#### CSS选择器
+
+| 选择器     | 写法                                          | 示例                                 | 实例说明                                                     |
+| ---------- | --------------------------------------------- | ------------------------------------ | ------------------------------------------------------------ |
+| 元素选择器 | 元素名称{}                                    | h1{..}                               | 选择页面上所有<h1>标签                                       |
+| 类选择器   | .class属性值{}                                | .cls{..}                             | 选择页面上所有class属性为cls的标签                           |
+| id选择器   | #id属性值{}                                   | #hid{}                               | 选择页面上id属性为hid的标签                                  |
+| 分组选择器 | 选择器1，选择器2{}                            | h1,h2{}                              | 选择页面上所有的<h1>和<h2>                                   |
+| 属性选择器 | 元素名称[属性]{}<br />元素名称[属性名="值"]{} | inpute[type]<br />input[type="text"] | 选择页面上有type属性的<input>标签<br />选择页面上type属性为text的<input>标签 |
+| 后代选择器 | 元素1 元素2{}                                 | form input{..}                       | 选择form标签内所有的input标签                                |
+
+ 如果三个选择器都存在，优先级为：id>类>元素选择器
+
+#### 去除超链接的下划线
+
+ style里面针对a设置text-decoration: none;
+
+#### 正文排版
+
+建议视频宽度和高度设置一个即可，另一个会等比例缩放
+
+<b>加粗显示  strong也可以
+
+首行缩进：实体空格 &nbsp
+
+| 标签         | 作用   | 属性/说明          |
+| ------------ | ------ | ------------------ |
+| <b>/<strong> | 加粗   | strong具有强调语义 |
+| <u>/<ins>    | 下划线 | ins具有强调语义    |
+| <i>/<em>     | 倾斜   | em具有强调语义     |
+| <s>/<del>    | 删除线 | del具有强调语义    |
+
+| 字符实体 | 属性/说明 |
+| -------- | --------- |
+| &nbsp    | 空格      |
+| &lt      | <         |
+| &gt      | >         |
+
+CSS:属性
+
+line-height:行高
+
+text-indent：首行缩进
+
+#### 正文布局
+
+整个网页居中显示   定义div标签包裹网页内容
+
+定义width和magin-left/right
+
+注意原来内容的比例，如果设置有则为父标签为基准
+
+## 盒子模型
+
+- 盒子：页面中所有的元素（标签），都可以看作是一个盒子，由盒子将页面中的元素包含在一个矩形区域内，通过盒子的视角更方便的进行页面布局。
+
+- 盒子模型组成：内容区域(content)、内边距区域(padding)、边框区域(border)、外边距区域(margin)
+
+>  默认顺序：顺时针 上右下左  两个值则是上下、左右 一个值则是上下左右
+
+四个同心矩形
+
+
+
+- 布局标签：网页开发中，会使用div和span这两个没有语义的布局标签
+- 特点：
+  - div标签
+    - 一行只显示一个（独占一行）
+    - 宽度默认是父元素的宽度，高度默认由内容撑开
+    - 可以设置宽高（width、height）
+  - span标签
+    - 一行可以显示多个
+    - 宽度和高度默认由内容撑开
+    - 不可以设置宽高（width、height）
+
+## Tlias智能学习辅助系统页面
+
+页面原型：指在应用程序开发初期，由产品经理制作的一个早期项目模型，它用于展示页面的基本布局、功能和交互设计。通常用来帮助设计师、开发者更好地理解和讨论最终产品的外观和行为。
+
+### flex布局
+
+- flex是flexible Box的缩写，意为弹性布局，是一种一维的布局模型。flex布局可以为元素之间提供强大的空间发布和对齐能力
+- 通过给父容器添加flex的相关属性，来控制子元素的位置和排列方式。
+
+display=flex
+
+flex-direction=row/column
+
+justify-content 排列方式
+
+### 表单
+
+- 表单：在网页中主要负责数据采集功能，如注册、登录等数据采集
+- 标签 <form>
+
+- 表单项：不同类型的input元素、下拉列表、文本域等。
+
+  - input:定义表单项，通过type属性控制输入形式（text/password/..)
+  - select：定义下拉列表 （option>定义列表项）
+  - textarea：定义文本域
+
+- 属性：
+
+  - action:规定当提交表单时向何处发送表单数据，URL
+  - method：规定用于发送表单数据的方式。GET、POST
+
+  | type取值                 | 描述                         |
+  | ------------------------ | ---------------------------- |
+  | text                     | 默认值                       |
+  | password                 | 密码                         |
+  | radio                    | 单选                         |
+  | checkbox                 | 复选                         |
+  | file                     | 文件上传                     |
+  | date/time/datetime-local | 定义日期/时间                |
+  | hidden                   | 定义隐藏域                   |
+  | submit/reset/button      | 定义提交按钮/重置/可点击按钮 |
+
+input不用</标签> 因为都是自闭和标签，里面没有内容。
+
+#### label标签
+
+label标签通常配合表单项使用为了提高用户的体验，将文字和按钮包裹点击文字也可选中按钮
+
+### 搜索表单区域
+
+label的 for属性和表单项的id绑定
+
+利用表单项
+
+### 数据展示区域
+
+table标签
+
+thead  表头
+
+tbody 表内容
+
+tr代表一行
+
+th代表在tr里面表示一行表头的一个单元格
+
+td普通单元格在tr中
+
+### 版权展示区域
+
+footer标签
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/JavaWeb/" class="category-chain-item">JavaWeb</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Java/" class="print-no-link">#Java</a>
+      
+        <a href="/tags/JavaWeb/" class="print-no-link">#JavaWeb</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>day1</div>
+      <div>https://guangzhao03.github.io/2025/09/04/2025-09-04-Java-02.javaweb-day1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>光昭</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年9月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/09/09/2025-09-09-Java-02.javaweb-day2/" title="day2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">day2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/11/2025-08-11-Java-01.SE-day10/" title="day10">
+                        <span class="hidden-mobile">day10</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

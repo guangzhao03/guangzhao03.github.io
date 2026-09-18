@@ -1,0 +1,1283 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="光昭">
+  <meta name="keywords" content="Java,Python,算法,八股,Agent">
+  
+    <meta name="description" content="# 腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）  - 日期：2026-09-10 - 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案），按真实面经题单走（37 题 + 手撕 LC 1081） - 状态：Q1~Q35 已完成，Q36&#x2F;Q37（开放题）+ LC 1081 手撕未完成，待续  ## 总评  - 需要补的四块（按优先级）：   1. **循环回答**">
+<meta property="og:type" content="article">
+<meta property="og:title" content="腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）">
+<meta property="og:url" content="https://guangzhao03.github.io/2026/09/10/2026-09-10-%E5%85%AB%E8%82%A1-2026910%E8%85%BE%E8%AE%AFAI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/index.html">
+<meta property="og:site_name" content="光昭">
+<meta property="og:description" content="# 腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）  - 日期：2026-09-10 - 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案），按真实面经题单走（37 题 + 手撕 LC 1081） - 状态：Q1~Q35 已完成，Q36&#x2F;Q37（开放题）+ LC 1081 手撕未完成，待续  ## 总评  - 需要补的四块（按优先级）：   1. **循环回答**">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-10T12:40:15.000Z">
+<meta property="article:modified_time" content="2026-09-10T12:40:15.000Z">
+<meta property="article:author" content="光昭">
+<meta property="article:tag" content="八股">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础） - 光昭</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>光昭</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-09-10 20:40" pubdate>
+          2026年9月10日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          148 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                
+# 腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）
+
+- 日期：2026-09-10
+- 形式：一问一答一评模拟（面试官 → 我回答 → 点评 + 参考答案），按真实面经题单走（37 题 + 手撕 LC 1081）
+- 状态：Q1~Q35 已完成，Q36/Q37（开放题）+ LC 1081 手撕未完成，待续
+
+## 总评
+
+- 需要补的四块（按优先级）：
+  1. **循环回答**（Q4/Q14/Q15）：用名词解释名词，答案无新信息量——"步骤如何生成"答"落盘 markdown"、"分数如何计算"答"是混合检索"。对策：听到"如何计算/如何生成"强迫自己答**公式或流程**
+  2. **ThreadLocal 概念反向**（Q33）：说成"所有线程共享"，核心语义记反比不会更危险。一句话锚定：要**共享**用 volatile/Atomic，要**隔离**用 ThreadLocal
+  3. **数字必须有构成**（Q21）：孤数"大概 1w token"无构成无口径。三件套：构成 + 占比 + 压成本手段
+  4. **精确数字与术语**：树化阈值 8（说成 5）、容量 64、"核心进程"（应为线程）、CAS 与乐观锁的关系（CAS 是乐观锁的实现，不能并列）
+- 强项：机制细节答得出（DAG 落盘、并行就绪条件、双路检索兜底、两级改写判断）、MCP 3×2→3+2 卖点抓得准、线程池有真实使用场景
+- 项目段通病：**机制细节强、数字和"为什么"弱**——每个设计决策配一条理由、每个模块配一个数字；简历项目答"忘记"（Q22）等于该段简历失效
+
+## 错误清单（复盘专用）
+
+| 题号 | 我的错误 | 正确认知 | 优先级 |
+|---|---|---|---|
+| Q1 | 抽取侧无指标；业务价值不闭环；三路并行的"为什么"没讲 | 两模块各带一个数 + 业务数字；主动讲拆分理由埋追问钩子 | 高 |
+| Q4 | 循环回答（"落盘 markdown"答"如何生成"） | 四层：输入上下文→生成方式→生成约束→事后校验 | 高 |
+| Q7 | 循环表述"任务可以拆解然后再 plan 和 execute" | 层级分解（Execute 起子 Plan-Execute）；回写串行化（调度器唯一写者） | 中 |
+| Q8 | "三个资源吧"；"解决 function calling 复用" | 三大**原语**；MCP 是 function calling 之上的协议层；动态发现+权限收口 | 中 |
+| Q9 | 控制权归属没答上；"SSE（stream HTTP）"混淆 | Tools 模型控制/Resources 应用控制/Prompts 用户控制；HTTP+SSE（老）≠Streamable HTTP（新，可无状态） | 高 |
+| Q10 | 只答输入侧硬过滤，且没说完 | 纵深防御四层：注入检测→调用级鉴权（核心）→最小权限→DLP+人工确认 | 高 |
+| Q13 | "召回准确率 85%"用 MRR 解释——口径错配 | MRR 是排序质量（0.85 小数）；召回率是 Recall@k（top-k 命中占比）；简历口径必须定死 | 高 |
+| Q14 | 循环回答"是混合检索" | 加权融合（先归一化）或 RRF（1/(60+rank) 求和）；融合后接 cross-encoder 精排 | 高 |
+| Q17 | 不会 | 分层论证三段式：不分层痛点→各层特征差异→分层后各得其所 | 中 |
+| Q19 | 错误分类混、只有一种兜法 | 三类错误各有药方：语义错误（双路+实体校验）/运行失败（超时降级）/判断出错（监控回归） | 中 |
+| Q21 | "大概 1w"孤数 | 单次改写约 1500~2000（术语表+规则~1000、历史~1000、query<100、输出几十），两级共~3000 | 中 |
+| Q22 | "忘记了" | 简历项目架构选型的"为什么"必须刻在脑子里；先对齐口径再答 | 高 |
+| Q23 | 树化阈值说成 5；"哈希表和链表并列" | 阈值 8 且容量 ≥64；数组（=哈希表本体）+链表+红黑树 | 高 |
+| Q24 | 触发条件说乱；"扩充1" | 常规触发唯一：size>容量×0.75；链表≥8 但容量<64 优先扩容 | 高 |
+| Q25 | `%2n-1`；"低位和以前一样" | `(e.hash & oldCap)==0` 留原位，≠0 移"原位+oldCap" | 高 |
+| Q27 | "CAS 和乐观锁"并列 | CAS 就是乐观锁的实现；1.8 是 CAS（桶空）+synchronized 锁桶头（桶不空） | 高 |
+| Q29 | "核心进程"；漏三参数 | 核心线程数/最大线程数；七参数按流转链路串：核心满→先入队→队满才开到 max→拒绝 | 高 |
+| Q30 | 只记得两个策略 | Abort/CallerRuns（反压）/Discard/DiscardOldest + 自定义 handler + Executors 无界 OOM | 中 |
+| Q31 | 泛指答分类题 | 按区域：堆/线程池特有/元空间/栈溢出/直接内存 + HeapDumpOnOutOfMemoryError | 中 |
+| Q33 | **"所有线程共享"——完全反向** | ThreadLocal 是线程隔离副本；ThreadLocalMap 挂在 Thread 上；finally 必须 remove | 高 |
+| Q34 | 四种引用概念缺失 | 强/软（内存不足才回收）/弱（下次 GC 必回收）/虚（配 ReferenceQueue） | 高 |
+| Q35 | 推理对第一步就断 | 弱引用管 key、remove 管 value，两层互补；value 强引用泄漏靠 expunge + 手动 remove | 中 |
+
+---
+
+## 逐题实录
+
+### Q1 介绍实习期间负责的项目
+
+**我的回答**：业务背景是招投标专员需要快速编写招投标项目；负责招标书信息抽取和投标书测评。抽取用三路并行 agent（base info / format info / good info），OCR 模型 + qwen-plus 做文本分析和图片表格转化，硬规则+模型判断。测评第一轮给切分的 chunk 打标签，融合跨章节文本让模型判断是否符合，准确率 92%，设了待确认选项人工复审。
+
+**点评/错误**：
+- ✅ 带了量化数字（92%）；"待确认+人工复审"是亮点，体现 LLM 幻觉兜底意识
+- ⚠️ 抽取侧没有指标——面试官当场就会问"抽取准确率多少"，两模块各带一个数
+- ⚠️ 业务价值没闭环："快速编写"停在定性，要业务结果（处理时间从 X 到 Y、复审从全量降到只看灰区、处理了多少份）
+- ⚠️ 三路并行（base/format/good）的"为什么"没主动讲——字段格式差异大、单 prompt 过长互相干扰、便于并行提速；这是后面追问的伏笔
+- ⚠️ "我负责了"边界模糊：哪块独立设计实现、哪块参与优化要分清，否则被问"架构谁定的"容易露怯
+- 术语：base/format/good info 说中文（基本信息/格式要求/货物信息）；"编写招投标项目"应为"编写投标文件"
+
+**参考答案**：
+> 业务背景：招投标专员编写投标文件需人工通读几百页招标书逐条对照，耗时易漏项。我负责两个模块：招标书信息抽取和投标书响应测评。抽取按字段性质拆三路并行 agent——基本信息/格式要求/货物信息，表格和扫描件走 OCR+qwen-plus 模态转换，文本字段"硬规则优先、模型兜底"，抽取准确率 X%。测评第一轮按章节切 chunk 打标签，第二轮融合跨章节上下文对照招标要求逐条判定符合/不符合/待确认，待确认推人工复审避免幻觉误判。结果：测评准确率 92%，待确认率 X% 以内，人工复审从全量降到只看灰区，单份处理时间从 X 小时降到 Y 分钟。
+
+### Q2 项目 2 是自学完成的吗（跳过）
+
+- 真实性验证题，正式面试躲不掉。准备 30 秒证据式回答：时间线 + 独立解决的难点 + 与教程/开源方案的差异点
+
+### Q3 Plan Agent 和 Execute Agent 分别如何处理任务
+
+**我的回答**：任务过来 plan agent 先收到，拆解任务做 DAG 图，落盘到 markdown 文件，调度 execute agent 拿任务，检查状态然后执行，更新 DAG 任务。
+
+**点评/错误**：
+- ✅ 完整数据流；"落盘 markdown"是真做过的细节，面试官会眼前一亮
+- ⚠️ "为什么用 markdown 落盘"没自答（最大加分点）：①持久化跨会话/崩溃可恢复 ②Plan 和 Execute 是两个独立上下文，文件是共享内存（黑板模式），比塞 system prompt 便宜可控 ③人可读可编辑可人工干预
+- ⚠️ "检查状态"太空：就绪判定=扫描 DAG 找前置已完成且自身 pending 的节点；调度循环在调度器手里（轮询/事件驱动）
+- ⚠️ 结果怎么回流没讲：每个节点要有结构化字段（目标/输入/产出物路径/状态）
+- ⚠️ 失败路径没提：重试→标记 blocked→触发重规划
+- 术语："DAG 图"语义重复，说"任务 DAG"或"任务依赖图"
+
+**参考答案**：
+> 任务进来 Plan Agent 先理解和拆解，产出带依赖关系的任务 DAG，每个节点定义目标/输入/产出物/验收标准。DAG 落盘 markdown，同时承担三个角色：状态持久化、Plan 与 Execute 的共享上下文（黑板模式）、人工可读可干预的界面。调度器扫描 DAG 把前置已完成的就绪节点分发给 Execute Agent；Execute 用 ReAct 循环执行，把产出物路径和状态写回清单驱动后继节点解锁。失败先重试，超阈值标记 blocked 并触发 Plan Agent 局部重规划。
+
+### Q4 任务处理中的步骤是如何生成的 ⚠️（循环回答）
+
+**我的回答**：步骤通过 plan agent 规划 DAG 落盘为 markdown 结构文件，可以持久化可以恢复。
+
+**点评/错误**：
+- **循环回答**：答的是"步骤存在哪"，不是"步骤怎么来的"——用流程里的名词解释流程本身，答案没有新信息量。识别方法：回答里没有新增信息
+- 面试官想听四层：**输入上下文**（不只是任务描述，还有可用工具/Skill 清单——没有工具清单的规划是空中楼阁；相似历史任务轨迹做 few-shot 先验；环境约束）→ **生成方式**（模型分解 + JSON schema 结构化约束输出）→ **生成约束**（粒度控制；每步必须可验证有完成判据）→ **事后校验**（90% 的人答不出：结构校验无环；可执行性校验每个节点动作在工具清单里有实现；必要时 critic 调用；不过就带错误信息重新生成）
+
+**参考答案**：
+> 步骤生成分四步。输入上，Plan Agent 除了任务描述还注入可用工具和 Skill 清单，以及相似历史任务的成功轨迹做先验——保证拆出的每步都有能力承接。生成上，先分析再输出结构化 JSON，定义节点、依赖边和完成判据。生成后有校验层：结构查无环，语义查每个节点动作在工具清单有对应实现，不过就带错误信息重规划。执行中支持局部重规划——Execute 发现失败或环境不符时把失败上下文回传，只重生成受影响的子图。
+
+### Q5 无论什么任务都先经过 Plan-Execute 吗
+
+**我的回答**：有些任务不需要，例如小任务直接 ReAct 就能完成得不错；上下文依赖比较严重的任务也适合单独 agent 实现。
+
+**点评/错误**：
+- ✅ 分流意识对；"上下文强依赖任务适合单 agent"有真实体感，大多数候选人只会答"简单任务用 ReAct"
+- ⚠️ 分流没有机制：谁来判断、依据什么判据（预估步数/涉及工具数/轻量分类器/主模型第一轮自判）？没有机制像"碰巧这么用"
+- ⚠️ 第二类"为什么"没展开：Plan-Execute 每步上下文隔离，跨步信息靠文件传递；诊断排查类每步观察都改变后续判断，拆开传递丢信息，单 agent 保留完整观察历史更好
+- ⚠️ 缺动态升级：ReAct 连续 N 轮没收敛或工具失败率超阈值→升级规划模式；Plan 拆完全原子→退化顺序执行。路由不是一次性的
+- ⚠️ 缺成本视角（Q6 的答案）：一次完整规划=规划调用+每步调度回写 token+端到端延迟+规划自身出错面（过度拆解、拆出不可执行步骤），对简单任务是纯开销
+
+**参考答案**（Q5+Q6 合并）：
+> 不是，有任务路由层。任务进来先过轻量路由：意图明确、单工具、预估两三步内的直接走 ReAct；多步依赖、需并行子任务、跨会话长周期、有审批卡点的才进 Plan-Execute。判据可量化：预估步数、工具数、历史相似轨迹。路由是动态的——ReAct 连续失败升级为规划模式，Plan 拆完全原子就退化为顺序执行。成本上规划对简单任务是纯开销还引入出错面，所以简单任务直接 ReAct 更高效。诊断排查这种上下文强耦合的任务单 agent 反而更好——每步观察改变后续判断，拆步传递丢信息。
+
+### Q6 简单任务直接 ReAct 是否更高效（并入 Q5）
+
+### Q7 两个 Agent 是串行执行的吗
+
+**我的回答**：不是严格串行，任务可以拆解然后再 plan 和 execute；多个 execute 之间在 DAG 中无前置节点或前置都完成可以并行。
+
+**点评/错误**：
+- ✅ 并行条件正确（就绪判定），和 Q3 咬合
+- ⚠️ "任务可以拆解然后再 plan 和 execute"是循环表述——想表达的若是"复杂节点内部再起子 Plan-Execute"（层级式分解），明确说出来是加分点，否则删掉
+- ⚠️ 缺并发控制：最大并发 agent 数、token/费用预算、共享资源冲突（两个并行节点写同一文件）
+- ⚠️ 缺真实感细节：多个 Execute 并行回写同一个 markdown 有写竞争——回写经调度器串行化（scheduler 唯一写者）或文件锁+字段级合并
+- ⚠️ 可补 Plan 再入：失败重规划时 Plan 被重新调用，宏观是"规划-执行-再规划"循环，不是单向流水线
+
+**参考答案**：
+> 不是严格串行，分两层。宏观上 Plan 先行、Execute 接管主循环，失败时 Execute 回传失败上下文触发重规划，是"规划-执行-再规划"循环；复杂节点可层级分解，由 Execute 再起子 Plan-Execute。并行度上调度器持续扫描 DAG，把前置完成的就绪节点并发分发给 Execute 池，但有三重并发控制：最大并发数和 token 预算、共享资源冲突检测、回写串行化——任务清单只允许调度器一个写者，避免并发写坏状态。
+
+### Q8 MCP 主要解决什么问题
+
+**我的回答**：解决高频 function calling 的复用，3×2 问题变 3+2。还有三个资源吧：tool、resource、prompt。
+
+**点评/错误**：
+- ✅ "3×2→3+2"抓得准（M 个应用 × N 个模型的集成爆炸 → M+N 个连接器）；知道三大原语存在
+- ⚠️ "复用 function calling"偏浅且有隐含错误：MCP 不是在复用 function calling，而是它**之上的协议层**——痛点是每个应用接每个外部系统手写胶水代码、格式不兼容、无生态复用，MCP 把"模型如何发现和调用外部能力"标准化成开放协议
+- ⚠️ 面试里"吧"是减分信号（自己不确定），宁可慢一秒说肯定的
+- ⚠️ 术语错位：三大原语 Tools/Resources/Prompts，说"三个资源"是用子集名指代全集
+- ⚠️ 漏了收益：动态发现（工具清单变化无需发版）、职责分离、权限边界收口在协议层（Q10 伏笔）
+
+**参考答案**：
+> MCP 解决外部工具集成问题。之前 M 个 AI 应用接 N 个外部系统要写 M×N 份互不兼容的胶水代码；MCP 标准化成开放协议变成 M+N——应用方实现一个客户端，工具方实现一个服务端。协议定义三大原语：Tools 模型可控操作、Resources 应用可控数据、Prompts 用户可控模板。收益：动态能力发现（无需发版）、工具生态复用、权限校验收口在协议层统一处理。
+
+### Q9 MCP 的核心优点有哪些
+
+**我的回答**：减少代码书写增强复用；服务提供商按自己要求只暴露接口，不暴露太多信息；服务端以前是有状态的记录了 MCP client；传输 stdio、SSE（stream HTTP）；三个原语都归属于 mcp server，client 可以调用获取。
+
+**点评/错误**：
+- ✅ "只暴露接口不暴露内部"——封装/攻击面收窄是真理解；有状态问题记住了上轮纠正方向
+- ⚠️ **控制权归属没答上（本题核心）**：原语都由 server 发布不是区分点，设计精髓在**谁控制、何时触发**——Tools 模型控制（LLM 自主调用，通常自动批准）/ Resources 应用控制（客户端决定何时取数，如 RAG 拉文件）/ Prompts 用户控制（斜杠命令显式触发）。混淆了"谁提供"（都是 server）和"谁控制"（三者各异）
+- ⚠️ "以前是有状态的"没给机制：2024-11 老规范（stdio + HTTP+SSE）有状态——SSE 要维持会话连接；2025-03 新规范引入 **Streamable HTTP** 替代，支持无状态部署——单一端点 POST、可选 `Mcp-Session-Id` 头管理会话、event id 断线重连续传。答案落点应是"新规范下可以无状态化，方便水平扩展"
+- ⚠️ "SSE（stream HTTP）"混为一谈：HTTP+SSE 是老传输（GET 建 SSE 通道 + POST 发消息，两端点），Streamable HTTP 是替代它的新传输（单端点，响应可为普通 JSON 或升级 SSE 流），对应规范两个版本
+- 漏：动态发现、权限收口（Q10 引子）
+
+**参考答案**：
+> 四个优点：①集成标准化 M×N 变 M+N；②动态发现，运行时拉工具清单，服务端更新无需发版；③封装与安全边界，只暴露原语接口，权限校验收口协议层；④三大原语按控制权划分——Tools 模型控制自主调用、Resources 应用控制客户端决定取数、Prompts 用户控制如斜杠命令。传输：stdio 用于本地进程；远程两次演进——老 HTTP+SSE 有状态要维持会话，2025-03 规范用 Streamable HTTP 替代，单端点、可选 session id、断线续传，服务端可无状态水平扩展。
+
+### Q10 模型被提示词诱导查敏感信息，系统如何处理
+
+**我的回答**：系统要拦截，设置强规则硬过滤信息，防布在提示词输入后（未说完）。
+
+**点评/错误**：
+- ✅ 意识到不能靠模型自觉，要有机制性拦截
+- ⚠️ 只有一层防线——输入过滤只是四层之一，关键词是**纵深防御**：输入层→权限层→执行层→输出层，一层被绕过还有下一层
+- ⚠️ 缺最核心一层：**身份鉴权**。敏感与否的判断依据不是"提示词里有没有敏感词"（内容过滤），而是"发起调用的用户对目标数据有没有权限"（身份鉴权）——Q11 的答案：有，且是**调用级**鉴权，每次 tool call 都校验，不是会话开始验一次
+- ⚠️ "诱导"来源没答全：不只用户输入，更隐蔽的是**间接注入**——检索回来的文档、网页、工具返回值里夹带恶意指令。防线：外部内容当数据不当指令（指令层级 system > tool output）+ 注入检测分类器
+- ⚠️ 缺输出侧兜底：DLP 脱敏——安全口诀"假设上一层一定会被绕过"。Q12：批量导出等高危操作即使通过鉴权也强制人工确认 + 审计留痕
+
+**参考答案**（含 Q11/Q12 追问答法）：
+> 按纵深防御答，核心原则不依赖模型自觉：①输入层注入检测——诱导不只来自用户输入还有检索文档和工具返回里的间接注入，外部内容与指令隔离、模型指令层级高于工具输出，配注入检测分类器；②权限层（核心）每次工具调用携带用户身份执行前数据级鉴权，用户 A 的会话被诱导生成查询用户 B 的合法调用，鉴权层直接拒绝，鉴权是调用级的；③执行层 MCP 工具最小权限授权、服务账号白名单、敏感字段数据源侧脱敏；④输出层 DLP 兜底脱敏，批量导出等高危操作即使鉴权通过也强制人工确认、全量审计留痕。（追问"有鉴权机制吧？"）有——调用级鉴权是机制性安全边界，提示词防护只是第一道软防线，从不作为信任边界。
+
+### Q11 所以系统是有鉴权机制的吗（并入 Q10）
+
+### Q12 特别敏感信息是否需要人工确认（并入 Q10）
+
+### Q13 知识召回准确率 85% 是如何得到的 ⚠️（口径错配）
+
+**我的回答**：通过 MRR，平均倒排加一起。
+
+**点评/错误**：
+- **指标口径错配（硬伤）**："召回准确率 85%"和 MRR 是两个指标——MRR（Mean Reciprocal Rank）是所有 query 的第一个相关结果排名倒数均值，衡量**排序质量**，取值 0~1 小数（MRR 0.85）；"召回准确率"应是 Recall@k/Hit Rate——top-k 里命中黄金 chunk 的 query 占比（top-5 命中率 85%）。口径对不上，数字真实性存疑
+- **术语错误**："平均倒排"——倒排是倒排索引（inverted index）；MRR 里是**倒数排名**（reciprocal rank）
+- 没回答"怎么得到的"：完整链路=评测集构建→金标标注→口径定义→计算
+- 红线：简历上这个数字的口径必须定死——写"召回准确率"就要能答出 Recall@k 的 k 和金标标注方式；实际是 MRR 就改简历写 MRR 0.85。口径含糊的数字追问第二层必崩
+- 加分动作：能说出"剩下 15% 错在哪"（错误分析驱动迭代）比 85% 本身更证明指标是亲手做的
+
+**参考答案**：
+> 分三步。①构建评测集：真实业务 query 采样约 200 条，覆盖常见和长尾问法，人工标注每条的黄金 chunk，双人交叉确认。②定口径：85% 指 Recall@5——top-5 召回包含至少一个黄金 chunk 的 query 占比；排序质量另用 MRR 衡量（当时 X）。两指标分开报避免混用。③结果来源：85% 是多路召回融合后的数字——单路向量只有 X%，加 BM25 路覆盖术语精确匹配场景后提升到 85%；错误分析：剩余 15% 主要是表格类和跨页段落没切进同一 chunk，驱动了后续分块策略迭代。
+
+### Q14 文档检索分数是如何计算的 ⚠️（循环回答，未答出）
+
+**我的回答**：不知道。检索分数是混合检索。
+
+**点评/错误**：
+- 又一次循环回答：用方法名解释数值怎么算。听到"如何计算"要答**公式或流程**
+- 两条标准路线：
+  - **加权分数融合**：`final = α × normalize(向量分) + (1-α) × normalize(BM25分)`。关键坑：两路分数不可直接相加——余弦分 0~1，BM25 无上界（常见 0~30+），直接加权等于 BM25 碾压向量项，必须先按候选集内归一化；α 靠评测集调参
+  - **RRF（Reciprocal Rank Fusion）**：`RRF(d) = Σ 1/(k + rank_i(d))`，k 常取 60。只看排名不看原始分，天然免归一化，工业界默认（ES/OpenSearch hybrid search 内置就是 RRF）；缺点丢置信度信息
+- 融合不是终点：融合取 top-N 后再过 **Rerank**（cross-encoder 精排，query 和文档拼一起打分，精度远高于双塔，只精排小候选集）。完整链路：**多路召回 → 融合（RRF 或加权）→ 精排**
+
+**参考答案**：
+> 混合检索的融合分数两条路线二选一：加权融合要把向量分和 BM25 分各自候选集内归一化后加权求和，权重靠评测集调；或 RRF 按每路排名算 1/(k+rank) 求和，k 取 60，不依赖分数可比。我们选 RRF，因为 BM25 和余弦分量纲差异大，归一化在分布漂移时不稳。融合后的 top-N 再过 cross-encoder 精排输出最终排序。
+
+### Q15 检索分数是向量和关键词的加权结果吗（复测）
+
+**我的回答**：融合加权，不是简单的加权。
+
+**点评/错误**：
+- 结论对（避开了"加权"诱导），但又是循环回答，信息量接近零。这题是展示 RRF 的机会
+- 20 秒参考答案：不完全是加权——加权融合要先各自归一化再加权（两路量纲不可比）；后来换 RRF 倒数排名融合，按排名算 1/(60+rank) 求和，不处理量纲问题、对分布漂移更稳；融合后还接 cross-encoder 精排。"听过课的人"和"做过的人"的分界线就在这 20 秒
+
+### Q16 项目 3 三层知识架构分别存什么（跳过）
+
+- 结构题是送分题，私下按 3×3 表格（层名 × 存什么/为什么）练熟
+
+### Q17 为什么要把知识库分成三层 ⚠️（不会，已教框架）
+
+**我的回答**：不太会。
+
+**点评/错误**：
+- 万能框架——**分层论证三段式**（适用一切"为什么要分 X 层/X 级/X 阶段"）：
+  ① **不分层的痛点**：所有知识塞一个库会怎样（高频更新内容污染稳定规则的向量空间、术语精确匹配被语义召回稀释、海量案例存储成本降不下来）
+  ② **各层特征差异**：更新频率/规模/查询模式/成本要求不一样，一个存储结构照顾不了所有特征
+  ③ **分层后各得其所**：每层独立选 embedding 模型、切片粒度、更新策略；检索时先判断 query 属于哪类定向召回
+
+**参考答案**：
+> 因为三类知识特征差异太大，混在一个库里互相伤害。按规则/事实/案例三层拆：规则层存业务规则和术语表——量小几乎不变要求精确命中，结构化存储+关键词精确匹配；事实层存产品文档和 FAQ——定期更新中等规模要求语义召回，向量库；案例层存历史工单对话——持续累积海量只做参考，摘要压缩后低成本存储。不分层则互相污染、精确匹配被稀释、成本降不下来；分层后每层独立选 embedding/切片/更新策略，检索定向召回，精度和成本都最优。
+
+### Q18 是否依赖大模型把口语化表达重写成规范术语
+
+**我的回答**：是的，用模型先判断，如果需要 query 改写则改写。
+
+**点评/错误**：
+- ✅ 两级设计（先判断必要性再改写）——很多人上来就无脑改写，有成本意识
+- ⚠️ 改写的输入上下文没讲：重写质量来源是给模型什么材料——**领域术语表**（口语→规范映射依据）、**多轮对话历史**（指代消解）、**约束**（只做术语归一和补全，不得引入原意没有的实体）
+- ⚠️ 缺"改写错了怎么办"→ **原始 query 和改写 query 双路都去检索**，原始兜底（Q19 的钩子）
+
+**参考答案**：
+> 是的，但有两级：先用轻量模型判断是否需要改写（含口语、指代、术语不规范的才触发），避免全量过改写浪费成本和延迟。触发后不是裸改——注入领域术语表和多轮对话历史做上下文，把口语映射到规范术语，并约束不得引入原意外实体。同时保留原始 query 双路检索，改写结果和原始 query 各召回一路再融合，改写出错也有原始兜底。
+
+### Q19 Query 重写过程中会不会出现错误
+
+**我的回答**：错误可能有两种——改写后的内容有问题、改写失败。让原始 query 兜底。
+
+**点评/错误**：
+- ✅ 有兜底意识、有分类意识
+- ⚠️ 分类划不清："内容有问题"是**语义错误**（改了但改错），"改写失败"是**运行失败**（没产出），两类兜法完全不同，混着说体现不出"不同错误不同药方"
+- ⚠️ 漏第三类：**判断环节本身出错**（Q18 自己埋的设计——该改没改/不该改乱改），不接住就浪费了
+- ⚠️ 只有原始 query 兜底一种药：它救语义错误；运行失败时可能连改写结果都没有只剩原始 query，那叫降级不叫兜底
+
+**参考答案**：
+> 会，错误分三类各有药方：①语义错误——改写引入原意没有的实体或丢信息。兜法双路检索（改写+原始并行召回融合）+生成时约束只做术语映射不得新增实体+事后实体校验（超出原 query 和术语表的直接弃用）。②运行失败——超时或服务异常。设改写超时预算，超时降级用原始 query 检索，宁可召回差点不能阻塞主链路。③判断环节出错——该改没改、不该改乱改。评测集定期回归改写触发率，监控触发/未触发 query 的召回率差值，异常就调判断阈值或补术语表。
+
+### Q20 用较大的模型还是较小的模型
+
+**我的回答**：小模型，因为往往不需要很强大的思考，只需要指令遵循，且小模型成本低。
+
+**点评/错误**：
+- ✅ 结论合理（业界标准做法），两个理由方向全对
+- ⚠️ 因果链有断点："指令遵循够用"是结论，为什么这任务不需要强推理没讲：query 改写本质是**受约束的映射/变换任务**——解空间被术语表和规则限得很小，不需要开放推理；解空间小的变换任务用小模型，解空间开放的（规划、复杂判断）才要大模型
+- ⚠️ 漏小模型另一半优势：**延迟**——改写卡在检索链路最前面，延迟敏感（判断+改写要在几十到一两百毫秒内完成），低延迟优势被放大
+- ⚠️ 缺风险对冲收尾："小模型改错的代价被双路检索兜住了，所以敢用"——18/19/20 三题闭环
+
+**参考答案**：
+> 小模型。query 改写本质是受约束的映射任务——术语表和规则把解空间限得很小，指令遵循就够，用不到开放推理；而且它卡在检索链路最前面，延迟敏感，小模型的低延迟低成本优势都在这被放大。小模型可能改错，但风险被双路检索兜底——改写错的最多损失一点召回精度不会错杀。选型是任务特征决定模型大小，风险有机制兜住，不是简单堆大模型。
+
+### Q21 统计过这类问题消耗多少 Token 吗 ⚠️（孤数）
+
+**我的回答**：改写大概 1w token 左右。
+
+**点评/错误**：
+- **孤数无依据**：数字必须有构成支撑，"为什么是一万"现答不上就露馅
+- **量级可疑**：单条改写 1w 明显偏大。真实构成：术语表+规则（system 部分）500~2000 + 对话历史几百到一千 + 原始 query <100 + 输出几十 ≈ **1500~2000 token/次**；判断+改写两级翻倍约 3000。1w 除非整表和超长历史全塞
+- **只有输入没有视角**：成本要有分母——单次 token × 日调用量 × 单价 = 日成本，对比"不用改写的召回损失"才是工程决策语言
+- 压成本手段：术语表裁剪（只注入 query 命中的领域段落，不是全表）、判断命中"无需改写"直接短路（大部分 query 只花判断的几百 token）
+
+**参考答案**：
+> 统计过。构成：术语表加规则约 1000 token，多轮历史几百到一千，原始 query 不到 100，输出几十——单次约 1500~2000，两级共约 3000。按日均 X 万次调用，月成本约 X 元，占推理成本不到 X%。压它做了两点：术语表裁剪只注入命中的领域段落；判断阶段命中"无需改写"直接短路，大部分 query 只花判断的几百 token。结论是改写成本可控，瓶颈不在 token 在延迟。
+
+### Q22 项目 3 是否主要一个模型结合领域知识完成翻译 ⚠️（答"忘记了"）
+
+**我的回答**：忘记了。
+
+**点评/错误**：
+- **对自己简历上的项目说"忘记"基本等于这段简历失效**——面试官会默认往深挖也接不住。数字可以忘，架构选型的"为什么"必须刻在脑子里。Q2/Q16/Q22 三道跳过的题私下必须补
+- 遇到题目用词和你的认知不一致（"翻译"）：不硬猜，主动对齐口径——这是沟通能力的展示点
+
+**参考答案**：
+> （先对齐口径）"您说的翻译是指口语 query 到规范表达的转换环节对吧？"是的，主体是一个中小模型完成转换，但领域知识不是靠模型自己懂，而是外挂注入的：术语表作为映射依据放进 prompt，配合改写约束。模型只负责查表式的语义对齐，不负责理解业务——业务知识沉淀在术语表和规则层，模型可换，知识资产留在系统里。
+
+### 项目段小结
+
+机制细节答得出（落盘、并行条件、双路兜底、两级改写），**数字和"为什么"答不出**。回去补：每个设计决策配一条理由、每个模块配一个数字。
+
+---
+
+### Q23 Java 中 HashMap 的底层原理 ⚠️
+
+**我的回答**：主要是红黑树和链表，节点少用链表，长度大于 5 变红黑树；插入节点链表用的是哈希表，用来快速插入定位。
+
+**点评/错误**：
+- **树化阈值说错（硬伤）**：是 **8** 不是 5（TREEIFY_THRESHOLD=8），且第二条件**数组容量 ≥ 64** 才树化，容量不够优先扩容。这两个数字是 HashMap 八股第一道验尸题
+- **表述混乱**：哈希表不是和链表并列的东西——**数组（桶数组）就是哈希表本体**，链表和红黑树是桶内冲突的解决方案。结构="数组+链表+红黑树"
+- 只答了"长什么样"没答"怎么工作"：hash 怎么算→怎么定位桶→冲突怎么处理→什么时候扩容，闭环没形成
+- 没提 1.7/1.8 差异（尾插/头插、红黑树引入动机）——面试官最爱挖的对比点
+
+**参考答案**：
+> 1.8 的 HashMap 是数组+链表+红黑树。put 流程：先对 key 的 hashCode 扰动——高 16 位异或低 16 位，让高位参与运算减少碰撞；用 `(n-1) & hash` 定位桶下标（容量是 2 的幂，位运算等价取模）。桶空直接放入；冲突沿链表尾插——1.8 改尾插，避免 1.7 头插在并发扩容时的死循环。插入时 hash 相等且 equals 判断同 key 则覆盖。链表长度达 8 且数组容量 ≥64 才树化，最坏查找 O(n)→O(log n)；容量不足 64 先扩容。负载因子 0.75，超阈值触发 2 倍扩容。
+
+### Q24 HashMap 的扩容流程 ⚠️
+
+**我的回答**：链表长度小于 8 数组长度小于 64 就扩容，链表尾插；红黑树化且达到装填因子 0.75 扩容 2 倍；1.7 头插变 1.8 尾插防并发扩容死循环；1.8 扩容两倍直接位运算就能出来。
+
+**点评/错误**：
+- **触发条件说反/说乱**：链表 <8 不触发任何事；**链表 ≥8 但数组 <64 时才优先扩容**（树化的前置条件）；平时扩容唯一触发是 **size > 容量 × 0.75**（元素数超阈值，与链表长度无关）。触发条件是第一层，说乱整个答案信噪比就崩
+- **"扩充1"是碎片**：想说"容量翻倍（16→32）"要说"扩容为原来的 2 倍"，不能蹦没有上下文的短语
+- **1.8 优化只答对一半**："直接位运算"对，但机制没讲——见 Q25 展开
+- ✅ 尾插/死循环/位运算三个 1.8 关键点都摸到了，红黑树扩容拆分方向对
+
+**参考答案**：
+> 常规触发唯一：size 超过 容量×0.75（threshold）就 2 倍扩容；特殊场景：链表长度到 8 但数组容量 <64 时优先扩容不树化。扩容新建 2 倍数组，遍历旧表迁移每个桶：链表按 `(e.hash & oldCap)` 拆成原位和"原位+oldCap"两条链（见下题）；红黑树同理拆分，拆后节点数 ≤6 退化回链表（UNTREEIFY_THRESHOLD）。1.7 重算每个元素的 index，1.8 只看多参与运算的那一位 bit，一次遍历完成迁移。
+
+### Q25 扩容为两倍后旧元素的新位置如何确定 ⚠️（机制刚教，表述散架）
+
+**我的回答**：%2n-1，只用看高位就行，低位和以前一样。
+
+**点评/错误**：
+- 抓到了"只看一位"的关键直觉，但表述散架拿不到分：
+- **运算符错**：是 `(2n-1) & hash`（与运算）不是 `%`（取模）
+- **"看高位"不精确**：不是泛泛的高位，是**恰好多出来的那一位**——hash 中第 log₂(n) 位。就说"多参与运算的那一位 bit"
+- **"低位和以前一样"是错的**：去哪里由那一位 bit 决定，两个干净分支——该位=0 → 新 index=原位纹丝不动；该位=1 → 新 index=原位+oldCap
+- 源码实现是 `if ((e.hash & oldCap) == 0)` 走原位链表，否则走"原位+oldCap"链表——注意是 `& oldCap` 不是 `& (oldCap-1)`，就是单独掏那一位来测
+
+**参考答案**：
+> 扩容后定位只需多看 hash 的一个 bit：`(e.hash & oldCap)`，为 0 的元素留原位，为 1 的移到"原位+旧容量"。所以 1.8 扩容不用重算 index，拆链表时按这一位分成高低两条链，一次遍历完成迁移。
+
+### Q26 HashMap 存在哪些问题 ⚠️（不会，已教三类）
+
+**我的回答**：不太知道。
+
+**参考答案**（按场景三类背）：
+> ①并发问题（最致命）：非线程安全。1.7 头插法并发扩容形成环形链表，get 时 CPU 100% 死循环；1.8 尾插修了死循环但并发 put 仍丢数据、size 不准——并发场景换 ConcurrentHashMap。②性能问题：碰撞严重退化——1.8 红黑树兜底到 O(log n) 但 key 必须正确实现 hashCode/equals，否则全撞一个桶；扩容全量迁移，预估容量指定 initialCapacity 避免。③使用问题：**key 用可变对象**——put 后修改参与 hashCode 的字段，entry 失踪（桶位变了 get 不到也 remove 掉）——key 惯用 String/Integer 不可变类；装箱开销——高性能场景用原生类型 map。
+
+三类各挂一个场景（死循环/全碰撞/key 失踪），面试官听到"场景"就知道是理解不是背。
+
+### Q27 ConcurrentHashMap 如何保证线程安全 ⚠️
+
+**我的回答**：1.7 通过分段锁，1.8 用 CAS 和乐观锁。
+
+**点评/错误**：
+- ✅ 知道 1.7/1.8 两套方案没混着说；有关键词 CAS
+- **"CAS 和乐观锁"并列是错的**：CAS **就是**乐观锁思想的一种实现（Compare-And-Swap：先读、写入时比对旧值、失败重试）。并列说出口=术语不清
+- **缺 synchronized 半边**：1.8 完整方案是 **CAS + synchronized 配合**——桶为空 CAS 无锁写入（最常见路径零锁开销）；桶不空 synchronized 锁**桶头节点**，锁粒度从 1.7 的 Segment 细化到单桶
+- **锁粒度演变没说（主线剧情）**：1.7 Segment 锁一段（默认 16 段并发度固定 16）→ 1.8 锁单桶，并发度=桶数
+- **get 不加锁没提**：读路径完全无锁，Node 的 val/next 用 volatile 保证可见性
+- 加分：扩容多线程协助迁移（transfer 认领桶段）；size 用 baseCount + CounterCell[] 分散计数（LongAdder 思路）
+
+**参考答案**：
+> 两个版本两套方案。1.7：Segment 分段锁继承 ReentrantLock，默认 16 段，锁粒度是一段桶。1.8 抛弃分段锁改 CAS+synchronized，锁粒度细化到单桶头节点：桶空 CAS 无锁写入；桶不空 synchronized 锁头节点再操作链表/红黑树。读完全无锁，val/next 用 volatile 保证可见性。扩容支持多线程协助迁移；size 用 baseCount+CounterCell 分散计数避免单点竞争。一句话：锁粒度 Segment（1/16 并发度）→ 单桶头节点（并发度=桶数），读路径零锁。
+
+### Q28 之前使用过 Java 线程池吗 ✅
+
+**我的回答**：用过，ThreadPoolExecutor 通过分线程并发读写数据库；可以设置主线程和总线程数、队列长度、丢弃算法。
+
+**点评/错误**：
+- ✅ 有真实使用场景——真面试里场景永远第一位
+- ⚠️ 术语正名：核心**线程**数、最大**线程**数、工作队列、拒绝策略——"分线程""丢弃算法"是自造词，八股题术语错=信号差
+- ⚠️ "主线程数"对不上参数号：应是核心线程数（corePoolSize）和最大线程数（maximumPoolSize）——核心常驻，最大是队列满后才允许开到的上限（Q29 伏笔）
+- ⚠️ 场景要讲"为什么用线程池"才算真用过：线程数对齐数据库连接池大小（避免线程多过连接排队空转）、批量任务切分并行、复用线程避免频繁创建销毁
+
+**参考答案**：
+> 用过。场景是批量数据同步：ThreadPoolExecutor 起工作线程并发读写数据库，线程数和数据库连接池大小对齐避免线程多过连接排队空转。核心 8、最大 16、队列 200、拒绝策略 CallerRuns 让提交方反压——按负载配置四件套。
+
+### Q29 ThreadPoolExecutor 的核心参数 ⚠️
+
+**我的回答**：核心进程、最大进程、队列长度、拒绝策略。
+
+**点评/错误**：
+- **"进程"口误**：是核心**线程**数、最大**线程**数——口头面试说成"进程"是致命口误
+- **七参数只答四个**，漏：keepAliveTime（非核心线程空闲存活时间，配 unit 时间单位）、threadFactory（线程工厂，自定义线程名——排查问题时线程名是命脉）、（unit/handler 完整名单）
+- **干背名词不如串链路**：按任务提交后的流转顺序串七参数，顺带说出生效顺序——核心满→**先入队**→**队列满才开线程到 max**→还满才拒绝。这个顺序很多人说反（不是先把线程开满再入队）
+- workQueue 类型是加分追问：有界 ArrayBlockingQueue、无界 LinkedBlockingQueue（newFixedThreadPool 用的，OOM 元凶）、SynchronousQueue 零容量直接交接（newCachedThreadPool）、优先级队列
+
+**参考答案**：
+> 七个参数按流转串：corePoolSize 核心线程数、maximumPoolSize 最大线程数、keepAliveTime+unit 非核心线程空闲存活时间、workQueue 工作队列、threadFactory 线程工厂、handler 拒绝策略。流转逻辑：核心没满建核心线程；满了先入队；队列也满了才继续建到 max；到 max 还满触发拒绝策略。注意顺序——先入队再开线程到 max，不是先把线程开满再入队。
+
+### Q30 线程池的拒绝策略 ⚠️（只记得两个）
+
+**我的回答**：直接拒绝，拒绝老的。不会了。
+
+**点评/错误**：抓到了 Abort 和 DiscardOldest 的影子，另外两个和适用场景要补全。
+
+**参考答案**（四策略+场景表）：
+
+| 策略 | 行为 | 适用场景 |
+|---|---|---|
+| AbortPolicy（默认） | 抛 RejectedExecutionException，调用方能感知 | 上游有自己的重试/降级逻辑 |
+| CallerRunsPolicy | 谁提交谁执行 | **反压**：提交方被拖慢天然限流；不能丢任务 |
+| DiscardPolicy | 静默丢弃新任务 | 可容忍丢失的旁路：埋点、日志上报（无声失败慎用） |
+| DiscardOldestPolicy | 丢最老的腾位 | 只要最新状态：实时行情、位置更新 |
+
+- 加分 1：自定义 RejectedExecutionHandler——生产常见做法持久化到磁盘/MQ 补偿，或告警+降级
+- 加分 2：**不推荐 Executors 的原因**：newFixedThreadPool 是 LinkedBlockingQueue 无界队列（OOM），newCachedThreadPool 最大线程数 Integer.MAX_VALUE（线程爆炸 OOM）。阿里规约要求手动 new ThreadPoolExecutor，本质是把队列和线程数的有界性握在自己手里
+
+### Q31 什么情况下会发生 OOM ⚠️（泛指答分类题）
+
+**我的回答**：资源创建时没有好的拒绝策略，老资源没有及时回收。
+
+**点评/错误**：
+- 用模糊泛指回答需要分类枚举的题——OOM 有标准分类，面试官等的就是那张清单
+- "线程池如何避免 OOM"（Q32）答案已含在里面：有界三件套——有界队列+线程数按容量规划+拒绝策略 CallerRuns 反压或自定义落盘补偿，核心思想是**让过载显式暴露给上游，而不是无界堆积悄悄 OOM**
+
+**参考答案**（按区域背）：
+> ①堆 OOM（Java heap space）最常见——内存泄漏（静态集合只增不减、ThreadLocal 没 remove、监听器没注销）或堆太小或一次加载超大对象。②线程池特有：无界队列堆积→堆 OOM；线程数无界→unable to create native thread。③元空间 OOM（Metaspace）——动态生成类过多（CGLIB 代理、反射）且未卸载。④StackOverflowError（严格说是 Error 不是 OOM）——递归无出口调用过深。⑤直接内存 OOM（Direct buffer memory）——NIO 超出 -XX:MaxDirectMemorySize。排查：-XX:+HeapDumpOnOutOfMemoryError 拿 dump，MAT 分析支配树找泄漏点。
+
+### Q32 线程池如何避免 OOM（并入 Q31）
+
+### Q33 了解 ThreadLocal 吗 ⚠️⚠️（概念完全反向，本轮最严重）
+
+**我的回答**：所有线程会共享这个变量，存放数据所有线程都可以。
+
+**点评/错误**：
+- **核心语义说反**：ThreadLocal 的核心是**线程隔离**不是共享——共享变量的方案是 static volatile / AtomicInteger。这个反了，后面弱引用两题全接不住
+- 一句话锚定：**要共享用 volatile/Atomic，要隔离用 ThreadLocal**
+
+**参考答案**（四段背）：
+> ①是什么：ThreadLocal 提供线程隔离的变量副本——每个线程访问同一个 ThreadLocal 看到各自独立的值。典型场景：每请求存用户身份（userContext）、数据库连接、SimpleDateFormat（非线程安全用它避免加锁）。②内部结构：每个 **Thread 对象内部有一个 ThreadLocalMap**——map 挂在线程身上不在 ThreadLocal 身上；ThreadLocal 对象本身是 map 的 key。线程 A/B 访问同一个 ThreadLocal，实际各自去自己 Thread 里的 map 查各自的 entry，互不可见。③为什么这么设计（而不是 Map<Thread,V>）：锁粒度——如果 ThreadLocal 持有共享 map，多线程并发读写要加锁；map 挂各 Thread 内每线程只操作自己的 map，**天然无锁**；线程死时它的 map 随之回收。④使用规范：线程池场景线程复用值会残留——**用完必须 remove()**，通常 finally 里。不 remove 就是内存泄漏+数据串号（上个请求的用户身份被下个请求读到，安全事故）。
+
+### Q34 ThreadLocalMap 的 key 是弱引用还是强引用 ⚠️（四种引用概念缺失，已补）
+
+**我的回答**：弱引用和强引用是什么，我不知道。
+
+**点评/错误**：底层概念缺失，先补地基——Java 四种引用（由强到弱）：
+
+| 引用类型 | 回收时机 | 典型用途 |
+|---|---|---|
+| 强引用 `Object o = new Object()` | 强引用可达**永不回收**（哪怕 OOM） | 普通变量，默认 |
+| 软引用 SoftReference | **内存不足时**才回收（OOM 前缓冲） | 内存敏感缓存，图片缓存 |
+| 弱引用 WeakReference | **下次 GC 必回收** | WeakHashMap、ThreadLocalMap 的 key |
+| 虚引用 PhantomReference | 随时回收，仅跟踪回收时机（配 ReferenceQueue） | 堆外内存释放监听（DirectByteBuffer） |
+
+一句话记忆：强引用是"我抓住你 GC 就不能动你"；弱引用是"我不抱住你只碰一下，GC 来了你就走"。
+
+**参考答案**：弱引用。Entry 继承 `WeakReference<ThreadLocal<?>>`，key 是 ThreadLocal 对象的弱引用，value 是普通强引用。
+
+### Q35 为什么要使用弱引用 ⚠️（推理对了第一步）
+
+**我的回答**：如果 key 是强引用，则一直可达无法回收（没想明白）。
+
+**点评/错误**：
+- 推出了第一步"强引用则一直可达无法回收"，方向对，差在没画引用链：
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dart"><span class="hljs-title class_">Thread</span> ──&gt; <span class="hljs-title class_">ThreadLocalMap</span> ──&gt; <span class="hljs-title class_">Entry</span> ──┬── key   ══弱引用══&gt; <span class="hljs-title class_">ThreadLocal</span> 对象 &lt;══强引用══ 业务代码（<span class="hljs-keyword">static</span> 等）<br>                                      └── value ──强引用──&gt; 值对象<br></code></pre></td></tr></table></figure>
+
+- 推演：业务代码不再持有 ThreadLocal（static 置 null）→ 代码侧强引用断。假如 key 是强引用，Thread→Map→Entry→key 链仍可达，线程池线程常年不死 → ThreadLocal 对象永远无法回收。弱引用下强引用一断，下次 GC 收走，key 置 null
+- **最后一环（面试官真正的追问点）**：value 是强引用，Thread→Map→Entry→value 链还活着，value 依然泄漏（脏 entry）。JDK 补救是 get/set 时顺手清理 key 为 null 的 entry（expungeStaleEntry），但是被动的——**最终兜底还是 finally 手动 remove()**，把整个 Entry 摘掉 value 强链才真断
+
+**参考答案**：
+> 为了防 ThreadLocal 对象自身的内存泄漏。ThreadLocal 的强引用在业务代码里，Entry 里对它是弱引用。业务代码不再持有它时，如果 key 是强引用，Thread→Map→Entry→key 这条链让 ThreadLocal 永远可达，线程池里线程不死就永远回收不掉；改成弱引用后，代码侧强引用一断，GC 下次就收走 ThreadLocal，key 置 null 成脏 entry。但 value 仍是强引用链还会泄漏，所以 JDK 在 get/set 时顺手清理脏 entry，而最终兜底是使用方在 finally 里 remove——弱引用解决 key 侧问题，remove 解决 value 侧问题，两层互补。
+
+### Java 段小结
+
+1.7/1.8 演进线有印象，三个重灾区：**精确数字**（树化 8/容量 64）、**术语精度**（线程≠进程、CAS=乐观锁实现）、**ThreadLocal 隔离语义**。重点背：树化条件、七参数流转顺序、四种拒绝策略、ThreadLocal 四段、四种引用表。
+
+---
+
+## 待续（下轮从这里开始）
+
+- [ ] Q36 大模型高度普及还需要扎实掌握基础吗（坑：不能答"需要"+喊口号；结构：承认变化→什么变了什么没变→分层判断哪类知识贬值哪类更值钱→自己的经历佐证）
+- [ ] Q37 AI 时代程序员最应该具备哪些能力
+- [ ] LC 1081（最小去重子序列，单调栈）——重点纠正"栈当队列用"的 LIFO 直觉
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1/" class="print-no-link">#八股</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）</div>
+      <div>https://guangzhao03.github.io/2026/09/10/2026-09-10-八股-2026910腾讯AI应用开发一面模拟面试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>光昭</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年9月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/09/17/2026-09-17-harness-03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime/" title="03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/09/09/2026-09-09-%E5%85%AB%E8%82%A1-202699%E8%85%BE%E8%AE%AFCSIG%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" title="腾讯 CSIG 一面模拟（Agent 平台 / RAG 方向）">
+                        <span class="hidden-mobile">腾讯 CSIG 一面模拟（Agent 平台 / RAG 方向）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

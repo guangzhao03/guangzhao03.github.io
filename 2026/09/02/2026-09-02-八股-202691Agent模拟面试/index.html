@@ -1,0 +1,1009 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="光昭">
+  <meta name="keywords" content="Java,Python,算法,八股,Agent">
+  
+    <meta name="description" content="# Agent 日常实习模拟面试复盘(2026-09-01)  &gt; 覆盖范围:Agent 基础 &#x2F; Tool Use &#x2F; Memory &#x2F; Multi-Agent &#x2F; 工程与评估 &#x2F; 开放设计 &gt; 个人强弱项:机制理解强(Tool Use、Memory),短板在 Multi-Agent 模式、评估方法、术语准确性  ---  ## 一、Agent 基础  ### Q1 什么是 Agent?与普通">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent 日常实习模拟面试复盘(2026-09-01)">
+<meta property="og:url" content="https://guangzhao03.github.io/2026/09/02/2026-09-02-%E5%85%AB%E8%82%A1-202691Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/index.html">
+<meta property="og:site_name" content="光昭">
+<meta property="og:description" content="# Agent 日常实习模拟面试复盘(2026-09-01)  &gt; 覆盖范围:Agent 基础 &#x2F; Tool Use &#x2F; Memory &#x2F; Multi-Agent &#x2F; 工程与评估 &#x2F; 开放设计 &gt; 个人强弱项:机制理解强(Tool Use、Memory),短板在 Multi-Agent 模式、评估方法、术语准确性  ---  ## 一、Agent 基础  ### Q1 什么是 Agent?与普通">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-02T01:09:58.000Z">
+<meta property="article:modified_time" content="2026-09-02T01:09:58.000Z">
+<meta property="article:author" content="光昭">
+<meta property="article:tag" content="八股">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Agent 日常实习模拟面试复盘(2026-09-01) - 光昭</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>光昭</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Agent 日常实习模拟面试复盘(2026-09-01)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-09-02 09:09" pubdate>
+          2026年9月2日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Agent 日常实习模拟面试复盘(2026-09-01)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                
+# Agent 日常实习模拟面试复盘(2026-09-01)
+
+> 覆盖范围:Agent 基础 / Tool Use / Memory / Multi-Agent / 工程与评估 / 开放设计
+> 个人强弱项:机制理解强(Tool Use、Memory),短板在 Multi-Agent 模式、评估方法、术语准确性
+
+---
+
+## 一、Agent 基础
+
+### Q1 什么是 Agent?与普通 LLM 调用的区别
+- **本质区别:控制流由谁决定。** 普通 chain = 开发者写死流程;Agent = 模型根据观察动态决定下一步
+- 工具/记忆只是能力组件,不是本质
+- 一句话:**Agent = 模型驱动的控制流**(LLM + harness)
+
+### Q1.2 什么情况下不用 Agent,用 workflow
+- 判断标准:流程能否预先规则化
+- 用 workflow:结构化抽取(发票/简历)、高风险合规场景(可审计可复现)、批量成本敏感任务、意图路由(分支可枚举)
+- 用 Agent:步骤数不可预知(修 bug、调研)、开放式任务
+- 原则(Anthropic):**用能解决问题的最简单方案**
+
+### Q2 Agent Loop 基本流程
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    response = llm(messages)              <span class="hljs-comment"># 1. 请求模型</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> response.tool_calls:           <span class="hljs-comment"># 2. 无工具调用 → 完成</span><br>        <span class="hljs-keyword">return</span> response.text<br>    <span class="hljs-keyword">for</span> call <span class="hljs-keyword">in</span> response.tool_calls:      <span class="hljs-comment"># 3. 执行工具</span><br>        result = execute(call)<br>    messages.append(result)               <span class="hljs-comment"># 4. 结果回填(最易漏)</span><br></code></pre></td></tr></table></figure>
+- 四要素:消息历史、模型调用、工具执行器、终止条件
+- 术语纠正:不是"死锁",是**无限循环**(重试上瘾/来回打转)→ 需要 max_steps 硬上限
+- ⚠️ 易错点:工具结果必须回填 messages,否则模型看不到结果
+
+### Q2.2 max_steps 用尽还没完成,怎么兜底 ⭐(答得好,记这个思路)
+- **先归因,再对症**:
+  1. 循环/注意力漂移(忘了任务)→ 重注入任务提示纠偏后继续
+  2. 任务本身大 → 压缩/总结上下文保留进度续跑
+- 全程保留中间产物;多次续跑失败才升级报错/转人工
+- 归因可自动化:让模型自我诊断(打转 or 任务大)
+
+### Q3 ReAct vs CoT
+- **CoT = 闭卷考试**:只靠参数知识推理,接触不到真实信息,错了没法纠正、一路滚到底(幻觉来源)
+- **ReAct = 开卷 + 有反馈**:Thought → Action → **Observation(真实结果)** → 修正
+- 关键词:**grounding(观察锚定推理)**、计划可动态调整
+- 记忆:CoT 想好再做错到底;ReAct 边做边看边修正
+- ⚠️ 我的错误归因:"CoT 噪声多"——不对,CoT 的问题是接触不到外部信息、无反馈纠正
+
+### Q4 Plan-and-Execute vs ReAct
+- Plan-and-Execute:先全局规划再逐步执行 → 适合**依赖关系清晰的大任务**(写报告)
+- ReAct:走一步看一步 → 适合**探索型任务**(调试 bug,下一步取决于观察)
+- Trade-off:计划基于旧信息,执行中发现错了**重规划代价高**;ReAct 灵活但短视
+- 生产常用**混合**:粗规划 + ReAct 执行 + 偏离时重规划
+
+---
+
+## 二、Tool Use / Function Calling
+
+### Q5 Function Calling 底层原理 ⭐(答得好)
+- 工具定义(name + description + 参数 schema)随请求发给模型 = 只是注入的文本
+- **模型从不执行工具,只输出"我想调用 X + 参数 Y"的结构化 JSON**
+- 执行、安全、重试全在 harness 侧;结果回填 messages 再发模型
+- 本质:**模型是结构化输出生成器**,只点菜,执行权在外部
+
+### Q5.2 工具太多(上百个)怎么办
+- 问题:①description 撑爆 token ②相似工具选择困难
+- 解法:
+  - **Tool Retrieval(工具检索)**:description 做 embedding,按请求动态召回 top-K 注入(MCP、Claude Code 的 ToolSearch 都是这个)
+  - description 工程化:写清何时用/不用、与相似工具的区别
+  - 参数 schema 简洁:参数少、默认值、嵌套浅
+
+### Q7 工具调用失败怎么处理
+- **失败也是 Observation**:try-catch 住,报错作为 Observation 塞回 messages,模型自己调整
+- 报错要**可行动(actionable)**:`File not found: /data/users.csv. Available files: [a.csv, b.csv]`(原因+建议+线索),不能只给 `Error`
+- **重试上限**:同一工具连续失败超限 → 强制干预(注入"停止重试"或终止),防模型重试上瘾
+- 错误分类:harness 先过滤——可重试(429/超时)指数退避自动重试;不可重试(参数错)才回传模型
+
+### Q8 工具 description 设计
+- 该有:①做什么 ②何时用/不用(边界声明,最有效)③与相似工具的区别 ④参数格式约束示例 ⑤返回什么
+- 避免:空泛描述、实现细节泄漏(模型不关心)、参数堆砌
+- 加分:description 也是 prompt,**可按误调用案例迭代优化**
+
+---
+
+## 三、Memory 与上下文
+
+### Q9 短期记忆 vs 长期记忆
+- 短期:messages 列表,会话内 → 本质是**上下文管理**(压缩/截断/外部化)
+- 长期:跨会话,落盘为 Markdown 文件(如 Claude Code memory)/向量库 → 本质是**检索系统**(按相关性召回注入,不全量塞)
+- 统一约束:**窗口有限,什么值得占 token**
+
+### Q10 上下文压缩策略 ⭐(答得好,逐级降级)
+1. **外部化**:中间产物落盘,留占位符按需读取(信息不丢)
+2. **裁剪中段保头尾**:头=任务定义/系统指令,尾=最新进展
+3. 工具结果 → 占位符
+4. 硬裁剪按 token(最后手段)
+- **绝不能丢**:系统指令+任务目标、关键决策及理由、用户约束、当前进度
+- 摘要是**有损压缩**,高级做法:分层摘要 + 原文可回溯
+- **水位线触发**(如 80%),不要爆了才压
+
+### Q11 多轮长任务遗忘关键信息,根上解决
+- 本质:**遗忘不是记忆问题,是信息架构问题**——信息被挤出上下文了
+- 三层方案:
+  1. **常驻层**:关键约束写进 system prompt(每轮可见)——**常驻优于定时重注入**
+  2. **结构化状态层**:显式状态文档/scratchpad,压缩时必保
+  3. **外部化层**:CLAUDE.md / memory 文件
+- ⚠️ "每 N 轮重注入"有隐患:中间窗口照样跑偏,N 不好定
+
+---
+
+## 四、Multi-Agent(短板,重点补)
+
+### Q12 什么时候用多 Agent
+- **本质价值:上下文隔离,不只是并行提速**(⚠️ 我只答了效率,漏了核心)
+- 单 Agent 杂活多 → 上下文污染、注意力稀释;多 Agent 子上下文独立干净,只回传结论
+- 优势:①上下文隔离 ②并行 ③故障隔离 ④子 Agent 可用不同模型/prompt
+- 劣势:①通信有损(子看不到全局)②token 翻倍 ③协调复杂 ④调试难
+- 判断标准:子任务真正独立(DAG 无边)、主上下文装不下才值得;强耦合任务拆开反而更慢更贵
+
+### Q13 多 Agent 通信与协调(没答上,背下来)
+- **主流模式:Orchestrator-Workers(编排者-工作者)**:
+  - 主 Agent 拆任务 → 每个 Worker 独立上下文执行 → 只回结果摘要 → 编排者决定继续派活/收工
+  - **Worker 互不通信,全部经编排者中转**(中心化,不是总线)
+  - Claude Code subagent、Anthropic 多 Agent 研究系统都是这个
+- 次要模式:Agent-to-Agent 流水线(生成→评审→修复),链长误差累积
+- 通信本质:**结构化文本交换,没有魔法**
+- 协调难点:任务粒度、结果格式约定、冲突仲裁(同一文件唯一 owner)
+
+---
+
+## 五、工程与评估(短板,重点补)
+
+### Q14 Agent 死循环/跑偏/不稳定,怎么调试
+- 第一步:**可观测性先行**(LangSmith/Langfuse trace:每轮 messages、工具调用、token、耗时)
+- 第二步:**按症状归因**(这张表要背):
+
+| 症状 | 根因 | 治法 |
+|---|---|---|
+| 死循环 | 重试上瘾;结果没回填 | 失败计数干预;检查回填;description 写"何时停" |
+| 跑偏/忘任务 | 目标被挤出上下文 | 目标常驻 system prompt;中途重注入 |
+| 输出不稳定 | 温度/prompt 模糊/无 schema 约束 | 低温;few-shot;structured output |
+| 工具选错 | description 模糊重叠 | 边界声明;消歧义 |
+
+- 第三步:坏 case 固化成**回归测试集**,防修一个坏两个
+
+### Q15 怎么评估 Agent ⚠️ 必考,优先背
+- **三维指标**:
+  1. **结果**:成功率(N 个测试任务达标几个);判定:人工 / LLM-as-judge(按 rubric 打分) / 程序化校验
+  2. **过程(Trajectory)**:路径效率(3 步能完成却绕 15 步)、工具选择对不对、有无多余危险操作
+  3. **成本**:平均轮数、token、延迟、单任务成本
+- **方法**:建评估集(几十~几百个代表性任务,版本化)→ LLM-as-judge 打分(judge 要抽查校准)→ golden set 人工抽检防漂移
+- 一句话:**结果、过程、成本三维;评估集 + LLM-as-judge + 人工校准**
+
+### Q16 延迟和成本优化
+- 开场白先说"**先测量再优化**"(trace 看 token 花在哪),再给手段:
+  1. **模型分层路由**:简单步骤(工具调用/格式化)用小模型,关键决策用强模型
+  2. **Prompt Caching**:系统提示/工具定义每轮重复发送,缓存降 90%,Agent 场景命中率天然高(必答点)
+  3. **减少轮数**:单轮并行多工具调用;高频操作封装复合工具/skill;early exit
+  4. **上下文瘦身**:压缩/落盘/占位符
+  5. 流式输出(体感)
+
+---
+
+## 六、开放设计题
+
+### Q17 订机票+酒店 Agent ⭐(答得好)
+- 我的答案(正确):Agent Loop 主干 + 查询(list)/下单(commit)工具分离 + 支付前人工确认(human-in-the-loop)
+- 补全架构:
+  - **状态管理**:多目标任务有依赖(机票定了才定酒店),显式任务状态/plan,不靠上下文记
+  - **约束继承**:时间/预算/偏好常驻 system prompt
+  - **两段式下单**:`create_order`(锁价)→ `confirm_and_pay`(用户确认后)——人工确认做成流程而非弹窗
+  - **失败路径**:报错可行动回传改备选;超时未支付要能**取消/回滚**,不留僵尸订单
+
+### Q18 从零搭 Coding Agent
+- 我答到的:Agent Loop、bash 工具、上下文压缩、memory、subagent、task/todo 系统(= Claude Code 真实架构)
+- 补的:
+  1. **权限与安全层**(最大难点:能改真实文件跑真实命令)——写文件可自动,`rm -rf` 必拦
+  2. **专用工具 > 万能 bash**:Read/Edit/Grep 单独工具 schema 和报错更可控,省 token
+  3. **计划机制**:plan mode,用户确认再动手
+  4. **可验证闭环**:改完 → 跑测试 → 看结果 → 再修(结果可自动验证是 Coding Agent 可靠的原因)
+
+---
+
+## 📌 优先补的三件事
+1. **背 Q15 评估框架**(结果/过程/成本三维 + 评估集/judge/人工校准)——必考
+2. 读 Anthropic 两篇博客(补四、五部分):
+   - *Building effective agents*
+   - *How we built our multi-agent research system*
+3. 过一遍 Q14 症状归因表
+
+## 📌 高频一句话弹药
+- Agent = 模型驱动的控制流
+- 模型只产 JSON,执行在 harness
+- 遗忘是信息架构问题:常驻优于定时注入
+- 压缩 = 信息分级:落盘可回溯 → 结构性必保 → 其余摘要裁剪
+- 多 Agent 的本质价值是上下文隔离
+- 评估三维:结果、过程、成本
+- 先测量再优化
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1/" class="print-no-link">#八股</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Agent 日常实习模拟面试复盘(2026-09-01)</div>
+      <div>https://guangzhao03.github.io/2026/09/02/2026-09-02-八股-202691Agent模拟面试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>光昭</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年9月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/09/02/2026-09-02-%E5%85%AB%E8%82%A1-202692%E7%99%BE%E5%BA%A6Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" title="2026-09-02 百度 Agent 日常实习 模拟面试复盘">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2026-09-02 百度 Agent 日常实习 模拟面试复盘</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/07/09/2026-07-09-misc-%E6%8E%A2%E7%A7%98-Claude-Code%EF%BC%8C%E6%90%9E%E6%87%82-Agent-Harness%EF%BD%9C%E5%AF%B9%E8%B0%88%E6%9D%A5%E6%96%B0%E7%92%90%E3%80%90%E8%A7%86%E9%A2%91%E6%92%AD%E5%AE%A2%E3%80%91/" title="探秘 Claude Code，搞懂 Agent Harness｜对谈来新璐【视频播客】">
+                        <span class="hidden-mobile">探秘 Claude Code，搞懂 Agent Harness｜对谈来新璐【视频播客】</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

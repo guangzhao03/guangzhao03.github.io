@@ -1,0 +1,1280 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="光昭">
+  <meta name="keywords" content="Java,Python,算法,八股,Agent">
+  
+    <meta name="description" content="# day4  大模型应用开发  **大模型应用**是基于大模型的推理、分析、生成能力，**结合传统编程**能力，开发出的各种应用。  传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。  目前大模型应用开发主要分为四种：  1、纯prompt回答  2、agent+function calling  3、fine-tuning  4、Rag  必须写在properties里面  #">
+<meta property="og:type" content="article">
+<meta property="og:title" content="day4">
+<meta property="og:url" content="https://guangzhao03.github.io/2026/04/21/2026-04-21-Java-AIGC-day4/index.html">
+<meta property="og:site_name" content="光昭">
+<meta property="og:description" content="# day4  大模型应用开发  **大模型应用**是基于大模型的推理、分析、生成能力，**结合传统编程**能力，开发出的各种应用。  传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。  目前大模型应用开发主要分为四种：  1、纯prompt回答  2、agent+function calling  3、fine-tuning  4、Rag  必须写在properties里面  #">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-04-21T01:46:51.000Z">
+<meta property="article:modified_time" content="2026-04-21T01:46:51.000Z">
+<meta property="article:author" content="光昭">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="AIGC">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>day4 - 光昭</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>光昭</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="day4"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-04-21 09:46" pubdate>
+          2026年4月21日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          62 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">day4</h1>
+            
+            
+              <div class="markdown-body">
+                
+                
+# day4
+
+大模型应用开发
+
+**大模型应用**是基于大模型的推理、分析、生成能力，**结合传统编程**能力，开发出的各种应用。
+
+传统java：基于明确规则的逻辑设计，确定性执行，可预测结果。
+
+目前大模型应用开发主要分为四种：
+
+1、纯prompt回答
+
+2、agent+function calling
+
+3、fine-tuning
+
+4、Rag
+
+<spring-ai.version>必须写在properties里面
+
+## SpringAI入门
+
+SpringAI完全适配了SpringBoot的自动装配功能，而且给不同的大模型提供了不同的starter
+
+我们可以根据自己选择的平台来选择引入不同的依赖。这里我们先以**Ollama**为例。
+
+首先，在项目pom.xml中添加spring-ai的版本信息：
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">spring-ai.version</span>&gt;</span>1.0.0-M6<span class="hljs-tag">&lt;/<span class="hljs-name">spring-ai.version</span>&gt;</span><br>必须在<span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>里面<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br>然后添加依赖管理<br><span class="hljs-tag">&lt;<span class="hljs-name">dependencyManagement</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.ai<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-ai-bom<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring-ai.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencyManagement</span>&gt;</span><br>最后，引入spring-ai-ollama的依赖：<br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.ai<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>   <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-ai-ollama-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+引入依赖之后要配置模型信息，因为我们一般都是yml文件，所以要把.properties改成yml再修改
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">application:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">ai-demo</span><br>  <span class="hljs-attr">ai:</span><br>    <span class="hljs-attr">ollama:</span><br>      <span class="hljs-attr">base-url:</span> <span class="hljs-string">http://localhost:11434</span> <span class="hljs-comment"># ollama服务地址， 这就是默认值</span><br>      <span class="hljs-attr">chat:</span><br>        <span class="hljs-attr">model:</span> <span class="hljs-string">deepseek-r1:7b</span> <span class="hljs-comment"># 模型名称</span><br>        <span class="hljs-attr">options:</span><br>          <span class="hljs-attr">temperature:</span> <span class="hljs-number">0.8</span> <span class="hljs-comment"># 模型温度，影响模型生成结果的随机性，越小越稳定</span><br></code></pre></td></tr></table></figure>
+
+### ChatClient
+
+ChatClient中封装了与AI大模型对话的各种API，同时支持同步式或响应式交互。
+
+不过，在使用之前，首先我们需要声明一个ChatClient。
+
+在com.itheima.ai.config包下新建一个CommonConfiguration类：
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.chatrobot.config;<br><br><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.ChatClient;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.model.ChatModel; <span class="hljs-comment">// 引入通用的 ChatModel 接口</span><br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CommonConfiguration</span> &#123;<br><br>    <span class="hljs-comment">// 推荐做法：直接注入通用的 ChatModel 接口。</span><br>    <span class="hljs-comment">// Spring AI 会自动将你 yml 中配置的 deepseek (OpenAI 协议) 模型实现类注入进来</span><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">ChatClient</span> <span class="hljs-title function_">chatClient</span><span class="hljs-params">(ChatModel chatModel)</span> &#123;<br>        <span class="hljs-keyword">return</span> ChatClient.builder(chatModel)<br>                <span class="hljs-comment">// 使用注入的 chatModel 创建 builder</span><br>                <span class="hljs-comment">//.defaultAdvisors(new SimpleLoggerAdvisor()) // 可选：你可以随时加回日志打印功能</span><br>                .build(); <span class="hljs-comment">// 构建 ChatClient 实例</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+.bulider是建造者模式，这里我们回忆一下建造者模式
+
+建造者模式是一种**创建型设计模式**。它的核心思想是：**将一个复杂对象的构建过程与它的表示分离，使得同样的构建过程可以创建不同的表示。**
+
+通俗来说，如果你要买一个汉堡套餐，你不是直接对服务员说“给我一个包含两片面包、一块牛肉、一片生菜、一点沙拉酱的汉堡，外加一杯中杯可乐和一份小薯条”，而是通过一个“套餐搭配器（Builder）”，一步步地选择：
+
+1. 选汉堡肉饼 -> 2. 选配菜 -> 3. 选饮料 -> 4. 选小食 -> 5. 最后点击“完成订单（Build）”。
+
+定义好ChatClient接着我们要进行controller实验
+
+#### 同步调用
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.chatrobot.controller;<br><br><span class="hljs-keyword">import</span> lombok.RequiredArgsConstructor;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.ChatClient;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestParam;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/ai&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ChatController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ChatClient chatClient;<br>    <span class="hljs-comment">// 请求方式和路径不要改动，将来要与前端联调</span><br>    <span class="hljs-meta">@RequestMapping(&quot;/chat&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">String</span> <span class="hljs-title function_">chat</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(defaultValue = &quot;讲个笑话&quot;)</span> String prompt)</span> &#123;<br>        <span class="hljs-keyword">return</span> chatClient<br>                .prompt(prompt)<br>                <span class="hljs-comment">// 传入user提示词</span><br>                .call()<br>                <span class="hljs-comment">// 同步请求，会等待AI全部输出完才返回结果</span><br>                .content();<br>                <span class="hljs-comment">//返回响应内容</span><br>        <span class="hljs-comment">//注意，基于call()方法的调用属于同步调用，需要所有响应结果全部返回后才能返回给前端。</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+#### 流式调用
+
+同步调用需要等待很长时间页面才能看到结果，用户体验不好。为了解决这个问题，我们可以改进调用方式为流式调用。
+
+在`SpringAI`中使用了`WebFlux`技术实现流式调用。
+
+修改刚才`ChatController`中的chat方法：
+
+### System设定
+
+可以发现，当我们询问AI你是谁的时候，它回答自己是DeepSeek-R1，这是大模型底层的设定。如果我们希望AI按照新的设定工作，就需要给它设置System背景信息。
+
+在SpringAI中，设置System信息非常方便，不需要在每次发送时封装到Message，而是创建ChatClient时指定即可。
+
+我们修改`CommonConfiguration`中的代码，给`ChatClient`设定默认的System信息：
+
+.defaultSystem（）方法
+
+### 日志功能
+
+默认情况下，应用于AI的交互时不记录日志的，我们无法得知SpringAI组织的提示词到底长什么样，有没有问题。这样不方便我们调试。
+
+#### Advisor
+
+SpringAI基于AOP机制实现与大模型对话过程的增强、拦截、修改等功能。所有的增强通知都需要实现**Advisor**接口。
+
+Spring提供了一些Advisor的默认实现，来实现一些基本的增强功能：
+
+- `SimpleLoggerAdvisor`：日志记录的Advisor
+- `MessageChatMemoryAdvisor`：会话记忆的Advisor
+- `QuestionAnswerAdvisor`：实现RAG的Advisor
+
+当然，我们也可以自定义Advisor，具体可以参考https://docs.spring.io/spring-ai/reference/1.0/api/advisors.html#_implementing_an_advisor
+
+.defaultAdvisors(new SimpleLoggerAdvisor()) *// 添加默认的Advisor,记录日志*
+
+### 对接前端
+
+在浏览器通过地址访问，非常麻烦，也不够优雅。如果能有一个优美的前端页面就好了。
+
+别着急，我提前给大家准备了一个前端页面。而且有两种不同的运行方式。
+
+npm运行在资料中给大家提供了前端的源代码：
+
+你只需要解压缩（最好放到非中文目录），然后进入解压后的目录，依次执行命令即可运行：
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 安装依赖</span><br>npm install<br><span class="hljs-comment"># 运行程序</span><br>npm run dev<br></code></pre></td></tr></table></figure>
+
+启动后，访问 http://localhost:5173即可看到页面：
+
+Nginx运行
+
+如果你不关心源码，我也给大家提供了构建好的Nginx程序：
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Bash"><span class="hljs-comment"># 启动Nginx</span><br>start nginx.exe<br><span class="hljs-comment"># 停止</span><br>nginx.exe -s stop<br></code></pre></td></tr></table></figure>
+
+#### 解决CORS问题
+
+前后端在不同域名，存在跨域问题，因此我们需要在服务端解决cors问题。在`com.itheima.ai.config`包中添加一个`MvcConfiguration`类：
+
+### 回话记忆功能
+
+现在，我们的AI聊天机器人是没有记忆功能的，上一次聊天的内容，下一次就忘掉了。
+
+我们之前说过，让AI有会话记忆的方式就是把每一次历史对话内容拼接到Prompt中，一起发送过去。是不是还挺麻烦的。
+
+别担心，好消息是，我们并不需要自己来拼接，SpringAI自带了会话记忆功能，可以帮我们把历史会话保存下来，下一次请求AI时会自动拼接，非常方便。
+
+#### ChatMemory
+
+会话记忆功能同样是基于AOP实现，Spring提供了一个`MessageChatMemoryAdvisor`的通知，我们可以像之前添加日志通知一样添加到`ChatClient`即可。
+
+不过，要注意的是，`MessageChatMemoryAdvisor`需要指定一个`ChatMemory`实例，也就是会话历史保存的方式。
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ChatMemory</span> &#123;<br><br>    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> consider a non-blocking interface for streaming usages</span><br><br>    <span class="hljs-keyword">default</span> <span class="hljs-type">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(String conversationId, Message message)</span> &#123;<br>       <span class="hljs-built_in">this</span>.add(conversationId, List.of(message));<br>    &#125;<br><br>    <span class="hljs-comment">// 添加会话信息到指定conversationId的会话历史中</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(String conversationId, List&lt;Message&gt; messages)</span>;<br><br>    <span class="hljs-comment">// 根据conversationId查询历史会话</span><br>    <span class="hljs-type">List</span>&lt;Message&gt; <span class="hljs-title function_">get</span><span class="hljs-params">(String conversationId, <span class="hljs-type">int</span> lastN)</span>;<br><br>    <span class="hljs-comment">// 清除指定conversationId的会话历史</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">clear</span><span class="hljs-params">(String conversationId)</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+目前，在SpringAI中有两个ChatMemory的实现：
+
+- `InMemoryChatMemory`：会话历史保存在内存中
+- `CassandraChatMemory`：会话保存在Cassandra数据库中（需要引入额外依赖，并且绑定了向量数据库，不够灵活）
+
+我们暂时选择用`InMemoryChatMemory`来实现。
+
+#### 添加会话记忆Advisor
+
+在`CommonConfiguration`中注册`ChatMemory`对象：
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">ChatMemory</span> <span class="hljs-title function_">chatMemory</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">InMemoryChatMemory</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+然后添加`MessageChatMemoryAdvisor`到`ChatClient`：
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">ChatClient</span> <span class="hljs-title function_">chatClient</span><span class="hljs-params">(OllamaChatModel model, ChatMemory chatMemory)</span> &#123;<br>    <span class="hljs-keyword">return</span> ChatClient.builder(model) <span class="hljs-comment">// 创建ChatClient工厂实例</span><br>            .defaultSystem(<span class="hljs-string">&quot;您是一家名为“黑马程序员”的职业教育公司的客户聊天助手，你的名字叫小黑。请以友好、乐于助人和愉快的方式解答学生的各种问题。&quot;</span>)<br>            .defaultAdvisors(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleLoggerAdvisor</span>()) <span class="hljs-comment">// 添加默认的Advisor,记录日志</span><br>            .defaultAdvisors(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MessageChatMemoryAdvisor</span>(chatMemory))<br>            .build(); <span class="hljs-comment">// 构建ChatClient实例</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+OK，现在聊天会话已经有记忆功能了，不过**现在的会话记忆还是不完善的，我们还有继续补充**。
+
+### 会话历史
+
+会话历史与会话记忆是两个不同的事情：
+
+**会话记忆**：是指让大模型记住每一轮对话的内容，不至于前一句刚问完，下一句就忘了。
+
+**会话历史**：是指要记录总共有多少不同的对话
+
+在ChatMemory中，会记录一个会话中的所有消息，记录方式是以`conversationId`为key，以`List<Message>`为value，根据这些历史消息，大模型就能继续回答问题，这就是所谓的会话记忆。
+
+比如上图中，有3个不同的会话历史，就会有3个`conversationId`，管理会话历史，就是记住这些`conversationId`，当需要的时候查询出`conversationId`的列表。
+
+注意，在接下来业务中，我们以`chatId`来代指`conversationId`.
+
+#### 管理会话id
+
+由于会话记忆是以`conversationId`来管理的，也就是**会话id（**以后简称为chatId**）。**将来要查询会话历史，其实就是查询历史中有哪些chatId.
+
+因此，为了实现查询会话历史记录，我们必须记录所有的chatId，我们需要定义一个管理会话历史的标准接口。
+
+我们定义一个`com.itheima.ai.repository`包，然后新建一个`ChatHistoryRepository`接口：
+
+#### 保存会话ID
+
+接下来，修改ChatController中的chat方法，做到3点：
+
+- 添加一个请求参数：chatId，每次前端请求AI时都需要传递chatId
+- 每次处理请求时，将chatId存储到ChatRepository
+- 每次发请求到AI大模型时，都传递自定义的chatId
+
+  .advisors(a -> a.param(*CHAT_MEMORY_CONVERSATION_ID_KEY*, chatId))
+
+这里传递chatId给Advisor的方式是通过AdvisorContext，也就是以key-value形式存入上下文：
+
+#### 查询会话历史
+
+我们定义一个新的Controller，专门实现会话历史的查询。包含两个接口：
+
+- 根据业务类型查询会话历史列表（我们将来有3个不同业务，需要分别记录历史。大家的业务可能是按userId记录，根据UserId查询）
+- 根据chatId查询指定会话的历史消息
+
+### 持久化记忆
+
+#### mysql持久化
+
+之前我们是将对话记忆存储在了`InMemoryChatMemory`，本质是存在了内存里，一旦重启服务，上下文全部消失，所以无法使用，真正想要使用，肯定还是需要持久化
+
+这里我们选择mysql持久化，其他redis等方式，本质上是一样的，我们可以举一反三
+
+准备mysql环境就是经典的：yml配置、mybatisplus依赖、sql脚本、实体类、mapper接口
+
+想要持久化到数据库，那就要自己定义ChatMemory
+
+我们新建一个`MysqlChatMemory`，并实现ChatMemory接口
+
+所有记忆都要基于chatmemory去实现，实现类+mapper工具，完成mysql的读写
+
+### 持久化对话历史
+
+也是利用mysql然后把原来存在栈区
+
+## Function Calling（智能客服）
+
+由于AI擅长的是非结构化数据的分析，如果需求中包含严格的逻辑校验或需要读写数据库，纯Prompt模式就难以实现了。
+
+#### 定义Function
+
+接下来，我们来定义AI要用到的`Function`，在`SpringAI`中叫做`Tool`
+
+我们需要定义三个`Function`：
+
+- 根据条件筛选和查询课程
+- 查询校区列表
+- 新增试听预约单
+
+学生在与智能客服对话时，会有一定的偏好，比如兴趣不同、对价格敏感、对学习时长敏感、学历等。如果把这些条件用SQL来表示，是这样的：
+
+- edu：例如学生学历是高中，则查询时要满足 edu <= 2
+- type：学生的学习兴趣，要跟类型精确匹配，type = '自媒体'
+- price：学生对价格敏感，则查询时需要按照价格升序排列：order by price asc
+- duration: 学生对学习时长敏感，则查询时要按照时长升序：order by duration asc 
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.ai.entity.query;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> org.springframework.ai.tool.annotation.ToolParam;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CourseQuery</span> &#123;<br>    <span class="hljs-meta">@ToolParam(required = false, description = &quot;课程类型：编程、设计、自媒体、其它&quot;)</span><br>    <span class="hljs-keyword">private</span> String type;<br>    <span class="hljs-meta">@ToolParam(required = false, description = &quot;学历要求：0-无、1-初中、2-高中、3-大专、4-本科及本科以上&quot;)</span><br>    <span class="hljs-keyword">private</span> Integer edu;<br>    <span class="hljs-meta">@ToolParam(required = false, description = &quot;排序方式&quot;)</span><br>    <span class="hljs-keyword">private</span> List&lt;Sort&gt; sorts;<br><br>    <span class="hljs-meta">@Data</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Sort</span> &#123;<br>        <span class="hljs-meta">@ToolParam(required = false, description = &quot;排序字段: price或duration&quot;)</span><br>        <span class="hljs-keyword">private</span> String field;<br>        <span class="hljs-meta">@ToolParam(required = false, description = &quot;是否是升序: true/false&quot;)</span><br>        <span class="hljs-keyword">private</span> Boolean asc;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+这里的`@ToolParam`注解是SpringAI提供的用来解释`Function`参数的注解。其中的信息都会通过提示词的方式发送给AI模型。
+
+同样的道理，大家也可以给`Function`定义专门的VO，作为返回值给到大模型。这里我们就省略了。。
+
+#### 实现定义Function
+
+所谓的`Function`，就是一个个的函数，`SpringAI`提供了一个`@Tool`注解来标记这些特殊的函数。我们可以任意定义一个`Spring`的`Bean`，然后将其中的方法用`@Tool`标记即可：
+
+接下来，我们就来定义上一节说的三个Function：
+
+- 根据条件筛选和查询课程
+- 查询校区列表
+- 新增试听预约单
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-keyword">package</span> com.itheima.ai.tools;<br><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;<br><span class="hljs-keyword">import</span> com.itheima.ai.entity.po.Course;<br><span class="hljs-keyword">import</span> com.itheima.ai.entity.po.CourseReservation;<br><span class="hljs-keyword">import</span> com.itheima.ai.entity.po.School;<br><span class="hljs-keyword">import</span> com.itheima.ai.entity.query.CourseQuery;<br><span class="hljs-keyword">import</span> com.itheima.ai.service.ICourseReservationService;<br><span class="hljs-keyword">import</span> com.itheima.ai.service.ICourseService;<br><span class="hljs-keyword">import</span> com.itheima.ai.service.ISchoolService;<br><span class="hljs-keyword">import</span> lombok.RequiredArgsConstructor;<br><span class="hljs-keyword">import</span> org.springframework.ai.tool.annotation.Tool;<br><span class="hljs-keyword">import</span> org.springframework.ai.tool.annotation.ToolParam;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CourseTools</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICourseService courseService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ISchoolService schoolService;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICourseReservationService courseReservationService;<br><br>    <span class="hljs-meta">@Tool(description = &quot;根据条件查询课程&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">List</span>&lt;Course&gt; <span class="hljs-title function_">queryCourse</span><span class="hljs-params">(<span class="hljs-meta">@ToolParam(required = false, description = &quot;课程查询条件&quot;)</span> CourseQuery query)</span> &#123;<br>        <span class="hljs-keyword">if</span>(query==<span class="hljs-literal">null</span>)&#123;<br>            <span class="hljs-keyword">return</span> courseService.list();<br>        &#125;<br>        <span class="hljs-type">QueryWrapper</span>&lt;Course&gt; <span class="hljs-variable">qw</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">QueryWrapper</span>&lt;&gt;();<br>        qw.le(query.getEdu()!=<span class="hljs-literal">null</span>,<span class="hljs-string">&quot;edu&quot;</span>,query.getEdu());<br>        qw.eq(StrUtil.isNotBlank(query.getType()),<span class="hljs-string">&quot;type&quot;</span>,query.getType());<br>        <span class="hljs-keyword">if</span>(CollUtil.isNotEmpty(query.getSorts()))&#123;<br>            <span class="hljs-keyword">for</span> (CourseQuery.Sort sort : query.getSorts()) &#123;<br>                qw.orderBy(<span class="hljs-literal">true</span>,sort.getIsAsc(),sort.getField());<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> courseService.list(qw);<br>    &#125;<br><br>    <span class="hljs-meta">@Tool(description = &quot;查询所有校区&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">List</span>&lt;School&gt; <span class="hljs-title function_">queryAllSchools</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> schoolService.list();<br>    &#125;<br><br>    <span class="hljs-meta">@Tool(description = &quot;生成课程预约单,并返回生成的预约单号&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">String</span> <span class="hljs-title function_">generateCourseReservation</span><span class="hljs-params">(</span><br><span class="hljs-params">            String courseName, String studentName, String contactInfo, String school, String remark)</span> &#123;<br>        <span class="hljs-type">CourseReservation</span> <span class="hljs-variable">courseReservation</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CourseReservation</span>();<br>        courseReservation.setCourse(courseName);<br>        courseReservation.setStudentName(studentName);<br>        courseReservation.setContactInfo(contactInfo);<br>        courseReservation.setSchool(school);<br>        courseReservation.setRemark(remark);<br>        courseReservationService.save(courseReservation);<br>        <span class="hljs-keyword">return</span> String.valueOf(courseReservation.getId());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+## Rag
+
+要从内容相似度来判断，这就不得不提到**向量模型**的知识了。
+
+两个向量之间**欧式距离越近**，我们认为两个向量的**相似度越高**。（余弦距离相反，越大相似度越高）
+
+如果我们能**把文本转为向量**，就可以**通过向量距离来判断文本的相似度**了。
+
+有不少的专门的**向量模型**，就可以实现将文本向量化。一个好的向量模型，就是要**尽可能让文本含义相似的向量，在空间中距离更近**：
+
+向量模型是帮我们生成向量的，如此庞大的知识库，谁来帮我们从中**比较和检索数据**呢？
+
+这就需要用到**向量数据库**了。
+
+### 向量数据库
+
+向量数据库的主要作用有两个：
+
+- 存储向量数据
+- 基于相似度检索数据
+
+有许多公司都有向量数据库这个框架
+
+这些库都实现了统一的接口：`VectorStore`，因此操作方式一模一样，大家学会任意一个，其它就都不是问题。
+
+- [SimpleVectorStore](https://github.com/spring-projects/spring-ai/blob/main/spring-ai-core/src/main/java/org/springframework/ai/vectorstore/SimpleVectorStore.java) - A simple implementation of persistent vector storage, good for educational purposes.
+
+除了这个SimpleVectorStore库以外，向量库是基于内存实现，其它所有向量数据库都是需要安装部署的。每个企业用的向量库都不一样。
+
+VectorStore操作向量化的基本单位是Document，我们在使用时需要将自己的知识库分割转换为一个个的Document，然后写VectorStore.
+
+### 文件读取和转换
+
+前面说过，知识库太大，是需要拆分成文档片段，然后再做向量化的。而且SpringAI中向量库接收的是Document类型的文档，也就是说，我们处理文档还要转成Document格式。
+
+不过，文档读取、拆分、转换的动作并不需要我们亲自完成。在SpringAI中提供了各种文档读取的工具，可以参考官网：
+
+比如PDF文档读取和拆分，SpringAI提供了两种默认的拆分原则：
+
+- `PagePdfDocumentReader` ：按页拆分，推荐使用
+- `ParagraphPdfDocumentReader` ：按pdf的目录拆分，不推荐，因为很多PDF不规范，没有章节标签
+
+### 总结
+
+- PDFReader：读取文档并拆分为片段
+- 向量大模型：将文本片段向量化
+- 向量数据库：存储向量，检索向量
+
+解决的问题
+
+- 要解决大模型的知识限制问题，需要外挂知识库
+- 受到大模型上下文限制，知识库不能简单的直接拼接在提示词中
+- 我们需要从庞大的知识库中找到与用户问题相关的一小部分，再组装成提示词
+- 这些可以利用**文档读取器**、**向量大模型**、**向量数据库**来解决。
+
+所以RAG要做的事情就是将知识库分割，然后利用向量模型做向量化，存入向量数据库，然后查询的时候去检索：
+
+**第一阶段（存储知识库）**：
+
+- 将知识库内容切片，分为一个个片段
+- 将每个片段利用向量模型向量化
+- 将所有向量化后的片段写入向量数据库
+
+**第二阶段（检索知识库）**：
+
+- 每当用户询问AI时，将用户问题向量化
+- 拿着问题向量去向量数据库检索最相关的片段
+
+**第三阶段（对话大模型）**：
+
+- 将检索到的片段、用户的问题一起拼接为提示词
+- 发送提示词给大模型，得到响应
+
+## 目标
+
+现在RAG所需要的基本工具都有了。
+
+接下来，我们就来实现一个非常火爆的个人知识库AI应用，ChatPDF
+
+这个网站其实就是把你个人的PDF文件作为知识库，让AI基于PDF内容来回答你的问题，对于大学生、研究人员、专业人士来说，非常方便。
+
+### PDF上传下载、向量化
+
+既然是ChatPDF，也就是说所有知识库都是PDF形式的，由用户提交给我们。所以，我们需要先实现一个上传PDF的接口，在接口中实现下列功能：
+
+- 校验文件格式是否为PDF
+- 保存文件信息
+  - 保存文件（可以是oss或本地保存）
+  - 保存会话ID和文件路径的映射关系（方便查询会话历史的时候再次读取文件）
+- 文档拆分和向量化（文档太大，需要拆分为一个个片段，分别向量化）
+
+另外，将来用户查询会话历史，我们还需要返回pdf文件给前端用于预览，所以需要实现一个下载PDF接口，包含下面功能：
+
+- 读取文件
+- 返回文件给前端
+
+### PDF文件管理
+
+由于将来要实现PDF下载功能，我们需要记住每一个chatId对应的PDF文件名称。
+
+所以，我们定义一个类，记录chatId与pdf文件的映射关系，同时实现基本的文件保存功能。
+
+先在`com.itheima.ai.repository`中定义接口：
+
+### 配置ChatClient
+
+接下来就是最后的环节了，实现RAG的对话流程。
+
+理论上来说，我们每次与AI对话的完整流程是这样的：
+
+- 将用户的问题利用向量大模型做向量化 `OpenAiEmbeddingModel`
+- 去向量数据库检索相关的文档 `VectorStore`
+- 拼接提示词，发送给大模型
+- 解析响应结果
+
+不过，`SpringAI`同样基于AOP技术帮我们完成了全部流程，用到的是一个名`QuestionAnswerAdvisor`的Advisor。我们只需要把`VectorStore`配置到Advisor即可。
+
+我们在`CommonConfiguration`中给ChatPDF也单独定义一个`ChatClient`：
+
+## 多模态
+
+多模态是指不同类型的数据输入，如文本、图像、声音、视频等。目前为止，我们与大模型交互都是基于普通文本输入，这跟我们选择的大模型有关。
+
+deepseek、qwen-max等模型都是纯文本模型，在ollama和百炼平台，我们也能找到很多多模态模型。
+
+## Spring AI MCP
+
+MCP（Model Context Protocol ）叫作模型上下文协议，是一种标准化协议，它能够使 AI 大模型以结构化的方式与外部工具和资源进行交互。它支持多种传输机制，以在不同环境中提供灵活性。
+
+由上图，可以看出，在Java应用程序中，通过MCP Client可以与各种的MCP Server进行交互，增强了AI大模型的能力。
+
+看上去，似乎和Tool Calling差不多，也是增强大模型的能力，不同的是，MCP是标准，更通用。
+
+举两个场景来说明：
+
+- 在SpringAI中编写的Tools，可以放到Python中使用吗？，显然是不可以的，要想让Python中使用，就得使用Python语言重写一次Tool，才能使用，这就是不通用性的体现。
+- 在企业项目开发中，我们采用了Spring AI框架来构建智能体。这些智能体通常需要执行一系列通用功能，如天气查询、商品检索及下单等。基于以往的做法，每当开发新项目时，都需要重新编写实现这些功能的工具（Tool），这显然不利于代码复用。为解决这一问题，可以采用MCP标准进行服务器端开发，并将这些常用工具封装成服务接口。这样一来，其他的智能体只需通过调用该服务即可轻松访问所需功能，从而极大地提高了代码的复用性和开发效率。
+
+SpringAI对MCP做了支持，简化了Java项目中的MCP开发
+
+MCP Client 负责建立和管理与 MCP 服务器之间的连接，以及管理：
+
+- 协议版本协商以确保与服务器的兼容性
+- 功能协商以确定可用特性
+- 消息传输和 JSON-RPC 通信
+- **工具发现与执行**
+- 资源访问与管理
+- 提示系统（Prompt ）交互
+- 可选功能：
+  - 根管理
+  - 采样支持 
+- **同步和异步操作** 
+- **传输选项：**
+  - 基于标准输入输出（stdio）的进程间通信传输
+  - 基于 Java HttpClient 的 SSE 客户端传输
+  - 用于响应式 HTTP 流的 WebFlux SSE 客户端传输
+
+### MCP Server
+
+- 服务器端协议操作实现
+  - **工具暴露与发现**
+  - 基于URI的资源管理
+  - 提示模板提供与处理
+  - 与客户端的能力协商
+  - 结构化日志记录和通知
+- 并发客户端连接管理
+- **同步和异步API支持**
+- **传输实现：**
+  - 基于标准输入输出（stdio）的进程间通信传输
+  - 基于Servlet的SSE（服务器发送事件）服务器传输
+  - 用于响应式HTTP流的WebFlux SSE服务器传输
+  - WebMVC SSE 服务器传输，用于基于 Servlet 的 HTTP 流式传输
+
+SSE（Server-Sent Events）
+
+### MCP Client实战
+
+就是通过先在本机通过npm安装`@executeautomation/playwright-mcp-server`
+
+安装插件安装依赖然后增加json文件，然后形参加入ToolCallbackProvider tools，创建bean对象的时候加.defaultTools(tools)
+
+### MCP Server实战
+
+
+
+
+
+MCP有SSE 就像是长连接，STDIO 就像是管道
+
+STDIO是自己本地电脑里面的，SSE是外部服务器
+
+## 拓展
+
+截止SpringAI的1.0.0-M6版本为止，SpringAI的OpenAiModel和阿里云百炼的部分接口存在兼容性问题，包括但不限于以下两个问题：
+
+- FunctionCalling的stream模式，阿里云百炼返回的tool-arguments是不完整的，需要拼接，而OpenAI则是完整的，无需拼接。
+- 音频识别中的数据格式，阿里云百炼的qwen-omni模型要求的参数格式为data:;base64,${media-data}，而OpenAI是直接{media-data}
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/AIGC/" class="category-chain-item">AIGC</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Java/" class="print-no-link">#Java</a>
+      
+        <a href="/tags/AIGC/" class="print-no-link">#AIGC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>day4</div>
+      <div>https://guangzhao03.github.io/2026/04/21/2026-04-21-Java-AIGC-day4/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>光昭</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年4月21日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/04/21/2026-04-21-%E5%85%AB%E8%82%A1-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%90%8D%E8%AF%8D/" title="大模型名词">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">大模型名词</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/04/14/2026-04-14-Java-AIGC-day3/" title="day3">
+                        <span class="hidden-mobile">day3</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

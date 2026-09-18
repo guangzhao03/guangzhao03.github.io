@@ -1,0 +1,1053 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="光昭">
+  <meta name="keywords" content="Java,Python,算法,八股,Agent">
+  
+    <meta name="description" content="# 03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级  &gt; 核对日期：2026-09-17。仓库：&#96;E:\MoreProject\learn_foresign_engine&#96;。依据当前工作区源码，不代表线上实际部署配置。 &gt; &gt; 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 &#96;&#x2F;&#x2F; L原行号：解释&#96;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级">
+<meta property="og:url" content="https://guangzhao03.github.io/2026/09/17/2026-09-17-harness-03-%E6%B2%99%E7%AE%B1%E5%86%85Agent-Runtime/index.html">
+<meta property="og:site_name" content="光昭">
+<meta property="og:description" content="# 03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级  &gt; 核对日期：2026-09-17。仓库：&#96;E:\MoreProject\learn_foresign_engine&#96;。依据当前工作区源码，不代表线上实际部署配置。 &gt; &gt; 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 &#96;&#x2F;&#x2F; L原行号：解释&#96;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-17T02:01:28.000Z">
+<meta property="article:modified_time" content="2026-09-17T02:01:28.000Z">
+<meta property="article:author" content="光昭">
+<meta property="article:tag" content="Agent Harness">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级 - 光昭</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>光昭</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-09-17 10:01" pubdate>
+          2026年9月17日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          103 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级</h1>
+            
+            
+              <div class="markdown-body">
+                
+                
+# 03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级
+
+> 核对日期：2026-09-17。仓库：`E:\MoreProject\learn_foresign_engine`。依据当前工作区源码，不代表线上实际部署配置。
+>
+> 本文摘录关键执行路径，不是把 5000 多行服务文件全部复制。标为“源码逐行注释”的代码保留原语句，每行末尾的 `// L原行号：解释` 为教学注释；片段之间有省略，不能拼起来当完整程序运行。项目源码未被修改。
+
+## 1. 先理解：到底是谁在做什么
+
+你可以用“请修改工作区里的一个函数并运行测试”贯穿理解：
+
+1. Backend 确定是谁发起、在哪个工作区、使用哪个模型、允许写哪里。
+2. Backend 将这些配置发给沙箱里常驻的 `agent-service.mjs`。
+3. `agent-service` 调用 **Claude Agent SDK** 的 `query`。
+4. 模型产生工具调用意图，SDK 驱动工具执行；读文件、改文件、运行测试发生在沙箱内。
+5. SDK 返回一串消息，服务将它们翻译成平台事件，通过 SSE 交给 Backend。
+6. Backend 再负责持久化、计费、广播；浏览器并不直接连这个 Node 服务。
+
+**不是 Backend 每收到一个 tool_use，就再调用一次远端 Bash。** 沙箱内 SDK 已经负责工具执行循环，Backend 消费的是执行过程和结果。
+
+### 1.1 三种 Session，绝对不能混用
+
+| 标识 | 所在层 | 含义 | 生命周期 |
+|---|---|---|---|
+| Backend sessionId | 平台数据库 | 用户的一段聊天 | 可包含多轮执行 |
+| sandbox sessionId | agent-service 内存 Map | 一次 Runtime 执行及其 SSE 通道 | 进程内、终态有限保留 |
+| sdkSessionId | SDK 历史机制 | 用于 SDK resume 的对话身份 | 与 SDK 历史文件及路径相关 |
+
+`options.resume` 用的是第三种，不是平台 sessionId；SSE 重连用的是第二种，不需要重新 query。
+
+## 2. 代码导航与推荐阅读顺序
+
+以下路径均相对于仓库根目录。
+
+| 顺序 | 位置 | 阅读目标 |
+|---|---|---|
+| 1 | `packages/backend/docker/sandbox/agent-service.mjs:4844` | POST 创建会话，不立即执行 |
+| 2 | `packages/backend/docker/sandbox/agent-service.mjs:3360` | SSE 绑定、回放、开始执行 |
+| 3 | `packages/backend/docker/sandbox/agent-service.mjs:3514` | 解析配置、构造 SDK options |
+| 4 | `packages/backend/docker/sandbox/agent-service.mjs:4068` | resume、query、消费 SDK 消息 |
+| 5 | `packages/backend/docker/sandbox/agent-service.mjs:836` | 事件缓冲与 ACK |
+| 6 | `packages/backend/src/sandbox/application/sandbox-agent-sse.service.ts:589` | Backend 连续游标与重连 |
+| 7 | `packages/backend/docker/sandbox/lib/write-policy-guard.mjs:71` | 工具写路径策略 |
+| 8 | `packages/backend/docker/sandbox/lib/sdk-sandbox-policy.mjs:39` | SDK filesystem sandbox 配置 |
+| 9 | `packages/backend/src/sandbox/application/sandbox-agent-updater.service.ts:396` | 版本探测、文件部署、重启门控 |
+| 10 | `packages/backend/docker/sandbox/agent-wrapper.sh:12` | 服务进程重启协议 |
+
+## 3. 为什么先创建会话，再订阅，最后才执行
+
+执行时序：Backend POST `/sessions` → 得到 created 会话 → GET `/sessions/:id/events` → attachClient → start → execute → query。
+
+这解决的是“有副作用的任务已经开始，但接收方还没建立通道”的窗口。创建后 30 秒没有人订阅，会话会被取消并清理，防止留下无主执行。对应 `agent-service.mjs:3172`。
+
+### 3.1 源码逐行注释：绑定订阅者
+
+来源：`packages/backend/docker/sandbox/agent-service.mjs:3360-3382`。
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">attachClient</span>(<span class="hljs-params">client, lastEventId = <span class="hljs-number">0</span></span>) &#123; <span class="hljs-comment">// L3360：接收一个 SSE 客户端及 Backend 已连续收到的最大事件号；首次默认 0。</span><br>  <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">canAttachClient</span>()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// L3361：检查状态与订阅数量，不允许多个活跃 Backend 同时订阅。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">replayBuffer</span>.<span class="hljs-title function_">acknowledge</span>(lastEventId, <span class="hljs-variable language_">this</span>.<span class="hljs-property">eventSequence</span>); <span class="hljs-comment">// L3362：把重连游标视为累计 ACK，同时防止确认尚未产生的事件。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">sseClients</span>.<span class="hljs-title function_">add</span>(client); <span class="hljs-comment">// L3363：登记本次连接；此集合属于当前沙箱执行，不是浏览器房间。</span><br>  client.<span class="hljs-property">res</span>.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;close&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123; <span class="hljs-comment">// L3364：连接关闭时注册清理动作，但不在这里中断 SDK。</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">sseClients</span>.<span class="hljs-title function_">delete</span>(client); <span class="hljs-comment">// L3365：移除失效连接，为下一次重连让出订阅位置。</span><br>  &#125;); <span class="hljs-comment">// L3366：结束 close 回调注册。</span><br>  <span class="hljs-keyword">const</span> replayHighWatermark = <span class="hljs-variable language_">this</span>.<span class="hljs-property">eventSequence</span>; <span class="hljs-comment">// L3368：记录本次回放的高水位，明确历史回放范围。</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> entry <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">replayBuffer</span>.<span class="hljs-title function_">since</span>(lastEventId) <span class="hljs-comment">// L3369：只取 Backend 游标之后仍保留的事件。</span><br>    .<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> entry.<span class="hljs-property">id</span> &lt;= replayHighWatermark)) &#123; <span class="hljs-comment">// L3370：限制为绑定时已产生的历史事件。</span><br>    <span class="hljs-keyword">if</span> (!client.<span class="hljs-title function_">send</span>(entry.<span class="hljs-property">id</span>, entry.<span class="hljs-property">event</span>.<span class="hljs-property">sseEventType</span>, entry.<span class="hljs-property">event</span>.<span class="hljs-property">event</span>)) &#123; <span class="hljs-comment">// L3371：保留原事件 ID 发送，不能回放时重新编号。</span><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">sseClients</span>.<span class="hljs-title function_">delete</span>(client); <span class="hljs-comment">// L3372：发送失败则注销此连接。</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// L3373：告知调用方绑定未成功，避免继续当作正常订阅。</span><br>    &#125; <span class="hljs-comment">// L3374：结束发送失败处理。</span><br>  &#125; <span class="hljs-comment">// L3375：结束历史事件回放。</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> === <span class="hljs-string">&#x27;created&#x27;</span>) <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">start</span>(); <span class="hljs-comment">// L3377：只有尚未执行的会话才启动；重连 running 会话不重跑任务。</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isAgentSessionTerminalState</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>)) &#123; <span class="hljs-comment">// L3378：已结束的会话仍可回放，但不能继续等待新业务事件。</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_closeAllClients</span>(); <span class="hljs-comment">// L3379：回放完成后关闭终态会话连接。</span><br>  &#125; <span class="hljs-comment">// L3380：结束终态处理。</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// L3381：表示本次订阅绑定/回放流程已成功。</span><br>&#125; <span class="hljs-comment">// L3382：结束 attachClient。</span><br></code></pre></td></tr></table></figure>
+
+**关键问答：断线为什么不重新发送 prompt？**
+
+因为模型可能已经执行了写文件、提交代码或调用外部服务。重发 prompt 是再次执行任务，可能重复副作用；重连同一个 session 的事件流只是补齐观察结果，两者不是同一种重试。
+
+## 4. query 并不是一次普通聊天 API
+
+`query` 的输入不仅有 prompt，还有 cwd、模型、systemPrompt、MCP、权限回调、AbortController、resume 等执行上下文。它返回一个异步可迭代消息流，不是单个字符串。
+
+配置构造见 `agent-service.mjs:3794`：
+
+- `cwd`：工具工作的起始目录。
+- `includePartialMessages: true`：需要增量消息供平台流式展示。
+- `persistSession: true`：启用 SDK 历史持久化；不等于持久化 HTTP Session Map。
+- `mcpServers`：接入平台下发的工具服务器。
+- `env`：默认给 SDK 的是代理 token 和 Backend Proxy 地址，而非真实长期模型 Key。
+- `canUseTool` 与 `PreToolUse`：执行前检查或进入人工交互。
+
+### 4.1 源码逐行注释：复用 SDK 历史
+
+来源：`packages/backend/docker/sandbox/agent-service.mjs:4068-4073`。
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">if</span> (resumeSessionId) &#123; <span class="hljs-comment">// L4068：Backend 提供 SDK 历史身份时，走续接而非新建对话。</span><br>  options.<span class="hljs-property">resume</span> = resumeSessionId; <span class="hljs-comment">// L4069：把 SDK Session ID 放入 query 配置；不能传平台聊天 ID。</span><br>  <span class="hljs-title function_">log</span>(<span class="hljs-string">`[session:<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.id&#125;</span>][DIAG] Attempting resume with sdkSessionId=<span class="hljs-subst">$&#123;resumeSessionId&#125;</span>, cwd=<span class="hljs-subst">$&#123;cwd&#125;</span>, CLAUDE_CONFIG_DIR=<span class="hljs-subst">$&#123;process.env.CLAUDE_CONFIG_DIR || <span class="hljs-string">&#x27;(not set)&#x27;</span>&#125;</span>`</span>); <span class="hljs-comment">// L4070：同时记录 cwd 和配置目录，便于定位历史文件找不到等问题。</span><br>&#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-comment">// L4071：没有历史身份时使用新对话路径。</span><br>  <span class="hljs-title function_">log</span>(<span class="hljs-string">`[session:<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.id&#125;</span>][DIAG] Starting NEW session (no resumeSessionId), cwd=<span class="hljs-subst">$&#123;cwd&#125;</span>, CLAUDE_CONFIG_DIR=<span class="hljs-subst">$&#123;process.env.CLAUDE_CONFIG_DIR || <span class="hljs-string">&#x27;(not set)&#x27;</span>&#125;</span>`</span>); <span class="hljs-comment">// L4072：明确诊断为新建，避免把新会话误认为恢复成功。</span><br>&#125; <span class="hljs-comment">// L4073：结束 resume 分支。</span><br></code></pre></td></tr></table></figure>
+
+来源：同文件 `:4088-4094`。中间仅省略空行。
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> queryPrompt = <span class="hljs-title function_">createSdkQueryPrompt</span>(prompt, visionPaths); <span class="hljs-comment">// L4088：把文本及图片输入包装成 SDK streaming input，保持交互控制通道可写。</span><br><span class="hljs-title function_">log</span>(<span class="hljs-string">`[session:<span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.id&#125;</span>] query start, model=<span class="hljs-subst">$&#123;model&#125;</span>, nativeCompaction=<span class="hljs-subst">$&#123;nativeCompaction&#125;</span>`</span>); <span class="hljs-comment">// L4090：记录执行开始及上下文压缩相关配置。</span><br><span class="hljs-variable language_">this</span>.<span class="hljs-property">queryStream</span> = <span class="hljs-title function_">query</span>(&#123; <span class="hljs-attr">prompt</span>: queryPrompt, options &#125;); <span class="hljs-comment">// L4091：创建 SDK 执行流，并存到实例上供取消/中断路径使用。</span><br><span class="hljs-keyword">for</span> <span class="hljs-keyword">await</span> (<span class="hljs-keyword">const</span> message <span class="hljs-keyword">of</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">queryStream</span>) &#123; <span class="hljs-comment">// L4093：逐条消费 SDK 异步消息；这里只展示循环入口，后续分派逻辑见源码。</span><br>  messageTypeCounts[message.<span class="hljs-property">type</span>] = (messageTypeCounts[message.<span class="hljs-property">type</span>] || <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>; <span class="hljs-comment">// L4094：按消息类型累计诊断计数，便于观察异常终止前收到过什么。</span><br></code></pre></td></tr></table></figure>
+
+上段为**开放代码片段**，循环体后续省略，并非完整函数。为何 streaming input 重要？源码 `:4085-4087` 写明：直接传 string 可能在首条输入后关闭控制响应通道，导致后续工具审批报 Stream closed。**这与对浏览器输出 SSE 是不同层的“流式”。**
+
+### 4.2 SDK 消息如何变为平台事件
+
+源码 `agent-service.mjs:4103` 起按 message.type 分派：
+
+| SDK 内容 | 平台处理 |
+|---|---|
+| system/init | 捕获 SDK session_id，发 `__SESSION_ID__` |
+| assistant/stream_event | 转换 text、thinking、tool_use、tool_input_delta 等 |
+| user/tool_result | 工具执行结果与步骤状态 |
+| 人工问答、审批 | `user_question` / `permission_request` |
+| 最终汇总 | `__FINAL__`，携带响应、usage、cost、turns、SDK 身份等 |
+
+Backend 收到 SSE socket close 不能当作执行成功；必须区分 FINAL 到达与网络中断。
+
+## 5. SSE + ACK：可靠到哪一层
+
+### 5.1 先记住这个例子
+
+沙箱发出 1、2、3、4，Backend 连续收到 1、2 后断线。重连请求携带 Last-Event-ID=2，沙箱回放 3、4，再继续推送新事件。
+
+如果 Backend 收到 4，却没有收到 3，不能直接把游标升到 4，否则累计 ACK 会把 3 当作已确认丢弃。Backend 因而维护的是**最高连续事件号**，不是“见过的最大数字”。
+
+### 5.2 源码逐行注释：缓存与追加
+
+来源：`packages/backend/docker/sandbox/agent-service.mjs:836-845`。
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ReplayEventBuffer</span> &#123; <span class="hljs-comment">// L836：导出进程内事件回放缓冲类，不是外部持久化队列。</span><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">// L837：每个缓冲实例初始化自己的状态。</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span> = []; <span class="hljs-comment">// L838：数组保存事件记录及其编号、产生时间。</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = <span class="hljs-number">0</span>; <span class="hljs-comment">// L839：逻辑有效区起点，避免每 ACK 一条就移动整个数组。</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">lastAckedEventId</span> = <span class="hljs-number">0</span>; <span class="hljs-comment">// L840：累计确认游标从 0 开始。</span><br>  &#125; <span class="hljs-comment">// L841：结束初始化。</span><br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">size</span>() &#123; <span class="hljs-comment">// L843：暴露未逻辑删除的事件数量。</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span>.<span class="hljs-property">length</span> - <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>; <span class="hljs-comment">// L844：减去已确认前缀，而不是直接取底层数组长度。</span><br>  &#125; <span class="hljs-comment">// L845：结束 size getter；类的其余成员在后续片段展示。</span><br></code></pre></td></tr></table></figure>
+
+来源：同文件 `:855-863`。
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">push</span>(<span class="hljs-params">id, event</span>) &#123; <span class="hljs-comment">// L855：追加已在外层分配好序号的平台事件。</span><br>  <span class="hljs-keyword">const</span> entry = &#123; id, event, <span class="hljs-attr">createdAt</span>: <span class="hljs-title class_">Date</span>.<span class="hljs-title function_">now</span>() &#125;; <span class="hljs-comment">// L856：封装原事件及时间戳，ID 不能因重放改变。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span>.<span class="hljs-title function_">push</span>(entry); <span class="hljs-comment">// L857：存入内存数组；进程退出会丢失。</span><br>  <span class="hljs-keyword">return</span> entry; <span class="hljs-comment">// L858：返回记录供调用方使用。</span><br>&#125; <span class="hljs-comment">// L859：结束追加。</span><br><span class="hljs-title function_">since</span>(<span class="hljs-params">afterId</span>) &#123; <span class="hljs-comment">// L861：查询某个接收游标之后的未确认记录。</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>).<span class="hljs-title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">entry</span>) =&gt;</span> entry.<span class="hljs-property">id</span> &gt; afterId); <span class="hljs-comment">// L862：先排除已确认前缀，再按事件 ID 筛选回放尾部。</span><br>&#125; <span class="hljs-comment">// L863：结束游标查询。</span><br></code></pre></td></tr></table></figure>
+
+### 5.3 源码逐行注释：累计 ACK 和内存压缩
+
+来源：同文件 `:871-886`。
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">acknowledge</span>(<span class="hljs-params">id, latestId</span>) &#123; <span class="hljs-comment">// L871：输入确认 ID 和当前已产生最大 ID。</span><br>  <span class="hljs-keyword">if</span> (id &gt; latestId) &#123; <span class="hljs-comment">// L872：拒绝确认未来事件，防止游标越过真实产生范围。</span><br>    <span class="hljs-keyword">throw</span> <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;ACK_OUT_OF_RANGE&#x27;</span>), &#123; <span class="hljs-attr">code</span>: <span class="hljs-string">&#x27;ACK_OUT_OF_RANGE&#x27;</span> &#125;); <span class="hljs-comment">// L873：为路由层提供可识别的协议错误码。</span><br>  &#125; <span class="hljs-comment">// L874：结束范围检查。</span><br>  <span class="hljs-keyword">if</span> (id &lt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">lastAckedEventId</span>) <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">lastAckedEventId</span>; <span class="hljs-comment">// L875：重复或较旧 ACK 幂等，不回退游标。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">lastAckedEventId</span> = id; <span class="hljs-comment">// L877：推进累计确认位置。</span><br>  <span class="hljs-keyword">while</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> &lt; <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span>.<span class="hljs-property">length</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span>[<span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>].<span class="hljs-property">id</span> &lt;= id) &#123; <span class="hljs-comment">// L878：定位已确认事件的连续前缀。</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> += <span class="hljs-number">1</span>; <span class="hljs-comment">// L879：逻辑删除一条记录，此时对象不一定立即释放。</span><br>  &#125; <span class="hljs-comment">// L880：结束前缀扫描。</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> &gt; <span class="hljs-number">4096</span> &amp;&amp; <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> * <span class="hljs-number">2</span> &gt;= <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span>.<span class="hljs-property">length</span>) &#123; <span class="hljs-comment">// L881：已确认前缀足够大且至少占一半时才整理数组，降低频繁复制开销。</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">entries</span>.<span class="hljs-title function_">slice</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span>); <span class="hljs-comment">// L882：丢弃旧前缀引用，只保留待确认事件。</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">head</span> = <span class="hljs-number">0</span>; <span class="hljs-comment">// L883：新数组从零开始有效。</span><br>  &#125; <span class="hljs-comment">// L884：结束物理压缩。</span><br>  <span class="hljs-keyword">return</span> id; <span class="hljs-comment">// L885：返回最终确认的 ID。</span><br>&#125; <span class="hljs-comment">// L886：结束累计确认处理。</span><br></code></pre></td></tr></table></figure>
+
+### 5.4 不能承诺 exactly-once
+
+Backend 接收端见 `sandbox-agent-sse.service.ts:589-663`：完整帧 → JSON 解析 → ID 检查 → 连续性检查 → 同步交接事件 → 推进游标。
+
+这里的 ACK **不是数据库事务提交确认，也不是浏览器已收到确认**。下游还可能异步处理，因此 Backend 在交接后崩溃存在不同层状态不一致的窗口。
+
+还有这些限制：
+
+- 默认每 2 秒 ACK，FINAL 到达时尽快 flush。
+- 默认终态保留 120 秒，FINAL 已 ACK 且缓存空可提前回收。
+- 单条 SSE 连接发生背压时会被关闭，依靠重连恢复。
+- 未 ACK 的 replay buffer 没有事件数/字节数硬上限，长期未确认会占内存。
+- 进程重启、容器销毁或保留期结束后，不保证回放。
+- 浏览器还有另一套 Redis Stream + seq 恢复协议，见第一份文档，不能混用两种游标。
+
+## 6. 人工回答怎样恢复 SDK
+
+权限回调等待时，Runtime 保存 requestId 对应的 Promise resolver，并发出交互事件。用户回答经 Backend 转发到 `/sessions/:id/respond`。
+
+来源：`packages/backend/docker/sandbox/agent-service.mjs:3400-3408`，函数后续省略。
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-title function_">receiveResponse</span>(<span class="hljs-params">requestId, result</span>) &#123; <span class="hljs-comment">// L3400：由响应路由提交某一次问答/审批的结果。</span><br>  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">isAgentSessionTerminalState</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span>)) &#123; <span class="hljs-comment">// L3401：任务已经结束时不再接受迟到回答。</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// L3402：告知调用方该回答没有被消费。</span><br>  &#125; <span class="hljs-comment">// L3403：结束终态检查。</span><br>  <span class="hljs-keyword">const</span> resolve = <span class="hljs-variable language_">this</span>.<span class="hljs-property">pendingResponses</span>.<span class="hljs-title function_">get</span>(requestId); <span class="hljs-comment">// L3404：按 requestId 精确匹配等待中的控制请求。</span><br>  <span class="hljs-keyword">if</span> (!resolve) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// L3405：未知或已消费的请求不应唤醒其他等待者。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">pendingResponses</span>.<span class="hljs-title function_">delete</span>(requestId); <span class="hljs-comment">// L3406：先移除记录，避免重复响应重复消费。</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">state</span> = <span class="hljs-string">&#x27;running&#x27;</span>; <span class="hljs-comment">// L3407：从等待人工输入切回执行状态。</span><br>  <span class="hljs-title function_">resolve</span>(result); <span class="hljs-comment">// L3408：完成 Promise，让暂停在权限回调上的 SDK 继续。</span><br></code></pre></td></tr></table></figure>
+
+问答身份必须定位到具体执行；一个 Desktop 可以有多个 Session，只传 desktopId 不足以准确回应。
+
+## 7. Write Policy：不要把提示词当权限系统
+
+### 7.1 三层职责
+
+1. **Backend resolver** 从 Session、Desktop、Workflow 和成员权限解析可信 writeRoot、protectedPaths 等。浏览器 requestedWorkingDir 不是最终权威。
+2. **WriteGuard** 在 PreToolUse/canUseTool 检查已知原生工具的路径及可识别命令写目标。
+3. **SDK filesystem sandbox** 尝试用系统侧文件系统约束进一步限定执行。
+
+配置来源：`packages/backend/src/session-write-policy/session-write-policy.resolver.ts:41`；接入位置：`agent-service.mjs:3930`、`:4014`。
+
+### 7.2 源码逐行注释：SDK 沙箱配置的真实语义
+
+来源：`packages/backend/docker/sandbox/lib/sdk-sandbox-policy.mjs:77-89`。
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> sandbox = &#123; <span class="hljs-comment">// L77：构造传给 SDK 的沙箱配置对象。</span><br>  <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// L78：请求启用 SDK 沙箱，不等于已验证所有系统隔离能力生效。</span><br>  failIfUnavailable, <span class="hljs-comment">// L79：此变量在 L68 被设为 false；不可用时并非无条件阻止执行。</span><br>  <span class="hljs-attr">autoAllowBashIfSandboxed</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// L80：在已沙箱化条件下允许 Bash，减少不必要的交互审批。</span><br>  <span class="hljs-attr">allowUnsandboxedCommands</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// L81：声明不允许命令主动选择非沙箱路径；仍应结合可用性降级理解。</span><br>  <span class="hljs-attr">filesystem</span>: &#123; <span class="hljs-comment">// L82：声明文件系统规则。</span><br>    <span class="hljs-attr">allowWrite</span>: [claudeConfigPath], <span class="hljs-comment">// L83：为工作区内特定配置目录提供写例外，不能解释为只允许这一处写入。</span><br>    <span class="hljs-attr">denyWrite</span>: protectedPaths, <span class="hljs-comment">// L84：成员或项目受保护路径作为显式禁止写入集合。</span><br>  &#125;, <span class="hljs-comment">// L85：结束文件系统配置。</span><br>&#125;; <span class="hljs-comment">// L86：结束 SDK sandbox 对象。</span><br><span class="hljs-keyword">const</span> failClosed = <span class="hljs-literal">false</span>; <span class="hljs-comment">// L88：当前实现没有一概采用隔离不可用即拒绝的策略。</span><br><span class="hljs-keyword">const</span> isFullIsolation = sandboxRequired &amp;&amp; availability.<span class="hljs-property">available</span>; <span class="hljs-comment">// L89：这是配置与依赖探测推导出的诊断值，不是实际越界测试的证明。</span><br></code></pre></td></tr></table></figure>
+
+### 7.3 面试必须区分“设计意图”和“当前保障”
+
+- writePolicy 的 shadowMode 默认开启；普通越界可记录“本应拒绝”而不阻断，成员保护路径另有强制规则。
+- 未提供 writePolicy、无法确定命令写影响等路径存在审计后放行。
+- 任意 MCP 的副作用不自动被原生文件工具 guard 全覆盖。
+- policyFingerprint 是配置一致性诊断用的哈希，不是授权数字签名。
+- 容器是执行环境边界，不等于同容器内每个 Session 都有独立安全域。
+- 这些是治理边界和加固方向，不应作为“百分之百隔离”的简历宣传。
+
+## 8. 热更新：更准确地叫“运行服务文件更新 + 受控重启”
+
+流程见 `sandbox-agent-updater.service.ts:396` 起：
+
+1. Backend 读取本地 Runtime 版本，调用沙箱 `/health`。
+2. 对比版本及 write guard capability。
+3. 需要更新则部署依赖文件，再部署主服务文件。
+4. 活跃会话存在时先暂存，不立即重启。
+5. 确认受 wrapper 监管后调用 `/reload`；服务再次检查活跃会话。
+6. 服务退出 42，wrapper 拉起新 Node 进程。
+7. Backend 再次检查版本和能力。
+
+非腾讯路径使用临时文件与 mv 逐文件替换，腾讯 Files API 路径不具有同样的逐文件原子替换步骤。两者都不能描述为多文件原子事务；源码未见自动回滚旧 Runtime 的完整机制。
+
+### 8.1 源码逐行注释：wrapper 如何识别重启
+
+来源：`packages/backend/docker/sandbox/agent-wrapper.sh:12-25`。
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">export</span> AGENT_WRAPPER_ACTIVE=1 <span class="hljs-comment"># L12：告诉子进程有监管者，服务可以在 reload 时安全请求退出重启。</span><br><span class="hljs-keyword">while</span> <span class="hljs-literal">true</span>; <span class="hljs-keyword">do</span> <span class="hljs-comment"># L14：进入监管循环；是否继续由下方退出码决定。</span><br>    node <span class="hljs-string">&quot;<span class="hljs-variable">$AGENT_PATH</span>&quot;</span> <span class="hljs-comment"># L15：运行磁盘上的主服务；更新后的文件将在下一次启动时加载。</span><br>    EXIT_CODE=$? <span class="hljs-comment"># L16：立即保存 Node 退出码，后续命令会覆盖 shell 的 $?。</span><br>    <span class="hljs-keyword">if</span> [ <span class="hljs-string">&quot;<span class="hljs-variable">$EXIT_CODE</span>&quot;</span> -eq <span class="hljs-string">&quot;<span class="hljs-variable">$RELOAD_EXIT_CODE</span>&quot;</span> ]; <span class="hljs-keyword">then</span> <span class="hljs-comment"># L18：只把约定退出码 42 识别为热重载请求。</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[agent-wrapper] reload requested (exit code <span class="hljs-variable">$RELOAD_EXIT_CODE</span>), restarting agent-service...&quot;</span> <span class="hljs-comment"># L19：记录预期的重启原因。</span><br>        <span class="hljs-built_in">continue</span> <span class="hljs-comment"># L20：开始下一轮，重新启动 Node，不重建整个 workspace。</span><br>    <span class="hljs-keyword">else</span> <span class="hljs-comment"># L21：其他退出码不进入无限重启。</span><br>        <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;[agent-wrapper] agent-service exited with code <span class="hljs-variable">$EXIT_CODE</span>, stopping container&quot;</span> <span class="hljs-comment"># L22：输出退出原因供平台诊断。</span><br>        <span class="hljs-built_in">exit</span> <span class="hljs-variable">$EXIT_CODE</span> <span class="hljs-comment"># L23：将退出状态交还外层启动/容器管理机制。</span><br>    <span class="hljs-keyword">fi</span> <span class="hljs-comment"># L24：结束退出码判断。</span><br><span class="hljs-keyword">done</span> <span class="hljs-comment"># L25：结束监管循环结构。</span><br></code></pre></td></tr></table></figure>
+
+这是服务进程重启，不是正在 query 时替换函数。重启会清除 Runtime 内存 Map 和 replay buffer；不应声称零中断。SDK 包、系统依赖变化也不都能靠推送几个脚本解决。
+
+## 9. 面试讲法：从 60 秒到深挖
+
+### 60 秒版
+
+> 我们把平台业务控制面与 Agent 工具执行面拆开。NestJS 管用户身份、会话、模型配置与事件持久化；沙箱里常驻 Node Runtime，直接嵌入 Claude Agent SDK，让文件和命令操作就近执行。任务创建后先建立 SSE 再启动 SDK，运行事件带连续序号，通过 ACK 和内存回放恢复短时断线。写路径采用工具 guard 和 SDK filesystem sandbox 分层治理，但会区分审计模式与强制模式。服务升级通过版本检测、暂存文件和 wrapper 受控重启，不是在线无缝替换。
+
+### 追问 1：为什么不用 Backend 直接执行 SDK？
+
+因为用户命令、依赖安装和工作区 I/O 应尽量在租户执行环境内完成，避免把 Backend 变成用户代码宿主。代价是要处理跨进程事件、控制请求、凭证和生命周期。项目正常路径如此，但仍保留 Backend SDK fallback，不能说所有路径都被硬隔离。
+
+### 追问 2：为什么既有容器，又有写策略？
+
+容器限制执行环境与宿主/其他环境的关系；写策略限制同一个工作区内不同任务能改哪些路径。它们保护的对象不同，不能互相替代。
+
+### 追问 3：SSE 断线后如何避免重复执行？
+
+恢复同一 sandbox session 的事件流，而不是重新调用 query。事件 ID 去重解决重复展示；不代表外部副作用具有全局 exactly-once。
+
+### 追问 4：ACK 后进程崩溃是否会丢事件？
+
+可能。ACK 的层级是 Backend 接收交接，不是最终数据库提交。需要持久化执行日志或更强提交确认协议才能提高这类故障的保障，但会增加延迟和复杂度。
+
+### 追问 5：你的改进优先级是什么？
+
+这是建议，不是已实现事实：优先给未确认事件缓冲加容量治理，明确写策略的强制/降级状态，完善版本部署回滚，再评估执行事件持久化的成本。不要直接宣传“换成 MQ 就所有问题都解决”。
+
+## 10. 自测：不看答案讲出来
+
+- 三种 Session ID 各自用于什么？
+- 为什么 POST /sessions 不立即 query？
+- streaming input 与 SSE output 有什么区别？
+- ACK=20 到底确认了什么，没有确认什么？
+- head 指针为什么比每次 shift 数组更合适？
+- container 重建、Runtime reload、SDK resume、SSE reconnect 四者有什么区别？
+- shadowMode、guard、filesystem sandbox 分别能承诺什么？
+
+建议下一步读 [01｜Agent 平台主链路](01-Agent平台主链路.md)，把 Runtime 放回浏览器到数据库的完整链路中。
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Agent-Harness/" class="category-chain-item">Agent Harness</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent-Harness/" class="print-no-link">#Agent Harness</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>03｜沙箱内 Agent Runtime：从接收任务到工具执行、断线回放与升级</div>
+      <div>https://guangzhao03.github.io/2026/09/17/2026-09-17-harness-03-沙箱内Agent-Runtime/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>光昭</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年9月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/09/17/2026-09-17-harness-04-%E7%AB%AF%E4%BA%91%E5%8D%8F%E5%90%8CWorkflow/" title="04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">04｜端云协同 Workflow：本地认领、Git 交付与云端继续执行</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/09/10/2026-09-10-%E5%85%AB%E8%82%A1-2026910%E8%85%BE%E8%AE%AFAI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" title="腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）">
+                        <span class="hidden-mobile">腾讯 AI 应用开发一面模拟（项目深挖 + Java 基础）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,962 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="光昭">
+  <meta name="keywords" content="Java,Python,算法,八股,Agent">
+  
+    <meta name="description" content="# 2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘  &gt; 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜底)+ A&#x2F;B 测试。 &gt; 结构:Agent 基础与情景">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘">
+<meta property="og:url" content="https://guangzhao03.github.io/2026/09/04/2026-09-04-%E5%85%AB%E8%82%A1-202694%E5%AD%97%E8%8A%82Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/index.html">
+<meta property="og:site_name" content="光昭">
+<meta property="og:description" content="# 2026-09-04 字节跳动 Agent&#x2F;AI 应用 日常实习 模拟面试复盘  &gt; 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG&#x2F;Embedding&#x2F;召回评估)+ 八股(Transformer&#x2F;LoRA&#x2F;交叉熵)+ 手撕(LRU&#x2F;MHA)+ 情景题(幻觉&#x2F;工具失败兜底)+ A&#x2F;B 测试。 &gt; 结构:Agent 基础与情景">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-09-04T01:29:14.000Z">
+<meta property="article:modified_time" content="2026-09-04T01:29:14.000Z">
+<meta property="article:author" content="光昭">
+<meta property="article:tag" content="八股">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>2026-09-04 字节跳动 Agent/AI 应用 日常实习 模拟面试复盘 - 光昭</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"guangzhao03.github.io","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>光昭</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2026-09-04 字节跳动 Agent/AI 应用 日常实习 模拟面试复盘"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-09-04 09:29" pubdate>
+          2026年9月4日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">2026-09-04 字节跳动 Agent/AI 应用 日常实习 模拟面试复盘</h1>
+            
+            
+              <div class="markdown-body">
+                
+                
+# 2026-09-04 字节跳动 Agent/AI 应用 日常实习 模拟面试复盘
+
+> 模拟范围:字节一面(技术面)风格,题池依据真实面经(豆包大模型 AI 应用开发 2 轮技术面):项目深挖(RAG/Embedding/召回评估)+ 八股(Transformer/LoRA/交叉熵)+ 手撕(LRU/MHA)+ 情景题(幻觉/工具失败兜底)+ A/B 测试。
+> 结构:Agent 基础与情景 → RAG → 大模型基础 → 评估与 A/B → 手撕(降难度版)→ 开放设计。项目深挖跳过(简历未完成)。
+
+---
+
+## Q1 Function Calling 全流程 ✅
+
+**我的答案**:用户消息带 function 说明(name/description/input/output)→ 模型判断调什么工具什么参数,输出 JSON → 客户端解析执行 → 结果返回模型。
+
+**点评**:核心机制(模型不执行,客户端执行)✅。追问"结果回传后呢"答对:模型判断还需不需要继续调工具,不需要就总结回答。
+**修正**:"关键机制是 ReAct" ❌——ReAct 是提示词范式(Thought→Action→Observation 文本),Function Calling 是 API 原生工具调用。loop 靠 `stop_reason == "tool_use"` 判断继续/退出。
+
+**Q1-追问:工具执行失败怎么兜底(字节二面原题)** ✅
+我的三条:①参数问题→错误结果+提醒回传模型 ②调用混乱→每个 function 写清边界 ③执行不停→设超时。
+点评:三条都在点上。补:错误信息要**可操作**("missing required field `city`" 而非堆栈);设**重试上限**(同工具连败 3 次终止/降级)——与轮次上限/重复检测同属三道防线。
+
+---
+
+## Q2 幻觉 ⚠️(温度 0 二连坑,必背)
+
+**我的答案**:概率模型只说概率大的答案;手段:提示词约束/并行多跑几轮/RAG/温度 0。
+
+**点评**:
+- 原因只答出 1/3。标准三条:①概率模型目标是"像"不是"真" ②没有"我不知道"机制,SFT 教出有问必答 ③训练数据过时/噪声/长尾不足
+- 温度 0 ❌——**9/2 踩过又踩**。温度 0 只消随机性,贪心解码照样编,幻觉根源是"没有事实依据"不是"随机性"
+- 并行多跑 ⚠️ 学名 self-consistency,提高一致性≠提高事实性
+- 自检技巧:温度 0 和并行采样互相矛盾,一起端出来会被打
+
+**必背四条手段**:①RAG ②Prompt 三件套(允许说不知道/仅据给定资料/引用来源)③事后校验(另一模型做 faithfulness 检查)④对齐(RLHF 校准拒答)。
+套路:**原因"机制+训练+知识边界",手段"RAG/prompt/校验/对齐"**。
+
+---
+
+## Q3 RAG 召不回排查 ✅✅(高光)
+
+**我的答案**:query 和 answer 不匹配要增强 query;排查看 chunk 内容、拿什么当 query、是排序低还是压根不在 top-k 里;加 BM25 路互补。
+
+**点评**:**"区分不在 top-k vs 排序低"是生产级排查思维(召回问题 vs 排序问题,修法完全不同)——三场以来最好的工程直觉**。BM25 互补(语义 vs 关键词/专有名词)✅。
+
+**HyDE 第三次掰正**(先弄懂再答的暂停讲解):
+- Query 改写 = 把**问题**说得更清楚(同义词/口语转书面),改完还是问句
+- HyDE = 让 LLM **编一段假设性答案文档**拿去检索——假答案的词汇句式和真文档同类,embedding 落在"文档区",离真 chunk 近;数字编错没关系
+- 记忆锚点:**改写 = 把问题说清楚;HyDE = 把答案编出来拿去搜**
+- 失败模式:改写改完还不匹配;HyDE 冷门问题编跑题带偏检索
+- 实战:多路召回里原始 query/改写/HyDE 各一路,RRF 合并;话术"先分析 badcase 判断失败类型,改写解决不了再上 HyDE"
+
+**Q3-追问:Embedding 模型选型** ⚠️
+✅ 语言支持(纯中文/英文/双语)。❌ "bge 会生成稀疏向量"不精确——是 **BGE-M3 单型号**支持稠密+稀疏+多向量三种表示,bge-large 等纯稠密。面试精确到型号。
+补全因素:语言/维度与成本权衡/C-MTEB 榜单参考/长文本 max tokens/query-document 不对称处理/部署方式。
+**验证方法(现学)**:"榜单初筛(C-MTEB),自建评测集终筛(人工标注 query→正确文档,算 Recall@k/MRR),最后端到端验证"——豆包面经原题就是"召回率如何评估"。
+
+---
+
+## Q4 大模型基础 ⚠️
+
+**Q4-1 交叉熵 vs MSE**:只答"分类用 CE 回归用 MSE"。深度版:LLM 输出词表上的概率分布,本质是超大分类→CE;MSE 配 softmax 梯度消失,且 token 间无数值距离(错"狗"和错"飞机"一样错)。
+**一句话版**:"LLM 是词表上的超大分类,CE 直接匹配概率分布;MSE 给连续值回归设计,配 softmax 梯度会消失。"
+
+**Q4-2 LoRA**:低秩✅,但"只调整部分小窗口"❌(窗口是 Flash Attention 概念,串了)。
+**正确版**:"冻结原权重 W,旁路加两个小矩阵 A(d×r)、B(r×d),前向 = W·x + B·A·x;可训练参数从 d×d 降到 2×d×r;推理时 B·A 可合并回 W 零延迟;多任务换 LoRA 权重底座共享。"
+记忆锚点:**LoRA = 冻结原文,旁边开小抄**。
+
+---
+
+## Q5 评估与 A/B ⚠️(字节灵魂题,题眼没答出)
+
+**我的答案**:新旧 prompt 跑同任务对比,看端到端/过程/成本延迟;上线后看用户反馈,离线有偏差。
+
+**点评**:离线评测部分✅(标准说法:同一评测集新旧各跑)。但**在线 A/B 完全没提——这是题眼**:
+- 随机分流(两组用户无系统差异)→ 跑 1-2 周比业务指标(任务完成率/点赞点踩/留存/人工转接率)→ **显著性检验(p<0.05)** 字节必追
+- 话术:"离线回归当门禁 → 线上 A/B 小流量放量 → 显著才全量"
+
+**离线好≠在线好(三条)**:①分布 gap(评测集人工挑的,长尾覆盖不到)②指标≠体验(延迟/语气/格式在线才感知)③用户是活的(上线后行为会变)。
+在线要做的:A/B + 反馈埋点 + 成功率监控 + **badcase 回流评测集**(持续迭代)。
+
+---
+
+## Q6 手撕 ✅✅(超预期)
+
+**Q6a LRU Cache**:用户力扣真实现通过。数据结构:哈希表(O(1) 找到)+ 双向链表(O(1) 排队,头最新尾最旧);必追点:为什么双向——摘中间节点要 O(1) 必须知道前驱。记忆锚点:**哈希表管"找到",双向链表管"排队"**。
+**结论:用户自我评估"只懂思路不能写码"偏低,缺的是练不是能力。**
+
+**Q6b Agent loop 白板(降难度版)**:
+- 退出条件✅(判断 stop_reason,精确版 `stop_reason != "tool_use"` 退出)
+- 回传+为什么再调✅(append 到 messages;补充:工具结果只是历史里一条消息,模型不会自动响应,**必须再发 API 请求才继续生成**——loop 的本质是每次模型发言都是一次新 API 调用)
+- 防死循环 ⚠️ "两个标记位"含糊→标准:轮次上限(max_turns=25)+ 重复检测(同工具同参连续 3 次)
+- 白板参考答案已存档于复盘(伪代码 15 行:for max_turns → create → stop_reason 判断 → 客户端执行 → assistant block + tool_result 回传 → 超限降级)
+
+---
+
+## Q7 开放设计:AI 简历优化助手 ⚠️
+
+**我的答案**:word/pdf 解析成 markdown(OCR 版面分析+AI 转化更好);按 JD 优化输出建议;评估=另建一个 AI 拿 jd+简历来评。
+
+**点评**:OCR/版面分析✅ 真实痛点,亮点。LLM-as-a-judge✅ 但评估只答 1/4。
+**架构补全**:解析层→**分析层(简历×JD 对齐:技能匹配/关键词缺口——用户跳过了这步)**→生成层(逐段改写+引用原文防编造)→工程项(PII 脱敏,主动提加分)。
+**评估补全**:规则指标(JD 关键词覆盖率前后对比)/judge(带 rubric:相关性/具体性/**真实性——不能编造经历**)/人工金标/**采纳率闭环(建议被接受比例,北极星)**。
+**价值**:9/2 的"评什么/怎么评/何时评"框架成功迁移到新场景——这正是面试官考的框架迁移能力。
+
+---
+
+# 总体战报
+
+| 题 | 考点 | 表现 | 备注 |
+|---|---|---|---|
+| Q1 Function Calling | Agent 基础 | ✅ | 核心扎实;ReAct≠FC 待修 |
+| Q1-追 工具失败兜底 | 情景 | ✅ | 三条全对+重试上限 |
+| Q2 幻觉 | 大模型 | ⚠️ | **温度 0 二连坑**;手段四条没背熟 |
+| Q3 召回排查 | RAG | ✅✅ | 高光:top-k vs 排序区分 |
+| Q3-追 HyDE | RAG | ❌→✅ | 第三次掰正 |
+| Q3-追2 Embedding 选型 | RAG | ⚠️ | BGE-M3 精确到型号;验证方法现学 |
+| Q4 交叉熵/LoRA | 大模型 | ⚠️ | 都差一层深度,一句话版已给 |
+| Q5 A/B 测试 | 评估 | ⚠️ | **题眼在线 A/B 没答出** |
+| Q6a LRU | 手撕 | ✅✅ | 力扣真跑通,超自我评估 |
+| Q6b Agent loop | 手撕 | ✅ | 思路全对,术语要准 |
+| Q7 开放设计 | 设计 | ⚠️ | OCR 亮点;跳步+评估不全 |
+
+## 三场规律
+
+1. **最大短板:术语精确性**——模式更具体了:**不是不知道,是版本不精确**(ReAct≈FC、bge≈BGE-M3、LoRA"小窗口")。这种错比空白危险,面试官会以为你真懂错的东西
+2. **排查/工程直觉真强**:top-k vs 排序、工具失败三条、LRU 真跑通——动手过的扎实(三场一致)
+3. **温度 0 二连坑的教训**:9/2 待办只背了清单没过"为什么"——温度 0 消随机性,幻觉根源是没事实依据,消随机性治不了
+
+## 待办(9/4 更新,合并旧)
+
+- [ ] **幻觉四条手段真背下来**(温度 0 已二连坑):RAG / prompt 三件套 / 事后校验 faithfulness / 对齐拒答
+- [ ] **A/B 完整链路**:随机分流→业务指标→显著性;离线≠在线三条(分布 gap/指标≠体验/用户是活的)
+- [ ] HyDE vs 改写锚点(第三次,应最后一次):改写=把问题说清楚;HyDE=把答案编出来搜
+- [ ] ReAct vs FC:提示词范式 vs API 原生;loop 靠 stop_reason=="tool_use"
+- [ ] 交叉熵一句话版;LoRA 一句话版(冻结+低秩旁路+可合并)
+- [ ] BGE-M3=稠密+稀疏+多向量(精确到型号)
+- [ ] Embedding 选型话术:榜单初筛/自建评测集 Recall@k 终筛/端到端验证
+- [ ] 开放设计模板:不跳步(解析→**分析**→生成);评估=规则+judge+人工+采纳率闭环
+- [ ] **简历(最高优先级)**——真实面试项目深挖 30 分钟起
+- [ ] (延续)Anthropic《Building effective agents》《How we built our multi-agent research system》;Q14 归因表
+
+## 值得肯定的
+
+- LRU 力扣真跑通——缺的是练不是能力
+- top-k vs 排序排查区分 = 三场最佳工程直觉
+- 工具失败三条 / A/B 反馈意识 / OCR 版面分析 / 评估框架成功迁移——工程感稳定输出
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%85%AB%E8%82%A1/" class="category-chain-item">八股</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%AB%E8%82%A1/" class="print-no-link">#八股</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2026-09-04 字节跳动 Agent/AI 应用 日常实习 模拟面试复盘</div>
+      <div>https://guangzhao03.github.io/2026/09/04/2026-09-04-八股-202694字节Agent模拟面试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>光昭</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年9月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/09/07/2026-09-07-%E5%85%AB%E8%82%A1-202697%E5%AD%97%E8%8A%82%E7%9C%9F%E5%AE%9E%E9%9D%A2%E7%BB%8F%E6%A8%A1%E6%8B%9F/" title="字节一面真实面经复刻 · 复盘（2026-09-07）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">字节一面真实面经复刻 · 复盘（2026-09-07）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/09/02/2026-09-02-%E5%85%AB%E8%82%A1-202692%E7%99%BE%E5%BA%A6Agent%E6%A8%A1%E6%8B%9F%E9%9D%A2%E8%AF%95/" title="2026-09-02 百度 Agent 日常实习 模拟面试复盘">
+                        <span class="hidden-mobile">2026-09-02 百度 Agent 日常实习 模拟面试复盘</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
